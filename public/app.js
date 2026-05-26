@@ -2468,7 +2468,7 @@ function buildMetrics() {
   const droughtActiveCountries = Number(ledgerMetrics.drought_active_countries?.count ?? countries.filter((c) => (c.drought_signal_count || 0) > 0).length);
   const foodSecurityCoverage = countries.filter((c) => c.ipc != null || c.fews_ipc != null).length;
   const ensoStatusLabel = ensoAdvisory?.alert_status || "No ENSO watch loaded";
-  const ensoStatusShort = ensoStatusLabel;
+  const ensoStatusShort = ensoStatusLabel.length > 18 ? ensoStatusLabel.slice(0, 16).trim() + "…" : ensoStatusLabel;
   const ensoOutlook = deriveEnsoOutlookSummary(ensoAdvisory);
   const ensoNote = ensoAdvisory
     ? `${ensoOutlook} Issued ${ensoAdvisory.issued_on || "n/a"}${ensoAdvisory.next_update ? ` | Next update ${ensoAdvisory.next_update}` : ""}`
