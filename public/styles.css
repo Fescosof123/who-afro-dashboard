@@ -621,6 +621,7 @@ main {
 .metric-note {
   margin-top: 4px;
   font-size: 0.78rem;
+  font-weight: 700;
   color: var(--muted);
   line-height: 1.4;
   overflow: hidden;
@@ -854,6 +855,7 @@ main {
   margin: 4px 0 0;
   color: var(--muted);
   font-size: 0.77rem;
+  font-weight: 700;
 }
 
 .data-validation-list {
@@ -2257,7 +2259,7 @@ tbody tr:hover {
 
 .annex-metric-card span {
   font-size: 0.74rem;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #55708a;
