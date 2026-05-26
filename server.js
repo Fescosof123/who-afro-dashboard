@@ -300,6 +300,11 @@ const DTM_CACHE_TTL_HOURS = parsePositiveIntEnv(process.env.DTM_CACHE_TTL_HOURS,
 let dtmDisplacementSnapshot = null;
 let dtmFetchInFlight = null;
 
+// ReliefWeb RSS cache — keeps the last successful batch so Render always has seed data.
+const RELIEFWEB_RSS_CACHE_FILE = path.join(DATA_DIR, "reliefweb-rss-cache.json");
+const RELIEFWEB_RSS_CACHE_TTL_HOURS = 6;
+let reliefwebRssSnapshot = null;
+
 // FEWS Data Warehouse IPC API — publicly accessible, no authentication required.
 const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
 const FEWS_IPC_CACHE_FILE = path.join(DATA_DIR, "fews-ipc-cache.json");
@@ -3659,6 +3664,26 @@ async function fetchGdacsData(countryMap) {
   return mergedEvents.slice(0, 80);
 }
 
+function readReliefWebRssCache() {
+  try {
+    if (!fs.existsSync(RELIEFWEB_RSS_CACHE_FILE)) return null;
+    const raw = JSON.parse(fs.readFileSync(RELIEFWEB_RSS_CACHE_FILE, "utf8"));
+    return raw && raw.saved_at && Array.isArray(raw.items) ? raw : null;
+  } catch (e) { return null; }
+}
+
+function writeReliefWebRssCache(items) {
+  try {
+    fs.writeFileSync(RELIEFWEB_RSS_CACHE_FILE, JSON.stringify({ saved_at: new Date().toISOString(), items }, null, 2), "utf8");
+  } catch (e) { console.error("[ReliefWeb RSS] Cache write failed:", e.message); }
+}
+
+function isReliefWebRssCacheFresh(snapshot) {
+  if (!snapshot?.saved_at) return false;
+  const ageHours = (Date.now() - new Date(snapshot.saved_at).getTime()) / 3600000;
+  return ageHours < RELIEFWEB_RSS_CACHE_TTL_HOURS;
+}
+
 async function fetchReliefWebData(countryMap) {
   const dedupeFloodSignals = (items = []) => {
     const seen = new Set();
@@ -3819,20 +3844,30 @@ async function fetchReliefWebData(countryMap) {
     }
   };
 
+  if (!reliefwebRssSnapshot) {
+    reliefwebRssSnapshot = readReliefWebRssCache();
+  }
+
   let feedItems = [];
+  let rssFromCache = false;
   try {
-    const feed = await parser.parseURL("https://reliefweb.int/updates/rss.xml");
-    feedItems = feed.items || [];
+    const feed = await parser.parseURL(RELIEFWEB_UPDATES_RSS_URL);
+    const liveItems = feed.items || [];
+    if (liveItems.length > 0) {
+      feedItems = liveItems;
+      reliefwebRssSnapshot = { saved_at: new Date().toISOString(), items: liveItems };
+      writeReliefWebRssCache(reliefwebRssSnapshot);
+    } else if (reliefwebRssSnapshot?.items?.length) {
+      feedItems = reliefwebRssSnapshot.items;
+      rssFromCache = true;
+      console.log("[ReliefWeb RSS] Live feed returned 0 items — using cached batch");
+    }
   } catch (err) {
-    console.error("ReliefWeb fetch failed", err.message);
-    const offlinePath = path.join(DATA_DIR, "feeds", "reliefweb.json");
-    if (fs.existsSync(offlinePath)) {
-      try {
-        feedItems = JSON.parse(fs.readFileSync(offlinePath, "utf8")).items || [];
-        console.log("ReliefWeb: using offline fallback data");
-      } catch (offErr) {
-        console.error("ReliefWeb offline load failed:", offErr.message);
-      }
+    console.error("[ReliefWeb RSS] Fetch failed:", err.message);
+    if (reliefwebRssSnapshot?.items?.length) {
+      feedItems = reliefwebRssSnapshot.items;
+      rssFromCache = true;
+      console.log("[ReliefWeb RSS] Using cached batch as fallback");
     }
   }
 
