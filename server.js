@@ -299,6 +299,7 @@ const DTM_CACHE_FILE = path.join(DATA_DIR, "dtm-displacement-cache.json");
 const DTM_CACHE_TTL_HOURS = parsePositiveIntEnv(process.env.DTM_CACHE_TTL_HOURS, 24);
 let dtmDisplacementSnapshot = null;
 let dtmFetchInFlight = null;
+let reliefwebApiGone = false; // set true on first 410 to avoid repeated failed calls
 
 // FEWS Data Warehouse IPC API — publicly accessible, no authentication required.
 const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
@@ -3687,10 +3688,10 @@ async function fetchReliefWebData(countryMap) {
   });
 
   const fetchReliefWebAfricaFloodApiSignals = async () => {
-    if (!RELIEFWEB_APPNAME) {
+    if (!RELIEFWEB_APPNAME || reliefwebApiGone) {
       return {
         signals: [],
-        status: buildReliefWebApiStatus({ overall: "disabled" })
+        status: buildReliefWebApiStatus({ overall: reliefwebApiGone ? "disabled_410" : "disabled" })
       };
     }
     try {
@@ -3808,11 +3809,16 @@ async function fetchReliefWebData(countryMap) {
         })
       };
     } catch (err) {
-      console.warn("ReliefWeb API flood fetch failed", err.message);
+      if (err.response?.status === 410) {
+        reliefwebApiGone = true;
+        console.warn("[ReliefWeb] API endpoint returned 410 Gone — disabling API flood calls for this session. RSS feed still active.");
+      } else {
+        console.warn("ReliefWeb API flood fetch failed", err.message);
+      }
       return {
         signals: [],
         status: buildReliefWebApiStatus({
-          overall: "error",
+          overall: err.response?.status === 410 ? "disabled_410" : "error",
           error: err.message || "reliefweb_api_request_failed"
         })
       };
