@@ -284,7 +284,7 @@ const ACAPS_CRAWL_MODE = parseChoiceEnv(process.env.ACAPS_CRAWL_MODE, ["fast", "
 const ACAPS_MAX_ARCHIVE_PAGES_FAST = parsePositiveIntEnv(process.env.ACAPS_MAX_ARCHIVE_PAGES_FAST, 6);
 const ACAPS_MAX_ARCHIVE_PAGES_DEEP = parsePositiveIntEnv(process.env.ACAPS_MAX_ARCHIVE_PAGES_DEEP, 10);
 const ACAPS_CACHE_FILE = path.join(DATA_DIR, "acaps-cache.json");
-const ACAPS_CACHE_TTL_MINUTES = parsePositiveIntEnv(process.env.ACAPS_CACHE_TTL_MINUTES, 30);
+const ACAPS_CACHE_TTL_MINUTES = parsePositiveIntEnv(process.env.ACAPS_CACHE_TTL_MINUTES, 360);
 const WHO_DON_MODE = parseChoiceEnv(process.env.WHO_DON_MODE, ["auto", "off"], "auto");
 const UNHCR_FETCH_MODE = parseChoiceEnv(process.env.UNHCR_FETCH_MODE, ["auto", "reliefweb-first", "unhcr-first"], "reliefweb-first");
 const UNHCR_POPULATION_API_URL = "https://api.unhcr.org/population/v1/population/";
@@ -1827,6 +1827,12 @@ async function fetchAcapsUpdates(countryMap) {
     status.pagination_cap_reached_streak = acapsPaginationCapReachedStreak;
     status.pagination_warning = null;
     status.error = `${err.response?.status || err.code || "request_failed"}: ${err.message}`;
+    if (acapsCacheSnapshot?.items?.length) {
+      console.warn("[ACAPS] Live fetch failed — using stale cache as fallback");
+      const staleItems = (acapsCacheSnapshot.items || []).slice(0, 30);
+      applyAcapsItemsToCountryMap(countryMap, staleItems);
+      return { items: staleItems, status: { ...status, overall: "stale_cache", cache_used: true, cache_saved_at: acapsCacheSnapshot.saved_at } };
+    }
     return { items: [], status };
   }
 }
