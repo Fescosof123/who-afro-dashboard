@@ -298,6 +298,7 @@ const DTM_HDX_CSV_URL = "https://data.humdata.org/dataset/32d0365c-d513-4721-8d6
 const DTM_CACHE_FILE = path.join(DATA_DIR, "dtm-displacement-cache.json");
 const DTM_CACHE_TTL_HOURS = parsePositiveIntEnv(process.env.DTM_CACHE_TTL_HOURS, 24);
 let dtmDisplacementSnapshot = null;
+let dtmFetchInFlight = null;
 
 // FEWS Data Warehouse IPC API — publicly accessible, no authentication required.
 const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
@@ -2016,7 +2017,14 @@ async function fetchDtmPopulationData(countryMap = {}) {
     return { source: "cache", saved_at: dtmDisplacementSnapshot.saved_at, countries: Object.keys(dtmDisplacementSnapshot.by_iso3 || {}).length };
   }
 
+  if (dtmFetchInFlight) {
+    await dtmFetchInFlight;
+    applyDtmToCountryMap(dtmDisplacementSnapshot?.by_iso3 || {}, countryMap);
+    return { source: "cache", saved_at: dtmDisplacementSnapshot?.saved_at, countries: Object.keys(dtmDisplacementSnapshot?.by_iso3 || {}).length };
+  }
+
   console.log("[DTM] Fetching displacement CSV from HDX...");
+  dtmFetchInFlight = (async () => {
   try {
     const response = await axios.get(DTM_HDX_CSV_URL, {
       responseType: "text",
@@ -2067,11 +2075,13 @@ async function fetchDtmPopulationData(countryMap = {}) {
     return { source: "live", saved_at: snapshot.saved_at, countries: Object.keys(latest).length };
   } catch (err) {
     console.error("[DTM] Fetch failed:", err.message);
-    if (dtmDisplacementSnapshot) {
-      applyDtmToCountryMap(dtmDisplacementSnapshot.by_iso3 || {}, countryMap);
-    }
     return { source: "error", error: err.message, countries: 0 };
   }
+  })();
+  dtmFetchInFlight.finally(() => { dtmFetchInFlight = null; });
+  const result = await dtmFetchInFlight;
+  applyDtmToCountryMap(dtmDisplacementSnapshot?.by_iso3 || {}, countryMap);
+  return result;
 }
 
 function applyDtmToCountryMap(byIso3, countryMap) {
