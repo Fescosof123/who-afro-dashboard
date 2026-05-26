@@ -1,6 +1,24 @@
 {
-  "saved_at": "2026-05-18T14:33:37.833Z",
+  "saved_at": "2026-05-26T20:54:39.730Z",
   "items": [
+    {
+      "id": "acaps-analysis-https://www.acaps.org/fileadmin/Data_Product/Main_media/20260522_ACAPS_DRC_-_Ebola_outbreak.pdf",
+      "title": "DRC: Ebola outbreak 2026",
+      "summary": "On 15 May 2026, authorities in the Democratic Republic of Congo (DRC) declared an Ebola outbreak after cases were confirmed in Ituri and North Kivu provinces, with further cases later confirmed in South Kivu.",
+      "content": "DRC: Ebola outbreak 2026. On 15 May 2026, authorities in the Democratic Republic of Congo (DRC) declared an Ebola outbreak after cases were confirmed in Ituri and North Kivu provinces, with further cases later confirmed in South Kivu.. Health",
+      "source": "ACAPS Analysis",
+      "created": "2026-05-22T00:00:00.000Z",
+      "url": "https://www.acaps.org/fileadmin/Data_Product/Main_media/20260522_ACAPS_DRC_-_Ebola_outbreak.pdf",
+      "countries": [
+        "COD",
+        "COG"
+      ],
+      "in30Days": true,
+      "content_type": "analysis",
+      "topics": [
+        "Health"
+      ]
+    },
     {
       "id": "acaps-analysis-https://www.acaps.org/fileadmin/Data_Product/Main_media/20260513_ACAPS_Sudan_-_Risk_analysis__2026_.pdf",
       "title": "Sudan: risk analysis (2026)",
@@ -309,12 +327,12 @@
   "status": {
     "source": "ACAPS",
     "endpoint": "https://www.acaps.org/en",
-    "checked_at": "2026-05-18T14:33:33.369Z",
+    "checked_at": "2026-05-26T20:54:35.247Z",
     "overall": "available",
-    "total_items": 18,
+    "total_items": 19,
     "risk_items": 0,
-    "analysis_items": 18,
-    "country_hits": 9,
+    "analysis_items": 19,
+    "country_hits": 11,
     "pages_scanned": 3,
     "pages_with_cards": 3,
     "pages_with_new_items": 3,
