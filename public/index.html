@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>WHO AFRO Humanitarian Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet" />
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="who-bg"></div>
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="brand-block">
+          <img
+            class="who-logo"
+            src="https://www.who.int/ResourcePackages/WHO/assets/dist/images/logos/en/h-logo-blue.svg"
+            alt="World Health Organization"
+          />
+          <p class="brand-sub">AFRO Disaster and Humanitarian Management (DHM)</p>
+        </div>
+
+        <nav class="side-nav" id="sideNav">
+          <div class="nav-group">
+            <p class="nav-group-label">Primary Priorities</p>
+            <button class="nav-btn active" data-page="overviewPage" type="button">Overview</button>
+            <button class="nav-btn" data-page="foodSecurityPage" type="button">Food Security Priority</button>
+            <button class="nav-btn" data-page="nutritionPage" type="button">Nutrition Context</button>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-label">Event Monitoring</p>
+            <button class="nav-btn" data-page="conflictsDisplacementPage" type="button">Conflicts &amp; Displacements</button>
+            <button class="nav-btn" data-page="hazardPage" type="button">Hazard &amp; Flood Monitor</button>
+            <button class="nav-btn" data-page="cyclonePage" type="button">Cyclone Watch</button>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-label">Decision Support</p>
+            <button class="nav-btn" data-page="forecastPage" type="button">Forecast Studio</button>
+            <button class="nav-btn" data-page="countryPage" type="button">Country Profiles</button>
+            <button class="nav-btn" data-page="operationalReportPage" type="button">Operational Report</button>
+          </div>
+        </nav>
+
+        <div class="sidebar-tools">
+          <button id="presentationModeBtn" type="button">Enable Presentation Mode</button>
+          <button id="autoRotateBtn" type="button">Start Auto Display</button>
+          <label class="rotate-label">
+            <span id="rotateEveryLabel">Rotate Every</span>
+            <select id="rotateIntervalSelect">
+              <option value="12000">12 sec</option>
+              <option value="15000">15 sec</option>
+              <option value="20000" selected>20 sec</option>
+              <option value="25000">25 sec</option>
+              <option value="30000">30 sec</option>
+            </select>
+          </label>
+          <p id="autoStatus" class="auto-status">Auto display is off.</p>
+          <div class="export-dropdown" id="exportDropdown">
+            <button id="exportDropdownBtn" type="button">Export Bulletin &#9662;</button>
+            <div class="export-dropdown-menu" id="exportDropdownMenu">
+              <button type="button" data-export="print">Print / Save as PDF</button>
+              <button type="button" data-export="word">Export to Word</button>
+            </div>
+          </div>
+          <label class="rotate-label" for="showOriginalExcerptsToggle">
+            <input id="showOriginalExcerptsToggle" type="checkbox" />
+            <span id="showOriginalExcerptsLabel">Show original source excerpts</span>
+          </label>
+          <p id="confidenceLegend" class="sidebar-note">Confidence legend: High = multiple verified current + projection sources active; Moderate = partial source availability; Low = major source outage or fallback-only evidence.</p>
+          <p id="exportStatus" class="export-status" role="status" aria-live="polite"></p>
+          <button id="refreshBtn" type="button">Update Dashboard</button>
+          <p id="dataAgeStatus" class="data-age-status" role="status" aria-live="polite">Data age: waiting for first refresh.</p>
+        </div>
+      </aside>
+
+      <section class="content">
+        <header class="topbar">
+          <div>
+            <h1>Humanitarian Events Decision Dashboard</h1>
+          </div>
+          <div class="topbar-controls">
+            <div class="date-pill" id="currentDate"></div>
+            <label>
+              <span id="countryFocusLabel">Country Focus</span>
+              <select id="countrySelect"></select>
+            </label>
+            <label>
+              <span id="languageLabel">Language</span>
+              <select id="languageSelect">
+                <option value="en" selected>English</option>
+                <option value="fr">Francais</option>
+              </select>
+            </label>
+          </div>
+        </header>
+
+        <div id="staleBanner" class="stale-data-banner"></div>
+  <div id="acapsModeToast" class="acaps-mode-toast" role="status" aria-live="polite" aria-hidden="true"></div>
+        <section class="briefing-strip" id="briefingStrip"></section>
+
+        <main>
+          <section id="overviewPage" class="page active">
+            <section class="metric-grid" id="metricGrid"></section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Data Validation Ledger</h2>
+                <p>Audit trail for high-priority country metrics in the current refresh.</p>
+              </div>
+              <div id="dataValidationSummary" class="summary data-validation-summary"></div>
+            </section>
+
+            <section class="panel two-col overview-focus-panel">
+              <div>
+                <div class="panel-header">
+                  <h2>FCV Risk Map</h2>
+                  <p>Africa map.</p>
+                  <div class="map-mode-toggle">
+                    <button id="mapModeRisk" class="map-mode-btn active" type="button">Composite Risk</button>
+                    <button id="mapModeIpc" class="map-mode-btn" type="button">IPC Phase 3+</button>
+                  </div>
+                </div>
+                <div class="map-square-wrap">
+                  <button class="map-expand-btn" id="mapExpandBtn" type="button" title="Expand map to full screen">&#x26F6; Expand</button>
+                  <div id="mapChart" class="chart square"></div>
+                  <div class="band-legend" id="bandLegend"></div>
+                </div>
+              </div>
+              <div class="overview-side-stack">
+                <div>
+                  <div class="panel-header">
+                    <h2>Food Security And Event Pressure Snapshot</h2>
+                    <p>Food insecurity and event pressure.</p>
+                  </div>
+                  <div id="overviewInsightBox" class="summary"></div>
+                </div>
+                <div>
+                  <div class="panel-header">
+                    <h2>Top Alerts</h2>
+                    <p>Countries with strongest current public-signal pressure.</p>
+                  </div>
+                  <div id="topAlerts" class="list"></div>
+                </div>
+              </div>
+            </section>
+          </section>
+
+          <section id="countryPage" class="page">
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Country Profile Trend</h2>
+                  <p>Country indicators and trend.</p>
+                </div>
+                <div id="trendChart" class="chart" aria-describedby="trendChartAxisCaption"></div>
+                <p id="trendChartAxisCaption" class="chart-axis-caption">Year</p>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Country Operational Brief</h2>
+                  <p>Current loaded values.</p>
+                </div>
+                <div id="summaryBox" class="summary"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Country Comparison Table</h2>
+                <p>Country comparison.</p>
+              </div>
+              <div class="table-wrap">
+                <table id="countryTable">
+                  <thead>
+                    <tr>
+                      <th data-sort-key="country" title="Sort by country">Country</th>
+                      <th data-sort-key="fcv_track" title="Sort by country group">Group</th>
+                      <th data-sort-key="risk_score" title="Sort by risk score">Risk</th>
+                      <th data-sort-key="ipc_phase3_pct" title="Sort by IPC Phase 3+ percentage">IPC3+ %</th>
+                      <th data-sort-key="ipc_phase45_number" title="Sort by IPC Phase 4/5 population">IPC4/5 #</th>
+                      <th data-sort-key="ipc_date" title="Sort by IPC analysis date">IPC Date</th>
+                      <th data-sort-key="wasting" title="Sort by wasting percentage">Wasting %</th>
+                      <th data-sort-key="stunting" title="Sort by stunting percentage">Stunting %</th>
+                      <th data-sort-key="hazards" title="Sort by hazard count">Hazards</th>
+                      <th data-sort-key="cyclones" title="Sort by cyclone count">Cyclones</th>
+                      <th data-sort-key="reports_30d" title="Sort by 30-day report count">Rep30d</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel" id="serviceDeliveryPanel">
+              <div class="panel-header">
+                <h2>Service Delivery Snapshot</h2>
+                <p>Latest FCV country-level aggregation from the FCV services reporting feed.</p>
+              </div>
+              <div id="serviceDeliverySummary" class="summary"></div>
+              <div class="table-wrap">
+                <table id="serviceDeliveryTable">
+                  <thead>
+                    <tr>
+                      <th>Country</th>
+                      <th>Latest Month</th>
+                      <th>Rows</th>
+                      <th>Mental Health</th>
+                      <th>GBV Managed</th>
+                      <th>People Reached</th>
+                      <th>Children Screened</th>
+                      <th>OPD / Person</th>
+                      <th>ANC Mean</th>
+                      <th>Measles Cov</th>
+                      <th>PENTA Cov</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel" id="fcvCountryProfilePanel">
+              <div class="panel-header">
+                <h2>FCV Country Profile Data</h2>
+                <p>HRP planning figures, displacement, and funding from the FCV Country Profile Data file.</p>
+              </div>
+              <div id="fcvCountryProfileSummary" class="summary"></div>
+              <div class="table-wrap">
+                <table id="fcvCountryProfileTable">
+                  <thead>
+                    <tr>
+                      <th>Country</th>
+                      <th>Plan Type</th>
+                      <th>FCV</th>
+                      <th>HCC</th>
+                      <th>People in Need</th>
+                      <th>People Targeted</th>
+                      <th>People Prioritized</th>
+                      <th>People Reached (HRP)</th>
+                      <th>Health PIN</th>
+                      <th>Health Targeted</th>
+                      <th>Refugees &amp; Asylum</th>
+                      <th>IDPs</th>
+                      <th>Requirements (USD)</th>
+                      <th>Funding (USD)</th>
+                      <th>% Funded</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+          </section>
+
+          <section id="foodSecurityPage" class="page">
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>IPC Food Security Snapshot</h2>
+                  <p>IPC burden and emergency populations.</p>
+                </div>
+                <div class="table-wrap">
+                  <table id="foodSecurityTable">
+                    <thead>
+                      <tr>
+                        <th>Country</th>
+                        <th title="IPC current Phase 3+ percentage">IPC Cur 3+ %</th>
+                        <th title="IPC projected Phase 3+ percentage">IPC Proj 3+ %</th>
+                        <th title="Phase 3+ population">P3+ Pop</th>
+                        <th title="Phase 4/5 population">P4/5 Pop</th>
+                        <th>Crisis Level</th>
+                        <th>Analysis Date</th>
+                        <th>Projection Date</th>
+                        <th title="FEWS NET Current Situation IPC phase from the FEWS Data Warehouse">FEWS Phase (CS)</th>
+                        <th title="FEWS NET Near-Term Outlook phase from the FEWS Data Warehouse">FEWS Near-Term (ML1)</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Recommendations: Food Security</h2>
+                  <p>Rule-based actions.</p>
+                </div>
+                <div id="foodSecurityRecommendations" class="recommendations"></div>
+              </div>
+            </section>
+          </section>
+
+          <section id="nutritionPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Nutrition Context (Supporting Layer)</h2>
+                <p>Supporting context.</p>
+              </div>
+              <div id="nutritionSummary" class="summary"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Current Indicator Table</h2>
+                <p id="nutritionCurrentStamp">Current values only. Stale values are excluded.</p>
+              </div>
+              <div class="table-wrap">
+                <table id="nutritionTable">
+                  <thead>
+                    <tr>
+                      <th>Country</th>
+                      <th>Group</th>
+                      <th>Child Wasting (%)</th>
+                      <th>Child Stunting (%)</th>
+                      <th title="Anemia prevalence (World Bank SH.ANM.PREG.ZS) — not an acute malnutrition indicator">Pregnant Women Anemia (%) &#9888;</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Recommendations: Nutrition</h2>
+                <p>Rule-based actions.</p>
+              </div>
+              <div id="nutritionRecommendations" class="recommendations"></div>
+            </section>
+          </section>
+
+          <section id="forecastPage" class="page">
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Forecast Outlook</h2>
+                  <p>Forecast signals from connected sources.</p>
+                </div>
+                <div id="forecastChart" class="chart" aria-describedby="forecastChartAxisCaption"></div>
+                <p id="forecastChartAxisCaption" class="chart-axis-caption">Source Forecast Metric</p>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Forecast Insights</h2>
+                  <p>Forecast interpretation.</p>
+                </div>
+                <div id="forecastInsights" class="summary"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Forecast Source Summary</h2>
+                <p>Forecast values and signals.</p>
+              </div>
+              <div class="table-wrap">
+                <table id="forecastTable">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Current Value / Signal</th>
+                      <th>Forecast / Projection Signal</th>
+                      <th>Date / Horizon</th>
+                      <th>Method</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>ICPAC Forecast Bulletins</h2>
+                  <p>Weekly, monthly, and seasonal products.</p>
+                </div>
+                <div id="icpacFeed" class="feed"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>ICPAC Source Summary</h2>
+                  <p>Current bulletin summary.</p>
+                </div>
+                <div id="icpacSummary" class="summary"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Recommendations: Forecasts</h2>
+                <p>Rule-based actions.</p>
+              </div>
+              <div id="forecastRecommendations" class="recommendations"></div>
+            </section>
+          </section>
+
+          <section id="hazardPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Source Intelligence Summary</h2>
+                <p>Current source summary.</p>
+              </div>
+              <div class="source-summary-grid">
+                <div id="gdacsSummary" class="summary"></div>
+                <div id="reliefwebSummary" class="summary"></div>
+                <div id="whoDonSummary" class="summary"></div>
+              </div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Flood Watch</h2>
+                  <p>Flood pressure.</p>
+                </div>
+                <div id="floodWatchSummary" class="summary"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Recent Flood Events</h2>
+                  <p>Recent flood items.</p>
+                </div>
+                <div id="floodFeed" class="feed"></div>
+              </div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>GDACS Hazard Events</h2>
+                  <p>Recent GDACS hazards.</p>
+                </div>
+                <div id="hazardFeed" class="feed"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>ReliefWeb RSS Situation Reports</h2>
+                  <p>Recent ReliefWeb RSS reports.</p>
+                </div>
+                <div id="reportFeed" class="feed"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>WHO Disease Outbreak News (DON)</h2>
+                <p>Recent WHO DON alerts.</p>
+              </div>
+              <div id="whoDonFeed" class="feed"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Recommendations: Hazards</h2>
+                <p>Rule-based actions.</p>
+              </div>
+              <div id="hazardRecommendations" class="recommendations"></div>
+            </section>
+          </section>
+
+          <section id="conflictsDisplacementPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Conflict And Displacement Pressure</h2>
+                <p>Conflict and displacement signals.</p>
+              </div>
+              <div id="conflictsDisplacementSummary" class="summary"></div>
+              <div id="conflictsDisplacementSourceStatus" class="summary conflict-source-status"></div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Conflict And Displacement Prioritization</h2>
+                  <p>Countries with strongest overlap.</p>
+                </div>
+                <div class="table-wrap">
+                  <table id="conflictsDisplacementTable">
+                    <thead>
+                      <tr>
+                        <th>Country</th>
+                        <th>Risk</th>
+                        <th title="Conflict signal count">Conf Sig</th>
+                        <th title="Displacement signal count">Disp Sig</th>
+                        <th title="Reports in the last 30 days">Rep30d</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
+                        <th>Signal Level</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Recommendations: Conflicts &amp; Displacements</h2>
+                  <p>Rule-based actions.</p>
+                </div>
+                <div id="conflictsDisplacementRecommendations" class="recommendations"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Evidence Feed</h2>
+                <p>Recent source items.</p>
+              </div>
+              <div id="conflictsDisplacementFeed" class="feed"></div>
+            </section>
+          </section>
+
+          <section id="cyclonePage" class="page">
+            <div id="cycloneSourceAlert" class="cyclone-source-alert" aria-live="polite"></div>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Cyclone Leadership Snapshot</h2>
+                <p>Cyclone-linked pressure by country.</p>
+              </div>
+              <div id="cycloneSummary" class="summary"></div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Cyclone-Affected Country Prioritization</h2>
+                  <p>Country ranking.</p>
+                </div>
+                <div class="table-wrap">
+                  <table id="cycloneCountryTable">
+                    <thead>
+                      <tr>
+                        <th>Country</th>
+                        <th title="Cyclone signal count">Cyclone Sig</th>
+                        <th title="Hazard event count">Hazards</th>
+                        <th title="Composite risk score">Risk</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC3+ %</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Recommendations: Cyclone</h2>
+                  <p>Rule-based actions.</p>
+                </div>
+                <div id="cycloneRecommendations" class="recommendations"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Cyclone Projections And Advisories</h2>
+                <p>Cyclone projections and advisories.</p>
+              </div>
+              <div id="cycloneProjectionFeed" class="feed"></div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Cyclone Source Diagnostics</h2>
+                <p>Source status.</p>
+              </div>
+              <div class="table-wrap">
+                <table id="cycloneSourceTable">
+                  <thead>
+                    <tr>
+                      <th>Source</th>
+                      <th>Status</th>
+                      <th>Signals</th>
+                      <th>HTTP</th>
+                      <th>Checked</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Documented Active Cyclones</h2>
+                <p>Active systems.</p>
+              </div>
+              <div id="activeCyclonesList" class="list"></div>
+            </section>
+          </section>
+
+          <section id="operationalReportPage" class="page operational-report-page">
+            <section class="panel bulletin-cover-panel">
+              <div id="operationalBulletinCover" class="summary"></div>
+            </section>
+
+            <section class="panel bulletin-hero-panel">
+              <div class="panel-header">
+                <h2>Operational Situation Bulletin</h2>
+                <p>Cross-issue report.</p>
+              </div>
+              <div id="operationalReportHeader" class="summary"></div>
+            </section>
+
+            <section class="panel two-col bulletin-summary-panel">
+              <div>
+                <div class="panel-header">
+                  <h2>All-Events Summary</h2>
+                  <p>Current events and source counts.</p>
+                </div>
+                <div id="operationalEventSummary" class="summary"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Forecast and Projection Summary</h2>
+                  <p>IPC and forecast outlook.</p>
+                </div>
+                <div id="operationalForecastSummary" class="summary"></div>
+              </div>
+            </section>
+
+            <section class="panel bulletin-source-panel">
+              <div class="panel-header">
+                <h2>Conflicts and Displacements Summary</h2>
+                <p>Conflict and displacement pressure.</p>
+              </div>
+              <div id="operationalConflictDisplacementSummary" class="summary"></div>
+            </section>
+
+            <section class="panel two-col bulletin-priority-panel">
+              <div>
+                <div class="panel-header">
+                  <h2>Priority Countries</h2>
+                  <p>Top countries by risk.</p>
+                </div>
+                <div class="table-wrap">
+                  <table id="operationalPriorityTable">
+                    <thead>
+                      <tr>
+                        <th>Country</th>
+                        <th>Risk</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
+                        <th title="Projected IPC Phase 3+ percentage">IPC3+ Proj</th>
+                        <th>Hazards</th>
+                        <th>Floods</th>
+                        <th>Conflict</th>
+                        <th>Displacement</th>
+                        <th>Cyclones</th>
+                        <th title="Reports in the last 30 days">Rep30d</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Recommendations (All Issues)</h2>
+                  <p>Rule outputs.</p>
+                </div>
+                <div id="operationalRecommendations" class="recommendations"></div>
+              </div>
+            </section>
+
+            <section class="panel bulletin-source-panel">
+              <div class="panel-header">
+                <h2>Source Intelligence Detail</h2>
+                <p>Source items in this cycle.</p>
+              </div>
+              <div id="operationalSourceDetail" class="summary"></div>
+            </section>
+
+            <section class="panel bulletin-governance-panel is-hidden" aria-hidden="true">
+              <div id="operationalBulletinGovernance"></div>
+            </section>
+
+            <section class="panel bulletin-approval-panel is-hidden" aria-hidden="true">
+              <div id="operationalBulletinApproval"></div>
+            </section>
+
+            <section class="panel bulletin-governance-panel">
+              <div class="panel-header">
+                <h2>Decision Protocol</h2>
+                <p>Trigger thresholds and actions.</p>
+              </div>
+              <div id="operationalDecisionProtocol" class="summary"></div>
+            </section>
+
+            <section class="panel bulletin-footer-panel">
+              <div id="operationalBulletinFooter" class="summary"></div>
+            </section>
+
+            <section class="panel bulletin-conflict-insert-panel">
+              <div class="panel-header">
+                <h2>Conflict and Displacement Insert</h2>
+                <p>Country watchlist and evidence.</p>
+              </div>
+              <div id="operationalConflictDisplacementInsert" class="summary"></div>
+            </section>
+
+            <section class="panel bulletin-annexes-panel">
+              <div class="panel-header">
+                <h2>Priority Country Annexes</h2>
+                <p>Country annex pages.</p>
+              </div>
+              <div id="operationalCountryAnnexes" class="summary"></div>
+            </section>
+          </section>
+        </main>
+
+        <footer>
+          <div id="sourceStrip" class="source-strip"></div>
+          <p id="caveatLine" class="caveat-line"></p>
+          <p id="metaLine"></p>
+        </footer>
+      </section>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>

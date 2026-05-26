@@ -1,0 +1,14 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run WHO dashboard server",
+			"type": "shell",
+			"command": "node",
+			"args": [
+				"server.js"
+			],
+			"isBackground": true
+		}
+	]
+}

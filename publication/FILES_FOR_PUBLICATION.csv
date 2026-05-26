@@ -1,0 +1,32 @@
+category,path,required_for_publication,include_in_bundle,reason
+application,package.json,yes,yes,Node runtime dependencies and start script
+application,package-lock.json,yes,yes,Dependency lock for deterministic installs
+application,server.js,yes,yes,Backend API and source integrations
+application,public/index.html,yes,yes,Primary frontend shell
+application,public/app.js,yes,yes,Frontend logic and rendering
+application,public/styles.css,yes,yes,Frontend styles
+configuration,.env.example,yes,yes,Environment variable template for deployment
+operations,publish-check.ps1,yes,yes,Pre-publish validation script
+operations,RELEASE_CHECKLIST.md,yes,yes,UAT and go/no-go gate document
+operations,README.md,yes,yes,Runbook and source notes
+operations,AGENT_HANDOFF_GUIDE.md,optional,yes,Operational continuity notes
+data,data/README-offline-data.md,optional,yes,Offline data pathway reference
+testing,tests/dashboard-api-smoke.test.js,optional,yes,Smoke test logic for CI or manual test run
+testing,local-only/diagnostics/test-sources.js,optional,no,Exploratory source diagnostics not required for runtime
+testing,local-only/diagnostics/test-fews-api.js,optional,no,Exploratory FEWS diagnostics not required for runtime
+testing,local-only/diagnostics/test-fews-explorer.js,optional,no,Exploratory FEWS diagnostics not required for runtime
+testing,local-only/diagnostics/test-fews-forms.js,optional,no,Exploratory FEWS diagnostics not required for runtime
+testing,local-only/diagnostics/test-who-rss.js,optional,no,Exploratory WHO diagnostics not required for runtime
+testing,local-only/diagnostics/find-who-feeds.js,optional,no,Investigation utility not required for runtime
+testing,local-only/diagnostics/inspect-fews-data.js,optional,no,Investigation utility not required for runtime
+testing,local-only/diagnostics/inspect-fews-deep.js,optional,no,Investigation utility not required for runtime
+testing,local-only/diagnostics/inspect-fews-links.js,optional,no,Investigation utility not required for runtime
+testing,local-only/diagnostics/inspect-fews-net.js,optional,no,Investigation utility not required for runtime
+testing,local-only/diagnostics/inspect-who-detailed.js,optional,no,Investigation utility not required for runtime
+testing,local-only/diagnostics/inspect-who-don.js,optional,no,Investigation utility not required for runtime
+local-notes,local-only/notes/WORKLOG.md,optional,no,Internal activity log kept only on local device
+local-notes,local-only/notes/FEWS_NET_INTEGRATION.md,optional,no,Internal integration analysis retained locally
+runtime-state,data/acled-conflict-index-cache.csv,no,no,Generated at runtime if available
+runtime-state,data/fews-ipc-cache.json,no,no,Generated at runtime if available
+runtime-state,.env,no,no,Environment secrets must not be bundled or committed
+runtime-state,node_modules/,no,no,Rebuilt during deployment from package-lock
