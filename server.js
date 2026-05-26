@@ -252,7 +252,7 @@ const ACLED_CONFLICT_INDEX_CSV_URLS = String(process.env.ACLED_CONFLICT_INDEX_CS
   .filter(Boolean);
 const RELIEFWEB_UNHCR_ORG_URL = "https://reliefweb.int/organization/unhcr";
 const RELIEFWEB_UPDATES_RSS_URL = "https://reliefweb.int/updates/rss.xml";
-const RELIEFWEB_REPORTS_API_URL = "https://api.reliefweb.int/v1/reports";
+const RELIEFWEB_REPORTS_API_URL = "https://api.reliefweb.int/v2/reports";
 const RELIEFWEB_APPNAME = String(process.env.RELIEFWEB_APPNAME || "").trim();
 const CEMS_FLOOD_DATA_ACCESS_URL = "https://confluence.ecmwf.int/display/CEMS/Data+Access";
 const CEMS_FLOOD_PRODUCTS_URL = "https://global-flood.emergency.copernicus.eu/technical-information/products/";
@@ -299,7 +299,6 @@ const DTM_CACHE_FILE = path.join(DATA_DIR, "dtm-displacement-cache.json");
 const DTM_CACHE_TTL_HOURS = parsePositiveIntEnv(process.env.DTM_CACHE_TTL_HOURS, 24);
 let dtmDisplacementSnapshot = null;
 let dtmFetchInFlight = null;
-let reliefwebApiGone = false; // set true on first 410 to avoid repeated failed calls
 
 // FEWS Data Warehouse IPC API — publicly accessible, no authentication required.
 const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
@@ -3688,10 +3687,10 @@ async function fetchReliefWebData(countryMap) {
   });
 
   const fetchReliefWebAfricaFloodApiSignals = async () => {
-    if (!RELIEFWEB_APPNAME || reliefwebApiGone) {
+    if (!RELIEFWEB_APPNAME) {
       return {
         signals: [],
-        status: buildReliefWebApiStatus({ overall: reliefwebApiGone ? "disabled_410" : "disabled" })
+        status: buildReliefWebApiStatus({ overall: "disabled" })
       };
     }
     try {
@@ -3809,16 +3808,11 @@ async function fetchReliefWebData(countryMap) {
         })
       };
     } catch (err) {
-      if (err.response?.status === 410) {
-        reliefwebApiGone = true;
-        console.warn("[ReliefWeb] API endpoint returned 410 Gone — disabling API flood calls for this session. RSS feed still active.");
-      } else {
-        console.warn("ReliefWeb API flood fetch failed", err.message);
-      }
+      console.warn("ReliefWeb API flood fetch failed", err.message);
       return {
         signals: [],
         status: buildReliefWebApiStatus({
-          overall: err.response?.status === 410 ? "disabled_410" : "error",
+          overall: "error",
           error: err.message || "reliefweb_api_request_failed"
         })
       };
