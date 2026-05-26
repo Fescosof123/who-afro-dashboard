@@ -401,6 +401,8 @@ const els = {
   conflictsDisplacementTableBody: document.querySelector("#conflictsDisplacementTable tbody"),
   conflictsDisplacementRecommendations: document.getElementById("conflictsDisplacementRecommendations"),
   conflictsDisplacementFeed: document.getElementById("conflictsDisplacementFeed"),
+  dtmDisplacementSummary: document.getElementById("dtmDisplacementSummary"),
+  dtmDisplacementTableBody: document.querySelector("#dtmDisplacementTable tbody"),
   briefingHighlights: document.getElementById("briefingHighlights"),
   caveatLine: document.getElementById("caveatLine"),
   metaLine: document.getElementById("metaLine"),
@@ -1782,6 +1784,8 @@ function renderConflictsDisplacementPage() {
   });
 
   els.conflictsDisplacementFeed.innerHTML = evidenceItems.join("") || "No conflict or displacement evidence items are available in this refresh.";
+
+  renderDtmDisplacementTable();
 
   renderRecommendationList(
     els.conflictsDisplacementRecommendations,
@@ -3482,6 +3486,54 @@ function forecastRows(country) {
       values: country.projections?.pregnant_anemia_pct || []
     }
   ];
+}
+
+function renderDtmDisplacementTable() {
+  if (!els.dtmDisplacementTableBody || !els.dtmDisplacementSummary) return;
+  const rows = (dashboardState && dashboardState.dtm_displacement) || [];
+  const status = (dashboardState && dashboardState.dtm_displacement_status) || {};
+
+  if (!rows.length) {
+    els.dtmDisplacementSummary.innerHTML = `<p class="tag warn">DTM displacement data not yet loaded. Data is fetched once per day from IOM/HDX.</p>`;
+    els.dtmDisplacementTableBody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:#888;">No data available</td></tr>`;
+    return;
+  }
+
+  const totalIdps = rows.reduce((s, r) => s + (r.idp_count || 0), 0);
+  const topCountry = rows[0];
+  const savedAt = status.saved_at ? new Date(status.saved_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "unknown";
+
+  els.dtmDisplacementSummary.innerHTML = `
+    <p><strong>Total IDPs tracked:</strong> ${totalIdps.toLocaleString()} across ${rows.length} countries (IOM DTM, as of ${savedAt}).</p>
+    <p><strong>Highest displacement:</strong> ${topCountry.country} with ${(topCountry.idp_count || 0).toLocaleString()} IDPs (${topCountry.displacement_reason || "unspecified"}, reported ${topCountry.reporting_date || "unknown"}).</p>
+    <p><span class="tag warn">Note</span> IDP figures reflect DTM assessments at available reporting dates — recency varies by country. Some figures may predate the current humanitarian situation.</p>
+  `;
+
+  const reasonColor = (reason) => {
+    if (!reason) return "#888";
+    const r = reason.toLowerCase();
+    if (r.includes("conflict") || r.includes("violence")) return "#cf3c3c";
+    if (r.includes("natural") || r.includes("disaster") || r.includes("flood") || r.includes("cyclone")) return "#e67300";
+    return "#506579";
+  };
+
+  const scaleBar = (count, max) => {
+    const pct = Math.max(4, Math.round((count / max) * 100));
+    return `<span style="display:inline-block;width:${pct}px;height:8px;background:#0b4ea2;border-radius:2px;vertical-align:middle;margin-right:6px;"></span>`;
+  };
+  const maxIdp = rows[0].idp_count || 1;
+
+  els.dtmDisplacementTableBody.innerHTML = rows.map((r) => `
+    <tr>
+      <td><strong>${r.country}</strong></td>
+      <td style="white-space:nowrap;">
+        ${scaleBar(r.idp_count || 0, maxIdp)}
+        ${(r.idp_count || 0).toLocaleString()}
+      </td>
+      <td><span style="color:${reasonColor(r.displacement_reason)};font-weight:600;">${r.displacement_reason || "Not specified"}</span></td>
+      <td style="color:#506579;">${r.reporting_date || "—"}</td>
+    </tr>
+  `).join("");
 }
 
 function renderForecast(countryIso3) {

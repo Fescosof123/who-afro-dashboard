@@ -293,6 +293,12 @@ const ACLED_PASSWORD = process.env.ACLED_PASSWORD || "";
 const ACLED_AUTH_MODE = parseChoiceEnv(process.env.ACLED_AUTH_MODE, ["off", "on-demand", "always"], "on-demand");
 const ACLED_CACHE_FILE = path.join(DATA_DIR, "acled-conflict-index-cache.csv");
 
+// DTM Population Displacement data — HDX open CSV (no auth required, updates weekly).
+const DTM_HDX_CSV_URL = "https://data.humdata.org/dataset/32d0365c-d513-4721-8d66-1b19b12c4b08/resource/80911e9b-7527-469a-a545-4074860e1288/download/global-iom-dtm-from-api-admin-0-to-2.csv";
+const DTM_CACHE_FILE = path.join(DATA_DIR, "dtm-displacement-cache.json");
+const DTM_CACHE_TTL_HOURS = parsePositiveIntEnv(process.env.DTM_CACHE_TTL_HOURS, 24);
+let dtmDisplacementSnapshot = null;
+
 // FEWS Data Warehouse IPC API — publicly accessible, no authentication required.
 const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
 const FEWS_IPC_CACHE_FILE = path.join(DATA_DIR, "fews-ipc-cache.json");
@@ -352,6 +358,7 @@ function emptyCountryRecord(country) {
     projections: {},
     ipc: null,
     acled_index: null,
+    dtm_idp: null,
     hazard_count: 0,
     flood_count: 0,
     cyclone_count: 0,
@@ -1976,6 +1983,110 @@ async function authenticateAcledSession() {
     return { cookieHeader: "", authenticated: false };
   }
 }
+
+// ─── DTM Population Displacement (IOM / HDX) ────────────────────────────────
+
+function readDtmCache() {
+  try {
+    if (!fs.existsSync(DTM_CACHE_FILE)) return null;
+    const raw = JSON.parse(fs.readFileSync(DTM_CACHE_FILE, "utf8"));
+    return raw && raw.saved_at ? raw : null;
+  } catch (e) { return null; }
+}
+
+function writeDtmCache(snapshot) {
+  try {
+    fs.mkdirSync(path.dirname(DTM_CACHE_FILE), { recursive: true });
+    fs.writeFileSync(DTM_CACHE_FILE, JSON.stringify(snapshot, null, 2), "utf8");
+  } catch (e) { console.error("[DTM] Cache write failed:", e.message); }
+}
+
+function isDtmCacheFresh(snapshot) {
+  if (!snapshot || !snapshot.saved_at) return false;
+  const ageHours = (Date.now() - new Date(snapshot.saved_at).getTime()) / 3600000;
+  return ageHours < DTM_CACHE_TTL_HOURS;
+}
+
+async function fetchDtmPopulationData(countryMap = {}) {
+  if (!dtmDisplacementSnapshot) {
+    dtmDisplacementSnapshot = readDtmCache();
+  }
+  if (isDtmCacheFresh(dtmDisplacementSnapshot)) {
+    applyDtmToCountryMap(dtmDisplacementSnapshot.by_iso3 || {}, countryMap);
+    return { source: "cache", saved_at: dtmDisplacementSnapshot.saved_at, countries: Object.keys(dtmDisplacementSnapshot.by_iso3 || {}).length };
+  }
+
+  console.log("[DTM] Fetching displacement CSV from HDX...");
+  try {
+    const response = await axios.get(DTM_HDX_CSV_URL, {
+      responseType: "text",
+      timeout: 45000,
+      headers: { "User-Agent": "WHO-AFRO-Dashboard/1.0" },
+      maxRedirects: 5
+    });
+
+    const lines = String(response.data).split(/\r?\n/);
+    if (lines.length < 2) throw new Error("DTM CSV empty or malformed");
+
+    const header = lines[0].split(",");
+    const idxAdminLevel = header.indexOf("adminLevel");
+    const idxIso3 = header.indexOf("admin0Pcode");
+    const idxIdps = header.indexOf("numPresentIdpInd");
+    const idxDate = header.indexOf("reportingDate");
+    const idxReason = header.indexOf("displacementReason");
+
+    if (idxAdminLevel < 0 || idxIso3 < 0 || idxIdps < 0) {
+      throw new Error("DTM CSV missing expected columns");
+    }
+
+    // Collect admin0-level rows per country, keeping the latest reportingDate entry
+    const latest = {};
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(",");
+      if (cols.length < 5) continue;
+      const lvl = cols[idxAdminLevel];
+      if (lvl !== "0") continue;
+      const iso3 = cols[idxIso3];
+      if (!iso3 || iso3.length !== 3) continue;
+      const dt = cols[idxDate] || "";
+      const idps = parseInt(cols[idxIdps], 10) || 0;
+      const reason = cols[idxReason] || "";
+
+      if (!latest[iso3] || dt > latest[iso3].reporting_date) {
+        latest[iso3] = { idp_count: idps, reporting_date: dt.slice(0, 10), displacement_reason: reason };
+      } else if (dt === latest[iso3].reporting_date) {
+        latest[iso3].idp_count += idps;
+      }
+    }
+
+    const snapshot = { saved_at: new Date().toISOString(), by_iso3: latest };
+    dtmDisplacementSnapshot = snapshot;
+    writeDtmCache(snapshot);
+    applyDtmToCountryMap(latest, countryMap);
+    console.log(`[DTM] Loaded ${Object.keys(latest).length} countries from HDX CSV`);
+    return { source: "live", saved_at: snapshot.saved_at, countries: Object.keys(latest).length };
+  } catch (err) {
+    console.error("[DTM] Fetch failed:", err.message);
+    if (dtmDisplacementSnapshot) {
+      applyDtmToCountryMap(dtmDisplacementSnapshot.by_iso3 || {}, countryMap);
+    }
+    return { source: "error", error: err.message, countries: 0 };
+  }
+}
+
+function applyDtmToCountryMap(byIso3, countryMap) {
+  Object.entries(byIso3).forEach(([iso3, d]) => {
+    if (countryMap[iso3]) {
+      countryMap[iso3].dtm_idp = {
+        idp_count: d.idp_count,
+        reporting_date: d.reporting_date,
+        displacement_reason: d.displacement_reason
+      };
+    }
+  });
+}
+
+// ────────────────────────────────────────────────────────────────────────────
 
 async function fetchAcledConflictIndex(countryMap = {}) {
   const status = {
@@ -5266,7 +5377,7 @@ app.get("/api/dashboard-data", async (req, res) => {
     const nutritionHdxPulledAt = new Date().toISOString();
     refreshNutritionCoverage(nutrition_source_status, countryMap);
 
-    const [hazards, reportsBundle, unhcrReports, idmcReports, unochaReports, iomDtmBundle, forecasts, ipc_source_status, dedicatedCycloneBundle, acledBundle, fewsBundle, fewsIpcBundle, acapsBundle, whoDonBundle, cemsFloodSourceStatus, ensoBundle] = await Promise.all([
+    const [hazards, reportsBundle, unhcrReports, idmcReports, unochaReports, iomDtmBundle, forecasts, ipc_source_status, dedicatedCycloneBundle, acledBundle, dtmStatus, fewsBundle, fewsIpcBundle, acapsBundle, whoDonBundle, cemsFloodSourceStatus, ensoBundle] = await Promise.all([
       fetchGdacsData(countryMap),
       fetchReliefWebData(countryMap),
       fetchUnhcrDisplacementData(),
@@ -5277,6 +5388,7 @@ app.get("/api/dashboard-data", async (req, res) => {
       checkIpcSourceHealth(),
       fetchDedicatedCycloneSignals(),
       fetchAcledConflictIndex(countryMap),
+      fetchDtmPopulationData(countryMap),
       fetchFewsNetSignals(countryMap),
       fetchFewsNetIpcData(countryMap),
       fetchAcapsUpdates(countryMap),
@@ -5526,6 +5638,17 @@ app.get("/api/dashboard-data", async (req, res) => {
       iom_dtm_source_status: iomDtmBundle.status,
       acled_context_entries: acledContextEntries,
       acled_source_status: acledBundle.status,
+      dtm_displacement_status: dtmStatus,
+      dtm_displacement: Object.values(countryMap)
+        .filter((c) => c.dtm_idp != null)
+        .map((c) => ({
+          iso3: c.iso3,
+          country: c.country,
+          idp_count: c.dtm_idp.idp_count,
+          displacement_reason: c.dtm_idp.displacement_reason,
+          reporting_date: c.dtm_idp.reporting_date
+        }))
+        .sort((a, b) => (b.idp_count || 0) - (a.idp_count || 0)),
       reports,
       reliefweb_api_status: reliefwebApiStatus,
       filter_integrity_policy: {
