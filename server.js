@@ -14,6 +14,19 @@ const parser = new Parser({
     Accept: "application/rss+xml, application/xml;q=0.9, */*;q=0.8"
   }
 });
+
+// Wrap every RSS fetch with an explicit timeout so a slow/blocked feed never
+// hangs the entire dashboard request on Render or other hosted runtimes.
+const RSS_FETCH_TIMEOUT_MS = parsePositiveIntEnv(process.env.RSS_FETCH_TIMEOUT_MS, 15000);
+async function parseRssFeedWithTimeout(url, timeoutMs) {
+  const ms = timeoutMs != null ? timeoutMs : RSS_FETCH_TIMEOUT_MS;
+  return Promise.race([
+    parser.parseURL(url),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error(`RSS fetch timed out after ${ms}ms: ${url}`)), ms)
+    )
+  ]);
+}
 const PORT = process.env.PORT || 3000;
 let previousSourceSummarySnapshot = null;
 let conflictDisplacementSourceHistorySnapshot = [];
@@ -292,6 +305,15 @@ const ACLED_EMAIL = process.env.ACLED_EMAIL || "";
 const ACLED_PASSWORD = process.env.ACLED_PASSWORD || "";
 const ACLED_AUTH_MODE = parseChoiceEnv(process.env.ACLED_AUTH_MODE, ["off", "on-demand", "always"], "on-demand");
 const ACLED_CACHE_FILE = path.join(DATA_DIR, "acled-conflict-index-cache.csv");
+
+// Background cache warm-up — periodically self-ping the dashboard endpoint so Render
+// stays awake and the in-memory cache never grows staler than BACKGROUND_REFRESH_INTERVAL_MS.
+// Default: refresh every 4 min (240 s), just under the 5-min server cache TTL.
+const BACKGROUND_REFRESH_ENABLED = parseChoiceEnv(process.env.BACKGROUND_REFRESH_ENABLED, ["on", "off"], "on");
+const BACKGROUND_REFRESH_INTERVAL_MS = parsePositiveIntEnv(
+  process.env.BACKGROUND_REFRESH_INTERVAL_MS,
+  Math.max(120000, (DASHBOARD_CACHE_TTL_SECONDS - 60) * 1000)
+);
 
 // DTM Population Displacement data — HDX open CSV (no auth required, updates weekly).
 const DTM_HDX_CSV_URL = "https://data.humdata.org/dataset/32d0365c-d513-4721-8d66-1b19b12c4b08/resource/80911e9b-7527-469a-a545-4074860e1288/download/global-iom-dtm-from-api-admin-0-to-2.csv";
@@ -3592,7 +3614,7 @@ async function enrichGdacsCycloneEvent(event, countryMap) {
 async function fetchGdacsData(countryMap) {
   let feedItems = [];
   try {
-    const feed = await parser.parseURL("https://www.gdacs.org/xml/rss.xml");
+    const feed = await parseRssFeedWithTimeout("https://www.gdacs.org/xml/rss.xml");
     feedItems = feed.items || [];
   } catch (err) {
     console.error("GDACS fetch failed", err.message);
@@ -3857,7 +3879,7 @@ async function fetchReliefWebData(countryMap) {
   let feedItems = [];
   let rssFromCache = false;
   try {
-    const feed = await parser.parseURL(RELIEFWEB_UPDATES_RSS_URL);
+    const feed = await parseRssFeedWithTimeout(RELIEFWEB_UPDATES_RSS_URL);
     const liveItems = feed.items || [];
     if (liveItems.length > 0) {
       feedItems = liveItems;
@@ -4011,7 +4033,7 @@ async function fetchWhoDonOutbreakReports(countryMap) {
   let feedItems = [];
   let sourceLabel = "WHO DON RSS";
   try {
-    const feed = await parser.parseURL(WHO_DON_RSS_URL);
+    const feed = await parseRssFeedWithTimeout(WHO_DON_RSS_URL);
     feedItems = feed.items || [];
   } catch (err) {
     try {
@@ -4169,7 +4191,7 @@ async function fetchUnhcrDisplacementData() {
     }
 
     try {
-      const rwFeed = await parser.parseURL(RELIEFWEB_UPDATES_RSS_URL);
+      const rwFeed = await parseRssFeedWithTimeout(RELIEFWEB_UPDATES_RSS_URL);
       const rwItems = rwFeed.items || [];
       const matched = rwItems.filter((item) => isUnhcrReliefWebItem(item));
       usingReliefwebFallback = true;
@@ -4183,7 +4205,7 @@ async function fetchUnhcrDisplacementData() {
 
   const fetchUnhcrRssItems = async () => {
     try {
-      const feed = await parser.parseURL(UNHCR_RSS_URL);
+      const feed = await parseRssFeedWithTimeout(UNHCR_RSS_URL);
       return feed.items || [];
     } catch (err) {
       // UNHCR RSS commonly returns 403 in hosted runtimes. Keep as warning only.
@@ -4250,7 +4272,7 @@ async function fetchUnhcrDisplacementData() {
 async function fetchIdmcDisplacementData() {
   let feedItems = [];
   try {
-    const feed = await parser.parseURL("https://www.internal-displacement.org/rss.xml");
+    const feed = await parseRssFeedWithTimeout("https://www.internal-displacement.org/rss.xml");
     feedItems = feed.items || [];
   } catch (err) {
     console.error("IDMC RSS fetch failed", err.message);
@@ -4296,7 +4318,7 @@ async function fetchIdmcDisplacementData() {
 async function fetchUnochaSituationData() {
   let feedItems = [];
   try {
-    const feed = await parser.parseURL("https://www.unocha.org/rss.xml");
+    const feed = await parseRssFeedWithTimeout("https://www.unocha.org/rss.xml");
     feedItems = feed.items || [];
   } catch (err) {
     console.error("OCHA RSS fetch failed", err.message);
@@ -5776,9 +5798,48 @@ app.use((req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// ---------------------------------------------------------------------------
+// Background cache warm-up
+// Self-pings /api/dashboard-data on a timer so that:
+//   1. Render (and similar hosts) never serve a stale in-memory cache after
+//      the service wakes from sleep.
+//   2. A slow/blocked RSS fetch does NOT prevent clients from getting data —
+//      the background refresh absorbs the timeout and retries next cycle.
+// The first ping fires 15 s after startup (enough time for the server to bind)
+// and subsequent pings run every BACKGROUND_REFRESH_INTERVAL_MS (default ~4 min).
+// ---------------------------------------------------------------------------
+function startBackgroundCacheWarmup(serverPort) {
+  if (BACKGROUND_REFRESH_ENABLED !== "on") {
+    console.log("[Background] Cache warm-up disabled (BACKGROUND_REFRESH_ENABLED=off).");
+    return;
+  }
+  const warmupUrl = `http://localhost:${serverPort}/api/dashboard-data?freshness_mode=strict`;
+  const doWarmup = async () => {
+    try {
+      const resp = await axios.get(warmupUrl, {
+        timeout: 130000,
+        headers: { "User-Agent": "WHO-AFRO-Dashboard/1.0 (+background-warmup)" }
+      });
+      if (resp.status === 200) {
+        console.log(`[Background] Cache warm-up OK at ${new Date().toISOString()}`);
+      } else {
+        console.warn(`[Background] Warm-up returned HTTP ${resp.status}`);
+      }
+    } catch (err) {
+      console.warn(`[Background] Cache warm-up failed: ${err.message}`);
+    }
+  };
+  // Initial warm-up shortly after server starts.
+  setTimeout(doWarmup, 15000);
+  // Recurring warm-up to keep cache fresh.
+  setInterval(doWarmup, BACKGROUND_REFRESH_INTERVAL_MS);
+  console.log(`[Background] Cache warm-up scheduled every ${Math.round(BACKGROUND_REFRESH_INTERVAL_MS / 1000)}s (BACKGROUND_REFRESH_ENABLED=${BACKGROUND_REFRESH_ENABLED}).`);
+}
+
 if (require.main === module) {
   const server = app.listen(PORT, () => {
     console.log(`WHO AFRO public dashboard running at http://localhost:${PORT}`);
+    startBackgroundCacheWarmup(PORT);
   });
 
   server.on("error", (err) => {
