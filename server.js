@@ -322,10 +322,34 @@ const DTM_CACHE_TTL_HOURS = parsePositiveIntEnv(process.env.DTM_CACHE_TTL_HOURS,
 let dtmDisplacementSnapshot = null;
 let dtmFetchInFlight = null;
 
-// ReliefWeb RSS cache — keeps the last successful batch so Render always has seed data.
+// Per-feed RSS cache files — written by the server on a live fetch success AND
+// by the GitHub Actions "Refresh RSS Cache" workflow (which runs on clean IPs
+// that are not blocked by upstream CDNs).  Server falls back to these files
+// whenever a live RSS fetch fails on the hosted runtime.
 const RELIEFWEB_RSS_CACHE_FILE = path.join(DATA_DIR, "reliefweb-rss-cache.json");
+const WHO_DON_RSS_CACHE_FILE   = path.join(DATA_DIR, "who-don-rss-cache.json");
+const OCHA_RSS_CACHE_FILE      = path.join(DATA_DIR, "ocha-rss-cache.json");
+const UNHCR_RSS_CACHE_FILE     = path.join(DATA_DIR, "unhcr-rss-cache.json");
+const GDACS_RSS_CACHE_FILE     = path.join(DATA_DIR, "gdacs-rss-cache.json");
+const IDMC_RSS_CACHE_FILE      = path.join(DATA_DIR, "idmc-rss-cache.json");
 const RELIEFWEB_RSS_CACHE_TTL_HOURS = 6;
 let reliefwebRssSnapshot = null;
+
+// Generic helper — reads any { saved_at, items } cache file.
+function readRssCacheFile(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) return null;
+    const raw = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    return raw && raw.saved_at && Array.isArray(raw.items) ? raw : null;
+  } catch { return null; }
+}
+
+function writeRssCacheFile(filePath, items) {
+  try {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, JSON.stringify({ saved_at: new Date().toISOString(), items }, null, 2), "utf8");
+  } catch (e) { console.warn(`[RSS cache] Write failed (${path.basename(filePath)}): ${e.message}`); }
+}
 
 // FEWS Data Warehouse IPC API — publicly accessible, no authentication required.
 const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
@@ -3616,16 +3640,13 @@ async function fetchGdacsData(countryMap) {
   try {
     const feed = await parseRssFeedWithTimeout("https://www.gdacs.org/xml/rss.xml");
     feedItems = feed.items || [];
+    if (feedItems.length > 0) writeRssCacheFile(GDACS_RSS_CACHE_FILE, feedItems);
   } catch (err) {
     console.error("GDACS fetch failed", err.message);
-    const offlinePath = path.join(DATA_DIR, "feeds", "gdacs.json");
-    if (fs.existsSync(offlinePath)) {
-      try {
-        feedItems = JSON.parse(fs.readFileSync(offlinePath, "utf8")).items || [];
-        console.log("GDACS: using offline fallback data");
-      } catch (offErr) {
-        console.error("GDACS offline load failed:", offErr.message);
-      }
+    const cached = readRssCacheFile(GDACS_RSS_CACHE_FILE);
+    if (cached?.items?.length) {
+      feedItems = cached.items;
+      console.log(`GDACS: using cache fallback (${feedItems.length} items)`);
     }
   }
 
@@ -3692,19 +3713,8 @@ async function fetchGdacsData(countryMap) {
   return mergedEvents.slice(0, 80);
 }
 
-function readReliefWebRssCache() {
-  try {
-    if (!fs.existsSync(RELIEFWEB_RSS_CACHE_FILE)) return null;
-    const raw = JSON.parse(fs.readFileSync(RELIEFWEB_RSS_CACHE_FILE, "utf8"));
-    return raw && raw.saved_at && Array.isArray(raw.items) ? raw : null;
-  } catch (e) { return null; }
-}
-
-function writeReliefWebRssCache(items) {
-  try {
-    fs.writeFileSync(RELIEFWEB_RSS_CACHE_FILE, JSON.stringify({ saved_at: new Date().toISOString(), items }, null, 2), "utf8");
-  } catch (e) { console.error("[ReliefWeb RSS] Cache write failed:", e.message); }
-}
+function readReliefWebRssCache() { return readRssCacheFile(RELIEFWEB_RSS_CACHE_FILE); }
+function writeReliefWebRssCache(items) { writeRssCacheFile(RELIEFWEB_RSS_CACHE_FILE, items); }
 
 function isReliefWebRssCacheFresh(snapshot) {
   if (!snapshot?.saved_at) return false;
@@ -4169,9 +4179,14 @@ async function fetchWhoDonOutbreakReports(countryMap) {
 
   let feedItems = [];
   let sourceLabel = "WHO DON RSS";
+  let liveOk = false;
   try {
     const feed = await parseRssFeedWithTimeout(WHO_DON_RSS_URL);
     feedItems = feed.items || [];
+    if (feedItems.length > 0) {
+      liveOk = true;
+      writeRssCacheFile(WHO_DON_RSS_CACHE_FILE, feedItems);
+    }
   } catch (err) {
     try {
       const response = await axios.get(WHO_DON_PAGE_URL, {
@@ -4239,8 +4254,24 @@ async function fetchWhoDonOutbreakReports(countryMap) {
       sourceLabel = "WHO DON page";
       status.source = sourceLabel;
       status.endpoint = WHO_DON_PAGE_URL;
+      if (feedItems.length > 0) {
+        liveOk = true;
+        writeRssCacheFile(WHO_DON_RSS_CACHE_FILE, feedItems);
+      }
     } catch (fallbackErr) {
       status.error = `${err.response?.status || err.code || "request_failed"}: ${err.message}; fallback_failed: ${fallbackErr.response?.status || fallbackErr.code || "request_failed"}: ${fallbackErr.message}`;
+    }
+  }
+
+  // Fall back to GitHub-Actions-refreshed disk cache when live fetch failed
+  if (!liveOk) {
+    const cached = readRssCacheFile(WHO_DON_RSS_CACHE_FILE);
+    if (cached && cached.items.length > 0) {
+      feedItems = cached.items;
+      sourceLabel = "WHO DON (cached)";
+      status.source = sourceLabel;
+      console.log(`[WHO DON] Using disk cache (${feedItems.length} items, saved ${cached.saved_at})`);
+    } else if (!feedItems.length) {
       return { items: [], status };
     }
   }
@@ -4343,7 +4374,11 @@ async function fetchUnhcrDisplacementData() {
   const fetchUnhcrRssItems = async () => {
     try {
       const feed = await parseRssFeedWithTimeout(UNHCR_RSS_URL);
-      return feed.items || [];
+      const items = feed.items || [];
+      if (items.length > 0) {
+        writeRssCacheFile(UNHCR_RSS_CACHE_FILE, items);
+      }
+      return items;
     } catch (err) {
       // UNHCR RSS commonly returns 403 in hosted runtimes. Keep as warning only.
       console.warn("UNHCR RSS fetch skipped/failed", err.message);
@@ -4370,6 +4405,15 @@ async function fetchUnhcrDisplacementData() {
       console.log("UNHCR: using offline fallback data");
     } catch (offErr) {
       console.error("UNHCR offline load failed:", offErr.message);
+    }
+  }
+
+  // Fall back to GitHub-Actions-refreshed disk cache when all live attempts fail
+  if (!feedItems.length) {
+    const cached = readRssCacheFile(UNHCR_RSS_CACHE_FILE);
+    if (cached && cached.items.length > 0) {
+      feedItems = cached.items;
+      console.log(`[UNHCR] Using disk cache (${feedItems.length} items, saved ${cached.saved_at})`);
     }
   }
 
@@ -4408,9 +4452,14 @@ async function fetchUnhcrDisplacementData() {
 
 async function fetchIdmcDisplacementData() {
   let feedItems = [];
+  let liveOk = false;
   try {
     const feed = await parseRssFeedWithTimeout("https://www.internal-displacement.org/rss.xml");
     feedItems = feed.items || [];
+    if (feedItems.length > 0) {
+      liveOk = true;
+      writeRssCacheFile(IDMC_RSS_CACHE_FILE, feedItems);
+    }
   } catch (err) {
     console.error("IDMC RSS fetch failed", err.message);
     const offlinePath = path.join(DATA_DIR, "feeds", "idmc.json");
@@ -4421,6 +4470,15 @@ async function fetchIdmcDisplacementData() {
       } catch (offErr) {
         console.error("IDMC offline load failed:", offErr.message);
       }
+    }
+  }
+
+  // Fall back to GitHub-Actions-refreshed disk cache when live fetch failed
+  if (!liveOk && !feedItems.length) {
+    const cached = readRssCacheFile(IDMC_RSS_CACHE_FILE);
+    if (cached && cached.items.length > 0) {
+      feedItems = cached.items;
+      console.log(`[IDMC] Using disk cache (${feedItems.length} items, saved ${cached.saved_at})`);
     }
   }
 
@@ -4454,9 +4512,14 @@ async function fetchIdmcDisplacementData() {
 
 async function fetchUnochaSituationData() {
   let feedItems = [];
+  let liveOk = false;
   try {
     const feed = await parseRssFeedWithTimeout("https://www.unocha.org/rss.xml");
     feedItems = feed.items || [];
+    if (feedItems.length > 0) {
+      liveOk = true;
+      writeRssCacheFile(OCHA_RSS_CACHE_FILE, feedItems);
+    }
   } catch (err) {
     console.error("OCHA RSS fetch failed", err.message);
     const offlinePath = path.join(DATA_DIR, "feeds", "ocha.json");
@@ -4467,6 +4530,15 @@ async function fetchUnochaSituationData() {
       } catch (offErr) {
         console.error("OCHA offline load failed:", offErr.message);
       }
+    }
+  }
+
+  // Fall back to GitHub-Actions-refreshed disk cache when live fetch failed
+  if (!liveOk && !feedItems.length) {
+    const cached = readRssCacheFile(OCHA_RSS_CACHE_FILE);
+    if (cached && cached.items.length > 0) {
+      feedItems = cached.items;
+      console.log(`[OCHA] Using disk cache (${feedItems.length} items, saved ${cached.saved_at})`);
     }
   }
 
