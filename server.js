@@ -4018,41 +4018,45 @@ async function fetchReliefWebData(countryMap) {
 
   let feedItems = [];
   let rssFromCache = false;
-  let feedSource = "rss";    // "rss" | "rss-cache" | "api-fallback"
+  let feedSource = "rss";    // "rss" | "api-fallback" | "rss-cache"
+  let rssLiveOk = false;
+
   try {
     const feed = await parseRssFeedWithTimeout(RELIEFWEB_UPDATES_RSS_URL);
     const liveItems = feed.items || [];
     if (liveItems.length > 0) {
       feedItems = liveItems;
+      rssLiveOk = true;
       reliefwebRssSnapshot = { saved_at: new Date().toISOString(), items: liveItems };
       writeReliefWebRssCache(reliefwebRssSnapshot);
-    } else if (reliefwebRssSnapshot?.items?.length) {
-      feedItems = reliefwebRssSnapshot.items;
-      rssFromCache = true;
-      feedSource = "rss-cache";
-      console.log("[ReliefWeb RSS] Live feed returned 0 items — using cached batch");
+      console.log(`[ReliefWeb RSS] Live feed OK: ${liveItems.length} items`);
+    } else {
+      console.log("[ReliefWeb RSS] Live feed returned 0 items");
     }
   } catch (err) {
     console.error("[ReliefWeb RSS] Fetch failed:", err.message);
-    if (reliefwebRssSnapshot?.items?.length) {
-      feedItems = reliefwebRssSnapshot.items;
-      rssFromCache = true;
-      feedSource = "rss-cache";
-      console.log("[ReliefWeb RSS] Using cached batch as fallback");
-    }
   }
 
-  // When the RSS is completely unavailable (blocked/rate-limited on hosted runtimes)
-  // AND there is no warm disk cache, fall back to the ReliefWeb Reports API which is
-  // always reachable.  The API items are shaped identically to RSS items so every
-  // downstream section (Evidence Feed, Flood signals, WHO DON, Conflict) works unchanged.
-  if (feedItems.length === 0 && RELIEFWEB_APPNAME) {
-    console.log("[ReliefWeb RSS] No items from RSS or cache — switching to API fallback for Evidence Feed");
+  // Priority 2: ReliefWeb Reports API — always reachable from Render even when
+  // reliefweb.int/updates/rss.xml is blocked or rate-limited on hosted IPs.
+  // Try this BEFORE falling back to the stale disk cache so users always get
+  // the freshest possible data on hosted runtimes.
+  if (!rssLiveOk && RELIEFWEB_APPNAME) {
+    console.log("[ReliefWeb] RSS unavailable — trying ReliefWeb API for live Evidence Feed data");
     const apiFallbackItems = await fetchReliefWebGeneralApiReports(EVENT_SIGNAL_LOOKBACK_DAYS);
     if (apiFallbackItems.length > 0) {
       feedItems = apiFallbackItems;
       feedSource = "api-fallback";
+      console.log(`[ReliefWeb API] Fallback active: ${apiFallbackItems.length} items`);
     }
+  }
+
+  // Priority 3: warm disk cache — last resort when both live sources fail.
+  if (feedItems.length === 0 && reliefwebRssSnapshot?.items?.length) {
+    feedItems = reliefwebRssSnapshot.items;
+    rssFromCache = true;
+    feedSource = "rss-cache";
+    console.log("[ReliefWeb RSS] Using disk cache as last-resort fallback");
   }
 
   const now = new Date();
