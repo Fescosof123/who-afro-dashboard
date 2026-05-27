@@ -3714,21 +3714,16 @@ function isReliefWebRssCacheFresh(snapshot) {
 
 // ---------------------------------------------------------------------------
 // ReliefWeb API general-reports fallback
-// Called when reliefweb.int/updates/rss.xml is unreachable (common on hosted
-// runtimes whose outbound IPs are blocked/rate-limited by the CDN).
-// Returns items shaped identically to the RSS pipeline so every downstream
-// consumer (Evidence Feed, Flood signals, WHO DON fallback, Conflict signals)
-// gets live data via api.reliefweb.int — which is always reachable.
+// Used when reliefweb.int/updates/rss.xml is blocked on hosted runtimes.
+// Uses the same simple query.value pattern as fetchReliefWebAfricaFloodApiSignals
+// (confirmed working on Render) — NO filter objects that can cause 400 errors.
 // ---------------------------------------------------------------------------
 async function fetchReliefWebGeneralApiReports(lookbackDays) {
-  if (!RELIEFWEB_APPNAME) {
-    return [];
-  }
   try {
     const toDate = new Date();
     const fromDate = new Date(Date.now() - lookbackDays * 24 * 60 * 60 * 1000);
 
-    // Build a map of every known FCV-country alias → ISO3 once.
+    // Build alias → ISO3 lookup.
     const aliasToIso3 = new Map();
     FCV_COUNTRIES.forEach((c) => {
       [c.name, ...(c.aliases || [])].forEach((alias) => {
@@ -3737,30 +3732,16 @@ async function fetchReliefWebGeneralApiReports(lookbackDays) {
       });
     });
 
-    // Use a broad Africa-region query so we don't miss items where the country
-    // tag doesn't exactly match our alias list.
+    // Simple free-text query — same structure as the working flood API call.
+    // No filter objects; date/country filtering is done in JavaScript below.
     const payload = {
-      filter: {
-        operator: "AND",
-        conditions: [
-          {
-            field: "date.created",
-            value: { from: fromDate.toISOString(), to: toDate.toISOString() }
-          },
-          {
-            field: "primary_country.region.name",
-            value: "Africa"
-          }
-        ]
+      query: {
+        value: "Congo OR Ethiopia OR Somalia OR Sudan OR Nigeria OR Mozambique OR Kenya OR Mali OR Niger OR \"Burkina Faso\" OR Cameroon OR Zimbabwe OR Uganda OR Tanzania OR Zambia OR Malawi OR Madagascar OR Rwanda OR Burundi OR \"South Sudan\" OR Chad OR Sahel OR humanitarian OR displaced OR outbreak OR conflict OR flood OR drought"
       },
       sort: ["date.created:desc"],
       limit: 100,
       fields: {
-        include: [
-          "title", "date.created", "url_alias",
-          "source.name", "country.name", "primary_country.name",
-          "body", "body-html"
-        ]
+        include: ["title", "date.created", "url_alias", "source.name", "country.name", "primary_country.name", "body-html"]
       }
     };
 
@@ -3773,45 +3754,39 @@ async function fetchReliefWebGeneralApiReports(lookbackDays) {
     const now = new Date();
     const dayMs = 24 * 60 * 60 * 1000;
     const rows = resp?.data?.data || [];
+    console.log(`[ReliefWeb API] General fallback raw rows: ${rows.length}`);
 
     const items = rows.map((row) => {
       const f = row.fields || {};
       const title = String(f.title || "").trim();
-      const rawBody = String(f.body || f["body-html"] || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const rawBody = String(f["body-html"] || f.body || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
       const created = f.date?.created ? new Date(f.date.created) : null;
       if (!title || !created || Number.isNaN(created.getTime())) return null;
+
+      // Skip items outside the lookback window.
+      if (created < fromDate || created > toDate) return null;
 
       const urlAlias = String(f.url_alias || "").trim();
       const url = urlAlias
         ? (urlAlias.startsWith("http") ? urlAlias : `https://reliefweb.int${urlAlias}`)
         : null;
 
-      // Resolve countries from API metadata first, then fall back to text matching.
+      // Resolve FCV countries from API metadata fields.
       const countryFieldNames = dedupeStrings([
         ...(Array.isArray(f.country) ? f.country.map((e) => (typeof e === "string" ? e : e?.name)) : []),
         (typeof f.primary_country === "string" ? f.primary_country : f.primary_country?.name)
       ]).filter(Boolean);
 
-      const primaryCountryName = typeof f.primary_country === "string"
-        ? f.primary_country : (f.primary_country?.name || null);
-      const primaryIso3 = primaryCountryName
-        ? (aliasToIso3.get(normalizeForMentionMatch(primaryCountryName).toLowerCase()) || null)
-        : null;
-
       let matchedIso3 = dedupeStrings(
-        countryFieldNames
-          .map((name) => aliasToIso3.get(normalizeForMentionMatch(name).toLowerCase()))
-          .filter(Boolean)
+        countryFieldNames.map((name) => aliasToIso3.get(normalizeForMentionMatch(name).toLowerCase())).filter(Boolean)
       );
-      if (primaryIso3) matchedIso3 = dedupeStrings([primaryIso3, ...matchedIso3]);
 
-      // Supplement with text matching when metadata gives nothing.
+      // Fall back to text matching when metadata yields nothing.
       if (!matchedIso3.length) {
-        const combined = `${title} ${rawBody.slice(0, 400)}`;
-        const textMatched = FCV_COUNTRIES
-          .filter((c) => countCountryMentions(combined, c))
-          .map((c) => c.iso3);
-        matchedIso3 = dedupeStrings(textMatched);
+        const combined = `${title} ${rawBody.slice(0, 500)}`;
+        matchedIso3 = dedupeStrings(
+          FCV_COUNTRIES.filter((c) => countCountryMentions(combined, c)).map((c) => c.iso3)
+        );
       }
 
       if (!matchedIso3.length) return null;
@@ -3819,11 +3794,9 @@ async function fetchReliefWebGeneralApiReports(lookbackDays) {
       const creatorRaw = Array.isArray(f.source)
         ? f.source.map((s) => (typeof s === "string" ? s : s?.name)).filter(Boolean).join(", ")
         : null;
-
       const ageDays = Math.floor((now - created) / dayMs);
 
       return {
-        // RSS-compatible shape so downstream pipelines need no changes.
         id: url || title,
         title,
         summary: rawBody.slice(0, 600) || null,
@@ -3831,10 +3804,7 @@ async function fetchReliefWebGeneralApiReports(lookbackDays) {
         content: rawBody || null,
         source: "ReliefWeb API",
         creator: creatorRaw,
-        categories: matchedIso3.map((iso3) => {
-          const c = FCV_COUNTRIES.find((fc) => fc.iso3 === iso3);
-          return c ? c.name : iso3;
-        }),
+        categories: matchedIso3.map((iso3) => { const c = FCV_COUNTRIES.find((fc) => fc.iso3 === iso3); return c ? c.name : iso3; }),
         pubDate: f.date?.created || null,
         link: url,
         guid: url || title,
@@ -3844,7 +3814,7 @@ async function fetchReliefWebGeneralApiReports(lookbackDays) {
       };
     }).filter(Boolean);
 
-    console.log(`[ReliefWeb API] General fallback fetched ${items.length} FCV-mapped items (${rows.length} raw rows)`);
+    console.log(`[ReliefWeb API] General fallback: ${items.length} FCV-mapped items`);
     return items;
   } catch (err) {
     console.warn("[ReliefWeb API] General reports fallback failed:", err.message);
