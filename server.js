@@ -3712,6 +3712,146 @@ function isReliefWebRssCacheFresh(snapshot) {
   return ageHours < RELIEFWEB_RSS_CACHE_TTL_HOURS;
 }
 
+// ---------------------------------------------------------------------------
+// ReliefWeb API general-reports fallback
+// Called when reliefweb.int/updates/rss.xml is unreachable (common on hosted
+// runtimes whose outbound IPs are blocked/rate-limited by the CDN).
+// Returns items shaped identically to the RSS pipeline so every downstream
+// consumer (Evidence Feed, Flood signals, WHO DON fallback, Conflict signals)
+// gets live data via api.reliefweb.int — which is always reachable.
+// ---------------------------------------------------------------------------
+async function fetchReliefWebGeneralApiReports(lookbackDays) {
+  if (!RELIEFWEB_APPNAME) {
+    return [];
+  }
+  try {
+    const toDate = new Date();
+    const fromDate = new Date(Date.now() - lookbackDays * 24 * 60 * 60 * 1000);
+
+    // Build a map of every known FCV-country alias → ISO3 once.
+    const aliasToIso3 = new Map();
+    FCV_COUNTRIES.forEach((c) => {
+      [c.name, ...(c.aliases || [])].forEach((alias) => {
+        const key = normalizeForMentionMatch(alias).toLowerCase();
+        if (key && !aliasToIso3.has(key)) aliasToIso3.set(key, c.iso3);
+      });
+    });
+
+    // Use a broad Africa-region query so we don't miss items where the country
+    // tag doesn't exactly match our alias list.
+    const payload = {
+      filter: {
+        operator: "AND",
+        conditions: [
+          {
+            field: "date.created",
+            value: { from: fromDate.toISOString(), to: toDate.toISOString() }
+          },
+          {
+            field: "primary_country.region.name",
+            value: "Africa"
+          }
+        ]
+      },
+      sort: ["date.created:desc"],
+      limit: 100,
+      fields: {
+        include: [
+          "title", "date.created", "url_alias",
+          "source.name", "country.name", "primary_country.name",
+          "body", "body-html"
+        ]
+      }
+    };
+
+    const resp = await axios.post(
+      `${RELIEFWEB_REPORTS_API_URL}?appname=${encodeURIComponent(RELIEFWEB_APPNAME)}`,
+      payload,
+      { timeout: 25000, headers: { "Content-Type": "application/json", Accept: "application/json" } }
+    );
+
+    const now = new Date();
+    const dayMs = 24 * 60 * 60 * 1000;
+    const rows = resp?.data?.data || [];
+
+    const items = rows.map((row) => {
+      const f = row.fields || {};
+      const title = String(f.title || "").trim();
+      const rawBody = String(f.body || f["body-html"] || "").replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+      const created = f.date?.created ? new Date(f.date.created) : null;
+      if (!title || !created || Number.isNaN(created.getTime())) return null;
+
+      const urlAlias = String(f.url_alias || "").trim();
+      const url = urlAlias
+        ? (urlAlias.startsWith("http") ? urlAlias : `https://reliefweb.int${urlAlias}`)
+        : null;
+
+      // Resolve countries from API metadata first, then fall back to text matching.
+      const countryFieldNames = dedupeStrings([
+        ...(Array.isArray(f.country) ? f.country.map((e) => (typeof e === "string" ? e : e?.name)) : []),
+        (typeof f.primary_country === "string" ? f.primary_country : f.primary_country?.name)
+      ]).filter(Boolean);
+
+      const primaryCountryName = typeof f.primary_country === "string"
+        ? f.primary_country : (f.primary_country?.name || null);
+      const primaryIso3 = primaryCountryName
+        ? (aliasToIso3.get(normalizeForMentionMatch(primaryCountryName).toLowerCase()) || null)
+        : null;
+
+      let matchedIso3 = dedupeStrings(
+        countryFieldNames
+          .map((name) => aliasToIso3.get(normalizeForMentionMatch(name).toLowerCase()))
+          .filter(Boolean)
+      );
+      if (primaryIso3) matchedIso3 = dedupeStrings([primaryIso3, ...matchedIso3]);
+
+      // Supplement with text matching when metadata gives nothing.
+      if (!matchedIso3.length) {
+        const combined = `${title} ${rawBody.slice(0, 400)}`;
+        const textMatched = FCV_COUNTRIES
+          .filter((c) => countCountryMentions(combined, c))
+          .map((c) => c.iso3);
+        matchedIso3 = dedupeStrings(textMatched);
+      }
+
+      if (!matchedIso3.length) return null;
+
+      const creatorRaw = Array.isArray(f.source)
+        ? f.source.map((s) => (typeof s === "string" ? s : s?.name)).filter(Boolean).join(", ")
+        : null;
+
+      const ageDays = Math.floor((now - created) / dayMs);
+
+      return {
+        // RSS-compatible shape so downstream pipelines need no changes.
+        id: url || title,
+        title,
+        summary: rawBody.slice(0, 600) || null,
+        contentSnippet: rawBody.slice(0, 600) || null,
+        content: rawBody || null,
+        source: "ReliefWeb API",
+        creator: creatorRaw,
+        categories: matchedIso3.map((iso3) => {
+          const c = FCV_COUNTRIES.find((fc) => fc.iso3 === iso3);
+          return c ? c.name : iso3;
+        }),
+        pubDate: f.date?.created || null,
+        link: url,
+        guid: url || title,
+        countries: matchedIso3,
+        in30Days: ageDays <= 30,
+        inLookbackDays: ageDays <= EVENT_SIGNAL_LOOKBACK_DAYS
+      };
+    }).filter(Boolean);
+
+    console.log(`[ReliefWeb API] General fallback fetched ${items.length} FCV-mapped items (${rows.length} raw rows)`);
+    return items;
+  } catch (err) {
+    console.warn("[ReliefWeb API] General reports fallback failed:", err.message);
+    return [];
+  }
+}
+
 async function fetchReliefWebData(countryMap) {
   const dedupeFloodSignals = (items = []) => {
     const seen = new Set();
@@ -3878,6 +4018,7 @@ async function fetchReliefWebData(countryMap) {
 
   let feedItems = [];
   let rssFromCache = false;
+  let feedSource = "rss";    // "rss" | "rss-cache" | "api-fallback"
   try {
     const feed = await parseRssFeedWithTimeout(RELIEFWEB_UPDATES_RSS_URL);
     const liveItems = feed.items || [];
@@ -3888,6 +4029,7 @@ async function fetchReliefWebData(countryMap) {
     } else if (reliefwebRssSnapshot?.items?.length) {
       feedItems = reliefwebRssSnapshot.items;
       rssFromCache = true;
+      feedSource = "rss-cache";
       console.log("[ReliefWeb RSS] Live feed returned 0 items — using cached batch");
     }
   } catch (err) {
@@ -3895,7 +4037,21 @@ async function fetchReliefWebData(countryMap) {
     if (reliefwebRssSnapshot?.items?.length) {
       feedItems = reliefwebRssSnapshot.items;
       rssFromCache = true;
+      feedSource = "rss-cache";
       console.log("[ReliefWeb RSS] Using cached batch as fallback");
+    }
+  }
+
+  // When the RSS is completely unavailable (blocked/rate-limited on hosted runtimes)
+  // AND there is no warm disk cache, fall back to the ReliefWeb Reports API which is
+  // always reachable.  The API items are shaped identically to RSS items so every
+  // downstream section (Evidence Feed, Flood signals, WHO DON, Conflict) works unchanged.
+  if (feedItems.length === 0 && RELIEFWEB_APPNAME) {
+    console.log("[ReliefWeb RSS] No items from RSS or cache — switching to API fallback for Evidence Feed");
+    const apiFallbackItems = await fetchReliefWebGeneralApiReports(EVENT_SIGNAL_LOOKBACK_DAYS);
+    if (apiFallbackItems.length > 0) {
+      feedItems = apiFallbackItems;
+      feedSource = "api-fallback";
     }
   }
 
@@ -3934,24 +4090,31 @@ async function fetchReliefWebData(countryMap) {
         summary: item.contentSnippet || null,
         pubDate: item.pubDate || null,
         link: item.link || null,
-        source: "ReliefWeb RSS",
+        source: feedSource === "api-fallback" ? "ReliefWeb API" : "ReliefWeb RSS",
         countries: fcvIso3,
         hazard_type: "Flood",
         linkage_scope: fcvIso3.length ? "fcv-linked" : "afro-regional"
       });
     }
 
+    // For API-fallback items the source/country mapping is already done inside
+    // fetchReliefWebGeneralApiReports; trust those values and only re-derive when
+    // feedSource is rss / rss-cache (where the item is a raw RSS entry).
+    const resolvedCountries = feedSource === "api-fallback" && Array.isArray(item.countries) && item.countries.length
+      ? item.countries
+      : fcvIso3;
+
     return {
       id: item.guid || item.link || item.title,
       title: item.title || "Untitled",
       summary: item.contentSnippet || null,
       content: item.content || null,
-      source: "ReliefWeb RSS",
+      source: feedSource === "api-fallback" ? "ReliefWeb API" : "ReliefWeb RSS",
       creator: item.creator || null,
       categories: item.categories || [],
       created: item.pubDate || null,
       url: item.link || null,
-      countries: fcvIso3,
+      countries: resolvedCountries,
       in30Days,
       inLookbackDays
     };
