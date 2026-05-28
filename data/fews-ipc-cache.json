@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-05-27T09:38:46.504Z",
+  "saved_at": "2026-05-28T08:07:42.284Z",
   "by_iso3": {
     "BFA": {
       "cs_phase": 4,
@@ -65,9 +65,9 @@
       "cs_phase": 3,
       "cs_description": "Crisis",
       "cs_projection_end": "2023-04-30",
-      "ml1_phase": 1,
-      "ml1_description": "Minimal",
-      "ml1_projection_end": "2011-03-31",
+      "ml1_phase": null,
+      "ml1_description": null,
+      "ml1_projection_end": null,
       "reporting_date": "2023-04-01",
       "source_document": "Food Assistance Outlook Brief, Highest FIC"
     },
@@ -75,9 +75,9 @@
       "cs_phase": 1,
       "cs_description": "Minimal",
       "cs_projection_end": "2013-07-31",
-      "ml1_phase": 1,
-      "ml1_description": "Minimal",
-      "ml1_projection_end": "2013-06-30",
+      "ml1_phase": null,
+      "ml1_description": null,
+      "ml1_projection_end": null,
       "reporting_date": "2013-07-01",
       "source_document": "Food Security Outlook, Zimbabwe"
     }
