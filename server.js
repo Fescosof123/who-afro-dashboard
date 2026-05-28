@@ -249,7 +249,7 @@ function isApprovedVisibleEventSource(source) {
   if (!normalized) {
     return false;
   }
-  return /^(GDACS|ReliefWeb(?: RSS| API| disease fallback)?|WHO DON(?: RSS)?|OCHA RSS|IDMC RSS|UNHCR(?: RSS| via ReliefWeb| Population Data)?|IOM DTM(?: RSS| Event Tracking| Report)?)$/i.test(normalized);
+  return /^(GDACS|ReliefWeb(?: RSS| API| disease fallback)?|WHO DON(?: RSS)?|OCHA RSS|IDMC RSS|UNHCR(?: RSS| via ReliefWeb| Population Data)?|IOM DTM(?: RSS| Event Tracking| Report)?|FEWS NET(?: Risk Radar)?)$/i.test(normalized);
 }
 
 function filterApprovedVisibleEventItems(items = []) {
@@ -420,6 +420,8 @@ function emptyCountryRecord(country) {
     fews_ipc: null,
     acaps_reference_count: 0,
     disease_outbreak_signal_count: 0,
+    food_security_signal_count: 0,
+    nutrition_signal_count: 0,
     conflict_signal_count: 0,
     displacement_signal_count: 0,
     report_count_30d: 0,
@@ -2408,6 +2410,82 @@ function deriveConflictDisplacementSignals(countryMap, reports) {
           ...(hasConflict ? ["Conflict"] : []),
           ...(hasDisplacement ? ["Displacement"] : [])
         ],
+        countries: mentioned
+      });
+    });
+
+  return signals.slice(0, 80);
+}
+
+function deriveFoodSecuritySignals(countryMap, reports, fewsSignals) {
+  const foodSecurityRegex = /\bipc\s+phase\b|\bphase\s+[345]\b|acute\s+food\s+insecur|food\s+crisis|food\s+emergency|famine|food\s+insecur|food\s+secur|food\s+assistance|harvest\s+fail|food\s+price|livelihood|staple\s+crop|food\s+deficit|food\s+stress|emergency\s+food|severe\s+food|critical\s+food|\bFEWS\b|famine\s+early\s+warning/i;
+  const signals = [];
+
+  (reports || [])
+    .filter((item) => item.in30Days)
+    .forEach((item) => {
+      const text = `${item.title || ""} ${item.summary || ""} ${item.content || ""}`;
+      if (!foodSecurityRegex.test(text)) {
+        return;
+      }
+      const mentioned = (item.countries || []).filter((iso3) => !!countryMap[iso3]);
+      mentioned.forEach((iso3) => {
+        countryMap[iso3].food_security_signal_count += 1;
+      });
+      signals.push({
+        source: item.source || "Unknown",
+        title: item.title || "Untitled",
+        summary: item.summary || null,
+        url: item.url || null,
+        date_label: item.created || null,
+        signal_tags: ["Food Security"],
+        countries: mentioned
+      });
+    });
+
+  (fewsSignals || [])
+    .filter((item) => (item.countries || []).some((iso3) => !!countryMap[iso3]))
+    .forEach((item) => {
+      const mentioned = (item.countries || []).filter((iso3) => !!countryMap[iso3]);
+      mentioned.forEach((iso3) => {
+        countryMap[iso3].food_security_signal_count += 1;
+      });
+      signals.push({
+        source: item.source || "FEWS NET",
+        title: item.title || "Untitled FEWS reference",
+        summary: item.summary || null,
+        url: item.url || null,
+        date_label: item.date_label || null,
+        signal_tags: ["Food Security", "FEWS NET"],
+        countries: mentioned
+      });
+    });
+
+  return signals.slice(0, 80);
+}
+
+function deriveNutritionSignals(countryMap, reports) {
+  const nutritionRegex = /malnutrition|acute\s+malnutrition|\bSAM\b|\bMAM\b|\bGAM\b|wasting|stunting|\bCMAM\b|therapeutic\s+feed|nutrition\s+crisis|nutrition\s+emergency|nutritional\s+status|nutrition\s+response|undernutrition|micronutrient\s+deficien|severe\s+malnutrition|moderate\s+malnutrition|nutrition\s+screen|nutrition\s+survey|\bMUAC\b|mid-upper\s+arm|nutrition\s+cluster|nutrition\s+situation/i;
+  const signals = [];
+
+  (reports || [])
+    .filter((item) => item.in30Days)
+    .forEach((item) => {
+      const text = `${item.title || ""} ${item.summary || ""} ${item.content || ""}`;
+      if (!nutritionRegex.test(text)) {
+        return;
+      }
+      const mentioned = (item.countries || []).filter((iso3) => !!countryMap[iso3]);
+      mentioned.forEach((iso3) => {
+        countryMap[iso3].nutrition_signal_count += 1;
+      });
+      signals.push({
+        source: item.source || "Unknown",
+        title: item.title || "Untitled",
+        summary: item.summary || null,
+        url: item.url || null,
+        date_label: item.created || null,
+        signal_tags: ["Nutrition"],
         countries: mentioned
       });
     });
@@ -5711,6 +5789,13 @@ app.get("/api/dashboard-data", async (req, res) => {
     const conflict_displacement_signals = filterApprovedVisibleEventItems(
       deriveConflictDisplacementSignals(countryMap, [...reports, ...unhcrReports, ...idmcReports, ...unochaReports, ...iomDtmReports])
     );
+    const fewsSignals = fewsBundle.signals || [];
+    const food_security_signals = filterApprovedVisibleEventItems(
+      deriveFoodSecuritySignals(countryMap, [...reports, ...unochaReports], fewsSignals)
+    );
+    const nutrition_signals = filterApprovedVisibleEventItems(
+      deriveNutritionSignals(countryMap, [...reports, ...unochaReports])
+    );
     const unhcrReportingCandidates30d = (unhcrReports || []).filter((item) => {
       const src = String(item.source || "").toLowerCase();
       return src === "unhcr rss" || src === "unhcr via reliefweb";
@@ -5794,7 +5879,6 @@ app.get("/api/dashboard-data", async (req, res) => {
         report_count_30d: c.report_count_30d
       }));
 
-    const fewsSignals = fewsBundle.signals || [];
     const acapsUpdates = acapsBundle.items || [];
     const source_summaries = addSourceSummaryDeltas(summarizeExternalSources(serializedHazards, reports, countries, fewsSignals, acapsUpdates, whoDonReports, iomDtmReports));
 
@@ -5915,6 +5999,8 @@ app.get("/api/dashboard-data", async (req, res) => {
       acaps_updates: acapsUpdates,
       acaps_source_status: acapsBundle.status,
       conflict_displacement_signals,
+      food_security_signals,
+      nutrition_signals,
       conflict_displacement_source_status: conflictDisplacementSourceStatus,
       conflict_displacement_source_status_history: conflictDisplacementSourceHistory,
       iom_dtm_source_status: iomDtmBundle.status,

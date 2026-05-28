@@ -369,10 +369,12 @@ const els = {
   fcvCountryProfileTableBody: document.querySelector("#fcvCountryProfileTable tbody"),
   foodSecurityTableBody: document.querySelector("#foodSecurityTable tbody"),
   foodSecurityRecommendations: document.getElementById("foodSecurityRecommendations"),
+  foodSecurityFeed: document.getElementById("foodSecurityFeed"),
   nutritionSummary: document.getElementById("nutritionSummary"),
   nutritionCurrentStamp: document.getElementById("nutritionCurrentStamp"),
   nutritionTableBody: document.querySelector("#nutritionTable tbody"),
   nutritionRecommendations: document.getElementById("nutritionRecommendations"),
+  nutritionFeed: document.getElementById("nutritionFeed"),
   countryTableHead: document.querySelector("#countryTable thead"),
   countryTableBody: document.querySelector("#countryTable tbody"),
   forecastTableBody: document.querySelector("#forecastTable tbody"),
@@ -598,8 +600,10 @@ function localizeDynamicBlocks() {
     els.topAlerts,
     els.summaryBox,
     els.foodSecurityRecommendations,
+    els.foodSecurityFeed,
     els.nutritionSummary,
     els.nutritionRecommendations,
+    els.nutritionFeed,
     els.forecastInsights,
     els.forecastRecommendations,
     els.icpacSummary,
@@ -899,6 +903,13 @@ function getSourceTrustMeta(source) {
       label: "Verified",
       className: "verified",
       description: "Verified humanitarian source"
+    };
+  }
+  if (/fews\s*net/i.test(normalized)) {
+    return {
+      label: "Verified",
+      className: "verified",
+      description: "FEWS NET — USAID famine early warning system"
     };
   }
   return null;
@@ -2088,6 +2099,57 @@ function renderNutritionPage() {
       </tr>
     `)
     .join("");
+
+  if (els.nutritionFeed) {
+    const signals = dashboardState.nutrition_signals || [];
+    const countries = dashboardState.countries || [];
+    const focusCountries = [...countries]
+      .filter((c) => (c.nutrition_signal_count || 0) > 0)
+      .sort((a, b) => {
+        const aScore = ((a.nutrition_signal_count || 0) * 3) + (a.report_count_30d || 0);
+        const bScore = ((b.nutrition_signal_count || 0) * 3) + (b.report_count_30d || 0);
+        return bScore - aScore;
+      })
+      .slice(0, 5);
+
+    if (!focusCountries.length) {
+      els.nutritionFeed.innerHTML = "No nutrition reporting items matched verified source criteria in the current 30-day window.";
+    } else {
+      els.nutritionFeed.innerHTML = focusCountries.map((country) => {
+        const countrySignals = signals
+          .filter((item) => (item.countries || []).includes(country.iso3) && isApprovedVisibleEventSource(item.source || ""))
+          .slice(0, 3);
+        const wastingVal = country.indicators?.wasting_u5_pct?.latest?.value;
+        const nutritionLabel = wastingVal != null
+          ? `Wasting ${formatNum(wastingVal, 1)}%`
+          : "No wasting data";
+        const nutritionClass = wastingVal != null && wastingVal >= 15 ? "bad" : wastingVal != null && wastingVal >= 10 ? "warn" : "good";
+        const signalMarkup = countrySignals.length
+          ? countrySignals.map((item) => `
+              <div class="feed-item conflict-feed-item">
+                <div class="conflict-feed-header">
+                  <a href="${item.url || "#"}" target="_blank" rel="noreferrer">${item.title || "Untitled report"}</a>
+                  <div class="signal-chip-row">
+                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip">${tag}</span>`).join("")}
+                  </div>
+                </div>
+                <div class="feed-meta-row">${renderSourceTrustBadge(item.source || "ReliefWeb")}<span>${item.source || "ReliefWeb"} | <span title="${item.date_label || "n/a"}">${formatDateTime(item.date_label)}</span></span></div>
+                <div class="signal-summary">${summarizeSourceExcerpt(item.summary || item.content || "", SOURCE_EXCERPT_MAX_CHARS)}</div>
+              </div>
+            `).join("")
+          : '<div class="feed-item conflict-feed-item"><div>No linked nutrition source item was detected for this country in the current refresh.</div></div>';
+        return `
+          <div class="conflict-country-block">
+            <div class="conflict-country-header">
+              <strong>${country.country}</strong>
+              <span class="tag ${nutritionClass}">${nutritionLabel}</span>
+            </div>
+            ${signalMarkup}
+          </div>
+        `;
+      }).join("");
+    }
+  }
 }
 
 function riskLabelFromPct(pct) {
@@ -2255,6 +2317,56 @@ function renderFoodSecurityPage() {
     aiRecommendations?.byIssue?.foodSecurity,
     "No food-security recommendations can be generated from the current refresh."
   );
+
+  if (els.foodSecurityFeed) {
+    const signals = dashboardState.food_security_signals || [];
+    const countries = dashboardState.countries || [];
+    const focusCountries = [...countries]
+      .filter((c) => (c.food_security_signal_count || 0) > 0)
+      .sort((a, b) => {
+        const aScore = ((a.food_security_signal_count || 0) * 3) + ((a.ipc?.phase3plus_pct || 0) * 10) + (a.report_count_30d || 0);
+        const bScore = ((b.food_security_signal_count || 0) * 3) + ((b.ipc?.phase3plus_pct || 0) * 10) + (b.report_count_30d || 0);
+        return bScore - aScore;
+      })
+      .slice(0, 5);
+
+    if (!focusCountries.length) {
+      els.foodSecurityFeed.innerHTML = "No food security reporting items matched verified source criteria in the current 30-day window.";
+    } else {
+      els.foodSecurityFeed.innerHTML = focusCountries.map((country) => {
+        const countrySignals = signals
+          .filter((item) => (item.countries || []).includes(country.iso3) && isApprovedVisibleEventSource(item.source || ""))
+          .slice(0, 3);
+        const ipcLabel = country.ipc?.phase3plus_pct != null
+          ? `IPC P3+ ${formatNum((country.ipc.phase3plus_pct || 0) * 100, 1)}%`
+          : "No IPC";
+        const ipcClass = (country.ipc?.phase3plus_pct || 0) >= 0.3 ? "bad" : (country.ipc?.phase3plus_pct || 0) >= 0.2 ? "warn" : "good";
+        const signalMarkup = countrySignals.length
+          ? countrySignals.map((item) => `
+              <div class="feed-item conflict-feed-item">
+                <div class="conflict-feed-header">
+                  <a href="${item.url || "#"}" target="_blank" rel="noreferrer">${item.title || "Untitled report"}</a>
+                  <div class="signal-chip-row">
+                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip">${tag}</span>`).join("")}
+                  </div>
+                </div>
+                <div class="feed-meta-row">${renderSourceTrustBadge(item.source || "ReliefWeb")}<span>${item.source || "ReliefWeb"} | <span title="${item.date_label || "n/a"}">${formatDateTime(item.date_label)}</span></span></div>
+                <div class="signal-summary">${summarizeSourceExcerpt(item.summary || item.content || "", SOURCE_EXCERPT_MAX_CHARS)}</div>
+              </div>
+            `).join("")
+          : '<div class="feed-item conflict-feed-item"><div>No linked food security source item was detected for this country in the current refresh.</div></div>';
+        return `
+          <div class="conflict-country-block">
+            <div class="conflict-country-header">
+              <strong>${country.country}</strong>
+              <span class="tag ${ipcClass}">${ipcLabel}</span>
+            </div>
+            ${signalMarkup}
+          </div>
+        `;
+      }).join("");
+    }
+  }
 }
 
 function rotateToNextPage() {
