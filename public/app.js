@@ -2123,14 +2123,14 @@ function renderNutritionPage() {
         const nutritionLabel = wastingVal != null
           ? `Wasting ${formatNum(wastingVal, 1)}%`
           : "No wasting data";
-        const nutritionClass = wastingVal != null && wastingVal >= 15 ? "bad" : wastingVal != null && wastingVal >= 10 ? "warn" : "good";
+        const nutritionClass = wastingVal == null ? "warn" : wastingVal >= 15 ? "bad" : wastingVal >= 10 ? "warn" : "good";
         const signalMarkup = countrySignals.length
           ? countrySignals.map((item) => `
               <div class="feed-item conflict-feed-item">
                 <div class="conflict-feed-header">
                   <a href="${item.url || "#"}" target="_blank" rel="noreferrer">${item.title || "Untitled report"}</a>
                   <div class="signal-chip-row">
-                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip">${tag}</span>`).join("")}
+                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip ${tag.toLowerCase().replace(/\s+/g, "-")}">${tag}</span>`).join("")}
                   </div>
                 </div>
                 <div class="feed-meta-row">${renderSourceTrustBadge(item.source || "ReliefWeb")}<span>${item.source || "ReliefWeb"} | <span title="${item.date_label || "n/a"}">${formatDateTime(item.date_label)}</span></span></div>
@@ -2347,7 +2347,7 @@ function renderFoodSecurityPage() {
                 <div class="conflict-feed-header">
                   <a href="${item.url || "#"}" target="_blank" rel="noreferrer">${item.title || "Untitled report"}</a>
                   <div class="signal-chip-row">
-                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip">${tag}</span>`).join("")}
+                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip ${tag.toLowerCase().replace(/\s+/g, "-")}">${tag}</span>`).join("")}
                   </div>
                 </div>
                 <div class="feed-meta-row">${renderSourceTrustBadge(item.source || "ReliefWeb")}<span>${item.source || "ReliefWeb"} | <span title="${item.date_label || "n/a"}">${formatDateTime(item.date_label)}</span></span></div>

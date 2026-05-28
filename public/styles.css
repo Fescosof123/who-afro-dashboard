@@ -1193,6 +1193,21 @@ main {
   color: #1f618d;
 }
 
+.signal-chip.food-security {
+  background: #fef9e7;
+  color: #9a7d0a;
+}
+
+.signal-chip.nutrition {
+  background: #eafaf1;
+  color: #1e8449;
+}
+
+.signal-chip.fews-net {
+  background: #f4ecf7;
+  color: #7d3c98;
+}
+
 .signal-summary {
   margin-top: 6px;
   color: var(--muted);
