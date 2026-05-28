@@ -2422,7 +2422,7 @@ function deriveFoodSecuritySignals(countryMap, reports, fewsSignals) {
   const signals = [];
 
   (reports || [])
-    .filter((item) => item.in30Days)
+    .filter((item) => item.inLookbackDays || item.in30Days)
     .forEach((item) => {
       const text = `${item.title || ""} ${item.summary || ""} ${item.content || ""}`;
       if (!foodSecurityRegex.test(text)) {
@@ -2469,7 +2469,7 @@ function deriveNutritionSignals(countryMap, reports) {
   const signals = [];
 
   (reports || [])
-    .filter((item) => item.in30Days)
+    .filter((item) => item.inLookbackDays || item.in30Days)
     .forEach((item) => {
       const text = `${item.title || ""} ${item.summary || ""} ${item.content || ""}`;
       if (!nutritionRegex.test(text)) {

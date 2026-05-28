@@ -99,7 +99,9 @@
 
         <div id="staleBanner" class="stale-data-banner"></div>
   <div id="acapsModeToast" class="acaps-mode-toast" role="status" aria-live="polite" aria-hidden="true"></div>
-        <section class="briefing-strip" id="briefingStrip"></section>
+        <section class="briefing-strip" id="briefingStrip">
+          <div id="briefingHighlights"></div>
+        </section>
 
         <main>
           <section id="overviewPage" class="page active">
@@ -294,7 +296,7 @@
             <section class="panel">
               <div class="panel-header">
                 <h2>Recent Food Security Reporting</h2>
-                <p>Verified source items (ReliefWeb, FEWS NET) matched to food security keywords — 30-day window.</p>
+                <p>Verified source items (ReliefWeb, FEWS NET) matched to food security keywords — up to 180-day window.</p>
               </div>
               <div id="foodSecurityFeed" class="feed"></div>
             </section>
@@ -333,7 +335,7 @@
             <section class="panel">
               <div class="panel-header">
                 <h2>Recent Nutrition Reporting</h2>
-                <p>Verified source items (ReliefWeb) matched to acute malnutrition and nutrition response keywords — 30-day window.</p>
+                <p>Verified source items (ReliefWeb) matched to acute malnutrition and nutrition response keywords — up to 180-day window.</p>
               </div>
               <div id="nutritionFeed" class="feed"></div>
             </section>
@@ -460,12 +462,21 @@
               </div>
             </section>
 
-            <section class="panel">
-              <div class="panel-header">
-                <h2>WHO Disease Outbreak News (DON)</h2>
-                <p>Recent WHO DON alerts.</p>
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>WHO Disease Outbreak News (DON)</h2>
+                  <p>Recent WHO DON alerts.</p>
+                </div>
+                <div id="whoDonFeed" class="feed"></div>
               </div>
-              <div id="whoDonFeed" class="feed"></div>
+              <div>
+                <div class="panel-header">
+                  <h2>Disease Outbreak Evidence Feed</h2>
+                  <p>Verified source items (ReliefWeb, WHO DON) matched to outbreak keywords — 30-day window.</p>
+                </div>
+                <div id="diseaseOutbreakFeed" class="feed"></div>
+              </div>
             </section>
 
             <section class="panel">

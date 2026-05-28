@@ -397,6 +397,7 @@ const els = {
   floodFeed: document.getElementById("floodFeed"),
   reportFeed: document.getElementById("reportFeed"),
   whoDonFeed: document.getElementById("whoDonFeed"),
+  diseaseOutbreakFeed: document.getElementById("diseaseOutbreakFeed"),
   hazardRecommendations: document.getElementById("hazardRecommendations"),
   conflictsDisplacementSummary: document.getElementById("conflictsDisplacementSummary"),
   conflictsDisplacementSourceStatus: document.getElementById("conflictsDisplacementSourceStatus"),
@@ -613,6 +614,7 @@ function localizeDynamicBlocks() {
     els.gdacsSummary,
     els.reliefwebSummary,
     els.whoDonSummary,
+    els.diseaseOutbreakFeed,
     els.hazardRecommendations,
     els.conflictsDisplacementSummary,
     els.conflictsDisplacementRecommendations,
@@ -3936,6 +3938,52 @@ function renderWhoDonAlerts() {
     : t("noWhoDonAlerts");
 }
 
+function renderDiseaseOutbreakFeed() {
+  if (!els.diseaseOutbreakFeed) {
+    return;
+  }
+  const signals = dashboardState.disease_outbreak_signals || [];
+  const countries = dashboardState.countries || [];
+  const focusCountries = [...countries]
+    .filter((c) => (c.disease_outbreak_signal_count || 0) > 0)
+    .sort((a, b) => (b.disease_outbreak_signal_count || 0) - (a.disease_outbreak_signal_count || 0))
+    .slice(0, 5);
+
+  if (!focusCountries.length) {
+    els.diseaseOutbreakFeed.innerHTML = "No disease outbreak items matched verified source criteria in the current 30-day window.";
+    return;
+  }
+
+  els.diseaseOutbreakFeed.innerHTML = focusCountries.map((country) => {
+    const countrySignals = signals
+      .filter((item) => (item.countries || []).includes(country.iso3) && isApprovedVisibleEventSource(item.source || ""))
+      .slice(0, 3);
+    const signalMarkup = countrySignals.length
+      ? countrySignals.map((item) => `
+          <div class="feed-item conflict-feed-item">
+            <div class="conflict-feed-header">
+              <a href="${item.url || "#"}" target="_blank" rel="noreferrer">${item.title || "Untitled report"}</a>
+              <div class="signal-chip-row">
+                ${(item.signal_tags || []).map((tag) => `<span class="signal-chip ${tag.toLowerCase().replace(/\s+/g, "-")}">${tag}</span>`).join("")}
+              </div>
+            </div>
+            <div class="feed-meta-row">${renderSourceTrustBadge(item.source || "ReliefWeb")}<span>${item.source || "ReliefWeb"} | <span title="${item.date_label || "n/a"}">${formatDateTime(item.date_label)}</span></span></div>
+            <div class="signal-summary">${summarizeSourceExcerpt(item.summary || item.content || "", SOURCE_EXCERPT_MAX_CHARS)}</div>
+          </div>
+        `).join("")
+      : '<div class="feed-item conflict-feed-item"><div>No linked disease outbreak source item was detected for this country in the current refresh.</div></div>';
+    return `
+      <div class="conflict-country-block">
+        <div class="conflict-country-header">
+          <strong>${country.country}</strong>
+          <span class="tag warn">${country.disease_outbreak_signal_count} signal${country.disease_outbreak_signal_count !== 1 ? "s" : ""}</span>
+        </div>
+        ${signalMarkup}
+      </div>
+    `;
+  }).join("");
+}
+
 function renderHazardSourceSummaries() {
   const summaries = dashboardState.source_summaries || {};
   const gdacs = summaries.gdacs || {};
@@ -5409,6 +5457,7 @@ function bindEvents() {
       renderCyclonePage();
       renderReports();
       renderWhoDonAlerts();
+      renderDiseaseOutbreakFeed();
       renderHazardSourceSummaries();
       renderConflictsDisplacementPage();
       renderIcpacForecasts();
@@ -5442,6 +5491,7 @@ function bindEvents() {
     renderHazards();
     renderReports();
     renderWhoDonAlerts();
+    renderDiseaseOutbreakFeed();
     renderConflictsDisplacementPage();
     renderCyclonePage();
     renderOperationalReportPage();

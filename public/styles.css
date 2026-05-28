@@ -1208,6 +1208,11 @@ main {
   color: #7d3c98;
 }
 
+.signal-chip.disease-outbreak {
+  background: #fdebd0;
+  color: #a04000;
+}
+
 .signal-summary {
   margin-top: 6px;
   color: var(--muted);
