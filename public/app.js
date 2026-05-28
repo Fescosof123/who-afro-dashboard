@@ -968,6 +968,13 @@ function detectLikelyLanguage(text) {
   return "en";
 }
 
+function renderMarkdown(text) {
+  return text
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*([^*]+)\*/g, "<em>$1</em>")
+    .replace(/#{1,6} ([^\n#]+)/g, "<strong>$1</strong>");
+}
+
 function summarizeSourceExcerpt(rawText, maxChars = SOURCE_EXCERPT_MAX_CHARS) {
   const summary = String(rawText || "").replace(/\s+/g, " ").trim();
   if (!summary) {
@@ -975,7 +982,7 @@ function summarizeSourceExcerpt(rawText, maxChars = SOURCE_EXCERPT_MAX_CHARS) {
   }
 
   if (showOriginalSourceExcerpts) {
-    return `${summary.slice(0, maxChars)}${summary.length > maxChars ? "..." : ""}`;
+    return renderMarkdown(`${summary.slice(0, maxChars)}${summary.length > maxChars ? "..." : ""}`);
   }
 
   const lang = detectLikelyLanguage(summary);
@@ -986,7 +993,7 @@ function summarizeSourceExcerpt(rawText, maxChars = SOURCE_EXCERPT_MAX_CHARS) {
     return t("sourceExcerptDifferentLanguage", { lang: "ES" });
   }
 
-  return `${summary.slice(0, maxChars)}${summary.length > maxChars ? "..." : ""}`;
+  return renderMarkdown(`${summary.slice(0, maxChars)}${summary.length > maxChars ? "..." : ""}`);
 }
 
 function buildFeedAutoSummary(item, hazardLabel = "Event") {
