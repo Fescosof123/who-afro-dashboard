@@ -36,6 +36,13 @@ const dashboardResponseCache = {
   strict: null,
   lenient: null
 };
+// In-flight build deduplication: if a cache miss triggers a build, subsequent
+// requests for the same freshness_mode wait for that same build rather than
+// each starting an independent 17-source fetch. Prevents concurrent OOM spikes.
+const dashboardBuildInFlight = {
+  strict: null,
+  lenient: null
+};
 
 const DATA_DIR = path.join(__dirname, "data");
 const VALIDATION_LOG_DIR = path.join(DATA_DIR, "validation-logs");
@@ -5721,6 +5728,27 @@ app.get("/api/dashboard-data", async (req, res) => {
       return res.json(cached.payload);
     }
 
+    // If another request is already building for this freshness_mode, wait for
+    // that build instead of starting a second concurrent 17-source fetch.
+    if (!forceRefresh && dashboardBuildInFlight[freshnessMode]) {
+      try {
+        const payload = await dashboardBuildInFlight[freshnessMode];
+        return res.json(payload);
+      } catch {
+        // build failed; fall through to start a fresh one
+      }
+    }
+
+    let resolveBuild;
+    let rejectBuild;
+    const buildPromise = new Promise((resolve, reject) => {
+      resolveBuild = resolve;
+      rejectBuild = reject;
+    });
+    if (!forceRefresh) {
+      dashboardBuildInFlight[freshnessMode] = buildPromise;
+    }
+
     const countryFeedPullStatus = await refreshCountryFeedFromRemote(forceRefresh);
 
     // Reload FCV Country Profile from disk on each uncached request so file updates are picked up automatically.
@@ -6058,7 +6086,6 @@ app.get("/api/dashboard-data", async (req, res) => {
       if (!fs.existsSync(VALIDATION_LOG_DIR)) {
         fs.mkdirSync(VALIDATION_LOG_DIR, { recursive: true });
       }
-      const stamp = (responsePayload.generated_at || new Date().toISOString()).replace(/[:.]/g, "-");
       const ruleVersion = String(responsePayload.metric_ledger.rule_version || "metric-ledger-v1").replace(/[^a-z0-9-]+/gi, "-").toLowerCase();
       const snapshot = {
         saved_at: new Date().toISOString(),
@@ -6067,8 +6094,15 @@ app.get("/api/dashboard-data", async (req, res) => {
         metric_ledger: responsePayload.metric_ledger,
         source_freshness: responsePayload.source_freshness || null
       };
-      const logFile = path.join(VALIDATION_LOG_DIR, `validation-${ruleVersion}-${stamp}.json`);
+      // Overwrite a single rotating file per rule version instead of accumulating
+      // one timestamped file per refresh (which would fill disk over time).
+      const logFile = path.join(VALIDATION_LOG_DIR, `validation-${ruleVersion}-latest.json`);
       fs.writeFileSync(logFile, JSON.stringify(snapshot, null, 2), "utf8");
+      // Prune any old timestamped validation log files left from previous versions.
+      try {
+        const allLogs = fs.readdirSync(VALIDATION_LOG_DIR).filter((f) => /^validation-.*\.json$/.test(f) && !f.endsWith("-latest.json"));
+        allLogs.forEach((f) => { try { fs.unlinkSync(path.join(VALIDATION_LOG_DIR, f)); } catch {} });
+      } catch {}
       console.log(`Validation snapshot saved: ${logFile}`);
     } catch (logErr) {
       console.error("Validation snapshot auto-save failed:", logErr.message);
@@ -6078,9 +6112,17 @@ app.get("/api/dashboard-data", async (req, res) => {
       cached_at: Date.now(),
       payload: responsePayload
     };
+    if (resolveBuild) {
+      resolveBuild(responsePayload);
+      dashboardBuildInFlight[freshnessMode] = null;
+    }
 
     res.json(responsePayload);
   } catch (err) {
+    if (rejectBuild) {
+      rejectBuild(err);
+      dashboardBuildInFlight[freshnessMode] = null;
+    }
     console.error("Dashboard data endpoint failed", err);
     res.status(500).json({
       error: "Failed to load dashboard data",
