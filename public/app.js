@@ -382,6 +382,7 @@ const els = {
   fcvCountryProfileSummary: document.getElementById("fcvCountryProfileSummary"),
   fcvCountryProfileTableBody: document.querySelector("#fcvCountryProfileTable tbody"),
   foodSecurityTableBody: document.querySelector("#foodSecurityTable tbody"),
+  foodSecurityFewsStamp: document.getElementById("foodSecurityFewsStamp"),
   foodSecurityRecommendations: document.getElementById("foodSecurityRecommendations"),
   foodSecurityFeed: document.getElementById("foodSecurityFeed"),
   nutritionSummary: document.getElementById("nutritionSummary"),
@@ -392,6 +393,7 @@ const els = {
   countryTableHead: document.querySelector("#countryTable thead"),
   countryTableBody: document.querySelector("#countryTable tbody"),
   forecastTableBody: document.querySelector("#forecastTable tbody"),
+  forecastFewsStamp: document.getElementById("forecastFewsStamp"),
   forecastRecommendations: document.getElementById("forecastRecommendations"),
   forecastInsights: document.getElementById("forecastInsights"),
   icpacFeed: document.getElementById("icpacFeed"),
@@ -2469,6 +2471,17 @@ function renderFoodSecurityPage() {
     return;
   }
 
+  const fewsCountryStatus = dashboardState.fews_country_page_status || {};
+  const fewsIpcStatus = dashboardState.fews_ipc_source_status || {};
+  if (els.foodSecurityFewsStamp) {
+    const checkedAt = fewsCountryStatus.checked_at || fewsIpcStatus.checked_at || null;
+    const checkedLabel = checkedAt ? formatDateTime(checkedAt) : "n/a";
+    const feedsResolved = Number(fewsCountryStatus.feeds_resolved || 0);
+    const feedsSucceeded = Number(fewsCountryStatus.feeds_succeeded || 0);
+    const mappedCountries = Number(fewsCountryStatus.mapped_countries || 0);
+    els.foodSecurityFewsStamp.innerHTML = `<span class="tag good">FEWS status</span> Updated ${checkedLabel} | Country feeds ${feedsSucceeded}/${feedsResolved} | Countries mapped ${mappedCountries}`;
+  }
+
   const rows = [...(dashboardState.countries || [])]
     .filter((c) => c.ipc || c.fews_ipc)
     .sort((a, b) => (b.ipc?.phase3plus_pct || 0) - (a.ipc?.phase3plus_pct || 0));
@@ -3934,6 +3947,17 @@ function renderForecast(countryIso3) {
   const c = getCountryByIso3(countryIso3);
   if (!c) {
     return;
+  }
+
+  const fewsCountryStatus = dashboardState.fews_country_page_status || {};
+  const fewsIpcStatus = dashboardState.fews_ipc_source_status || {};
+  if (els.forecastFewsStamp) {
+    const checkedAt = fewsCountryStatus.checked_at || fewsIpcStatus.checked_at || null;
+    const checkedLabel = checkedAt ? formatDateTime(checkedAt) : "n/a";
+    const feedsResolved = Number(fewsCountryStatus.feeds_resolved || 0);
+    const feedsSucceeded = Number(fewsCountryStatus.feeds_succeeded || 0);
+    const mappedCountries = Number(fewsCountryStatus.mapped_countries || 0);
+    els.forecastFewsStamp.innerHTML = `<span class="tag good">FEWS status</span> Updated ${checkedLabel} | Country feeds ${feedsSucceeded}/${feedsResolved} | Countries mapped ${mappedCountries}`;
   }
 
   const forecasts = dashboardState.forecasts || [];

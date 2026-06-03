@@ -695,6 +695,12 @@ main {
   line-height: 1.2;
 }
 
+.source-freshness-stamp {
+  margin-top: 6px;
+  font-size: 0.79rem;
+  color: #4f6478;
+}
+
 .map-mode-toggle {
   display: flex;
   gap: 6px;
