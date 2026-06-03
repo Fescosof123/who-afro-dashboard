@@ -33,6 +33,7 @@
           <div class="nav-group">
             <p class="nav-group-label">Event Monitoring</p>
             <button class="nav-btn" data-page="conflictsDisplacementPage" type="button">Conflicts &amp; Displacements</button>
+            <button class="nav-btn" data-page="attacksHealthPage" type="button">Attacks on Healthcare</button>
             <button class="nav-btn" data-page="hazardPage" type="button">Hazard &amp; Flood Monitor</button>
             <button class="nav-btn" data-page="cyclonePage" type="button">Cyclone Watch</button>
           </div>
@@ -557,6 +558,56 @@
                 <p>Recent source items.</p>
               </div>
               <div id="conflictsDisplacementFeed" class="feed"></div>
+            </section>
+          </section>
+
+          <section id="attacksHealthPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Attacks on Healthcare Snapshot</h2>
+                <p>Signals on violence affecting health workers and facilities.</p>
+              </div>
+              <div id="attacksHealthSummary" class="summary"></div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Country Prioritization</h2>
+                  <p>Countries with highest recent attack-on-healthcare reporting pressure.</p>
+                </div>
+                <div class="table-wrap">
+                  <table id="attacksHealthTable">
+                    <thead>
+                      <tr>
+                        <th>Country</th>
+                        <th title="Attack-on-healthcare signal count">Signals</th>
+                        <th title="Reports in the last 30 days">Rep30d</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
+                        <th title="Composite risk score">Risk</th>
+                        <th>Signal Level</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Recommendations: Attacks on Healthcare</h2>
+                  <p>Rule-based actions.</p>
+                </div>
+                <div id="attacksHealthRecommendations" class="recommendations"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>WHO SSA Source And Evidence Feed</h2>
+                <p>Primary source: WHO Surveillance System for Attacks on Health Care (SSA), plus linked verified reporting.</p>
+              </div>
+              <div id="attacksHealthSourceStatus" class="summary"></div>
+              <div id="attacksHealthFeed" class="feed"></div>
             </section>
           </section>
 

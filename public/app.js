@@ -15,6 +15,11 @@ let hasAutoStarted = false;
 let autoRotateEnabled = false;
 let currentLanguage = localStorage.getItem("who_afro_dashboard_lang") || "en";
 let showOriginalSourceExcerpts = false;
+let attacksHealthStatusCache = {
+  fetchedAt: 0,
+  payload: null,
+  inFlight: null
+};
 
 const DASHBOARD_CACHE_KEY = "who_afro_dashboard_cache_v1";
 const AUTO_DATA_REFRESH_MS = 10 * 60 * 1000;
@@ -22,6 +27,7 @@ const DATA_STALE_WARN_MS = 20 * 60 * 1000;
 const LANGUAGE_CACHE_KEY = "who_afro_dashboard_lang";
 const SOURCE_EXCERPTS_CACHE_KEY = "who_afro_show_original_excerpts";
 const SOURCE_EXCERPT_MAX_CHARS = 1200;
+const ATTACKS_HEALTH_STATUS_TTL_MS = 5 * 60 * 1000;
 
 const PRINT_MODE_CLASS = "printing-bulletin";
 const PRINT_REPORT_PAGE_ID = "operationalReportPage";
@@ -31,6 +37,7 @@ const PAGE_ROTATION_MULTIPLIER = {
   foodSecurityPage: 1.3,
   nutritionPage: 1,
   conflictsDisplacementPage: 1.1,
+  attacksHealthPage: 1,
   hazardPage: 1,
   cyclonePage: 1,
   forecastPage: 1.1,
@@ -38,7 +45,7 @@ const PAGE_ROTATION_MULTIPLIER = {
   operationalReportPage: 1.1
 };
 
-const PAGE_ORDER = ["overviewPage", "foodSecurityPage", "nutritionPage", "conflictsDisplacementPage", "hazardPage", "cyclonePage", "forecastPage", "countryPage", "operationalReportPage"];
+const PAGE_ORDER = ["overviewPage", "foodSecurityPage", "nutritionPage", "conflictsDisplacementPage", "attacksHealthPage", "hazardPage", "cyclonePage", "forecastPage", "countryPage", "operationalReportPage"];
 
 const PAGE_CAVEATS = {
   en: {
@@ -47,6 +54,7 @@ const PAGE_CAVEATS = {
     foodSecurityPage: "Food security caveat: this is the primary decision lens. IPC and FEWS values are source snapshots and require date-validity checks.",
     nutritionPage: "Nutrition context caveat: this page is a supporting layer and should not override food security or event-driven triggers.",
     forecastPage: "Forecast caveat: this page is source-only (IPC, ICPAC, and source-derived drought/cyclone signals). No internally generated trend projections are displayed.",
+    attacksHealthPage: "Attacks on healthcare caveat: this page reflects source-reported signals and SSA references. Confirm incident details through country verification and protection partners.",
     cyclonePage: "Cyclone caveat: event signals indicate pressure and readiness needs, but operational actions require country-level validation.",
     hazardPage: "Hazard caveat: GDACS and linked sources provide event context; critical decisions require triangulation with validated country and partner updates.",
     conflictsDisplacementPage: "Conflicts and displacements caveat: this page reflects source-reported conflict and displacement signals from online reporting, not verified event totals or population counts.",
@@ -58,6 +66,7 @@ const PAGE_CAVEATS = {
     foodSecurityPage: "Note securite alimentaire: c'est la grille principale de decision. Les valeurs IPC et FEWS sont des instantanes source et exigent une verification de date.",
     nutritionPage: "Note nutrition: cette page est une couche d'appui et ne doit pas remplacer les declencheurs de securite alimentaire ou d'evenements.",
     forecastPage: "Note previsions: cette page est basee uniquement sur les sources (IPC, ICPAC et signaux derives secheresse/cyclone). Aucune projection interne de tendance n'est affichee.",
+    attacksHealthPage: "Note attaques contre les soins de sante: cette page presente des signaux rapportes par les sources et des references SSA. Confirmer les details avec la validation pays et les partenaires de protection.",
     cyclonePage: "Note cyclone: les signaux d'evenement indiquent une pression et des besoins de preparation, mais les actions exigent une validation niveau pays.",
     hazardPage: "Note aleas: GDACS et les sources liees donnent le contexte evenementiel. Les decisions critiques exigent une triangulation avec des mises a jour pays et partenaires validees.",
     conflictsDisplacementPage: "Note conflits et deplacements: cette page reflete des signaux de conflits/deplacements rapportes en ligne, et non des totaux verifies d'evenements ou de population.",
@@ -179,6 +188,7 @@ const PHRASE_FR = {
   "Nutrition Context": "Contexte nutritionnel",
   "Event Monitoring": "Suivi des evenements",
   "Conflicts & Displacements": "Conflits et deplacements",
+  "Attacks on Healthcare": "Attaques contre les soins de sante",
   "Hazard & Flood Monitor": "Suivi aleas et inondations",
   "Cyclone Watch": "Vigie cyclonique",
   "Decision Support": "Appui a la decision",
@@ -223,6 +233,9 @@ const PHRASE_FR = {
   "Conflict And Displacement Pressure": "Pression conflits et deplacements",
   "Conflict And Displacement Prioritization": "Priorisation conflits et deplacements",
   "Recommendations: Conflicts & Displacements": "Recommandations: conflits et deplacements",
+  "Attacks on Healthcare Snapshot": "Synthese attaques contre les soins de sante",
+  "Recommendations: Attacks on Healthcare": "Recommandations: attaques contre les soins de sante",
+  "WHO SSA Source And Evidence Feed": "Source OMS SSA et flux de preuves",
   "Evidence Feed": "Flux de preuves",
   "Cyclone Leadership Snapshot": "Synthese cyclonique",
   "Cyclone-Affected Country Prioritization": "Priorisation pays affectes par cyclone",
@@ -332,6 +345,7 @@ const INDICATOR_META = {
 };
 
 const NUTRITION_OPERATIONAL_MAX_AGE_YEARS = 1;
+const FEWS_OPERATIONAL_MAX_AGE_MONTHS = 18;
 
 const els = {
   sideNav: document.getElementById("sideNav"),
@@ -404,6 +418,11 @@ const els = {
   conflictsDisplacementTableBody: document.querySelector("#conflictsDisplacementTable tbody"),
   conflictsDisplacementRecommendations: document.getElementById("conflictsDisplacementRecommendations"),
   conflictsDisplacementFeed: document.getElementById("conflictsDisplacementFeed"),
+  attacksHealthSummary: document.getElementById("attacksHealthSummary"),
+  attacksHealthSourceStatus: document.getElementById("attacksHealthSourceStatus"),
+  attacksHealthTableBody: document.querySelector("#attacksHealthTable tbody"),
+  attacksHealthRecommendations: document.getElementById("attacksHealthRecommendations"),
+  attacksHealthFeed: document.getElementById("attacksHealthFeed"),
   dtmDisplacementSummary: document.getElementById("dtmDisplacementSummary"),
   dtmDisplacementTableBody: document.querySelector("#dtmDisplacementTable tbody"),
   briefingHighlights: document.getElementById("briefingHighlights"),
@@ -619,6 +638,10 @@ function localizeDynamicBlocks() {
     els.conflictsDisplacementSummary,
     els.conflictsDisplacementRecommendations,
     els.conflictsDisplacementFeed,
+    els.attacksHealthSummary,
+    els.attacksHealthSourceStatus,
+    els.attacksHealthRecommendations,
+    els.attacksHealthFeed,
     els.operationalReportHeader,
     els.operationalEventSummary,
     els.operationalForecastSummary,
@@ -1387,10 +1410,8 @@ function updateBriefingStripVisibility(pageId) {
   if (!els.briefingStrip) {
     return;
   }
-  els.briefingStrip.classList.toggle("briefing-strip-hidden", pageId === "overviewPage");
-  if (pageId === "overviewPage") {
-    hideAcapsModeToast();
-  }
+  // Keep strip available on every page; content is page-aware.
+  els.briefingStrip.classList.remove("briefing-strip-hidden");
 }
 
 function hideAcapsModeToast() {
@@ -1444,6 +1465,7 @@ function setActivePage(pageId) {
   els.navBtns.forEach((b) => b.classList.toggle("active", b.dataset.page === pageId));
   renderCaveat(pageId);
   updateBriefingStripVisibility(pageId);
+  renderBriefingStrip(pageId);
 
   if (!dashboardState) {
     return;
@@ -1476,6 +1498,9 @@ function setActivePage(pageId) {
   }
   if (pageId === "conflictsDisplacementPage") {
     renderConflictsDisplacementPage();
+  }
+  if (pageId === "attacksHealthPage") {
+    renderHealthAttacksPage();
   }
   if (pageId === "operationalReportPage") {
     renderOperationalReportPage();
@@ -1812,6 +1837,165 @@ function renderConflictsDisplacementPage() {
     aiRecommendations?.byIssue?.conflictsDisplacement,
     "No conflict or displacement recommendations were triggered in the current refresh."
   );
+}
+
+function healthAttackSignalLabel(country) {
+  const count = Number(country.health_attack_signal_count || 0);
+  if (count >= 4) {
+    return { label: "Critical pressure", className: "bad" };
+  }
+  if (count >= 2) {
+    return { label: "High concern", className: "warn" };
+  }
+  return { label: "Watch", className: "good" };
+}
+
+async function fetchAttacksHealthStatus(force = false) {
+  const now = Date.now();
+  if (!force && attacksHealthStatusCache.payload && (now - attacksHealthStatusCache.fetchedAt) <= ATTACKS_HEALTH_STATUS_TTL_MS) {
+    return attacksHealthStatusCache.payload;
+  }
+  if (!force && attacksHealthStatusCache.inFlight) {
+    return attacksHealthStatusCache.inFlight;
+  }
+
+  const request = fetch(`/api/attacks-healthcare?freshness_mode=${freshnessMode}`, { cache: "no-store" })
+    .then(async (response) => {
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      const payload = await response.json();
+      attacksHealthStatusCache.payload = payload;
+      attacksHealthStatusCache.fetchedAt = Date.now();
+      return payload;
+    })
+    .catch(() => null)
+    .finally(() => {
+      attacksHealthStatusCache.inFlight = null;
+    });
+
+  attacksHealthStatusCache.inFlight = request;
+  return request;
+}
+
+function renderAttacksHealthSourceStatus(apiPayload, fallbackSourceStatus = {}) {
+  const sourceUrl = "https://extranet.who.int/ssa/Index.aspx";
+  const ssaSignals = Number(apiPayload?.total_signal_items ?? 0);
+  const ssaCountries = Number(apiPayload?.total_countries_with_signals ?? 0);
+  const generatedAt = apiPayload?.generated_at || null;
+  const whoDonStatus = apiPayload?.who_don_source_status || fallbackSourceStatus || {};
+
+  els.attacksHealthSourceStatus.innerHTML = `
+    <p><strong>Primary reference source:</strong> <a href="${sourceUrl}" target="_blank" rel="noreferrer">WHO SSA Portal</a>.</p>
+    <p><strong>Live attacks-healthcare API status:</strong> ${apiPayload ? "available" : "fallback"}${generatedAt ? ` (updated ${formatDateTime(generatedAt)})` : ""}.</p>
+    <p><strong>Coverage from dedicated endpoint:</strong> ${ssaSignals} signal items across ${ssaCountries} countries${apiPayload?.freshness_mode ? ` (mode: ${apiPayload.freshness_mode})` : ""}.</p>
+    <p><strong>Current WHO DON linkage:</strong> ${whoDonStatus.overall || "unknown"} (${whoDonStatus.fcv_items_30d ?? 0} mapped items in 30-day window).</p>
+    <p><strong>Method:</strong> dashboard feed includes WHO SSA reference plus verified source items (ReliefWeb, OCHA, WHO DON, IOM DTM, FEWS where relevant) that match explicit attacks-on-healthcare language.</p>
+  `;
+}
+
+function renderHealthAttacksPage() {
+  if (!dashboardState || !els.attacksHealthSummary || !els.attacksHealthSourceStatus || !els.attacksHealthTableBody || !els.attacksHealthRecommendations || !els.attacksHealthFeed) {
+    return;
+  }
+
+  const signals = dashboardState.healthcare_attack_signals || [];
+  const countries = (dashboardState.countries || [])
+    .filter((country) => (country.health_attack_signal_count || 0) > 0)
+    .sort((a, b) => {
+      const aScore = (a.health_attack_signal_count || 0) * 4 + (a.report_count_30d || 0) + ((a.ipc?.phase3plus_pct || 0) * 10);
+      const bScore = (b.health_attack_signal_count || 0) * 4 + (b.report_count_30d || 0) + ((b.ipc?.phase3plus_pct || 0) * 10);
+      return bScore - aScore;
+    });
+  const topCountries = countries.slice(0, 8);
+  const topCountryLabel = topCountries.slice(0, 4).map((country) => `${country.country} (${country.health_attack_signal_count || 0})`).join(", ") || "n/a";
+  const sourceStatus = dashboardState.who_don_source_status || {};
+
+  els.attacksHealthSummary.innerHTML = `
+    <p><strong>Current signals:</strong> ${signals.length} attack-on-healthcare related source items matched this refresh across ${countries.length} countries.</p>
+    <p><strong>Top affected profiles:</strong> ${topCountryLabel}.</p>
+    <p><strong>Decision note:</strong> this panel is designed for triage. Confirm incidents through country offices, protection clusters, and verified field channels before operational escalation.</p>
+  `;
+
+  renderAttacksHealthSourceStatus(null, sourceStatus);
+  fetchAttacksHealthStatus().then((apiPayload) => {
+    if (!els.attacksHealthSourceStatus) {
+      return;
+    }
+    renderAttacksHealthSourceStatus(apiPayload, sourceStatus);
+  });
+
+  els.attacksHealthTableBody.innerHTML = topCountries.length
+    ? topCountries.map((country) => {
+        const signal = healthAttackSignalLabel(country);
+        return `
+          <tr>
+            <td><strong>${country.country}</strong><br>${compactTrackLabel(country.fcv_track)}</td>
+            <td>${country.health_attack_signal_count || 0}</td>
+            <td>${country.report_count_30d || 0}</td>
+            <td>${country.ipc?.phase3plus_pct != null ? `${formatNum(country.ipc.phase3plus_pct * 100, 1)}%` : "n/a"}</td>
+            <td>${country.risk_score || 0}</td>
+            <td><span class="tag ${signal.className}">${signal.label}</span></td>
+          </tr>
+        `;
+      }).join("")
+    : '<tr><td colspan="6">No attacks-on-healthcare signals matched verified source criteria in the current refresh.</td></tr>';
+
+  const generatedRecs = [];
+  if (topCountries.some((country) => (country.health_attack_signal_count || 0) >= 3)) {
+    generatedRecs.push({
+      priority: "critical",
+      title: "Activate protection and continuity review",
+      body: "Trigger country-level review of health service continuity plans in countries with repeated attack-on-healthcare signals this cycle."
+    });
+  }
+  if (signals.length > 0) {
+    generatedRecs.push({
+      priority: "high",
+      title: "Cross-check against SSA and partner channels",
+      body: "Validate each high-impact item against WHO SSA records, health cluster updates, and field focal points before issuing leadership alerts."
+    });
+  }
+  if (!generatedRecs.length) {
+    generatedRecs.push({
+      priority: "watch",
+      title: "Maintain weekly surveillance",
+      body: "No acute attack-on-healthcare pressure was detected in this cycle; continue weekly source surveillance and rapid verification readiness."
+    });
+  }
+  renderRecommendationList(els.attacksHealthRecommendations, generatedRecs, "No attacks-on-healthcare recommendations were generated.");
+
+  const evidenceCountries = topCountries.slice(0, 5);
+  els.attacksHealthFeed.innerHTML = evidenceCountries.length
+    ? evidenceCountries.map((country) => {
+        const countrySignals = signals
+          .filter((item) => (item.countries || []).includes(country.iso3) && isApprovedVisibleEventSource(item.source || ""))
+          .slice(0, 3);
+        const signalMarkup = countrySignals.length
+          ? countrySignals.map((item) => `
+              <div class="feed-item conflict-feed-item">
+                <div class="conflict-feed-header">
+                  <a href="${item.url || "#"}" target="_blank" rel="noreferrer">${item.title || "Untitled report"}</a>
+                  <div class="signal-chip-row">
+                    ${(item.signal_tags || []).map((tag) => `<span class="signal-chip ${tag.toLowerCase().replace(/\s+/g, "-")}">${tag}</span>`).join("")}
+                  </div>
+                </div>
+                <div class="feed-meta-row">${renderSourceTrustBadge(item.source || "ReliefWeb")}<span>${item.source || "ReliefWeb"} | <span title="${item.date_label || "n/a"}">${formatDateTime(item.date_label)}</span></span></div>
+                <div class="signal-summary">${summarizeSourceExcerpt(item.summary || item.content || "", SOURCE_EXCERPT_MAX_CHARS)}</div>
+              </div>
+            `).join("")
+          : '<div class="feed-item conflict-feed-item"><div>No linked attack-on-healthcare source item was detected for this country in the current refresh.</div></div>';
+        return `
+          <div class="conflict-country-block">
+            <div class="conflict-country-header">
+              <strong>${country.country}</strong>
+              <span class="tag ${healthAttackSignalLabel(country).className}">${healthAttackSignalLabel(country).label}</span>
+            </div>
+            ${signalMarkup}
+          </div>
+        `;
+      }).join("")
+    : "No attacks-on-healthcare evidence items are available in this refresh.";
 }
 
 function clearPrintRestoreTimer() {
@@ -2213,6 +2397,18 @@ function ipcAnalysisAgeMonths(dateStr) {
   return (now.getFullYear() - then.getFullYear()) * 12 + (now.getMonth() - then.getMonth());
 }
 
+function fewsAgeMonths(dateStr) {
+  if (!dateStr) {
+    return null;
+  }
+  const then = new Date(dateStr);
+  if (Number.isNaN(then.getTime())) {
+    return null;
+  }
+  const now = new Date();
+  return (now.getFullYear() - then.getFullYear()) * 12 + (now.getMonth() - then.getMonth());
+}
+
 function staleIpcEntries(countries) {
   return (countries || [])
     .map((c) => ({
@@ -2294,13 +2490,39 @@ function renderFoodSecurityPage() {
           : "";
       const fews = c.fews_ipc;
       const fewsPhaseClass = (phase) => phase >= 4 ? "bad" : phase >= 3 ? "warn" : phase >= 1 ? "good" : "";
+      const fewsDateRef = fews?.reporting_date || fews?.cs_projection_end || fews?.ml1_projection_end || null;
+      const fewsAge = fewsAgeMonths(fewsDateRef);
+      const fewsSourceHint = fews?.source_document
+        ? (String(fews.source_document).includes("fews.net/") ? "FEWS country page" : "FEWS API")
+        : "FEWS source";
+      const fewsAgeTag = fewsAge == null
+        ? ""
+        : fewsAge > FEWS_OPERATIONAL_MAX_AGE_MONTHS
+          ? ` <span class="tag bad" title="FEWS value is ${fewsAge} months old">Stale</span>`
+          : ` <span class="tag good" title="FEWS value is ${fewsAge} months old">Current</span>`;
+      const useFewsDateFallback = ipcAgeMos != null && ipcAgeMos >= 18 && fewsAge != null && fewsAge <= FEWS_OPERATIONAL_MAX_AGE_MONTHS;
+      const fewsProjectionRef = fews?.ml1_projection_end || fews?.cs_projection_end || fewsDateRef || null;
+      const analysisDateCell = useFewsDateFallback
+        ? `<span class="tag good" title="Using FEWS as-of date because IPC analysis is stale">FEWS ${formatDate(fewsDateRef)}</span>`
+        : ipc
+          ? `${ipc.analysis_date || "n/a"}${ipcStaleTag}`
+          : fewsDateRef
+            ? `<span class="tag good" title="FEWS country/API as-of ${fewsDateRef}">FEWS ${formatDate(fewsDateRef)}</span>`
+            : "n/a";
+      const projectionDateCell = useFewsDateFallback
+        ? `<span class="tag good" title="Using FEWS projection window because IPC projection is stale">FEWS ${formatDate(fewsProjectionRef)}</span>`
+        : ipc
+          ? (ipc.projection_date || "n/a")
+          : fewsProjectionRef
+            ? `<span class="tag good" title="FEWS projection period end ${fewsProjectionRef}">FEWS ${formatDate(fewsProjectionRef)}</span>`
+            : "n/a";
       const fewsCSCell = fews?.cs_phase != null
-        ? `<span class="tag ${fewsPhaseClass(fews.cs_phase)}" title="${fews.cs_description || ""} — projection end: ${fews.cs_projection_end || "n/a"}">Phase ${fews.cs_phase}</span>`
+        ? `<span class="tag ${fewsPhaseClass(fews.cs_phase)}" title="${fews.cs_description || ""} — as of: ${fewsDateRef || "n/a"} — ${fewsSourceHint}">Phase ${fews.cs_phase}</span>${fewsAgeTag}`
         : fews == null
           ? '<span class="tag">No FEWS coverage</span>'
           : '<span class="tag warn">n/a</span>';
       const fewsML1Cell = fews?.ml1_phase != null
-        ? `<span class="tag ${fewsPhaseClass(fews.ml1_phase)}" title="${fews.ml1_description || ""} — projection end: ${fews.ml1_projection_end || "n/a"}">Phase ${fews.ml1_phase}</span>`
+        ? `<span class="tag ${fewsPhaseClass(fews.ml1_phase)}" title="${fews.ml1_description || ""} — as of: ${fewsDateRef || "n/a"} — ${fewsSourceHint}">Phase ${fews.ml1_phase}</span>${fewsAgeTag}`
         : fews == null
           ? '<span class="tag">No FEWS coverage</span>'
           : '<span class="tag warn">n/a</span>';
@@ -2312,8 +2534,8 @@ function renderFoodSecurityPage() {
           <td>${ipc ? (ipc.phase3plus_number || 0).toLocaleString() : "n/a"}</td>
           <td>${ipc ? ((ipc.phase4_number || 0) + (ipc.phase5_number || 0)).toLocaleString() : "n/a"}</td>
           <td>${ipc ? `<span class="tag ${levelClass}">${(ipc.ipc_crisis_level || "n/a").toUpperCase()}</span>` : "n/a"}</td>
-          <td>${ipc ? `${ipc.analysis_date || "n/a"}${ipcStaleTag}` : "n/a"}</td>
-          <td>${ipc ? (ipc.projection_date || "n/a") : "n/a"}</td>
+          <td>${analysisDateCell}</td>
+          <td>${projectionDateCell}</td>
           <td>${fewsCSCell}</td>
           <td>${fewsML1Cell}</td>
         </tr>
@@ -2724,6 +2946,7 @@ function renderConfidenceLegend() {
 }
 
 function renderBriefingStrip() {
+  const pageId = activePageId();
   const countries = dashboardState.countries || [];
   const ensoAdvisory = dashboardState.enso_advisory || null;
   const top = countries[0];
@@ -2807,34 +3030,82 @@ function renderBriefingStrip() {
     ? '<div id="briefingStripDataQualityLegend" class="strip-note strip-note-legend">m = months since latest IPC analysis.</div>'
     : "";
 
-  els.briefingStrip.innerHTML = `
-    <article class="strip-card">
-      <h3>Current Highest Risk</h3>
-      <p>${top ? `${top.country} (${top.risk_score})` : "n/a"}</p>
-    </article>
-    <article class="strip-card">
-      <h3>IPC Crisis Countries</h3>
-      <p>${crisisCountries}</p>
-    </article>
-    <article class="strip-card">
-      <h3>IPC Coverage</h3>
-      <p>${ipcLoaded} / ${dashboardState.scope.country_count}</p>
-    </article>
-    <article class="strip-card">
-      <h3>Top Alerts Active</h3>
-      <p>${alertCount}</p>
-    </article>
-    <article class="${ensoCardClass}">
-      <h3>ENSO Watch</h3>
-      <p title="${ensoStatusLabel}">${ensoStatusLabel}</p>
-      <div class="strip-note">${ensoStatusNote}</div>
-    </article>
-    <article class="${qualityCardClass}">
-      <h3>Data Quality</h3>
-      <p title="${qualityNoteFull}" aria-describedby="briefingStripDataQualityNote${ipcVeryStaleCount > 0 ? ' briefingStripDataQualityLegend' : ''}">${qualityLabel}</p>
-      <div id="briefingStripDataQualityNote" class="strip-note" title="${qualityNoteFull}">${qualityNote}</div>
-      ${qualityLegendMarkup}
-    </article>
+  const conflictSignals = countries.filter((c) => (c.conflict_signal_count || 0) > 0 || (c.displacement_signal_count || 0) > 0).length;
+  const attacksHealthSignals = countries.filter((c) => (c.health_attack_signal_count || 0) > 0).length;
+  const nutritionSignals = countries.filter((c) => (c.nutrition_signal_count || 0) > 0).length;
+  const cycloneSignals = countries.filter((c) => (c.cyclone_count || 0) > 0).length;
+  const forecastCount = (dashboardState.forecasts || []).length;
+  const droughtCount = (dashboardState.drought_signals || []).length;
+  const hazardsCount = (dashboardState.hazards || []).length;
+  const whoDon30d = Number(dashboardState.who_don_source_status?.fcv_items_30d || 0);
+  const serviceCoverage = (dashboardState.service_delivery_by_country || []).length;
+  const priorityCountries = countries.filter((c) => Number(c.risk_score || 0) >= 65).length;
+  const attacksSignalsTotal = (dashboardState.healthcare_attack_signals || []).length;
+
+  const pageCards = {
+    overviewPage: `
+      <article class="strip-card"><h3>Current Highest Risk</h3><p>${top ? `${top.country} (${top.risk_score})` : "n/a"}</p></article>
+      <article class="strip-card"><h3>IPC Crisis Countries</h3><p>${crisisCountries}</p></article>
+      <article class="strip-card"><h3>Top Alerts Active</h3><p>${alertCount}</p></article>
+      <article class="${qualityCardClass}"><h3>Data Quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div>${qualityLegendMarkup}</article>
+    `,
+    foodSecurityPage: `
+      <article class="strip-card"><h3>Food Security Focus</h3><p>${top ? top.country : "n/a"}</p><div class="strip-note">Highest overall risk profile</div></article>
+      <article class="strip-card"><h3>IPC Coverage</h3><p>${ipcLoaded} / ${dashboardState.scope.country_count}</p></article>
+      <article class="strip-card"><h3>FEWS Country Mapping</h3><p>${dashboardState.fews_country_page_status?.mapped_countries ?? "n/a"}</p></article>
+      <article class="strip-card"><h3>IPC Crisis Countries</h3><p>${crisisCountries}</p></article>
+    `,
+    nutritionPage: `
+      <article class="strip-card"><h3>Nutrition Signal Countries</h3><p>${nutritionSignals}</p></article>
+      <article class="strip-card"><h3>World Bank Source</h3><p>${dashboardState.nutrition_source_status?.overall || "unknown"}</p></article>
+      <article class="strip-card"><h3>HDX Fallback Applied</h3><p>${dashboardState.nutrition_hdx_status?.applied_country_count ?? 0}</p></article>
+      <article class="${qualityCardClass}"><h3>Nutrition Data Quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div></article>
+    `,
+    conflictsDisplacementPage: `
+      <article class="strip-card"><h3>Active Countries</h3><p>${conflictSignals}</p></article>
+      <article class="strip-card"><h3>Matched Evidence Items</h3><p>${Object.values(conflictStatus.matched_signal_items || {}).reduce((a, b) => a + Number(b || 0), 0)}</p></article>
+      <article class="strip-card"><h3>UNHCR Candidates</h3><p>${Number(conflictStatus.candidate_items_current?.unhcr || 0)}</p></article>
+      <article class="strip-card"><h3>Displacement Watch</h3><p>${countries.filter((c) => (c.displacement_signal_count || 0) > 0).length}</p></article>
+    `,
+    attacksHealthPage: `
+      <article class="strip-card"><h3>Healthcare Attack Countries</h3><p>${attacksHealthSignals}</p></article>
+      <article class="strip-card"><h3>Healthcare Attack Signals</h3><p>${attacksSignalsTotal}</p></article>
+      <article class="strip-card"><h3>WHO DON 30d</h3><p>${whoDon30d}</p></article>
+      <article class="strip-card"><h3>Top Risk Country</h3><p>${top ? top.country : "n/a"}</p></article>
+    `,
+    hazardPage: `
+      <article class="strip-card"><h3>Hazard Events</h3><p>${hazardsCount}</p></article>
+      <article class="strip-card"><h3>Regional Flood Signals</h3><p>${(dashboardState.regional_flood_signals || []).length}</p></article>
+      <article class="strip-card"><h3>WHO DON Linked Items</h3><p>${whoDon30d}</p></article>
+      <article class="${ensoCardClass}"><h3>ENSO Watch</h3><p title="${ensoStatusLabel}">${ensoStatusLabel}</p><div class="strip-note">${ensoStatusNote}</div></article>
+    `,
+    cyclonePage: `
+      <article class="strip-card"><h3>Cyclone Signal Countries</h3><p>${cycloneSignals}</p></article>
+      <article class="strip-card"><h3>Projection-Mapped Countries</h3><p>${dashboardState.cyclone_intelligence?.countries_with_projection_signal ?? 0}</p></article>
+      <article class="strip-card"><h3>Dedicated Cyclone Sources</h3><p>${dashboardState.cyclone_source_status?.available_count ?? 0}/${dashboardState.cyclone_source_status?.checked_count ?? 0}</p></article>
+      <article class="strip-card"><h3>Cyclone Advisories</h3><p>${(dashboardState.cyclone_intelligence?.projection_signals || []).length}</p></article>
+    `,
+    forecastPage: `
+      <article class="strip-card"><h3>Forecast Bulletins</h3><p>${forecastCount}</p></article>
+      <article class="strip-card"><h3>Drought Signals</h3><p>${droughtCount}</p></article>
+      <article class="${ensoCardClass}"><h3>ENSO Watch</h3><p title="${ensoStatusLabel}">${ensoStatusLabel}</p><div class="strip-note">${ensoStatusNote}</div></article>
+      <article class="strip-card"><h3>Forecast Source Status</h3><p>${dashboardState.enso_source_status?.overall || "unknown"}</p></article>
+    `,
+    countryPage: `
+      <article class="strip-card"><h3>Monitored Countries</h3><p>${dashboardState.scope.country_count}</p></article>
+      <article class="strip-card"><h3>Highest Risk Country</h3><p>${top ? top.country : "n/a"}</p></article>
+      <article class="strip-card"><h3>Service Delivery Coverage</h3><p>${serviceCoverage}</p></article>
+      <article class="strip-card"><h3>Top Alerts Active</h3><p>${alertCount}</p></article>
+    `,
+    operationalReportPage: `
+      <article class="strip-card"><h3>Priority Countries (Risk >= 65)</h3><p>${priorityCountries}</p></article>
+      <article class="strip-card"><h3>Combined Recommendations</h3><p>${(aiRecommendations?.combined || []).length}</p></article>
+      <article class="strip-card"><h3>Scope Coverage</h3><p>${dashboardState.scope.country_count}</p><div class="strip-note">FCV + AFRO monitored countries</div></article>
+      <article class="${qualityCardClass}"><h3>Report Data Quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div></article>
+    `
+  };
+
+  const commonTail = `
     <article class="strip-card">
       <h3>Last Refresh</h3>
       <p title="${dashboardState.generated_at || "n/a"}">${refreshLabel}</p>
@@ -2850,6 +3121,8 @@ function renderBriefingStrip() {
       <div class="strip-note">${acapsCardNote}</div>
     </article>
   `;
+
+  els.briefingStrip.innerHTML = `${pageCards[pageId] || pageCards.overviewPage}${commonTail}`;
 }
 
 function burdenTag(value, mediumThreshold, highThreshold) {
@@ -3672,6 +3945,18 @@ function renderForecast(countryIso3) {
   const ipcProjectedPct = c.ipc?.projection_phase3plus_pct;
   const ipcDate = c.ipc?.analysis_date || "n/a";
   const ipcProjectionDate = c.ipc?.projection_date || "n/a";
+  const ipcAgeMos = ipcAnalysisAgeMonths(c.ipc?.analysis_date);
+  const fews = c.fews_ipc || null;
+  const fewsDateRef = fews?.reporting_date || fews?.cs_projection_end || fews?.ml1_projection_end || null;
+  const fewsProjectionRef = fews?.ml1_projection_end || fews?.cs_projection_end || fewsDateRef || null;
+  const fewsAge = fewsAgeMonths(fewsDateRef);
+  const useFewsDateFallback = ipcAgeMos != null && ipcAgeMos >= 18 && fewsAge != null && fewsAge <= FEWS_OPERATIONAL_MAX_AGE_MONTHS;
+  const forecastIpcDateCell = useFewsDateFallback
+    ? `<span class="tag good" title="Using FEWS as-of date because IPC analysis is stale">FEWS ${formatDate(fewsDateRef)}</span>`
+    : ipcDate;
+  const forecastIpcProjectionCell = useFewsDateFallback
+    ? `<span class="tag good" title="Using FEWS projection window because IPC projection is stale">FEWS ${formatDate(fewsProjectionRef)}</span>`
+    : ipcProjectionDate;
   const countryDroughtCount = c.drought_signal_count || 0;
   const countryIcpacCount = c.icpac_forecast_count || 0;
   const wastingLatest = latestAvailableIndicatorValue(c.indicators?.wasting_u5_pct);
@@ -3762,7 +4047,7 @@ function renderForecast(countryIso3) {
       <td>IPC (HDX)</td>
       <td>${ipcCurrentPct == null ? "n/a" : `${formatNum(ipcCurrentPct * 100, 1)}% (Phase 3+)`}</td>
       <td>${ipcProjectedPct == null ? "n/a" : `${formatNum(ipcProjectedPct * 100, 1)}% (Phase 3+)`}</td>
-      <td>${ipcDate}${ipcProjectionDate !== "n/a" ? ` | Projection: ${ipcProjectionDate}` : ""}</td>
+      <td>${forecastIpcDateCell}${forecastIpcProjectionCell !== "n/a" ? ` | Projection: ${forecastIpcProjectionCell}` : ""}</td>
       <td>Official IPC snapshot and validity projection rows from HDX</td>
     </tr>
     <tr>
@@ -5359,17 +5644,19 @@ function renderMeta() {
   const acledStatus = dashboardState.acled_source_status || {};
   const acapsStatus = dashboardState.acaps_source_status || {};
   const fewsStatus = dashboardState.fews_source_status || {};
+  const fewsCountryPageStatus = dashboardState.fews_country_page_status || {};
   const reliefwebApiStatus = dashboardState.reliefweb_api_status || {};
   const acapsWarningLabel = acapsStatus.pagination_warning ? `, warning ${acapsStatus.pagination_warning}` : "";
   const acapsLabel = `ACAPS context: ${acapsStatus.overall || "unknown"}${acapsStatus.total_items != null ? ` (${acapsStatus.total_items} items` : ""}${acapsStatus.pages_scanned != null ? `, pages ${acapsStatus.pages_scanned}/${acapsStatus.pages_cap || "?"}` : ""}${acapsStatus.total_items != null ? ")" : ""}${acapsWarningLabel}`;
   const acledLabel = `ACLED context: ${acledStatus.overall || "unknown"}${acledStatus.fcv_rows != null ? ` (${acledStatus.fcv_rows} AFRO rows)` : ""}`;
   const fewsLabel = `FEWS references: ${fewsStatus.overall || "unknown"}${fewsStatus.country_hits != null ? ` (${fewsStatus.country_hits} country hits)` : ""}`;
+  const fewsCountryPagesLabel = `FEWS country pages: ${fewsCountryPageStatus.overall || "unknown"}${fewsCountryPageStatus.mapped_countries != null ? ` (${fewsCountryPageStatus.mapped_countries} mapped countries)` : ""}`;
   const reliefwebApiLabel = `ReliefWeb API: ${reliefwebApiStatus.overall || "unknown"}${reliefwebApiStatus.matching_signals != null ? ` (${reliefwebApiStatus.matching_signals}/${reliefwebApiStatus.reports_returned || 0} flood matches)` : ""}`;
   const cemsFloodLabel = `Copernicus flood: ${cemsFloodSource.overall || "unknown"}${cemsFloodSource.public_docs_available != null ? ` (${cemsFloodSource.public_docs_available}/${cemsFloodSource.public_docs_checked || 0} docs reachable${cemsFloodSource.live_portal_requires_login ? ", portal credentialed" : ""})` : ""}`;
   const freshnessLabel = policy.mode === "strict"
     ? `Freshness: strict (${policy.nutrition_max_age_years ?? "?"}y nutrition)`
     : "Freshness: advisory";
-  els.metaLine.textContent = `Last refresh: ${formatDateTime(dashboardState.generated_at)} | Sources: World Bank API + HDX nutrition fallback, GDACS RSS, ReliefWeb RSS + ReliefWeb Reports API, Copernicus CEMS Flood / GloFAS posture checks, ACAPS public context cards, ACLED Conflict Index context, FEWS NET reference discovery, ICPAC, Meteo-France La Reunion, Cyclocane, WMO Severe Weather Information Centre, IPC via HDX | ${nutritionLabel} | ${nutritionHdxLabel} | ${cycloneLabel} | ${reliefwebApiLabel} | ${cemsFloodLabel} | ${acapsLabel} | ${acledLabel} | ${fewsLabel} | ${ipcLabel} | ${freshnessLabel} | Scope: ${scopeCoverageLabel()} grouped as FCV Prioritized, FCV Accelerated, AFRO, then Other Africa.`;
+  els.metaLine.textContent = `Last refresh: ${formatDateTime(dashboardState.generated_at)} | Sources: World Bank API + HDX nutrition fallback, GDACS RSS, ReliefWeb RSS + ReliefWeb Reports API, Copernicus CEMS Flood / GloFAS posture checks, ACAPS public context cards, ACLED Conflict Index context, FEWS NET reference discovery + FEWS country pages, ICPAC, Meteo-France La Reunion, Cyclocane, WMO Severe Weather Information Centre, IPC via HDX | ${nutritionLabel} | ${nutritionHdxLabel} | ${cycloneLabel} | ${reliefwebApiLabel} | ${cemsFloodLabel} | ${acapsLabel} | ${acledLabel} | ${fewsLabel} | ${fewsCountryPagesLabel} | ${ipcLabel} | ${freshnessLabel} | Scope: ${scopeCoverageLabel()} grouped as FCV Prioritized, FCV Accelerated, AFRO, then Other Africa.`;
 }
 
 function updateNavBadges() {
@@ -5379,6 +5666,7 @@ function updateNavBadges() {
   );
   const hazardSignal = countries.some(c => c.hazard_count > 3);
   const cycloneSignal = countries.some(c => c.cyclone_count >= 2);
+  const attacksHealthSignal = countries.some(c => Number(c.health_attack_signal_count || 0) >= 2);
 
   els.navBtns.forEach(btn => {
     const existing = btn.querySelector(".nav-badge");
@@ -5398,6 +5686,10 @@ function updateNavBadges() {
     } else if (page === "hazardPage" && hazardSignal) {
       badge = document.createElement("span");
       badge.className = "nav-badge badge-warn";
+      badge.textContent = "!";
+    } else if (page === "attacksHealthPage" && attacksHealthSignal) {
+      badge = document.createElement("span");
+      badge.className = "nav-badge badge-crisis";
       badge.textContent = "!";
     } else if (page === "forecastPage" && cycloneSignal) {
       badge = document.createElement("span");
@@ -5941,6 +6233,7 @@ async function loadDashboard(options = {}) {
     renderWhoDonAlerts();
     renderHazardSourceSummaries();
     renderConflictsDisplacementPage();
+    renderHealthAttacksPage();
     renderIcpacForecasts();
     renderRecommendations();
     renderBriefingHighlights();
@@ -5999,6 +6292,7 @@ async function loadDashboard(options = {}) {
         renderWhoDonAlerts();
         renderHazardSourceSummaries();
         renderConflictsDisplacementPage();
+        renderHealthAttacksPage();
         renderIcpacForecasts();
         renderRecommendations();
         renderBriefingHighlights();

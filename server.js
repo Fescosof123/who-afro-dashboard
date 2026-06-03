@@ -256,7 +256,7 @@ function isApprovedVisibleEventSource(source) {
   if (!normalized) {
     return false;
   }
-  return /^(GDACS|ReliefWeb(?: RSS| API| disease fallback)?|WHO DON(?: RSS)?|OCHA RSS|IDMC RSS|UNHCR(?: RSS| via ReliefWeb| Population Data)?|IOM DTM(?: RSS| Event Tracking| Report)?|FEWS NET(?: Risk Radar)?)$/i.test(normalized);
+  return /^(GDACS|ReliefWeb(?: RSS| API| disease fallback)?|WHO DON(?: RSS)?|OCHA RSS|IDMC RSS|UNHCR(?: RSS| via ReliefWeb| Population Data)?|IOM DTM(?: RSS| Event Tracking| Report)?|FEWS NET(?: Risk Radar| Country Page| Data Warehouse)?)$/i.test(normalized);
 }
 
 function filterApprovedVisibleEventItems(items = []) {
@@ -363,12 +363,46 @@ const FEWS_DW_IPC_URL = "https://fdw.fews.net/api/ipcphase/";
 const FEWS_IPC_CACHE_FILE = path.join(DATA_DIR, "fews-ipc-cache.json");
 const FEWS_IPC_CACHE_TTL_MINUTES = parsePositiveIntEnv(process.env.FEWS_IPC_CACHE_TTL_MINUTES, 360);
 const FEWS_IPC_REQUEST_TIMEOUT_MS = parsePositiveIntEnv(process.env.FEWS_IPC_REQUEST_TIMEOUT_MS, 9000);
+const FEWS_IPC_MAX_AGE_MONTHS = parsePositiveIntEnv(process.env.FEWS_IPC_MAX_AGE_MONTHS, 18);
+const FEWS_FEEDS_INDEX_URL = "https://fews.net/feeds";
+const FEWS_FEEDS_INDEX_CACHE_TTL_MINUTES = parsePositiveIntEnv(process.env.FEWS_FEEDS_INDEX_CACHE_TTL_MINUTES, 1440);
 // ISO-2 codes used by the FEWS Data Warehouse; only countries with active FEWS coverage listed.
 const FEWS_COVERAGE_ISO2 = {
   BFA: "BF", TCD: "TD", MLI: "ML", NER: "NE",
   ETH: "ET", SSD: "SS", CMR: "CM", NGA: "NG", ZWE: "ZW"
 };
+const FEWS_COUNTRY_PAGE_URLS = {
+  ETH: "https://fews.net/east-africa/ethiopia",
+  ZWE: "https://fews.net/southern-africa/zimbabwe",
+  NGA: "https://fews.net/west-africa/nigeria",
+  SSD: "https://fews.net/east-africa/south-sudan",
+  MLI: "https://fews.net/west-africa/mali",
+  NER: "https://fews.net/west-africa/niger",
+  BFA: "https://fews.net/west-africa/burkina-faso",
+  TCD: "https://fews.net/west-africa/chad",
+  CMR: "https://fews.net/central-africa/cameroon",
+  MOZ: "https://fews.net/southern-africa/mozambique",
+  KEN: "https://fews.net/east-africa/kenya",
+  SOM: "https://fews.net/east-africa/somalia",
+  UGA: "https://fews.net/east-africa/uganda"
+};
+const FEWS_COUNTRY_SLUGS = {
+  ETH: "ethiopia",
+  ZWE: "zimbabwe",
+  NGA: "nigeria",
+  SSD: "south-sudan",
+  MLI: "mali",
+  NER: "niger",
+  BFA: "burkina-faso",
+  TCD: "chad",
+  CMR: "cameroon",
+  MOZ: "mozambique",
+  KEN: "kenya",
+  SOM: "somalia",
+  UGA: "uganda"
+};
 let fewsIpcCacheSnapshot = null;
+let fewsFeedsIndexSnapshot = null;
 let acapsCacheSnapshot = null;
 
 function currentAcapsMaxPages() {
@@ -424,6 +458,7 @@ function emptyCountryRecord(country) {
     drought_signal_count: 0,
     icpac_forecast_count: 0,
     fews_reference_count: 0,
+    health_attack_signal_count: 0,
     fews_ipc: null,
     acaps_reference_count: 0,
     disease_outbreak_signal_count: 0,
@@ -473,10 +508,170 @@ function isFewsIpcCacheFresh(snapshot) {
   return ageMinutes <= FEWS_IPC_CACHE_TTL_MINUTES;
 }
 
+function isFewsFeedsIndexFresh(snapshot) {
+  if (!snapshot?.saved_at || !snapshot?.feeds_by_iso3) {
+    return false;
+  }
+  const savedMs = new Date(snapshot.saved_at).getTime();
+  if (!Number.isFinite(savedMs)) {
+    return false;
+  }
+  const ageMinutes = (Date.now() - savedMs) / 60000;
+  return ageMinutes <= FEWS_FEEDS_INDEX_CACHE_TTL_MINUTES;
+}
+
+function toAbsoluteFewsUrl(href) {
+  const value = String(href || "").trim();
+  if (!value) {
+    return null;
+  }
+  if (/^https?:\/\//i.test(value)) {
+    return value;
+  }
+  return `https://fews.net${value.startsWith("/") ? "" : "/"}${value}`;
+}
+
+async function getFewsCountryFeedLookup() {
+  if (isFewsFeedsIndexFresh(fewsFeedsIndexSnapshot)) {
+    return fewsFeedsIndexSnapshot.feeds_by_iso3 || {};
+  }
+
+  const response = await axios.get(FEWS_FEEDS_INDEX_URL, {
+    timeout: 20000,
+    headers: {
+      "User-Agent": "WHO-AFRO-Dashboard/1.0 (+public-data-mvp)",
+      Accept: "text/html,application/xhtml+xml"
+    }
+  });
+
+  const html = String(response.data || "");
+  const $ = cheerio.load(html);
+  const feedsByIso3 = {};
+
+  Object.entries(FEWS_COUNTRY_PAGE_URLS).forEach(([iso3, countryUrl]) => {
+    let pathName = "";
+    try {
+      pathName = new URL(countryUrl).pathname;
+    } catch {
+      return;
+    }
+    if (!pathName) {
+      return;
+    }
+
+    let countryAnchor = $(`a[href='${pathName}']`).first();
+    if (!countryAnchor.length) {
+      countryAnchor = $(`a[href$='${pathName}']`).first();
+    }
+    if (!countryAnchor.length) {
+      return;
+    }
+
+    let feedHref = null;
+    const termPath = String(countryAnchor.attr("data-drupal-link-system-path") || "").trim();
+    const termMatch = termPath.match(/taxonomy\/term\/\d+/i);
+    if (termMatch) {
+      feedHref = `/${termMatch[0]}/feed`;
+    }
+
+    if (!feedHref) {
+      const rowNode = countryAnchor.closest("tr");
+      if (rowNode.length) {
+        feedHref = rowNode.find("a[href$='/feed']").first().attr("href") || null;
+      }
+    }
+    if (!feedHref) {
+      const listNode = countryAnchor.closest("li");
+      if (listNode.length) {
+        feedHref = listNode.find("a[href$='/feed']").first().attr("href") || null;
+      }
+    }
+    if (!feedHref) {
+      let current = countryAnchor.parent();
+      for (let depth = 0; depth < 6 && current && current.length; depth += 1) {
+        feedHref = current.find("a[href$='/feed']").first().attr("href") || null;
+        if (feedHref) {
+          break;
+        }
+        current = current.parent();
+      }
+    }
+
+    const feedUrl = toAbsoluteFewsUrl(feedHref);
+    if (feedUrl) {
+      feedsByIso3[iso3] = feedUrl;
+    }
+  });
+
+  fewsFeedsIndexSnapshot = {
+    saved_at: new Date().toISOString(),
+    feeds_by_iso3: feedsByIso3
+  };
+
+  return feedsByIso3;
+}
+
+function parseDateMs(value) {
+  if (!value) {
+    return NaN;
+  }
+  const ms = new Date(value).getTime();
+  return Number.isFinite(ms) ? ms : NaN;
+}
+
+function isWithinRecentMonths(value, maxAgeMonths) {
+  const ms = parseDateMs(value);
+  if (!Number.isFinite(ms)) {
+    return false;
+  }
+  const ageMonths = (Date.now() - ms) / (1000 * 60 * 60 * 24 * 30.4375);
+  return ageMonths <= maxAgeMonths;
+}
+
+function isFewsIpcRecordRecent(record) {
+  if (!record || typeof record !== "object") {
+    return false;
+  }
+  const candidates = [record.reporting_date, record.cs_projection_end, record.ml1_projection_end].filter(Boolean);
+  if (!candidates.length) {
+    return false;
+  }
+  return candidates.some((dateValue) => isWithinRecentMonths(dateValue, FEWS_IPC_MAX_AGE_MONTHS));
+}
+
+function buildFewsIpcRecord(cs, ml1) {
+  const csValue = Number(cs?.value);
+  const ml1Value = Number(ml1?.value);
+  const csPhase = Number.isFinite(csValue) && csValue >= 1 && csValue <= 5 ? csValue : null;
+  const ml1Phase = Number.isFinite(ml1Value) && ml1Value >= 1 && ml1Value <= 5 ? ml1Value : null;
+  if (csPhase == null && ml1Phase == null) {
+    return null;
+  }
+
+  const record = {
+    cs_phase: csPhase,
+    cs_description: csPhase != null ? (cs?.description ?? null) : null,
+    cs_projection_end: csPhase != null ? (cs?.projection_end ?? null) : null,
+    ml1_phase: ml1Phase,
+    ml1_description: ml1Phase != null ? (ml1?.description ?? null) : null,
+    ml1_projection_end: ml1Phase != null ? (ml1?.projection_end ?? null) : null,
+    reporting_date: cs?.reporting_date ?? ml1?.reporting_date ?? null,
+    source_document: cs?.source_document ?? ml1?.source_document ?? null
+  };
+
+  if (!isFewsIpcRecordRecent(record)) {
+    return null;
+  }
+  return record;
+}
+
 function applyFewsIpcSnapshot(countryMap, byIso3 = {}) {
   let mapped = 0;
   Object.entries(byIso3).forEach(([iso3, fewsIpc]) => {
     if (!countryMap[iso3] || !fewsIpc) {
+      return;
+    }
+    if (!isFewsIpcRecordRecent(fewsIpc)) {
       return;
     }
     countryMap[iso3].fews_ipc = fewsIpc;
@@ -525,6 +720,7 @@ async function fetchFewsNetIpcData(countryMap) {
     checked_at: new Date().toISOString(),
     overall: "unavailable",
     mapped_countries: 0,
+    stale_records_skipped: 0,
     covered_countries: Object.keys(FEWS_COVERAGE_ISO2),
     error: null
   };
@@ -570,21 +766,13 @@ async function fetchFewsNetIpcData(countryMap) {
         continue;
       }
       if (cs || ml1) {
+        const fewsRecord = buildFewsIpcRecord(cs, ml1);
+        if (!fewsRecord) {
+          status.stale_records_skipped += 1;
+          continue;
+        }
         mapped++;
-        const csValue = Number(cs?.value);
-        const ml1Value = Number(ml1?.value);
-        const csPhase = Number.isFinite(csValue) && csValue >= 1 && csValue <= 5 ? csValue : null;
-        const ml1Phase = Number.isFinite(ml1Value) && ml1Value >= 1 && ml1Value <= 5 ? ml1Value : null;
-        countryMap[iso3].fews_ipc = {
-          cs_phase: csPhase,
-          cs_description: csPhase != null ? (cs?.description ?? null) : null,
-          cs_projection_end: csPhase != null ? (cs?.projection_end ?? null) : null,
-          ml1_phase: ml1Phase,
-          ml1_description: ml1Phase != null ? (ml1?.description ?? null) : null,
-          ml1_projection_end: ml1Phase != null ? (ml1?.projection_end ?? null) : null,
-          reporting_date: cs?.reporting_date ?? ml1?.reporting_date ?? null,
-          source_document: cs?.source_document ?? ml1?.source_document ?? null
-        };
+        countryMap[iso3].fews_ipc = fewsRecord;
         byIso3[iso3] = countryMap[iso3].fews_ipc;
       }
     }
@@ -701,6 +889,289 @@ async function fetchFewsNetSignals(countryMap) {
     status.error = `${err.response?.status || err.code || "request_failed"}: ${err.message}`;
     return { signals: [], status };
   }
+}
+
+async function fetchFewsCountryPageSignals(countryMap) {
+  const status = {
+    source: "FEWS NET Country Pages",
+    endpoint: "https://fews.net",
+    checked_at: new Date().toISOString(),
+    overall: "unavailable",
+    pages_checked: 0,
+    pages_succeeded: 0,
+    mapped_countries: 0,
+    feeds_resolved: 0,
+    feeds_succeeded: 0,
+    error_count: 0,
+    errors: []
+  };
+
+  const signals = [];
+  const foodRegex = /\bipc\s+phase\b|\bphase\s+[345]\b|acute\s+food\s+insecur|food\s+crisis|food\s+emergency|famine|food\s+insecur|food\s+secur|food\s+assistance|harvest\s+fail|food\s+price|livelihood|staple\s+crop|food\s+deficit|food\s+stress|emergency\s+food|severe\s+food|critical\s+food/i;
+  const nutritionRegex = /malnutrition|acute\s+malnutrition|\bSAM\b|\bMAM\b|\bGAM\b|wasting|stunting|\bCMAM\b|therapeutic\s+feed|nutrition\s+crisis|nutrition\s+emergency|nutritional\s+status|nutrition\s+response|undernutrition|micronutrient\s+deficien|severe\s+malnutrition|moderate\s+malnutrition|nutrition\s+screen|nutrition\s+survey|\bMUAC\b|mid-upper\s+arm|nutrition\s+cluster|nutrition\s+situation/i;
+
+  const inferPhaseFromText = (rawText) => {
+    const text = String(rawText || "").toLowerCase();
+    if (!text.trim()) {
+      return null;
+    }
+    const phaseMatches = [...text.matchAll(/(?:ipc\s*)?phase\s*([1-5])/gi)].map((m) => Number(m[1])).filter((n) => Number.isFinite(n));
+    if (phaseMatches.length) {
+      return Math.max(...phaseMatches);
+    }
+    if (/famine|catastrophe/.test(text)) return 5;
+    if (/emergency/.test(text)) return 4;
+    if (/crisis/.test(text)) return 3;
+    if (/stressed/.test(text)) return 2;
+    if (/minimal/.test(text)) return 1;
+    return null;
+  };
+
+  const monthMap = {
+    january: 1, february: 2, march: 3, april: 4, may: 5, june: 6,
+    july: 7, august: 8, september: 9, october: 10, november: 11, december: 12
+  };
+
+  const buildCountryUrlCandidates = (iso3, url) => {
+    const out = [];
+    if (url) {
+      out.push(url);
+    }
+    const slug = FEWS_COUNTRY_SLUGS[iso3];
+    if (slug) {
+      out.push(`https://fews.net/${slug}`);
+      out.push(`https://fews.net/countries/${slug}`);
+    }
+    return [...new Set(out)];
+  };
+
+  const parseFewsPeriodFromText = (textValue) => {
+    const text = String(textValue || "").toLowerCase();
+    const monthsPattern = "(january|february|march|april|may|june|july|august|september|october|november|december)";
+    const rx = new RegExp(`${monthsPattern}\\s+(\\d{4})\\s*(?:to|through|-)\\s*${monthsPattern}\\s+(\\d{4})`, "i");
+    const m = text.match(rx);
+    if (!m) {
+      return null;
+    }
+    const startMonth = monthMap[String(m[1]).toLowerCase()];
+    const startYear = Number(m[2]);
+    const endMonth = monthMap[String(m[3]).toLowerCase()];
+    const endYear = Number(m[4]);
+    if (!startMonth || !endMonth || !Number.isFinite(startYear) || !Number.isFinite(endYear)) {
+      return null;
+    }
+    const startIso = `${startYear}-${String(startMonth).padStart(2, "0")}-01`;
+    const endDate = new Date(Date.UTC(endYear, endMonth, 0));
+    const endIso = `${endDate.getUTCFullYear()}-${String(endDate.getUTCMonth() + 1).padStart(2, "0")}-${String(endDate.getUTCDate()).padStart(2, "0")}`;
+    return { startIso, endIso };
+  };
+
+  const entries = Object.entries(FEWS_COUNTRY_PAGE_URLS);
+  const batchSize = 4;
+  let feedLookup = {};
+  try {
+    feedLookup = await getFewsCountryFeedLookup();
+    status.feeds_resolved = Object.keys(feedLookup || {}).length;
+  } catch (err) {
+    if (status.errors.length < 8) {
+      status.errors.push({
+        iso3: "*",
+        url: FEWS_FEEDS_INDEX_URL,
+        error: `feeds_index_failed: ${err.message}`
+      });
+    }
+  }
+
+  for (let i = 0; i < entries.length; i += batchSize) {
+    const batch = entries.slice(i, i + batchSize);
+    const batchSignals = await Promise.all(batch.map(async ([iso3, url]) => {
+      status.pages_checked += 1;
+      const urlCandidates = buildCountryUrlCandidates(iso3, url);
+      let response = null;
+      let resolvedUrl = null;
+      try {
+        for (const candidate of urlCandidates) {
+          try {
+            response = await axios.get(candidate, {
+              timeout: 20000,
+              headers: {
+                "User-Agent": "WHO-AFRO-Dashboard/1.0 (+public-data-mvp)",
+                Accept: "text/html,application/xhtml+xml"
+              }
+            });
+            resolvedUrl = candidate;
+            break;
+          } catch {
+          }
+        }
+
+        if (!response) {
+          throw new Error(`all_country_urls_failed (${urlCandidates.join(", ")})`);
+        }
+
+        const html = String(response.data || "");
+        const $ = cheerio.load(html);
+        const pageTitle = $("h1").first().text().replace(/\s+/g, " ").trim()
+          || $("title").first().text().replace(/\s+/g, " ").trim()
+          || `FEWS country page update (${iso3})`;
+        const pageText = $("main").text().replace(/\s+/g, " ").trim() || $.text().replace(/\s+/g, " ").trim();
+        const summary = $("main p, article p, .region-main p").first().text().replace(/\s+/g, " ").trim()
+          || $("meta[name='description']").attr("content")
+          || "FEWS country page snapshot parsed for food security and nutrition indicators.";
+        const observedAt = $("meta[property='article:modified_time']").attr("content")
+          || $("meta[name='last_modified']").attr("content")
+          || $("time[datetime]").first().attr("datetime")
+          || status.checked_at;
+        let phaseText = `${pageTitle} ${summary} ${pageText}`;
+
+        const taggedSignals = [];
+        const linkNodes = $("a[href]")
+          .filter((_, el) => {
+            const href = String($(el).attr("href") || "");
+            return /\/key-message-update|\/special-report|\/alert|\/report|\/news\/|acute-food-insecurity-classification|food-security-outlook|food-security-update/i.test(href);
+          })
+          .slice(0, 6);
+
+        let latestPeriod = null;
+
+        linkNodes.each((_, el) => {
+          const hrefRaw = String($(el).attr("href") || "").trim();
+          const href = hrefRaw.startsWith("http") ? hrefRaw : `https://fews.net${hrefRaw.startsWith("/") ? "" : "/"}${hrefRaw}`;
+          const title = $(el).text().replace(/\s+/g, " ").trim() || pageTitle;
+          const text = `${title} ${summary}`;
+          const period = parseFewsPeriodFromText(`${title} ${href}`);
+          if (period) {
+            if (!latestPeriod || parseDateMs(period.endIso) > parseDateMs(latestPeriod.endIso)) {
+              latestPeriod = period;
+            }
+          }
+          const tags = [];
+          if (foodRegex.test(text)) tags.push("Food Security");
+          if (nutritionRegex.test(text)) tags.push("Nutrition");
+          if (!tags.length) tags.push("Food Security");
+
+          taggedSignals.push({
+            source: "FEWS NET Country Page",
+            title,
+            summary,
+            url: href,
+            date_label: period?.startIso || observedAt,
+            countries: [iso3],
+            signal_tags: tags
+          });
+        });
+
+        const feedUrl = feedLookup[iso3] || null;
+        if (feedUrl) {
+          try {
+            const feed = await parseRssFeedWithTimeout(feedUrl, 15000);
+            const feedItems = (feed.items || []).slice(0, 12);
+            if (feedItems.length) {
+              status.feeds_succeeded += 1;
+            }
+            const seenUrls = new Set(taggedSignals.map((s) => s.url));
+            feedItems.forEach((item) => {
+              const link = toAbsoluteFewsUrl(item?.link);
+              const title = String(item?.title || "").replace(/\s+/g, " ").trim();
+              const summaryText = String(item?.contentSnippet || item?.content || item?.summary || "").replace(/\s+/g, " ").trim();
+              const combined = `${title} ${summaryText} ${link || ""}`;
+              if (!/acute-food-insecurity-classification|food-security-outlook|food-security-update|key-message-update|special-report/i.test(combined)) {
+                return;
+              }
+              if (title) {
+                phaseText += ` ${title}`;
+              }
+              const period = parseFewsPeriodFromText(combined);
+              if (period && (!latestPeriod || parseDateMs(period.endIso) > parseDateMs(latestPeriod.endIso))) {
+                latestPeriod = period;
+              }
+
+              if (!link || seenUrls.has(link)) {
+                return;
+              }
+
+              const tags = [];
+              if (foodRegex.test(combined)) tags.push("Food Security");
+              if (nutritionRegex.test(combined)) tags.push("Nutrition");
+              if (!tags.length) tags.push("Food Security");
+
+              taggedSignals.push({
+                source: "FEWS NET Country Feed",
+                title: title || pageTitle,
+                summary: summaryText || summary,
+                url: link,
+                date_label: period?.startIso || item?.isoDate || item?.pubDate || observedAt,
+                countries: [iso3],
+                signal_tags: tags
+              });
+              seenUrls.add(link);
+            });
+          } catch {
+          }
+        }
+
+        const inferredPhase = inferPhaseFromText(phaseText);
+
+        if (!taggedSignals.length) {
+          const tags = [];
+          const text = `${pageTitle} ${summary}`;
+          if (foodRegex.test(text)) tags.push("Food Security");
+          if (nutritionRegex.test(text)) tags.push("Nutrition");
+          if (!tags.length) tags.push("Food Security");
+          taggedSignals.push({
+            source: "FEWS NET Country Page",
+            title: pageTitle,
+            summary,
+            url: resolvedUrl || url,
+            date_label: observedAt,
+            countries: [iso3],
+            signal_tags: tags
+          });
+        }
+
+        if (countryMap[iso3]) {
+          countryMap[iso3].fews_reference_count += 1;
+          const currentFews = countryMap[iso3].fews_ipc || {};
+          const hasUsableFews = currentFews.cs_phase != null || currentFews.ml1_phase != null;
+          if (!hasUsableFews && inferredPhase != null) {
+            const reportingDate = latestPeriod?.startIso || observedAt;
+            const projectionEnd = latestPeriod?.endIso || null;
+            countryMap[iso3].fews_ipc = {
+              cs_phase: inferredPhase,
+              cs_description: "Inferred from FEWS country page narrative",
+              cs_projection_end: projectionEnd,
+              ml1_phase: inferredPhase,
+              ml1_description: "Inferred from FEWS country page narrative",
+              ml1_projection_end: projectionEnd,
+              reporting_date: reportingDate,
+              source_document: resolvedUrl || url
+            };
+          }
+        }
+        status.pages_succeeded += 1;
+        return taggedSignals;
+      } catch (err) {
+        status.error_count += 1;
+        if (status.errors.length < 8) {
+          status.errors.push({
+            iso3,
+            url: (urlCandidates || []).join(" | "),
+            error: `${err.response?.status || err.code || "request_failed"}: ${err.message}`
+          });
+        }
+        return [];
+      }
+    }));
+
+    batchSignals.forEach((items) => signals.push(...items));
+  }
+
+  status.mapped_countries = new Set(
+    signals.flatMap((signal) => signal.countries || [])
+  ).size;
+  status.overall = signals.length > 0 ? "available" : (status.pages_checked > 0 ? "partial" : "unavailable");
+
+  return { signals: signals.slice(0, 120), status };
 }
 
 // IPC data via HDX (Humanitarian Data Exchange) — fully public, no auth required.
@@ -2471,7 +2942,7 @@ function deriveFoodSecuritySignals(countryMap, reports, fewsSignals) {
   return signals.slice(0, 80);
 }
 
-function deriveNutritionSignals(countryMap, reports) {
+function deriveNutritionSignals(countryMap, reports, fewsSignals = []) {
   const nutritionRegex = /malnutrition|acute\s+malnutrition|\bSAM\b|\bMAM\b|\bGAM\b|wasting|stunting|\bCMAM\b|therapeutic\s+feed|nutrition\s+crisis|nutrition\s+emergency|nutritional\s+status|nutrition\s+response|undernutrition|micronutrient\s+deficien|severe\s+malnutrition|moderate\s+malnutrition|nutrition\s+screen|nutrition\s+survey|\bMUAC\b|mid-upper\s+arm|nutrition\s+cluster|nutrition\s+situation/i;
   const signals = [];
 
@@ -2497,7 +2968,66 @@ function deriveNutritionSignals(countryMap, reports) {
       });
     });
 
+  (fewsSignals || [])
+    .filter((item) => {
+      const tags = (item.signal_tags || []).map((tag) => String(tag || "").toLowerCase());
+      return tags.includes("nutrition") && (item.countries || []).some((iso3) => !!countryMap[iso3]);
+    })
+    .forEach((item) => {
+      const mentioned = (item.countries || []).filter((iso3) => !!countryMap[iso3]);
+      mentioned.forEach((iso3) => {
+        countryMap[iso3].nutrition_signal_count += 1;
+      });
+      signals.push({
+        source: item.source || "FEWS NET Country Page",
+        title: item.title || "Untitled FEWS nutrition item",
+        summary: item.summary || null,
+        url: item.url || null,
+        date_label: item.date_label || null,
+        signal_tags: ["Nutrition", "FEWS NET"],
+        countries: mentioned
+      });
+    });
+
   return signals.slice(0, 80);
+}
+
+function deriveHealthCareAttackSignals(countryMap, items) {
+  const attackRegex = /attack|attacked|assault|violence|armed\s+group|raid|airstrike|shelling|bomb|shooting|abduct|kidnap|looting|arson|destroyed|burned/i;
+  const healthRegex = /health\s*care|healthcare|hospital|clinic|health\s+center|health\s+centre|health\s+facility|health\s+post|medical\s+facility|medical\s+center|medical\s+centre|ambulance|health\s+worker|doctor|nurse|vaccination\s+site|pharmacy/i;
+  const combinedPhraseRegex = /attacks?\s+on\s+health|violence\s+against\s+health|health\s*care\s+under\s+attack/i;
+  const signals = [];
+
+  (items || [])
+    .filter((item) => item.inLookbackDays || item.in30Days || item.date_label)
+    .forEach((item) => {
+      const text = `${item.title || ""} ${item.summary || ""} ${item.content || ""}`;
+      const isAttackOnHealth = combinedPhraseRegex.test(text) || (attackRegex.test(text) && healthRegex.test(text));
+      if (!isAttackOnHealth) {
+        return;
+      }
+
+      const mentioned = (item.countries || []).filter((iso3) => !!countryMap[iso3]);
+      if (!mentioned.length) {
+        return;
+      }
+
+      mentioned.forEach((iso3) => {
+        countryMap[iso3].health_attack_signal_count = (countryMap[iso3].health_attack_signal_count || 0) + 1;
+      });
+
+      signals.push({
+        source: item.source || "Unknown",
+        title: item.title || "Untitled",
+        summary: item.summary || null,
+        url: item.url || null,
+        date_label: item.created || item.date_label || null,
+        signal_tags: ["Attacks on Healthcare"],
+        countries: mentioned
+      });
+    });
+
+  return signals.slice(0, 120);
 }
 
 function deriveDiseaseOutbreakSignals(countryMap, reports, whoDonReports) {
@@ -5612,6 +6142,58 @@ function sourceValidationResponseFromCache(query = {}) {
   };
 }
 
+function attacksHealthResponseFromCache(query = {}) {
+  const freshnessMode = query.freshness_mode === "lenient" ? "lenient" : "strict";
+  const cached = dashboardResponseCache[freshnessMode];
+  if (!cached?.payload) {
+    return {
+      ok: false,
+      status: 404,
+      body: {
+        error: "Attacks-on-healthcare view is not ready yet",
+        details: "Call /api/dashboard-data first to initialize the current refresh payload cache."
+      }
+    };
+  }
+
+  const payload = cached.payload;
+  const countries = Array.isArray(payload?.countries) ? payload.countries : [];
+  const signals = Array.isArray(payload?.healthcare_attack_signals) ? payload.healthcare_attack_signals : [];
+  const prioritized = countries
+    .filter((country) => Number(country?.health_attack_signal_count || 0) > 0)
+    .sort((a, b) => {
+      const aScore = (Number(a?.health_attack_signal_count || 0) * 4) + Number(a?.report_count_30d || 0) + (Number(a?.ipc?.phase3plus_pct || 0) * 10);
+      const bScore = (Number(b?.health_attack_signal_count || 0) * 4) + Number(b?.report_count_30d || 0) + (Number(b?.ipc?.phase3plus_pct || 0) * 10);
+      return bScore - aScore;
+    });
+
+  return {
+    ok: true,
+    status: 200,
+    body: {
+      generated_at: new Date().toISOString(),
+      freshness_mode: freshnessMode,
+      source_reference: {
+        name: "WHO Surveillance System for Attacks on Health Care (SSA)",
+        url: "https://extranet.who.int/ssa/Index.aspx"
+      },
+      who_don_source_status: payload?.who_don_source_status || null,
+      total_signal_items: signals.length,
+      total_countries_with_signals: prioritized.length,
+      prioritized_countries: prioritized.slice(0, 20).map((country) => ({
+        iso3: country.iso3,
+        country: country.country,
+        group: country.fcv_track,
+        health_attack_signal_count: Number(country.health_attack_signal_count || 0),
+        reports_30d: Number(country.report_count_30d || 0),
+        ipc_phase3plus_pct: country.ipc?.phase3plus_pct ?? null,
+        risk_score: Number(country.risk_score || 0)
+      })),
+      signal_items: signals.slice(0, 200)
+    }
+  };
+}
+
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, service: "who-afro-public-dashboard", timestamp: new Date().toISOString() });
 });
@@ -5718,6 +6300,14 @@ app.get("/api/source-validation", (req, res) => {
   return res.status(result.status).json(result.body);
 });
 
+app.get("/api/attacks-healthcare", (req, res) => {
+  const result = attacksHealthResponseFromCache(req.query || {});
+  if (!result.ok) {
+    return res.status(result.status).json(result.body);
+  }
+  return res.status(result.status).json(result.body);
+});
+
 app.get("/api/dashboard-data", async (req, res) => {
   try {
     const freshnessMode = req.query.freshness_mode === "lenient" ? "lenient" : "strict";
@@ -5765,7 +6355,7 @@ app.get("/api/dashboard-data", async (req, res) => {
     const nutritionHdxPulledAt = new Date().toISOString();
     refreshNutritionCoverage(nutrition_source_status, countryMap);
 
-    const [hazards, reportsBundle, unhcrReports, idmcReports, unochaReports, iomDtmBundle, forecasts, ipc_source_status, dedicatedCycloneBundle, acledBundle, dtmStatus, fewsBundle, fewsIpcBundle, acapsBundle, whoDonBundle, cemsFloodSourceStatus, ensoBundle] = await Promise.all([
+    const [hazards, reportsBundle, unhcrReports, idmcReports, unochaReports, iomDtmBundle, forecasts, ipc_source_status, dedicatedCycloneBundle, acledBundle, dtmStatus, fewsBundle, fewsIpcBundle, fewsCountryPageBundle, acapsBundle, whoDonBundle, cemsFloodSourceStatus, ensoBundle] = await Promise.all([
       fetchGdacsData(countryMap),
       fetchReliefWebData(countryMap),
       fetchUnhcrDisplacementData(),
@@ -5779,6 +6369,7 @@ app.get("/api/dashboard-data", async (req, res) => {
       fetchDtmPopulationData(countryMap),
       fetchFewsNetSignals(countryMap),
       fetchFewsNetIpcData(countryMap),
+      fetchFewsCountryPageSignals(countryMap),
       fetchAcapsUpdates(countryMap),
       WHO_DON_MODE === "off" ? Promise.resolve(whoDonDisabledBundle()) : fetchWhoDonOutbreakReports(countryMap),
       fetchCemsFloodSourceStatus(),
@@ -5817,12 +6408,18 @@ app.get("/api/dashboard-data", async (req, res) => {
     const conflict_displacement_signals = filterApprovedVisibleEventItems(
       deriveConflictDisplacementSignals(countryMap, [...reports, ...unhcrReports, ...idmcReports, ...unochaReports, ...iomDtmReports])
     );
-    const fewsSignals = fewsBundle.signals || [];
+    const fewsReferenceSignals = fewsBundle.signals || [];
+    const fewsCountrySignals = fewsCountryPageBundle.signals || [];
+    const fewsSignals = [...fewsReferenceSignals, ...fewsCountrySignals];
+    const acapsUpdates = acapsBundle.items || [];
     const food_security_signals = filterApprovedVisibleEventItems(
       deriveFoodSecuritySignals(countryMap, [...reports, ...unochaReports], fewsSignals)
     );
     const nutrition_signals = filterApprovedVisibleEventItems(
-      deriveNutritionSignals(countryMap, [...reports, ...unochaReports])
+      deriveNutritionSignals(countryMap, [...reports, ...unochaReports], fewsSignals)
+    );
+    const healthcare_attack_signals = filterApprovedVisibleEventItems(
+      deriveHealthCareAttackSignals(countryMap, [...reports, ...unochaReports, ...whoDonReports, ...iomDtmReports, ...acapsUpdates, ...fewsSignals])
     );
     const unhcrReportingCandidates30d = (unhcrReports || []).filter((item) => {
       const src = String(item.source || "").toLowerCase();
@@ -5907,7 +6504,6 @@ app.get("/api/dashboard-data", async (req, res) => {
         report_count_30d: c.report_count_30d
       }));
 
-    const acapsUpdates = acapsBundle.items || [];
     const source_summaries = addSourceSummaryDeltas(summarizeExternalSources(serializedHazards, reports, countries, fewsSignals, acapsUpdates, whoDonReports, iomDtmReports));
 
     const scopeCounts = FCV_COUNTRIES.reduce((acc, country) => {
@@ -5945,9 +6541,11 @@ app.get("/api/dashboard-data", async (req, res) => {
         "Situation reports are pulled from ReliefWeb public RSS feed.",
         "Disease outbreak signals are derived from ReliefWeb and optional WHO Disease Outbreak News (DON) source titles and summaries using explicit outbreak keywords and FCV country mentions.",
         "FEWS NET references and downloadable assets are detected from the acute food insecurity source page; these are reference signals and not extracted country classification values.",
+        "FEWS NET country pages (for example Ethiopia and Zimbabwe) are polled directly to surface current country-level food-security and nutrition signals in addition to FEWS reference links.",
         "ACAPS homepage risk and analysis cards are scraped as humanitarian context signals and mapped to FCV countries when explicit country references are present.",
         "ACLED Conflict Index rows are scraped as structural conflict context and mapped to FCV countries automatically.",
         "FEWS NET IPC phase values (Current Situation and Near-Term Outlook) are fetched from the FEWS Data Warehouse public API (fdw.fews.net) for 9 of 13 FCV countries with FEWS NET coverage.",
+        `FEWS IPC values older than ${FEWS_IPC_MAX_AGE_MONTHS} months are excluded automatically; when FEWS API coverage is missing or stale, FEWS country pages are used as a narrative phase inference fallback.`,
         "Conflict and displacement signals are derived from ReliefWeb, OCHA RSS, IDMC, UNHCR, and IOM DTM event-tracking public reporting items using transparent keyword matching and explicit country mentions.",
         "IOM DTM integration currently prioritizes public metadata, dates, links, and mapped country mentions; this runtime does not parse full PDF caseload tables.",
         "For backward compatibility only, conflict_displacement_source_status.candidate_items_30d is retained as an alias of current-refresh candidate totals and may include structural entries; clients should use candidate_items_current, candidate_items_reporting_30d, and candidate_items_structural for semantically strict interpretation.",
@@ -6022,6 +6620,7 @@ app.get("/api/dashboard-data", async (req, res) => {
       fews_references: fewsSignals,
       fews_source_status: fewsBundle.status,
       fews_ipc_source_status: fewsIpcBundle.status,
+      fews_country_page_status: fewsCountryPageBundle.status,
       cems_flood_source_status: cemsFloodSourceStatus,
       enso_source_status: ensoBundle.source_status,
       acaps_updates: acapsUpdates,
@@ -6029,6 +6628,7 @@ app.get("/api/dashboard-data", async (req, res) => {
       conflict_displacement_signals,
       food_security_signals,
       nutrition_signals,
+      healthcare_attack_signals,
       conflict_displacement_source_status: conflictDisplacementSourceStatus,
       conflict_displacement_source_status_history: conflictDisplacementSourceHistory,
       iom_dtm_source_status: iomDtmBundle.status,
@@ -6072,6 +6672,7 @@ app.get("/api/dashboard-data", async (req, res) => {
         cyclone_dedicated: icpacPulledAt,
         ipc_hdx: ipcPulledAt,
         fews_net: fewsBundle.status?.checked_at || null,
+        fews_country_pages: fewsCountryPageBundle.status?.checked_at || null,
         acled: acledBundle.status?.checked_at || null,
         acaps: acapsBundle.status?.checked_at || null,
         country_feed: countryFeedSnapshot?.saved_at || null

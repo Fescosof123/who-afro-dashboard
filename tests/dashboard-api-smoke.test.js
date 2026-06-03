@@ -169,6 +169,16 @@ async function main() {
       "Expected /api/metric-ledger and /api/dashboard-data metric_ledger priority counts to match"
     );
 
+    const attacksHealthResponse = await fetch(`${baseUrl}/api/attacks-healthcare`);
+    assert.equal(attacksHealthResponse.ok, true, `attacks-healthcare request failed: HTTP ${attacksHealthResponse.status}`);
+    const attacksHealthPayload = await attacksHealthResponse.json();
+    assert.equal(typeof attacksHealthPayload.source_reference, "object", "Expected attacks-healthcare payload to include source_reference");
+    assert.equal(String(attacksHealthPayload.source_reference?.url || "").includes("extranet.who.int/ssa/Index.aspx"), true, "Expected SSA source URL in attacks-healthcare payload");
+    assert.equal(Array.isArray(attacksHealthPayload.prioritized_countries), true, "Expected prioritized_countries array in attacks-healthcare payload");
+    assert.equal(Array.isArray(attacksHealthPayload.signal_items), true, "Expected signal_items array in attacks-healthcare payload");
+    assert.equal(Number.isFinite(Number(attacksHealthPayload.total_signal_items)), true, "Expected total_signal_items to be numeric");
+    assert.equal(Number.isFinite(Number(attacksHealthPayload.total_countries_with_signals)), true, "Expected total_countries_with_signals to be numeric");
+
     console.log("dashboard api smoke test passed");
   } finally {
     server.kill();
