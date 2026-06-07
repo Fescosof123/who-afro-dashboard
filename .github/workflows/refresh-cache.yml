@@ -1,26 +1,20 @@
 name: Refresh RSS Cache
 
-# Runs every hour on GitHub's clean IPs (not blocked by ReliefWeb / OCHA / WHO CDNs).
+# Runs hourly on GitHub's clean IPs (not blocked by ReliefWeb / OCHA / WHO CDNs).
 # Fetches every blocked RSS feed, writes the cache JSON files, commits them back,
-# and pushes — which triggers the Deploy to Render workflow so Render always has
-# a fresh snapshot even when its own outbound IP is blocked by upstream providers.
+# and pushes so deployments always have a fresh snapshot even when runtime egress
+# is blocked by upstream providers.
 
 on:
   schedule:
-    - cron: '15 * * * *'   # every hour at :15
-  workflow_dispatch:        # allow manual trigger from the Actions tab
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+    - cron: '15 * * * *'
+  workflow_dispatch:
 
 jobs:
   refresh:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    defaults:
-      run:
-        working-directory: dashboard-app
 
     steps:
       - name: Checkout
@@ -33,7 +27,6 @@ jobs:
         with:
           node-version: '24'
           cache: 'npm'
-          cache-dependency-path: dashboard-app/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -41,18 +34,13 @@ jobs:
       - name: Fetch RSS feeds and update cache files
         id: refresh
         run: node scripts/refresh-rss-cache.js
-        continue-on-error: true   # don't fail the job if all feeds are down
+        continue-on-error: true
 
       - name: Commit updated cache files
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/reliefweb-rss-cache.json \
-                  data/who-don-rss-cache.json \
-                  data/ocha-rss-cache.json \
-                  data/unhcr-rss-cache.json \
-                  data/gdacs-rss-cache.json \
-                  data/idmc-rss-cache.json || true
-          git diff --cached --quiet && echo "No changes — skipping commit" && exit 0
+          git add data/*.json || true
+          git diff --cached --quiet && echo "No changes - skipping commit" && exit 0
           git commit -m "Auto-refresh: RSS cache update $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
