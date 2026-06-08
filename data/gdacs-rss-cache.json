@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-06-08T05:55:23.984Z",
+  "saved_at": "2026-06-08T08:06:49.913Z",
   "items": [
     {
       "title": "Green flood alert in Türkiye",
@@ -86,7 +86,7 @@
       "isoDate": "2026-06-08T00:48:31.000Z"
     },
     {
-      "title": "Green earthquake (Magnitude 6M, Depth:81.843km) in Philippines 07/06/2026 23:48 UTC, 2 million in 100km.",
+      "title": "Green earthquake (Magnitude 6M, Depth:81.843km) in Philippines 07/06/2026 23:48 UTC, 4 thousand in MMI V.",
       "link": "https://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1544722",
       "pubDate": "Mon, 08 Jun 2026 00:42:21 GMT",
       "enclosure": {
@@ -94,8 +94,8 @@
         "length": "1",
         "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1710360_1.png"
       },
-      "content": "On 6/7/2026 11:48:11 PM, an earthquake occurred in Philippines potentially affecting 2 million in 100km. The earthquake had Magnitude 6M, Depth:81.843km.",
-      "contentSnippet": "On 6/7/2026 11:48:11 PM, an earthquake occurred in Philippines potentially affecting 2 million in 100km. The earthquake had Magnitude 6M, Depth:81.843km.",
+      "content": "On 6/7/2026 11:48:11 PM, an earthquake occurred in Philippines potentially affecting 4 thousand in MMI V. The earthquake had Magnitude 6M, Depth:81.843km.",
+      "contentSnippet": "On 6/7/2026 11:48:11 PM, an earthquake occurred in Philippines potentially affecting 4 thousand in MMI V. The earthquake had Magnitude 6M, Depth:81.843km.",
       "guid": "EQ1544722",
       "isoDate": "2026-06-08T00:42:21.000Z"
     },
@@ -366,6 +366,20 @@
       "isoDate": "2026-06-05T08:55:08.000Z"
     },
     {
+      "title": "Green flood alert in Russia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1103931",
+      "pubDate": "Mon, 08 Jun 2026 07:14:21 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1103931.png"
+      },
+      "content": "On 03/06/2026, a flood started in Russia, lasting until 05/06/2026 (last update). The flood caused 0 deaths and 56 displaced .",
+      "contentSnippet": "On 03/06/2026, a flood started in Russia, lasting until 05/06/2026 (last update). The flood caused 0 deaths and 56 displaced .",
+      "guid": "FL1103931",
+      "isoDate": "2026-06-08T07:14:21.000Z"
+    },
+    {
       "title": "Green forest fire notification in Australia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028741",
       "pubDate": "Thu, 04 Jun 2026 15:00:35 GMT",
@@ -422,20 +436,6 @@
       "isoDate": "2026-06-02T20:50:25.000Z"
     },
     {
-      "title": "Green flood alert in Honduras",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1103928",
-      "pubDate": "Fri, 05 Jun 2026 05:55:19 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1103928.png"
-      },
-      "content": "On 02/06/2026, a flood started in Honduras, lasting until 04/06/2026 (last update). The flood caused 1 deaths and 0 displaced .",
-      "contentSnippet": "On 02/06/2026, a flood started in Honduras, lasting until 04/06/2026 (last update). The flood caused 1 deaths and 0 displaced .",
-      "guid": "FL1103928",
-      "isoDate": "2026-06-05T05:55:19.000Z"
-    },
-    {
       "title": "Green flood alert in Italy",
       "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1103923",
       "pubDate": "Wed, 03 Jun 2026 08:05:52 GMT",
@@ -448,6 +448,20 @@
       "contentSnippet": "On 02/06/2026, a flood started in Italy, lasting until 05/06/2026 (last update). The flood caused 0 deaths and 0 displaced .",
       "guid": "FL1103923",
       "isoDate": "2026-06-03T08:05:52.000Z"
+    },
+    {
+      "title": "Green flood alert in Honduras",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1103928",
+      "pubDate": "Fri, 05 Jun 2026 05:55:19 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1103928.png"
+      },
+      "content": "On 02/06/2026, a flood started in Honduras, lasting until 04/06/2026 (last update). The flood caused 1 deaths and 0 displaced .",
+      "contentSnippet": "On 02/06/2026, a flood started in Honduras, lasting until 04/06/2026 (last update). The flood caused 1 deaths and 0 displaced .",
+      "guid": "FL1103928",
+      "isoDate": "2026-06-05T05:55:19.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
