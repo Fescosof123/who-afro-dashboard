@@ -230,6 +230,9 @@ const PHRASE_FR = {
   "ReliefWeb RSS Situation Reports": "Rapports de situation RSS ReliefWeb",
   "WHO Disease Outbreak News (DON)": "Nouvelles OMS flambes (DON)",
   "Recommendations: Hazards": "Recommandations: aleas",
+  "Historical Disaster Impact (EM-DAT)": "Impact historique des catastrophes (EM-DAT)",
+  "Largest Disasters by People Affected": "Plus grandes catastrophes par personnes affectees",
+  "Most Affected Countries (EM-DAT)": "Pays les plus affectes (EM-DAT)",
   "Conflict And Displacement Pressure": "Pression conflits et deplacements",
   "Conflict And Displacement Prioritization": "Priorisation conflits et deplacements",
   "Recommendations: Conflicts & Displacements": "Recommandations: conflits et deplacements",
@@ -415,6 +418,9 @@ const els = {
   whoDonFeed: document.getElementById("whoDonFeed"),
   diseaseOutbreakFeed: document.getElementById("diseaseOutbreakFeed"),
   hazardRecommendations: document.getElementById("hazardRecommendations"),
+  emdatSummary: document.getElementById("emdatSummary"),
+  emdatTopEvents: document.getElementById("emdatTopEvents"),
+  emdatCountryTable: document.getElementById("emdatCountryTable"),
   conflictsDisplacementSummary: document.getElementById("conflictsDisplacementSummary"),
   conflictsDisplacementSourceStatus: document.getElementById("conflictsDisplacementSourceStatus"),
   conflictsDisplacementTableBody: document.querySelector("#conflictsDisplacementTable tbody"),
@@ -1497,6 +1503,7 @@ function setActivePage(pageId) {
   }
   if (pageId === "hazardPage") {
     renderHazardSourceSummaries();
+    renderEmdatSection();
   }
   if (pageId === "conflictsDisplacementPage") {
     renderConflictsDisplacementPage();
@@ -4300,6 +4307,111 @@ function renderDiseaseOutbreakFeed() {
   }).join("");
 }
 
+function renderEmdatSection() {
+  if (!els.emdatSummary) {
+    return;
+  }
+  const emdat = dashboardState.emdat;
+  if (!emdat) {
+    els.emdatSummary.innerHTML = '<p><span class="tag warn">EM-DAT data not loaded</span> No EM-DAT cache found on the server. Download the public export from public.emdat.be and run <code>node scripts/build-emdat-cache.js</code>.</p>';
+    if (els.emdatTopEvents) els.emdatTopEvents.innerHTML = "";
+    if (els.emdatCountryTable) els.emdatCountryTable.innerHTML = "";
+    return;
+  }
+
+  const fmtCount = (n) => (n == null ? "n/a" : Number(n).toLocaleString());
+  const yearly = emdat.yearly || [];
+  const totals = yearly.reduce((acc, y) => {
+    acc.events += y.events || 0;
+    acc.deaths += y.deaths || 0;
+    acc.affected += y.affected || 0;
+    return acc;
+  }, { events: 0, deaths: 0, affected: 0 });
+
+  const fcvIsoSet = new Set((dashboardState.countries || []).map((c) => c.iso3));
+  const fcvTotals = (emdat.countries || [])
+    .filter((c) => fcvIsoSet.has(c.iso3))
+    .reduce((acc, c) => {
+      acc.events += c.events || 0;
+      acc.deaths += c.deaths || 0;
+      acc.affected += c.affected || 0;
+      return acc;
+    }, { events: 0, deaths: 0, affected: 0 });
+
+  els.emdatSummary.innerHTML = `
+    <p><strong>EM-DAT (${emdat.year_min}–${emdat.year_max})</strong> ${emdat.scope || "Natural disasters, Africa"}.</p>
+    <p>Recorded events: <strong>${fmtCount(totals.events)}</strong> | Total deaths: <strong>${fmtCount(totals.deaths)}</strong> | Total people affected: <strong>${fmtCount(totals.affected)}</strong></p>
+    <p>Within dashboard FCV countries: <strong>${fmtCount(fcvTotals.events)}</strong> events, <strong>${fmtCount(fcvTotals.deaths)}</strong> deaths, <strong>${fmtCount(fcvTotals.affected)}</strong> people affected.</p>
+    <p><span class="tag good">Validated structural source</span> ${emdat.source || "EM-DAT, CRED / UCLouvain"}. Cache built ${formatDateTime(emdat.generated_at)} from manual export (no public API; current-year figures are provisional until EM-DAT validation).</p>
+  `;
+
+  const topTypes = (emdat.by_type || []).slice(0, 6).map((t) => t.type);
+  const traces = topTypes.map((type) => ({
+    type: "bar",
+    name: type,
+    x: yearly.map((y) => y.year),
+    y: yearly.map((y) => (y.by_type || {})[type] || 0)
+  }));
+  traces.push({
+    type: "bar",
+    name: "Other",
+    x: yearly.map((y) => y.year),
+    y: yearly.map((y) => Math.max(0, (y.events || 0) - topTypes.reduce((sum, type) => sum + ((y.by_type || {})[type] || 0), 0)))
+  });
+  traces.push({
+    type: "scatter",
+    mode: "lines+markers",
+    name: "People affected",
+    yaxis: "y2",
+    x: yearly.map((y) => y.year),
+    y: yearly.map((y) => y.affected || 0),
+    line: { color: "#7a2d2d", width: 3 }
+  });
+  renderPlotWithSentinel(
+    "emdatChart",
+    traces,
+    {
+      barmode: "stack",
+      margin: { l: 44, r: 56, t: 8, b: 58 },
+      paper_bgcolor: "rgba(0,0,0,0)",
+      plot_bgcolor: "rgba(0,0,0,0)",
+      xaxis: { title: "" },
+      yaxis: { title: "Events" },
+      yaxis2: { title: "People affected", overlaying: "y", side: "right", showgrid: false },
+      legend: { orientation: "h" }
+    },
+    { displayModeBar: false, responsive: true },
+    { pageId: activePageId() }
+  );
+
+  if (els.emdatTopEvents) {
+    els.emdatTopEvents.innerHTML = (emdat.top_events_by_affected || [])
+      .slice(0, 10)
+      .map((e) => `
+        <div class="feed-item">
+          <strong>${e.label || e.type} — ${e.country} (${e.year})</strong>
+          <div class="feed-meta-row"><span>${fmtCount(e.affected)} affected | ${fmtCount(e.deaths)} deaths | ${e.subtype || e.type} | EM-DAT ${e.disno || ""}</span></div>
+        </div>
+      `)
+      .join("") || "<p>n/a</p>";
+  }
+
+  if (els.emdatCountryTable) {
+    els.emdatCountryTable.innerHTML = (emdat.countries || [])
+      .slice(0, 12)
+      .map((c) => `
+        <tr>
+          <td>${c.country}${fcvIsoSet.has(c.iso3) ? ' <span class="tag warn">FCV</span>' : ""}</td>
+          <td>${fmtCount(c.events)}</td>
+          <td>${fmtCount(c.deaths)}</td>
+          <td>${fmtCount(c.affected)}</td>
+          <td>${c.top_type || "n/a"}</td>
+        </tr>
+      `)
+      .join("");
+  }
+}
+
 function renderHazardSourceSummaries() {
   const summaries = dashboardState.source_summaries || {};
   const gdacs = summaries.gdacs || {};
@@ -5782,6 +5894,7 @@ function bindEvents() {
       renderWhoDonAlerts();
       renderDiseaseOutbreakFeed();
       renderHazardSourceSummaries();
+      renderEmdatSection();
       renderConflictsDisplacementPage();
       renderIcpacForecasts();
       renderRecommendations();
@@ -6256,6 +6369,7 @@ async function loadDashboard(options = {}) {
     renderReports();
     renderWhoDonAlerts();
     renderHazardSourceSummaries();
+    renderEmdatSection();
     renderConflictsDisplacementPage();
     renderHealthAttacksPage();
     renderIcpacForecasts();

@@ -72,6 +72,22 @@ To capture a live feed for offline use, copy the parsed `feed.items` array from 
 running server (e.g. via a small script calling `parser.parseURL(url)`) and wrap it
 in `{ "items": [...] }`.
 
+### EM-DAT Cache JSON (`data/emdat-cache.json`)
+
+Historical natural-disaster impact data (deaths, people affected, damage) for Africa.
+
+EM-DAT has no public API. To refresh:
+
+1. Log in at <https://public.emdat.be> (free registration).
+2. Access Data → filter Classification: Natural, Countries: Africa, period 2000–present.
+3. Download the `public_emdat_*.xlsx` export into `data/`.
+4. Run `node scripts/build-emdat-cache.js` to regenerate `emdat-cache.json`.
+
+The raw xlsx is gitignored (EM-DAT terms of use forbid redistribution); only the
+aggregated cache JSON is committed. EM-DAT updates a few times per year, so a manual
+refresh every few months is sufficient. Current-year figures are provisional until
+EM-DAT's annual validation.
+
 ### Country Feed CSV (`data/country-feed/latest.csv`)
 Format: one row per country using ISO3 as key.
 

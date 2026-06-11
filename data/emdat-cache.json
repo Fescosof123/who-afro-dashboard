@@ -1,0 +1,2066 @@
+{
+  "generated_at": "2026-06-11T09:31:30.057Z",
+  "source": "EM-DAT, CRED / UCLouvain, Brussels, Belgium (public.emdat.be)",
+  "source_file": "public_emdat_custom_request_2026-06-11_5cfdb0b3-bcd4-4b45-8753-2f7969fbe540.xlsx",
+  "scope": "Natural disasters, Africa",
+  "year_min": 2000,
+  "year_max": 2026,
+  "record_count": 2266,
+  "yearly": [
+    {
+      "year": 2000,
+      "events": 117,
+      "deaths": 6667,
+      "affected": 11150532,
+      "by_type": {
+        "Storm": 10,
+        "Drought": 3,
+        "Flood": 32,
+        "Epidemic": 63,
+        "Extreme temperature": 2,
+        "Wildfire": 2,
+        "Mass movement (wet)": 4,
+        "Earthquake": 1
+      }
+    },
+    {
+      "year": 2001,
+      "events": 112,
+      "deaths": 9917,
+      "affected": 15584460,
+      "by_type": {
+        "Flood": 35,
+        "Epidemic": 53,
+        "Mass movement (wet)": 3,
+        "Storm": 6,
+        "Wildfire": 2,
+        "Drought": 12,
+        "Earthquake": 1
+      }
+    },
+    {
+      "year": 2002,
+      "events": 110,
+      "deaths": 6313,
+      "affected": 8313983,
+      "by_type": {
+        "Epidemic": 49,
+        "Storm": 13,
+        "Earthquake": 3,
+        "Flood": 30,
+        "Drought": 10,
+        "Wildfire": 2,
+        "Extreme temperature": 1,
+        "Mass movement (wet)": 1,
+        "Volcanic activity": 1
+      }
+    },
+    {
+      "year": 2003,
+      "events": 83,
+      "deaths": 5647,
+      "affected": 17565154,
+      "by_type": {
+        "Flood": 39,
+        "Epidemic": 24,
+        "Storm": 11,
+        "Drought": 5,
+        "Extreme temperature": 1,
+        "Earthquake": 2,
+        "Mass movement (wet)": 1
+      }
+    },
+    {
+      "year": 2004,
+      "events": 87,
+      "deaths": 4092,
+      "affected": 20256090,
+      "by_type": {
+        "Storm": 7,
+        "Epidemic": 28,
+        "Flood": 26,
+        "Infestation": 11,
+        "Earthquake": 8,
+        "Drought": 5,
+        "Extreme temperature": 1,
+        "Wildfire": 1
+      }
+    },
+    {
+      "year": 2005,
+      "events": 97,
+      "deaths": 3659,
+      "affected": 22035826,
+      "by_type": {
+        "Epidemic": 40,
+        "Flood": 32,
+        "Volcanic activity": 3,
+        "Drought": 12,
+        "Storm": 7,
+        "Earthquake": 3
+      }
+    },
+    {
+      "year": 2006,
+      "events": 119,
+      "deaths": 7835,
+      "affected": 6155311,
+      "by_type": {
+        "Epidemic": 51,
+        "Earthquake": 2,
+        "Flood": 55,
+        "Mass movement (wet)": 1,
+        "Drought": 3,
+        "Storm": 5,
+        "Infestation": 1,
+        "Volcanic activity": 1
+      }
+    },
+    {
+      "year": 2007,
+      "events": 109,
+      "deaths": 5801,
+      "affected": 9652159,
+      "by_type": {
+        "Flood": 64,
+        "Epidemic": 24,
+        "Extreme temperature": 1,
+        "Storm": 8,
+        "Wildfire": 4,
+        "Mass movement (wet)": 1,
+        "Drought": 6,
+        "Volcanic activity": 1
+      }
+    },
+    {
+      "year": 2008,
+      "events": 103,
+      "deaths": 7385,
+      "affected": 19974328,
+      "by_type": {
+        "Flood": 46,
+        "Epidemic": 32,
+        "Mass movement (dry)": 1,
+        "Mass movement (wet)": 1,
+        "Storm": 10,
+        "Wildfire": 2,
+        "Drought": 9,
+        "Earthquake": 2
+      }
+    },
+    {
+      "year": 2009,
+      "events": 95,
+      "deaths": 4384,
+      "affected": 24426057,
+      "by_type": {
+        "Flood": 45,
+        "Storm": 12,
+        "Epidemic": 28,
+        "Earthquake": 2,
+        "Drought": 5,
+        "Mass movement (wet)": 1,
+        "Infestation": 1,
+        "Wildfire": 1
+      }
+    },
+    {
+      "year": 2010,
+      "events": 99,
+      "deaths": 25467,
+      "affected": 14773304,
+      "by_type": {
+        "Flood": 52,
+        "Epidemic": 26,
+        "Mass movement (wet)": 7,
+        "Storm": 6,
+        "Infestation": 1,
+        "Drought": 6,
+        "Wildfire": 1
+      }
+    },
+    {
+      "year": 2011,
+      "events": 81,
+      "deaths": 3667,
+      "affected": 27854477,
+      "by_type": {
+        "Storm": 9,
+        "Flood": 44,
+        "Epidemic": 16,
+        "Drought": 12
+      }
+    },
+    {
+      "year": 2012,
+      "events": 67,
+      "deaths": 2643,
+      "affected": 22862907,
+      "by_type": {
+        "Drought": 8,
+        "Flood": 29,
+        "Epidemic": 17,
+        "Storm": 11,
+        "Mass movement (wet)": 1,
+        "Extreme temperature": 1
+      }
+    },
+    {
+      "year": 2013,
+      "events": 59,
+      "deaths": 1265,
+      "affected": 7790476,
+      "by_type": {
+        "Epidemic": 15,
+        "Flood": 34,
+        "Storm": 6,
+        "Wildfire": 2,
+        "Drought": 2
+      }
+    },
+    {
+      "year": 2014,
+      "events": 55,
+      "deaths": 13509,
+      "affected": 8031276,
+      "by_type": {
+        "Drought": 5,
+        "Epidemic": 18,
+        "Storm": 6,
+        "Flood": 20,
+        "Earthquake": 3,
+        "Mass movement (wet)": 1,
+        "Animal incident": 1,
+        "Volcanic activity": 1
+      }
+    },
+    {
+      "year": 2015,
+      "events": 66,
+      "deaths": 2568,
+      "affected": 33429180,
+      "by_type": {
+        "Drought": 9,
+        "Storm": 10,
+        "Epidemic": 11,
+        "Flood": 30,
+        "Mass movement (wet)": 2,
+        "Wildfire": 1,
+        "Extreme temperature": 2,
+        "Earthquake": 1
+      }
+    },
+    {
+      "year": 2016,
+      "events": 62,
+      "deaths": 3019,
+      "affected": 13927375,
+      "by_type": {
+        "Epidemic": 14,
+        "Drought": 6,
+        "Flood": 32,
+        "Storm": 4,
+        "Earthquake": 2,
+        "Extreme temperature": 2,
+        "Mass movement (wet)": 2
+      }
+    },
+    {
+      "year": 2017,
+      "events": 65,
+      "deaths": 3591,
+      "affected": 21197212,
+      "by_type": {
+        "Drought": 8,
+        "Epidemic": 17,
+        "Flood": 22,
+        "Storm": 10,
+        "Mass movement (wet)": 3,
+        "Extreme temperature": 3,
+        "Wildfire": 2
+      }
+    },
+    {
+      "year": 2018,
+      "events": 58,
+      "deaths": 3767,
+      "affected": 5412659,
+      "by_type": {
+        "Drought": 3,
+        "Epidemic": 13,
+        "Mass movement (wet)": 5,
+        "Flood": 29,
+        "Storm": 7,
+        "Extreme temperature": 1
+      }
+    },
+    {
+      "year": 2019,
+      "events": 109,
+      "deaths": 11027,
+      "affected": 17103092,
+      "by_type": {
+        "Drought": 7,
+        "Flood": 57,
+        "Epidemic": 18,
+        "Infestation": 2,
+        "Mass movement (wet)": 12,
+        "Storm": 11,
+        "Extreme temperature": 1,
+        "Wildfire": 1
+      }
+    },
+    {
+      "year": 2020,
+      "events": 93,
+      "deaths": 1557,
+      "affected": 34371277,
+      "by_type": {
+        "Flood": 66,
+        "Storm": 5,
+        "Epidemic": 4,
+        "Earthquake": 1,
+        "Mass movement (wet)": 2,
+        "Infestation": 6,
+        "Drought": 9
+      }
+    },
+    {
+      "year": 2021,
+      "events": 64,
+      "deaths": 4603,
+      "affected": 44358887,
+      "by_type": {
+        "Flood": 34,
+        "Volcanic activity": 3,
+        "Wildfire": 2,
+        "Epidemic": 6,
+        "Storm": 11,
+        "Drought": 8
+      }
+    },
+    {
+      "year": 2022,
+      "events": 93,
+      "deaths": 8708,
+      "affected": 110784462,
+      "by_type": {
+        "Epidemic": 13,
+        "Flood": 45,
+        "Storm": 16,
+        "Wildfire": 2,
+        "Mass movement (wet)": 3,
+        "Drought": 14
+      }
+    },
+    {
+      "year": 2023,
+      "events": 79,
+      "deaths": 24875,
+      "affected": 22219769,
+      "by_type": {
+        "Flood": 40,
+        "Epidemic": 14,
+        "Storm": 14,
+        "Wildfire": 1,
+        "Mass movement (wet)": 6,
+        "Drought": 3,
+        "Earthquake": 1
+      }
+    },
+    {
+      "year": 2024,
+      "events": 86,
+      "deaths": 6967,
+      "affected": 41627035,
+      "by_type": {
+        "Storm": 19,
+        "Flood": 41,
+        "Epidemic": 10,
+        "Mass movement (wet)": 8,
+        "Drought": 5,
+        "Mass movement (dry)": 1,
+        "Wildfire": 1,
+        "Extreme temperature": 1
+      }
+    },
+    {
+      "year": 2025,
+      "events": 74,
+      "deaths": 4310,
+      "affected": 15153218,
+      "by_type": {
+        "Epidemic": 11,
+        "Drought": 3,
+        "Earthquake": 2,
+        "Storm": 19,
+        "Flood": 34,
+        "Wildfire": 1,
+        "Mass movement (wet)": 4
+      }
+    },
+    {
+      "year": 2026,
+      "events": 24,
+      "deaths": 779,
+      "affected": 3375608,
+      "by_type": {
+        "Flood": 12,
+        "Storm": 7,
+        "Mass movement (wet)": 3,
+        "Wildfire": 2
+      }
+    }
+  ],
+  "by_type": [
+    {
+      "type": "Flood",
+      "events": 1025,
+      "deaths": 28508,
+      "affected": 102975339
+    },
+    {
+      "type": "Epidemic",
+      "events": 615,
+      "deaths": 100488,
+      "affected": 6337699
+    },
+    {
+      "type": "Storm",
+      "events": 260,
+      "deaths": 20089,
+      "affected": 25244302
+    },
+    {
+      "type": "Drought",
+      "events": 178,
+      "deaths": 23374,
+      "affected": 456125157
+    },
+    {
+      "type": "Mass movement (wet)",
+      "events": 72,
+      "deaths": 4185,
+      "affected": 292592
+    },
+    {
+      "type": "Earthquake",
+      "events": 34,
+      "deaths": 6315,
+      "affected": 1543388
+    },
+    {
+      "type": "Wildfire",
+      "events": 30,
+      "deaths": 394,
+      "affected": 222539
+    },
+    {
+      "type": "Infestation",
+      "events": 22,
+      "deaths": 0,
+      "affected": 3200000
+    },
+    {
+      "type": "Extreme temperature",
+      "events": 17,
+      "deaths": 304,
+      "affected": 2727829
+    },
+    {
+      "type": "Volcanic activity",
+      "events": 10,
+      "deaths": 239,
+      "affected": 716557
+    },
+    {
+      "type": "Mass movement (dry)",
+      "events": 2,
+      "deaths": 114,
+      "affected": 707
+    },
+    {
+      "type": "Animal incident",
+      "events": 1,
+      "deaths": 12,
+      "affected": 5
+    }
+  ],
+  "countries": [
+    {
+      "iso3": "ETH",
+      "country": "Ethiopia",
+      "events": 86,
+      "deaths": 4197,
+      "affected": 80735301,
+      "by_type": {
+        "Flood": 39,
+        "Epidemic": 23,
+        "Mass movement (wet)": 8,
+        "Earthquake": 2,
+        "Drought": 9,
+        "Wildfire": 1,
+        "Infestation": 1,
+        "Storm": 1,
+        "Volcanic activity": 2
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "SOM",
+      "country": "Somalia",
+      "events": 82,
+      "deaths": 24104,
+      "affected": 43327217,
+      "by_type": {
+        "Drought": 11,
+        "Infestation": 1,
+        "Flood": 41,
+        "Epidemic": 22,
+        "Storm": 6,
+        "Earthquake": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "KEN",
+      "country": "Kenya",
+      "events": 102,
+      "deaths": 3756,
+      "affected": 38337026,
+      "by_type": {
+        "Flood": 56,
+        "Drought": 10,
+        "Epidemic": 27,
+        "Storm": 1,
+        "Mass movement (wet)": 6,
+        "Earthquake": 1,
+        "Infestation": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "NGA",
+      "country": "Nigeria",
+      "events": 116,
+      "deaths": 18358,
+      "affected": 36116992,
+      "by_type": {
+        "Storm": 6,
+        "Flood": 56,
+        "Epidemic": 49,
+        "Extreme temperature": 1,
+        "Mass movement (wet)": 2,
+        "Drought": 1,
+        "Infestation": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "NER",
+      "country": "Niger",
+      "events": 71,
+      "deaths": 4033,
+      "affected": 34686120,
+      "by_type": {
+        "Flood": 30,
+        "Epidemic": 30,
+        "Infestation": 1,
+        "Drought": 8,
+        "Storm": 1,
+        "Animal incident": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MWI",
+      "country": "Malawi",
+      "events": 69,
+      "deaths": 5895,
+      "affected": 32994005,
+      "by_type": {
+        "Flood": 36,
+        "Storm": 10,
+        "Drought": 7,
+        "Epidemic": 13,
+        "Earthquake": 2,
+        "Mass movement (wet)": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "COD",
+      "country": "Democratic Republic of the Congo",
+      "events": 144,
+      "deaths": 19280,
+      "affected": 31916456,
+      "by_type": {
+        "Flood": 49,
+        "Mass movement (wet)": 14,
+        "Epidemic": 66,
+        "Volcanic activity": 2,
+        "Drought": 1,
+        "Storm": 6,
+        "Earthquake": 3,
+        "Wildfire": 3
+      },
+      "last_event_year": 2026,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "ZAF",
+      "country": "South Africa",
+      "events": 91,
+      "deaths": 1893,
+      "affected": 31497794,
+      "by_type": {
+        "Storm": 27,
+        "Flood": 41,
+        "Extreme temperature": 2,
+        "Wildfire": 8,
+        "Epidemic": 6,
+        "Drought": 5,
+        "Earthquake": 2
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "ZWE",
+      "country": "Zimbabwe",
+      "events": 50,
+      "deaths": 7576,
+      "affected": 29655602,
+      "by_type": {
+        "Flood": 13,
+        "Storm": 9,
+        "Epidemic": 21,
+        "Drought": 7
+      },
+      "last_event_year": 2026,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "MOZ",
+      "country": "Mozambique",
+      "events": 96,
+      "deaths": 4046,
+      "affected": 29640200,
+      "by_type": {
+        "Epidemic": 21,
+        "Storm": 28,
+        "Flood": 33,
+        "Drought": 11,
+        "Earthquake": 1,
+        "Mass movement (wet)": 1,
+        "Wildfire": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "SDN",
+      "country": "Sudan",
+      "events": 66,
+      "deaths": 7003,
+      "affected": 23052949,
+      "by_type": {
+        "Epidemic": 27,
+        "Flood": 28,
+        "Drought": 4,
+        "Mass movement (wet)": 1,
+        "Storm": 3,
+        "Extreme temperature": 1,
+        "Infestation": 2
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "SSD",
+      "country": "South Sudan",
+      "events": 30,
+      "deaths": 2097,
+      "affected": 23046070,
+      "by_type": {
+        "Flood": 17,
+        "Drought": 3,
+        "Epidemic": 9,
+        "Wildfire": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "ZMB",
+      "country": "Zambia",
+      "events": 43,
+      "deaths": 1569,
+      "affected": 18040460,
+      "by_type": {
+        "Drought": 4,
+        "Flood": 23,
+        "Epidemic": 15,
+        "Mass movement (wet)": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MDG",
+      "country": "Madagascar",
+      "events": 84,
+      "deaths": 3163,
+      "affected": 16732413,
+      "by_type": {
+        "Storm": 55,
+        "Epidemic": 7,
+        "Flood": 11,
+        "Mass movement (dry)": 1,
+        "Infestation": 1,
+        "Drought": 9
+      },
+      "last_event_year": 2026,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "TZA",
+      "country": "United Republic of Tanzania",
+      "events": 84,
+      "deaths": 1737,
+      "affected": 14802135,
+      "by_type": {
+        "Mass movement (wet)": 4,
+        "Flood": 39,
+        "Epidemic": 20,
+        "Earthquake": 6,
+        "Storm": 8,
+        "Drought": 5,
+        "Infestation": 2
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MLI",
+      "country": "Mali",
+      "events": 40,
+      "deaths": 527,
+      "affected": 14399871,
+      "by_type": {
+        "Flood": 23,
+        "Epidemic": 9,
+        "Drought": 7,
+        "Infestation": 1
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "BFA",
+      "country": "Burkina Faso",
+      "events": 38,
+      "deaths": 8795,
+      "affected": 14068118,
+      "by_type": {
+        "Flood": 18,
+        "Epidemic": 14,
+        "Infestation": 1,
+        "Drought": 5
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "TCD",
+      "country": "Chad",
+      "events": 45,
+      "deaths": 3707,
+      "affected": 13487827,
+      "by_type": {
+        "Flood": 19,
+        "Drought": 5,
+        "Epidemic": 18,
+        "Storm": 1,
+        "Infestation": 1,
+        "Mass movement (wet)": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "AGO",
+      "country": "Angola",
+      "events": 66,
+      "deaths": 5734,
+      "affected": 9275857,
+      "by_type": {
+        "Epidemic": 13,
+        "Flood": 46,
+        "Drought": 6,
+        "Mass movement (wet)": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MRT",
+      "country": "Mauritania",
+      "events": 25,
+      "deaths": 153,
+      "affected": 8848726,
+      "by_type": {
+        "Flood": 16,
+        "Drought": 6,
+        "Storm": 1,
+        "Infestation": 1,
+        "Epidemic": 1
+      },
+      "last_event_year": 2023,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MAR",
+      "country": "Morocco",
+      "events": 35,
+      "deaths": 4090,
+      "affected": 5593178,
+      "by_type": {
+        "Flood": 21,
+        "Mass movement (wet)": 1,
+        "Storm": 3,
+        "Extreme temperature": 7,
+        "Earthquake": 2,
+        "Infestation": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "UGA",
+      "country": "Uganda",
+      "events": 88,
+      "deaths": 4934,
+      "affected": 5374569,
+      "by_type": {
+        "Epidemic": 27,
+        "Flood": 37,
+        "Storm": 5,
+        "Mass movement (wet)": 12,
+        "Earthquake": 1,
+        "Drought": 5,
+        "Infestation": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "NAM",
+      "country": "Namibia",
+      "events": 30,
+      "deaths": 471,
+      "affected": 5034717,
+      "by_type": {
+        "Flood": 18,
+        "Drought": 6,
+        "Epidemic": 6
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "LSO",
+      "country": "Lesotho",
+      "events": 16,
+      "deaths": 57,
+      "affected": 4327017,
+      "by_type": {
+        "Storm": 6,
+        "Drought": 7,
+        "Flood": 2,
+        "Epidemic": 1
+      },
+      "last_event_year": 2023,
+      "top_type": "Drought"
+    },
+    {
+      "iso3": "BDI",
+      "country": "Burundi",
+      "events": 58,
+      "deaths": 884,
+      "affected": 3670252,
+      "by_type": {
+        "Storm": 7,
+        "Flood": 32,
+        "Epidemic": 10,
+        "Drought": 5,
+        "Mass movement (wet)": 3,
+        "Earthquake": 1
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "CMR",
+      "country": "Cameroon",
+      "events": 39,
+      "deaths": 2139,
+      "affected": 3634055,
+      "by_type": {
+        "Wildfire": 1,
+        "Flood": 16,
+        "Epidemic": 13,
+        "Mass movement (wet)": 6,
+        "Drought": 3
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "SEN",
+      "country": "Senegal",
+      "events": 28,
+      "deaths": 447,
+      "affected": 3091527,
+      "by_type": {
+        "Flood": 16,
+        "Drought": 4,
+        "Epidemic": 6,
+        "Storm": 1,
+        "Infestation": 1
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "COG",
+      "country": "Congo",
+      "events": 32,
+      "deaths": 4641,
+      "affected": 2796920,
+      "by_type": {
+        "Flood": 13,
+        "Storm": 1,
+        "Epidemic": 18
+      },
+      "last_event_year": 2025,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "CAF",
+      "country": "Central African Republic",
+      "events": 39,
+      "deaths": 945,
+      "affected": 2573859,
+      "by_type": {
+        "Wildfire": 3,
+        "Epidemic": 10,
+        "Flood": 15,
+        "Storm": 10,
+        "Drought": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "SWZ",
+      "country": "Eswatini",
+      "events": 13,
+      "deaths": 46,
+      "affected": 2390592,
+      "by_type": {
+        "Drought": 4,
+        "Flood": 3,
+        "Epidemic": 1,
+        "Storm": 4,
+        "Wildfire": 1
+      },
+      "last_event_year": 2022,
+      "top_type": "Drought"
+    },
+    {
+      "iso3": "GHA",
+      "country": "Ghana",
+      "events": 37,
+      "deaths": 953,
+      "affected": 2086940,
+      "by_type": {
+        "Flood": 25,
+        "Epidemic": 11,
+        "Storm": 1
+      },
+      "last_event_year": 2023,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "ERI",
+      "country": "Eritrea",
+      "events": 4,
+      "deaths": 0,
+      "affected": 1707013,
+      "by_type": {
+        "Drought": 1,
+        "Flood": 2,
+        "Infestation": 1
+      },
+      "last_event_year": 2020,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "LBY",
+      "country": "Libya",
+      "events": 4,
+      "deaths": 13225,
+      "affected": 1625365,
+      "by_type": {
+        "Storm": 1,
+        "Flood": 3
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "DJI",
+      "country": "Djibouti",
+      "events": 13,
+      "deaths": 82,
+      "affected": 1511157,
+      "by_type": {
+        "Drought": 6,
+        "Epidemic": 2,
+        "Storm": 1,
+        "Flood": 3,
+        "Infestation": 1
+      },
+      "last_event_year": 2022,
+      "top_type": "Drought"
+    },
+    {
+      "iso3": "BEN",
+      "country": "Benin",
+      "events": 33,
+      "deaths": 1025,
+      "affected": 1389838,
+      "by_type": {
+        "Flood": 12,
+        "Epidemic": 18,
+        "Storm": 2,
+        "Wildfire": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "RWA",
+      "country": "Rwanda",
+      "events": 43,
+      "deaths": 912,
+      "affected": 1240562,
+      "by_type": {
+        "Flood": 27,
+        "Epidemic": 5,
+        "Mass movement (wet)": 5,
+        "Drought": 1,
+        "Volcanic activity": 1,
+        "Earthquake": 2,
+        "Storm": 2
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "DZA",
+      "country": "Algeria",
+      "events": 51,
+      "deaths": 4019,
+      "affected": 816691,
+      "by_type": {
+        "Flood": 34,
+        "Earthquake": 7,
+        "Wildfire": 4,
+        "Storm": 2,
+        "Extreme temperature": 3,
+        "Epidemic": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "COM",
+      "country": "Comoros",
+      "events": 15,
+      "deaths": 193,
+      "affected": 795028,
+      "by_type": {
+        "Storm": 5,
+        "Epidemic": 4,
+        "Earthquake": 1,
+        "Volcanic activity": 3,
+        "Flood": 2
+      },
+      "last_event_year": 2024,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "GIN",
+      "country": "Guinea",
+      "events": 33,
+      "deaths": 3358,
+      "affected": 787457,
+      "by_type": {
+        "Flood": 16,
+        "Epidemic": 14,
+        "Wildfire": 1,
+        "Mass movement (wet)": 1,
+        "Storm": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "LBR",
+      "country": "Liberia",
+      "events": 18,
+      "deaths": 4929,
+      "affected": 659320,
+      "by_type": {
+        "Storm": 2,
+        "Epidemic": 8,
+        "Flood": 7,
+        "Infestation": 1
+      },
+      "last_event_year": 2026,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "GMB",
+      "country": "Gambia",
+      "events": 23,
+      "deaths": 78,
+      "affected": 656119,
+      "by_type": {
+        "Drought": 3,
+        "Flood": 11,
+        "Storm": 6,
+        "Epidemic": 2,
+        "Infestation": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "BWA",
+      "country": "Botswana",
+      "events": 16,
+      "deaths": 496,
+      "affected": 553099,
+      "by_type": {
+        "Drought": 3,
+        "Storm": 2,
+        "Flood": 9,
+        "Epidemic": 2
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "TGO",
+      "country": "Togo",
+      "events": 18,
+      "deaths": 547,
+      "affected": 408316,
+      "by_type": {
+        "Epidemic": 8,
+        "Flood": 10
+      },
+      "last_event_year": 2024,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "CPV",
+      "country": "Cabo Verde",
+      "events": 11,
+      "deaths": 44,
+      "affected": 331098,
+      "by_type": {
+        "Storm": 1,
+        "Drought": 3,
+        "Epidemic": 2,
+        "Infestation": 1,
+        "Flood": 3,
+        "Volcanic activity": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Drought"
+    },
+    {
+      "iso3": "GNB",
+      "country": "Guinea-Bissau",
+      "events": 11,
+      "deaths": 631,
+      "affected": 244429,
+      "by_type": {
+        "Storm": 2,
+        "Flood": 4,
+        "Epidemic": 3,
+        "Drought": 2
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MYT",
+      "country": "Mayotte",
+      "events": 1,
+      "deaths": 35,
+      "affected": 231373,
+      "by_type": {
+        "Storm": 1
+      },
+      "last_event_year": 2024,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "STP",
+      "country": "Sao Tome and Principe",
+      "events": 3,
+      "deaths": 33,
+      "affected": 222204,
+      "by_type": {
+        "Flood": 1,
+        "Epidemic": 2
+      },
+      "last_event_year": 2022,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "REU",
+      "country": "Réunion",
+      "events": 10,
+      "deaths": 14,
+      "affected": 187574,
+      "by_type": {
+        "Storm": 9,
+        "Epidemic": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "SLE",
+      "country": "Sierra Leone",
+      "events": 24,
+      "deaths": 5858,
+      "affected": 161526,
+      "by_type": {
+        "Flood": 12,
+        "Storm": 1,
+        "Wildfire": 2,
+        "Epidemic": 7,
+        "Mass movement (wet)": 2
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "TUN",
+      "country": "Tunisia",
+      "events": 11,
+      "deaths": 62,
+      "affected": 140508,
+      "by_type": {
+        "Flood": 9,
+        "Wildfire": 2
+      },
+      "last_event_year": 2026,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "MUS",
+      "country": "Mauritius",
+      "events": 8,
+      "deaths": 20,
+      "affected": 136324,
+      "by_type": {
+        "Storm": 6,
+        "Flood": 1,
+        "Epidemic": 1
+      },
+      "last_event_year": 2024,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "GAB",
+      "country": "Gabon",
+      "events": 12,
+      "deaths": 52,
+      "affected": 123291,
+      "by_type": {
+        "Storm": 5,
+        "Flood": 2,
+        "Epidemic": 5
+      },
+      "last_event_year": 2026,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "CIV",
+      "country": "Côte d’Ivoire",
+      "events": 27,
+      "deaths": 686,
+      "affected": 94708,
+      "by_type": {
+        "Flood": 14,
+        "Epidemic": 11,
+        "Mass movement (wet)": 2
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "EGY",
+      "country": "Egypt",
+      "events": 16,
+      "deaths": 394,
+      "affected": 71032,
+      "by_type": {
+        "Storm": 4,
+        "Flood": 7,
+        "Mass movement (dry)": 1,
+        "Extreme temperature": 2,
+        "Earthquake": 1,
+        "Epidemic": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Flood"
+    },
+    {
+      "iso3": "SYC",
+      "country": "Seychelles",
+      "events": 6,
+      "deaths": 3,
+      "affected": 24779,
+      "by_type": {
+        "Storm": 2,
+        "Epidemic": 2,
+        "Earthquake": 1,
+        "Flood": 1
+      },
+      "last_event_year": 2016,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "GNQ",
+      "country": "Equatorial Guinea",
+      "events": 3,
+      "deaths": 38,
+      "affected": 24102,
+      "by_type": {
+        "Epidemic": 2,
+        "Flood": 1
+      },
+      "last_event_year": 2025,
+      "top_type": "Epidemic"
+    },
+    {
+      "iso3": "SPI",
+      "country": "Canary Islands",
+      "events": 8,
+      "deaths": 58,
+      "affected": 8136,
+      "by_type": {
+        "Flood": 2,
+        "Extreme temperature": 1,
+        "Wildfire": 1,
+        "Volcanic activity": 1,
+        "Storm": 3
+      },
+      "last_event_year": 2025,
+      "top_type": "Storm"
+    },
+    {
+      "iso3": "SHN",
+      "country": "Saint Helena",
+      "events": 1,
+      "deaths": 0,
+      "affected": 300,
+      "by_type": {
+        "Storm": 1
+      },
+      "last_event_year": 2001,
+      "top_type": "Storm"
+    }
+  ],
+  "top_events_by_affected": [
+    {
+      "disno": "2022-9784-COD",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2022,
+      "deaths": null,
+      "affected": 25972806,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2022-9174-ETH",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Ethiopia",
+      "iso3": "ETH",
+      "year": 2022,
+      "deaths": null,
+      "affected": 24100000,
+      "damage_adj_usd000": 704050
+    },
+    {
+      "disno": "2022-9787-NGA",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Nigeria",
+      "iso3": "NGA",
+      "year": 2022,
+      "deaths": null,
+      "affected": 19110398,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2004-9017-ZAF",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "South Africa",
+      "iso3": "ZAF",
+      "year": 2004,
+      "deaths": null,
+      "affected": 15000000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2003-9772-ETH",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Ethiopia",
+      "iso3": "ETH",
+      "year": 2003,
+      "deaths": null,
+      "affected": 12600000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2021-9148-ZAF",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "South Africa",
+      "iso3": "ZAF",
+      "year": 2021,
+      "deaths": null,
+      "affected": 12000000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2022-9788-SDN",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Sudan",
+      "iso3": "SDN",
+      "year": 2022,
+      "deaths": null,
+      "affected": 11839300,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2015-9545-ETH",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Ethiopia",
+      "iso3": "ETH",
+      "year": 2015,
+      "deaths": null,
+      "affected": 10200000,
+      "damage_adj_usd000": 1901636
+    },
+    {
+      "disno": "2024-9131-ZMB",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Zambia",
+      "iso3": "ZMB",
+      "year": 2024,
+      "deaths": null,
+      "affected": 9800000,
+      "damage_adj_usd000": 2320
+    },
+    {
+      "disno": "2009-9651-NER",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Niger",
+      "iso3": "NER",
+      "year": 2009,
+      "deaths": null,
+      "affected": 7900000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2021-9639-SSD",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "South Sudan",
+      "iso3": "SSD",
+      "year": 2021,
+      "deaths": null,
+      "affected": 7723670,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2024-9197-ZWE",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Zimbabwe",
+      "iso3": "ZWE",
+      "year": 2024,
+      "deaths": null,
+      "affected": 7600000,
+      "damage_adj_usd000": 513156
+    },
+    {
+      "disno": "2020-9609-SOM",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Somalia",
+      "iso3": "SOM",
+      "year": 2021,
+      "deaths": null,
+      "affected": 7100000,
+      "damage_adj_usd000": 1179798
+    },
+    {
+      "disno": "2012-0366-NGA",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Riverine flood",
+      "country": "Nigeria",
+      "iso3": "NGA",
+      "year": 2012,
+      "deaths": 363,
+      "affected": 7000867,
+      "damage_adj_usd000": 701114
+    },
+    {
+      "disno": "2017-9088-ZWE",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Zimbabwe",
+      "iso3": "ZWE",
+      "year": 2017,
+      "deaths": null,
+      "affected": 6900000,
+      "damage_adj_usd000": null
+    }
+  ],
+  "top_events_by_deaths": [
+    {
+      "disno": "2010-9082-SOM",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Somalia",
+      "iso3": "SOM",
+      "year": 2010,
+      "deaths": 20000,
+      "affected": 4000000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2023-0610-LBY",
+      "label": "Storm: Storm 'Daniel'",
+      "type": "Storm",
+      "subtype": "Storm (General)",
+      "country": "Libya",
+      "iso3": "LBY",
+      "year": 2023,
+      "deaths": 13200,
+      "affected": 1600000,
+      "damage_adj_usd000": 6550821
+    },
+    {
+      "disno": "2014-0090-LBR",
+      "label": "Epidemic: Ebola",
+      "type": "Epidemic",
+      "subtype": "Viral disease",
+      "country": "Liberia",
+      "iso3": "LBR",
+      "year": 2014,
+      "deaths": 4810,
+      "affected": 10682,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2008-0511-ZWE",
+      "label": "Epidemic: Cholera",
+      "type": "Epidemic",
+      "subtype": "Bacterial disease",
+      "country": "Zimbabwe",
+      "iso3": "ZWE",
+      "year": 2008,
+      "deaths": 4276,
+      "affected": 98349,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2014-0090-SLE",
+      "label": "Epidemic: Ebola",
+      "type": "Epidemic",
+      "subtype": "Viral disease",
+      "country": "Sierra Leone",
+      "iso3": "SLE",
+      "year": 2014,
+      "deaths": 3956,
+      "affected": 14124,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2019-0614-COD",
+      "label": "Epidemic: Measles",
+      "type": "Epidemic",
+      "subtype": "Viral disease",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2019,
+      "deaths": 3667,
+      "affected": 183837,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2021-0536-NGA",
+      "label": "Epidemic: Cholera",
+      "type": "Epidemic",
+      "subtype": "Bacterial disease",
+      "country": "Nigeria",
+      "iso3": "NGA",
+      "year": 2021,
+      "deaths": 3604,
+      "affected": 179089,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2019-0212-COG",
+      "label": "Epidemic: Measles",
+      "type": "Epidemic",
+      "subtype": "Viral disease",
+      "country": "Congo",
+      "iso3": "COG",
+      "year": 2019,
+      "deaths": 3559,
+      "affected": 180000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2023-0600-MAR",
+      "label": "Earthquake",
+      "type": "Earthquake",
+      "subtype": "Ground movement",
+      "country": "Morocco",
+      "iso3": "MAR",
+      "year": 2023,
+      "deaths": 2946,
+      "affected": 845674,
+      "damage_adj_usd000": 7396088
+    },
+    {
+      "disno": "2023-0281-COD",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flash flood",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2023,
+      "deaths": 2830,
+      "affected": 50220,
+      "damage_adj_usd000": 10566
+    },
+    {
+      "disno": "2014-0090-GIN",
+      "label": "Epidemic: Ebola",
+      "type": "Epidemic",
+      "subtype": "Viral disease",
+      "country": "Guinea",
+      "iso3": "GIN",
+      "year": 2014,
+      "deaths": 2544,
+      "affected": 3814,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2022-9436-UGA",
+      "label": "Drought",
+      "type": "Drought",
+      "subtype": "Drought",
+      "country": "Uganda",
+      "iso3": "UGA",
+      "year": 2022,
+      "deaths": 2465,
+      "affected": 518000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2006-0187-AGO",
+      "label": "Epidemic: Cholera",
+      "type": "Epidemic",
+      "subtype": "Bacterial disease",
+      "country": "Angola",
+      "iso3": "AGO",
+      "year": 2006,
+      "deaths": 2354,
+      "affected": 57570,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2018-0363-COD",
+      "label": "Epidemic: Ebola",
+      "type": "Epidemic",
+      "subtype": "Viral disease",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2018,
+      "deaths": 2287,
+      "affected": 3470,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2003-0245-DZA",
+      "label": "Earthquake",
+      "type": "Earthquake",
+      "subtype": "Ground movement",
+      "country": "Algeria",
+      "iso3": "DZA",
+      "year": 2003,
+      "deaths": 2266,
+      "affected": 210261,
+      "damage_adj_usd000": 8750432
+    }
+  ],
+  "recent_events": [
+    {
+      "disno": "2026-0310-COD",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2026,
+      "deaths": 6,
+      "affected": 79000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0229-AGO",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Angola",
+      "iso3": "AGO",
+      "year": 2026,
+      "deaths": 45,
+      "affected": 51292,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0230-COD",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2026,
+      "deaths": 6,
+      "affected": 65013,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0286-KEN",
+      "label": "Storm",
+      "type": "Storm",
+      "subtype": "Severe weather",
+      "country": "Kenya",
+      "iso3": "KEN",
+      "year": 2026,
+      "deaths": 18,
+      "affected": 515,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0153-KEN",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Kenya",
+      "iso3": "KEN",
+      "year": 2026,
+      "deaths": 59,
+      "affected": 27,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0179-MWI",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Malawi",
+      "iso3": "MWI",
+      "year": 2026,
+      "deaths": 29,
+      "affected": 140142,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0165-GAB",
+      "label": "Storm",
+      "type": "Storm",
+      "subtype": "Severe weather",
+      "country": "Gabon",
+      "iso3": "GAB",
+      "year": 2026,
+      "deaths": null,
+      "affected": 6155,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0158-ETH",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Ethiopia",
+      "iso3": "ETH",
+      "year": 2026,
+      "deaths": 131,
+      "affected": 14263,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0204-LBR",
+      "label": "Storm",
+      "type": "Storm",
+      "subtype": "Severe weather",
+      "country": "Liberia",
+      "iso3": "LBR",
+      "year": 2026,
+      "deaths": null,
+      "affected": 3704,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0197-TZA",
+      "label": "Mass movement (wet)",
+      "type": "Mass movement (wet)",
+      "subtype": "Landslide (wet)",
+      "country": "United Republic of Tanzania",
+      "iso3": "TZA",
+      "year": 2026,
+      "deaths": 20,
+      "affected": 605,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0210-COD",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2026,
+      "deaths": 2,
+      "affected": 223084,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0082-MOZ",
+      "label": "Storm: Cyclone 'Gezani'",
+      "type": "Storm",
+      "subtype": "Tropical cyclone",
+      "country": "Mozambique",
+      "iso3": "MOZ",
+      "year": 2026,
+      "deaths": 4,
+      "affected": 6170,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0151-CAF",
+      "label": "Wildfire",
+      "type": "Wildfire",
+      "subtype": "Wildfire (General)",
+      "country": "Central African Republic",
+      "iso3": "CAF",
+      "year": 2026,
+      "deaths": null,
+      "affected": 1352,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0149-AGO",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Angola",
+      "iso3": "AGO",
+      "year": 2026,
+      "deaths": null,
+      "affected": 6493,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0082-MDG",
+      "label": "Storm: Cyclone 'Gezani'",
+      "type": "Storm",
+      "subtype": "Tropical cyclone",
+      "country": "Madagascar",
+      "iso3": "MDG",
+      "year": 2026,
+      "deaths": 71,
+      "affected": 478804,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0094-CMR",
+      "label": "Wildfire",
+      "type": "Wildfire",
+      "subtype": "Wildfire (General)",
+      "country": "Cameroon",
+      "iso3": "CMR",
+      "year": 2026,
+      "deaths": 1,
+      "affected": 23199,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0002-ZAF",
+      "label": "Storm",
+      "type": "Storm",
+      "subtype": "Lightning/Thunderstorms",
+      "country": "South Africa",
+      "iso3": "ZAF",
+      "year": 2026,
+      "deaths": 2,
+      "affected": 150,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0067-COD",
+      "label": "Mass movement (wet)",
+      "type": "Mass movement (wet)",
+      "subtype": "Landslide (wet)",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2026,
+      "deaths": 200,
+      "affected": 20,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0048-ZWE",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Zimbabwe",
+      "iso3": "ZWE",
+      "year": 2026,
+      "deaths": 109,
+      "affected": 41536,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0033-TUN",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Tunisia",
+      "iso3": "TUN",
+      "year": 2026,
+      "deaths": 5,
+      "affected": 25000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0033-DZA",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Algeria",
+      "iso3": "DZA",
+      "year": 2026,
+      "deaths": 1,
+      "affected": 6000,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0108-MAR",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flood (General)",
+      "country": "Morocco",
+      "iso3": "MAR",
+      "year": 2026,
+      "deaths": 43,
+      "affected": 2000023,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0063-COD",
+      "label": "Mass movement (wet)",
+      "type": "Mass movement (wet)",
+      "subtype": "Landslide (wet)",
+      "country": "Democratic Republic of the Congo",
+      "iso3": "COD",
+      "year": 2026,
+      "deaths": 13,
+      "affected": 54,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2026-0078-MDG",
+      "label": "Storm: Tropical cyclone 'Fytia\"",
+      "type": "Storm",
+      "subtype": "Tropical cyclone",
+      "country": "Madagascar",
+      "iso3": "MDG",
+      "year": 2026,
+      "deaths": 14,
+      "affected": 203007,
+      "damage_adj_usd000": null
+    },
+    {
+      "disno": "2025-1048-MAR",
+      "label": "Flood",
+      "type": "Flood",
+      "subtype": "Flash flood",
+      "country": "Morocco",
+      "iso3": "MAR",
+      "year": 2025,
+      "deaths": 52,
+      "affected": 2838,
+      "damage_adj_usd000": null
+    }
+  ]
+}

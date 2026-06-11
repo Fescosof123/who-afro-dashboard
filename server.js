@@ -342,6 +342,22 @@ const IDMC_RSS_CACHE_FILE      = path.join(DATA_DIR, "idmc-rss-cache.json");
 const RELIEFWEB_RSS_CACHE_TTL_HOURS = 6;
 let reliefwebRssSnapshot = null;
 
+// EM-DAT historical disaster impact data (CRED/UCLouvain). No public API exists:
+// the xlsx export is downloaded manually from public.emdat.be (login required)
+// and converted with scripts/build-emdat-cache.js. The server only reads the JSON.
+const EMDAT_CACHE_FILE = path.join(DATA_DIR, "emdat-cache.json");
+
+function loadEmdatSnapshot() {
+  try {
+    if (!fs.existsSync(EMDAT_CACHE_FILE)) return null;
+    const raw = JSON.parse(fs.readFileSync(EMDAT_CACHE_FILE, "utf8"));
+    return raw && raw.generated_at && Array.isArray(raw.yearly) ? raw : null;
+  } catch (e) {
+    console.warn(`[EM-DAT cache] Read failed: ${e.message}`);
+    return null;
+  }
+}
+
 // Generic helper — reads any { saved_at, items } cache file.
 function readRssCacheFile(filePath) {
   try {
@@ -6379,6 +6395,7 @@ app.get("/api/dashboard-data", async (req, res) => {
 
     // Reload FCV Country Profile from disk on each uncached request so file updates are picked up automatically.
     fcvCountryProfileSnapshot = loadFcvCountryProfileData();
+    const emdatSnapshot = loadEmdatSnapshot();
 
     const countryMap = {};
     FCV_COUNTRIES.forEach((c) => {
@@ -6711,9 +6728,11 @@ app.get("/api/dashboard-data", async (req, res) => {
         fews_country_pages: fewsCountryPageBundle.status?.checked_at || null,
         acled: acledBundle.status?.checked_at || null,
         acaps: acapsBundle.status?.checked_at || null,
-        country_feed: countryFeedSnapshot?.saved_at || null
+        country_feed: countryFeedSnapshot?.saved_at || null,
+        emdat: emdatSnapshot?.generated_at || null
       },
-      fcv_country_profile: fcvCountryProfileSnapshot || null
+      fcv_country_profile: fcvCountryProfileSnapshot || null,
+      emdat: emdatSnapshot
     };
 
     responsePayload.metric_ledger = buildMetricLedger(responsePayload);

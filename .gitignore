@@ -1,6 +1,9 @@
 node_modules/
 .env
 data/validation-logs/
+# Raw EM-DAT exports must not be redistributed (EM-DAT terms of use).
+# Only the aggregated emdat-cache.json is committed.
+data/public_emdat_*.xlsx
 shiny-app/
 *.bat
 publish-check.ps1
