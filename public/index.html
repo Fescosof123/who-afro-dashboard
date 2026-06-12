@@ -487,7 +487,7 @@
                 <h2>Historical Disaster Impact (EM-DAT)</h2>
                 <p>Natural disasters in Africa since 2000 — EM-DAT public database, CRED/UCLouvain. Updated manually a few times per year.</p>
               </div>
-              <div id="emdatSummary" class="summary"></div>
+              <div id="emdatSummary" class="summary"><p class="loading-note">Loading EM-DAT historical data — the first load after the server has been idle can take a minute or two…</p></div>
               <div id="emdatChart" class="chart" aria-describedby="emdatChartAxisCaption"></div>
               <p id="emdatChartAxisCaption" class="chart-axis-caption">Bars: disaster events per year by type (left axis). Line: total people affected per year (right axis).</p>
             </section>
@@ -498,7 +498,7 @@
                   <h2>Largest Disasters by People Affected</h2>
                   <p>Top EM-DAT events since 2000.</p>
                 </div>
-                <div id="emdatTopEvents" class="feed"></div>
+                <div id="emdatTopEvents" class="feed"><p class="loading-note">Loading…</p></div>
               </div>
               <div>
                 <div class="panel-header">
@@ -510,7 +510,7 @@
                     <thead>
                       <tr><th>Country</th><th>Events</th><th>Deaths</th><th>Affected</th><th>Main Type</th></tr>
                     </thead>
-                    <tbody id="emdatCountryTable"></tbody>
+                    <tbody id="emdatCountryTable"><tr><td colspan="5" class="loading-note">Loading…</td></tr></tbody>
                   </table>
                 </div>
               </div>

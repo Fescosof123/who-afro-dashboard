@@ -772,6 +772,13 @@ main {
   color: #4f4f4f;
 }
 
+.loading-note {
+  margin: 8px 0;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #767676;
+}
+
 .chart.square {
   aspect-ratio: 1 / 1;
   min-height: 520px;
