@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-06-16T03:27:30.320Z",
+  "saved_at": "2026-06-16T06:10:26.251Z",
   "items": [
     {
       "title": "Green flood alert in Türkiye",
@@ -14,6 +14,20 @@
       "contentSnippet": "On 28/06/2026, a flood started in Türkiye, lasting until 30/06/2026 (last update). The flood caused 0 deaths and 0 displaced .",
       "guid": "FL1103920",
       "isoDate": "2026-06-02T05:45:56.000Z"
+    },
+    {
+      "title": "Orange earthquake (Magnitude 6.7M, Depth:10km) in Indonesia 16/06/2026 03:27 UTC, 260 thousand (in MMI>=VII).",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1546617",
+      "pubDate": "Tue, 16 Jun 2026 03:42:14 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1712368_1.png"
+      },
+      "content": "On 6/16/2026 3:27:44 AM, an earthquake occurred in Indonesia potentially affecting 260 thousand (in MMI>=VII). The earthquake had Magnitude 6.7M, Depth:10km.",
+      "contentSnippet": "On 6/16/2026 3:27:44 AM, an earthquake occurred in Indonesia potentially affecting 260 thousand (in MMI>=VII). The earthquake had Magnitude 6.7M, Depth:10km.",
+      "guid": "EQ1546617",
+      "isoDate": "2026-06-16T03:42:14.000Z"
     },
     {
       "title": "Green earthquake (Magnitude 5.5M, Depth:72.266km) in Philippines 15/06/2026 15:30 UTC, 3.9 million in MMI IV.",
@@ -801,20 +815,6 @@
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028911",
-      "pubDate": "Tue, 16 Jun 2026 03:06:19 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/06/2026, a forest fire started in The Democratic Republic of Congo,  until 13/06/2026.",
-      "contentSnippet": "On 06/06/2026, a forest fire started in The Democratic Republic of Congo,  until 13/06/2026.",
-      "guid": "WF1028911",
-      "isoDate": "2026-06-16T03:06:19.000Z"
-    },
-    {
-      "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028872",
       "pubDate": "Thu, 11 Jun 2026 19:01:07 GMT",
       "enclosure": {
@@ -840,6 +840,20 @@
       "contentSnippet": "On 06/06/2026, a forest fire started in The Democratic Republic of Congo,  until 13/06/2026.",
       "guid": "WF1028874",
       "isoDate": "2026-06-12T15:02:49.000Z"
+    },
+    {
+      "title": "Green forest fire notification in The Democratic Republic of Congo",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028911",
+      "pubDate": "Tue, 16 Jun 2026 03:06:19 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/06/2026, a forest fire started in The Democratic Republic of Congo,  until 13/06/2026.",
+      "contentSnippet": "On 06/06/2026, a forest fire started in The Democratic Republic of Congo,  until 13/06/2026.",
+      "guid": "WF1028911",
+      "isoDate": "2026-06-16T03:06:19.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
