@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-06-21T07:57:01.552Z",
+  "saved_at": "2026-06-21T09:30:10.264Z",
   "items": [
     {
       "title": "Green flood alert in Türkiye",
@@ -176,10 +176,10 @@
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001277/1001277_10_tn.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001277/1001277_11_tn.png"
       },
-      "content": "From 18/06/2026 to 21/06/2026, a Tropical Storm (maximum wind speed of 204 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 18/06/2026 to 21/06/2026, a Tropical Storm (maximum wind speed of 204 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "content": "From 18/06/2026 to 21/06/2026, a Hurricane/Typhoon > 74 mph (maximum wind speed of 213 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 18/06/2026 to 21/06/2026, a Hurricane/Typhoon > 74 mph (maximum wind speed of 213 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
       "guid": "TC1001277",
       "isoDate": "2026-06-18T20:07:15.000Z"
     },
@@ -240,20 +240,6 @@
       "isoDate": "2026-06-21T06:46:54.000Z"
     },
     {
-      "title": "Green forest fire notification in Namibia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028989",
-      "pubDate": "Sun, 21 Jun 2026 03:01:20 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 18/06/2026, a forest fire started in Namibia,  until 20/06/2026.",
-      "contentSnippet": "On 18/06/2026, a forest fire started in Namibia,  until 20/06/2026.",
-      "guid": "WF1028989",
-      "isoDate": "2026-06-21T03:01:20.000Z"
-    },
-    {
       "title": "Green forest fire notification in Zambia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028982",
       "pubDate": "Sat, 20 Jun 2026 07:00:12 GMT",
@@ -280,6 +266,20 @@
       "contentSnippet": "On 18/06/2026, a forest fire started in Australia,  until 21/06/2026.",
       "guid": "WF1028983",
       "isoDate": "2026-06-20T11:00:17.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Namibia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028989",
+      "pubDate": "Sun, 21 Jun 2026 03:01:20 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 18/06/2026, a forest fire started in Namibia,  until 20/06/2026.",
+      "contentSnippet": "On 18/06/2026, a forest fire started in Namibia,  until 20/06/2026.",
+      "guid": "WF1028989",
+      "isoDate": "2026-06-21T03:01:20.000Z"
     },
     {
       "title": "Green earthquake (Magnitude 6.6M, Depth:10km) in Central Mid-Atlantic Ridge 17/06/2026 18:56 UTC, [unknown].",
@@ -1389,20 +1389,6 @@
     },
     {
       "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028961",
-      "pubDate": "Wed, 17 Jun 2026 15:08:09 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 07/06/2026, a forest fire started in Russian Federation,  until 21/06/2026.",
-      "contentSnippet": "On 07/06/2026, a forest fire started in Russian Federation,  until 21/06/2026.",
-      "guid": "WF1028961",
-      "isoDate": "2026-06-17T15:08:09.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028974",
       "pubDate": "Fri, 19 Jun 2026 03:09:36 GMT",
       "enclosure": {
@@ -1414,6 +1400,20 @@
       "contentSnippet": "On 07/06/2026, a forest fire started in Russian Federation,  until 20/06/2026.",
       "guid": "WF1028974",
       "isoDate": "2026-06-19T03:09:36.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1028961",
+      "pubDate": "Wed, 17 Jun 2026 15:08:09 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 07/06/2026, a forest fire started in Russian Federation,  until 21/06/2026.",
+      "contentSnippet": "On 07/06/2026, a forest fire started in Russian Federation,  until 21/06/2026.",
+      "guid": "WF1028961",
+      "isoDate": "2026-06-17T15:08:09.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
