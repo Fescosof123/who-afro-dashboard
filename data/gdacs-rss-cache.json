@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-06-25T01:18:56.651Z",
+  "saved_at": "2026-06-25T03:26:27.690Z",
   "items": [
     {
       "title": "Green flood alert in Türkiye",
@@ -16,21 +16,21 @@
       "isoDate": "2026-06-02T05:45:56.000Z"
     },
     {
-      "title": "Green earthquake (Magnitude 6.9M, Depth:51.709km) in Japan 24/06/2026 22:30 UTC, 320 thousand in MMI VI.",
+      "title": "Green earthquake (Magnitude 6.9M, Depth:50.923km) in Japan 24/06/2026 22:30 UTC, 330 thousand in MMI VI.",
       "link": "https://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1548381",
       "pubDate": "Wed, 24 Jun 2026 22:46:49 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1714319_1.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1714348_1.png"
       },
-      "content": "On 6/24/2026 10:30:15 PM, an earthquake occurred in Japan potentially affecting 320 thousand in MMI VI. The earthquake had Magnitude 6.9M, Depth:51.709km.",
-      "contentSnippet": "On 6/24/2026 10:30:15 PM, an earthquake occurred in Japan potentially affecting 320 thousand in MMI VI. The earthquake had Magnitude 6.9M, Depth:51.709km.",
+      "content": "On 6/24/2026 10:30:14 PM, an earthquake occurred in Japan potentially affecting 330 thousand in MMI VI. The earthquake had Magnitude 6.9M, Depth:50.923km.",
+      "contentSnippet": "On 6/24/2026 10:30:14 PM, an earthquake occurred in Japan potentially affecting 330 thousand in MMI VI. The earthquake had Magnitude 6.9M, Depth:50.923km.",
       "guid": "EQ1548381",
       "isoDate": "2026-06-24T22:46:49.000Z"
     },
     {
-      "title": "Red earthquake (Magnitude 7.5M, Depth:10km) in Venezuela 24/06/2026 22:05 UTC, 3.9 million (in MMI>=VII).",
+      "title": "Red earthquake (Magnitude 7.5M, Depth:10km) in Venezuela 24/06/2026 22:05 UTC, 810 thousand (in MMI>=VII).",
       "link": "https://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1548377",
       "pubDate": "Wed, 24 Jun 2026 22:17:17 GMT",
       "enclosure": {
@@ -38,8 +38,8 @@
         "length": "1",
         "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1714328_1.png"
       },
-      "content": "On 6/24/2026 10:05:12 PM, an earthquake occurred in Venezuela potentially affecting 3.9 million (in MMI>=VII). The earthquake had Magnitude 7.5M, Depth:10km.",
-      "contentSnippet": "On 6/24/2026 10:05:12 PM, an earthquake occurred in Venezuela potentially affecting 3.9 million (in MMI>=VII). The earthquake had Magnitude 7.5M, Depth:10km.",
+      "content": "On 6/24/2026 10:05:12 PM, an earthquake occurred in Venezuela potentially affecting 810 thousand (in MMI>=VII). The earthquake had Magnitude 7.5M, Depth:10km.",
+      "contentSnippet": "On 6/24/2026 10:05:12 PM, an earthquake occurred in Venezuela potentially affecting 810 thousand (in MMI>=VII). The earthquake had Magnitude 7.5M, Depth:10km.",
       "guid": "EQ1548377",
       "isoDate": "2026-06-24T22:17:17.000Z"
     },
@@ -56,6 +56,20 @@
       "contentSnippet": "On 6/24/2026 3:10:40 PM, an earthquake occurred in United States potentially affecting 10 thousand (in MMI>=VII). The earthquake had Magnitude 5.57M, Depth:8.06999969482422km.",
       "guid": "EQ1548310",
       "isoDate": "2026-06-24T15:15:23.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029068",
+      "pubDate": "Thu, 25 Jun 2026 03:00:44 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 23/06/2026, a forest fire started in Brazil,  until 24/06/2026.",
+      "contentSnippet": "On 23/06/2026, a forest fire started in Brazil,  until 24/06/2026.",
+      "guid": "WF1029068",
+      "isoDate": "2026-06-25T03:00:44.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -130,7 +144,7 @@
     {
       "title": "Green forest fire notification in Syrian Arab Republic",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029038",
-      "pubDate": "Wed, 24 Jun 2026 23:01:12 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:00:33 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -139,7 +153,7 @@
       "content": "On 23/06/2026, a forest fire started in Syrian Arab Republic,  until 23/06/2026.",
       "contentSnippet": "On 23/06/2026, a forest fire started in Syrian Arab Republic,  until 23/06/2026.",
       "guid": "WF1029038",
-      "isoDate": "2026-06-24T23:01:12.000Z"
+      "isoDate": "2026-06-25T03:00:33.000Z"
     },
     {
       "title": "Green notification for tropical cyclone HIGOS-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
@@ -148,10 +162,10 @@
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001278/1001278_10_tn.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001278/1001278_11_tn.png"
       },
-      "content": "From 22/06/2026 to 24/06/2026, a Tropical Storm (maximum wind speed of 93 km/h) HIGOS-26 was active in NWPacific. The cyclone affects these countries: Northern Mariana Islands, Guam (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 22/06/2026 to 24/06/2026, a Tropical Storm (maximum wind speed of 93 km/h) HIGOS-26 was active in NWPacific. The cyclone affects these countries: Northern Mariana Islands, Guam (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "content": "From 22/06/2026 to 25/06/2026, a Tropical Storm (maximum wind speed of 93 km/h) HIGOS-26 was active in NWPacific. The cyclone affects these countries: Northern Mariana Islands, Guam, Japan (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 22/06/2026 to 25/06/2026, a Tropical Storm (maximum wind speed of 93 km/h) HIGOS-26 was active in NWPacific. The cyclone affects these countries: Northern Mariana Islands, Guam, Japan (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
       "guid": "TC1001278",
       "isoDate": "2026-06-22T15:35:50.000Z"
     },
@@ -172,7 +186,7 @@
     {
       "title": "Green forest fire notification in Australia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029052",
-      "pubDate": "Wed, 24 Jun 2026 23:01:26 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:01:08 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -181,7 +195,7 @@
       "content": "On 22/06/2026, a forest fire started in Australia,  until 24/06/2026.",
       "contentSnippet": "On 22/06/2026, a forest fire started in Australia,  until 24/06/2026.",
       "guid": "WF1029052",
-      "isoDate": "2026-06-24T23:01:26.000Z"
+      "isoDate": "2026-06-25T03:01:08.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -382,7 +396,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029059",
-      "pubDate": "Wed, 24 Jun 2026 23:02:30 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:01:58 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -391,7 +405,7 @@
       "content": "On 20/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 20/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029059",
-      "isoDate": "2026-06-24T23:02:30.000Z"
+      "isoDate": "2026-06-25T03:01:58.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -592,7 +606,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029061",
-      "pubDate": "Wed, 24 Jun 2026 23:03:43 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:03:07 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -601,7 +615,7 @@
       "content": "On 19/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 19/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029061",
-      "isoDate": "2026-06-24T23:03:43.000Z"
+      "isoDate": "2026-06-25T03:03:07.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -618,16 +632,30 @@
       "isoDate": "2026-06-24T23:03:25.000Z"
     },
     {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029069",
+      "pubDate": "Thu, 25 Jun 2026 03:02:47 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 19/06/2026, a forest fire started in Australia,  until 24/06/2026.",
+      "contentSnippet": "On 19/06/2026, a forest fire started in Australia,  until 24/06/2026.",
+      "guid": "WF1029069",
+      "isoDate": "2026-06-25T03:02:47.000Z"
+    },
+    {
       "title": "Green notification for tropical cyclone MEKKHALA-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
       "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001277",
       "pubDate": "Thu, 18 Jun 2026 20:07:15 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001277/1001277_25_tn.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001277/1001277_26_tn.png"
       },
-      "content": "From 18/06/2026 to 24/06/2026, a Tropical Storm (maximum wind speed of 231 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 18/06/2026 to 24/06/2026, a Tropical Storm (maximum wind speed of 231 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "content": "From 18/06/2026 to 25/06/2026, a Tropical Storm (maximum wind speed of 231 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 18/06/2026 to 25/06/2026, a Tropical Storm (maximum wind speed of 231 km/h) MEKKHALA-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
       "guid": "TC1001277",
       "isoDate": "2026-06-18T20:07:15.000Z"
     },
@@ -662,7 +690,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029062",
-      "pubDate": "Wed, 24 Jun 2026 23:04:55 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:03:22 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -671,12 +699,12 @@
       "content": "On 18/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 18/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029062",
-      "isoDate": "2026-06-24T23:04:55.000Z"
+      "isoDate": "2026-06-25T03:03:22.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029063",
-      "pubDate": "Wed, 24 Jun 2026 23:04:37 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:03:53 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -685,7 +713,7 @@
       "content": "On 18/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 18/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029063",
-      "isoDate": "2026-06-24T23:04:37.000Z"
+      "isoDate": "2026-06-25T03:03:53.000Z"
     },
     {
       "title": "Green forest fire notification in United States",
@@ -774,7 +802,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029043",
-      "pubDate": "Wed, 24 Jun 2026 23:04:00 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:03:47 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -783,7 +811,7 @@
       "content": "On 18/06/2026, a forest fire started in The Democratic Republic of Congo,  until 23/06/2026.",
       "contentSnippet": "On 18/06/2026, a forest fire started in The Democratic Republic of Congo,  until 23/06/2026.",
       "guid": "WF1029043",
-      "isoDate": "2026-06-24T23:04:00.000Z"
+      "isoDate": "2026-06-25T03:03:47.000Z"
     },
     {
       "title": "Green forest fire notification in Zambia",
@@ -844,7 +872,7 @@
     {
       "title": "Green forest fire notification in Sudan",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029008",
-      "pubDate": "Wed, 24 Jun 2026 23:05:15 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:04:53 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -853,7 +881,7 @@
       "content": "On 17/06/2026, a forest fire started in Sudan,  until 21/06/2026.",
       "contentSnippet": "On 17/06/2026, a forest fire started in Sudan,  until 21/06/2026.",
       "guid": "WF1029008",
-      "isoDate": "2026-06-24T23:05:15.000Z"
+      "isoDate": "2026-06-25T03:04:53.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -872,7 +900,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029044",
-      "pubDate": "Wed, 24 Jun 2026 23:05:34 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:05:21 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -881,7 +909,7 @@
       "content": "On 17/06/2026, a forest fire started in The Democratic Republic of Congo,  until 23/06/2026.",
       "contentSnippet": "On 17/06/2026, a forest fire started in The Democratic Republic of Congo,  until 23/06/2026.",
       "guid": "WF1029044",
-      "isoDate": "2026-06-24T23:05:34.000Z"
+      "isoDate": "2026-06-25T03:05:21.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
@@ -956,7 +984,7 @@
     {
       "title": "Green forest fire notification in Australia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029056",
-      "pubDate": "Wed, 24 Jun 2026 23:06:21 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:06:15 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -965,12 +993,12 @@
       "content": "On 16/06/2026, a forest fire started in Australia,  until 24/06/2026.",
       "contentSnippet": "On 16/06/2026, a forest fire started in Australia,  until 24/06/2026.",
       "guid": "WF1029056",
-      "isoDate": "2026-06-24T23:06:21.000Z"
+      "isoDate": "2026-06-25T03:06:15.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029064",
-      "pubDate": "Wed, 24 Jun 2026 23:06:45 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:05:58 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -979,12 +1007,12 @@
       "content": "On 16/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 16/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029064",
-      "isoDate": "2026-06-24T23:06:45.000Z"
+      "isoDate": "2026-06-25T03:05:58.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029065",
-      "pubDate": "Wed, 24 Jun 2026 23:06:26 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:06:09 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -993,7 +1021,7 @@
       "content": "On 16/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 16/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029065",
-      "isoDate": "2026-06-24T23:06:26.000Z"
+      "isoDate": "2026-06-25T03:06:09.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -1054,7 +1082,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029024",
-      "pubDate": "Wed, 24 Jun 2026 23:06:52 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:07:31 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -1063,7 +1091,7 @@
       "content": "On 15/06/2026, a forest fire started in The Democratic Republic of Congo,  until 22/06/2026.",
       "contentSnippet": "On 15/06/2026, a forest fire started in The Democratic Republic of Congo,  until 22/06/2026.",
       "guid": "WF1029024",
-      "isoDate": "2026-06-24T23:06:52.000Z"
+      "isoDate": "2026-06-25T03:07:31.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -1110,7 +1138,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029066",
-      "pubDate": "Wed, 24 Jun 2026 23:07:31 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:06:40 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -1119,7 +1147,7 @@
       "content": "On 15/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "contentSnippet": "On 15/06/2026, a forest fire started in The Democratic Republic of Congo,  until 24/06/2026.",
       "guid": "WF1029066",
-      "isoDate": "2026-06-24T23:07:31.000Z"
+      "isoDate": "2026-06-25T03:06:40.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -1180,7 +1208,7 @@
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029046",
-      "pubDate": "Wed, 24 Jun 2026 23:08:13 GMT",
+      "pubDate": "Thu, 25 Jun 2026 03:07:53 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -1189,7 +1217,7 @@
       "content": "On 14/06/2026, a forest fire started in The Democratic Republic of Congo,  until 23/06/2026.",
       "contentSnippet": "On 14/06/2026, a forest fire started in The Democratic Republic of Congo,  until 23/06/2026.",
       "guid": "WF1029046",
-      "isoDate": "2026-06-24T23:08:13.000Z"
+      "isoDate": "2026-06-25T03:07:53.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
