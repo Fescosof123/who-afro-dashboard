@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-07-19T11:31:09.279Z",
+  "saved_at": "2026-07-19T13:54:44.396Z",
   "items": [
     {
       "title": "Green notification for tropical cyclone SIX-E-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
@@ -30,16 +30,16 @@
       "isoDate": "2026-07-19T02:42:14.000Z"
     },
     {
-      "title": "Green earthquake (Magnitude 5.5M, Depth:10km) in Scotia Sea 18/07/2026 19:50 UTC, [unknown].",
+      "title": "Green earthquake (Magnitude 5.5M, Depth:10km) in Scotia Sea 18/07/2026 19:50 UTC, No people affected in 100km.",
       "link": "https://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1552700",
       "pubDate": "Sat, 18 Jul 2026 20:08:52 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1719148_1.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1719295_1.png"
       },
-      "content": "On 7/18/2026 7:50:37 PM, an earthquake occurred in Scotia Sea potentially affecting [unknown]. The earthquake had Magnitude 5.5M, Depth:10km.",
-      "contentSnippet": "On 7/18/2026 7:50:37 PM, an earthquake occurred in Scotia Sea potentially affecting [unknown]. The earthquake had Magnitude 5.5M, Depth:10km.",
+      "content": "On 7/18/2026 7:50:37 PM, an earthquake occurred in Scotia Sea potentially affecting No people affected in 100km. The earthquake had Magnitude 5.5M, Depth:10km.",
+      "contentSnippet": "On 7/18/2026 7:50:37 PM, an earthquake occurred in Scotia Sea potentially affecting No people affected in 100km. The earthquake had Magnitude 5.5M, Depth:10km.",
       "guid": "EQ1552700",
       "isoDate": "2026-07-18T20:08:52.000Z"
     },
@@ -56,6 +56,20 @@
       "contentSnippet": "On 7/18/2026 5:26:25 PM, an earthquake occurred in Mexico potentially affecting 820 thousand in MMI IV. The earthquake had Magnitude 5.7M, Depth:10km.",
       "guid": "EQ1552687",
       "isoDate": "2026-07-18T17:44:22.000Z"
+    },
+    {
+      "title": "Green flood alert in South Korea",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104032",
+      "pubDate": "Sun, 19 Jul 2026 12:38:47 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1104032.png"
+      },
+      "content": "On 18/07/2026, a flood started in South Korea, lasting until 20/07/2026 (last update). The flood caused 0 deaths and 95 displaced .",
+      "contentSnippet": "On 18/07/2026, a flood started in South Korea, lasting until 20/07/2026 (last update). The flood caused 0 deaths and 95 displaced .",
+      "guid": "FL1104032",
+      "isoDate": "2026-07-19T12:38:47.000Z"
     },
     {
       "title": "Green earthquake (Magnitude 6M, Depth:10km) in Mexico 17/07/2026 15:20 UTC, 1.2 million in MMI IV.",
