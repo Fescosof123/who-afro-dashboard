@@ -15,6 +15,9 @@ html {
   --good: #0f8f6c;
   --warn: #b87910;
   --bad: #c44242;
+  --th-good: #0f8f6c;
+  --th-warn: #b8790f;
+  --th-bad: #7a1f3d;
   --shadow: 0 18px 52px rgba(0, 41, 86, 0.16);
   --shadow-soft: 0 10px 24px rgba(0, 41, 86, 0.10);
 }
@@ -798,6 +801,225 @@ main {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 6px;
+}
+
+.fcv-threshold-legend {
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+}
+
+.fcv-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: flex-end;
+  margin-top: 10px;
+  margin-bottom: 16px;
+}
+
+.fcv-dropdown {
+  position: relative;
+}
+
+.fcv-dropdown-trigger {
+  min-width: 180px;
+  text-align: left;
+  padding: 9px 32px 9px 14px;
+  border-radius: 10px;
+  border: 1.5px solid var(--who-blue);
+  background: #fff;
+  color: var(--who-blue);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  position: relative;
+}
+
+.fcv-dropdown-trigger::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid var(--who-blue);
+  border-bottom: 2px solid var(--who-blue);
+  transform: translateY(-65%) rotate(45deg);
+  pointer-events: none;
+}
+
+.fcv-dropdown-trigger:hover,
+.fcv-dropdown-trigger.is-open {
+  background: var(--who-blue);
+  color: #fff;
+}
+
+.fcv-dropdown-trigger.is-open::after,
+.fcv-dropdown-trigger:hover::after {
+  border-color: #fff;
+}
+
+.fcv-dropdown-trigger.has-selection {
+  border-color: var(--who-cyan);
+}
+
+.fcv-dropdown-panel {
+  position: absolute;
+  z-index: 500;
+  top: calc(100% + 6px);
+  left: 0;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 6px;
+}
+
+.fcv-dropdown-panel[hidden] {
+  display: none;
+}
+
+.fcv-dropdown-panel-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 4px 6px 8px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 4px;
+}
+
+.fcv-dropdown-panel-actions button {
+  border: none;
+  background: none;
+  color: var(--who-blue);
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+}
+
+.fcv-dropdown-panel-actions button:hover {
+  text-decoration: underline;
+}
+
+.fcv-dropdown-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.fcv-dropdown-option:hover {
+  background: var(--who-sky);
+}
+
+.fcv-dropdown-option input {
+  margin: 0;
+  accent-color: var(--who-blue);
+}
+
+.fcv-dropdown-empty {
+  padding: 10px 8px;
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.fcv-inline-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin: 8px 0;
+}
+
+.fcv-inline-select select {
+  font-size: 0.92rem;
+  font-weight: 600;
+  padding: 4px 6px;
+}
+
+.panel-header-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+  margin: 14px 0 0;
+}
+
+.fcv-view[hidden] {
+  display: none;
+}
+
+.fcv-flag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  background: rgba(122, 31, 61, 0.12);
+  color: var(--th-bad);
+  margin-left: 6px;
+}
+
+/* FCV Data page: larger, bolder text throughout for readability — scoped
+   to this page only so the rest of the dashboard's type scale is untouched. */
+#fcvDataPage .panel-header h2 {
+  font-size: 1.15rem;
+}
+
+#fcvDataPage .panel-header p {
+  font-size: 0.9rem;
+}
+
+#fcvDataPage .panel-header-note {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+#fcvDataPage .band-item {
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 10px 6px;
+}
+
+#fcvDataPage .metric-card h3 {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+#fcvDataPage .metric-value {
+  font-size: 2rem;
+}
+
+#fcvDataPage .metric-note {
+  font-size: 0.84rem;
+}
+
+#fcvDataPage details summary {
+  font-size: 0.92rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+#fcvDataPage .table-wrap table {
+  font-size: 0.9rem;
+}
+
+#fcvDataPage .table-wrap th {
+  font-weight: 800;
 }
 
 .overview-focus-panel #topAlerts {

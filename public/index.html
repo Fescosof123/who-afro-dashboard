@@ -27,6 +27,7 @@
           <div class="nav-group">
             <p class="nav-group-label">Primary Priorities</p>
             <button class="nav-btn active" data-page="overviewPage" type="button">Overview</button>
+            <button class="nav-btn" data-page="fcvDataPage" type="button">FCV Data</button>
             <button class="nav-btn" data-page="foodSecurityPage" type="button">Food Security Priority</button>
             <button class="nav-btn" data-page="nutritionPage" type="button">Nutrition Context</button>
           </div>
@@ -197,34 +198,6 @@
               </div>
             </section>
 
-            <section class="panel" id="serviceDeliveryPanel">
-              <div class="panel-header">
-                <h2>Service Delivery Snapshot</h2>
-                <p>Latest FCV country-level aggregation from the FCV services reporting feed.</p>
-              </div>
-              <div id="serviceDeliverySummary" class="summary"></div>
-              <div class="table-wrap">
-                <table id="serviceDeliveryTable">
-                  <thead>
-                    <tr>
-                      <th>Country</th>
-                      <th>Latest Month</th>
-                      <th>Rows</th>
-                      <th>Mental Health</th>
-                      <th>GBV Managed</th>
-                      <th>People Reached</th>
-                      <th>Children Screened</th>
-                      <th>OPD / Person</th>
-                      <th>ANC Mean</th>
-                      <th>Measles Cov</th>
-                      <th>PENTA Cov</th>
-                    </tr>
-                  </thead>
-                  <tbody></tbody>
-                </table>
-              </div>
-            </section>
-
             <section class="panel" id="fcvCountryProfilePanel">
               <div class="panel-header">
                 <h2>FCV Country Profile Data</h2>
@@ -256,6 +229,249 @@
                 </table>
               </div>
             </section>
+          </section>
+
+          <section id="fcvDataPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>FCV Service Delivery Data</h2>
+                <p>District-reported service delivery indicators for FCV-prioritized/accelerated countries. Regional view compares countries; Country Deep-Dive shows one country's own trend and admin1 breakdown. Coverage reflects only the ~13 FCV Prioritized/Accelerated countries in the reporting feed, not the full AFRO country list.</p>
+              </div>
+              <div class="map-mode-toggle" id="fcvViewToggle">
+                <button class="map-mode-btn active" data-fcv-view="regional" type="button">Regional</button>
+                <button class="map-mode-btn" data-fcv-view="deepdive" type="button">Country Deep-Dive</button>
+              </div>
+              <div class="fcv-filter-bar" id="fcvFilterBar">
+                <div class="fcv-dropdown" data-fcv-dropdown="countries">
+                  <button type="button" class="fcv-dropdown-trigger" id="fcvCountryTrigger">Countries: All</button>
+                  <div class="fcv-dropdown-panel" id="fcvCountryPanel" hidden></div>
+                </div>
+                <div class="fcv-dropdown" data-fcv-dropdown="admin1s">
+                  <button type="button" class="fcv-dropdown-trigger" id="fcvAdmin1Trigger">Admin1 / Region: All</button>
+                  <div class="fcv-dropdown-panel" id="fcvAdmin1Panel" hidden></div>
+                </div>
+                <div class="fcv-dropdown" data-fcv-dropdown="quarters">
+                  <button type="button" class="fcv-dropdown-trigger" id="fcvQuarterTrigger">Quarters: All</button>
+                  <div class="fcv-dropdown-panel" id="fcvQuarterPanel" hidden></div>
+                </div>
+                <button id="fcvFilterResetBtn" type="button">Reset filters</button>
+              </div>
+              <p class="panel-header-note">Admin1 filtering only affects Country Deep-Dive charts — Regional charts compare whole countries, so a region filter doesn't apply to them.</p>
+              <div class="band-legend fcv-threshold-legend" id="fcvThresholdLegend"></div>
+            </section>
+
+            <div id="fcvRegionalView" class="fcv-view">
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header">
+                    <h2>Completeness by Country</h2>
+                    <p>Share of tracked indicator fields reported, by country.</p>
+                  </div>
+                  <div id="fcvRegCompletenessByCountryChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header">
+                    <h2>Completeness by Indicator</h2>
+                    <p>Share of country-quarters where each indicator was reported.</p>
+                  </div>
+                  <div id="fcvRegCompletenessByIndicatorChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <h2>Reporting Status by Quarter</h2>
+                  <p>Up to date / unusable / never submitted, per country per quarter.</p>
+                </div>
+                <div id="fcvRegReportingHeatmap" class="chart"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <h2>Regional Service Volumes</h2>
+                  <p>Cumulative totals across countries and quarters in the current filter selection.</p>
+                </div>
+                <div id="fcvRegVolumeKpiGrid" class="metric-grid"></div>
+                <label class="fcv-inline-select">Indicator<select id="fcvVolumeIndicatorSelect"></select></label>
+                <div class="two-col">
+                  <div>
+                    <div class="panel-header"><h2>Quarterly Trend</h2></div>
+                    <div id="fcvRegVolumeTrendChart" class="chart"></div>
+                  </div>
+                  <div>
+                    <div class="panel-header"><h2>Country Contribution to Total</h2></div>
+                    <div id="fcvRegVolumeContributionChart" class="chart"></div>
+                  </div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <h2>Coverage Scorecard</h2>
+                  <p>Institutional delivery, measles, and PENTA coverage by country.</p>
+                </div>
+                <div id="fcvRegCoverageScorecardChart" class="chart"></div>
+                <details id="fcvRegCoverageScorecardDetails">
+                  <summary>Show data table</summary>
+                  <div class="table-wrap">
+                    <table id="fcvRegCoverageTable">
+                      <thead>
+                        <tr>
+                          <th>Country</th>
+                          <th>Deliveries in Health Institution %</th>
+                          <th>Measles Coverage %</th>
+                          <th>PENTA Coverage %</th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div>
+                </details>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header">
+                    <h2>PENTA &minus; Measles Gap</h2>
+                    <p>Positive means PENTA coverage runs ahead of measles coverage.</p>
+                  </div>
+                  <div id="fcvRegPentaMeaslesGapChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header">
+                    <h2>Coverage Map</h2>
+                  </div>
+                  <label class="fcv-inline-select">Indicator<select id="fcvCoverageMapIndicatorSelect"></select></label>
+                  <div id="fcvRegCoverageMapChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header">
+                    <h2>SAM Case Severity</h2>
+                    <p>% of SAM cases with complications, by country.</p>
+                  </div>
+                  <div id="fcvRegSamSeverityChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header">
+                    <h2>Screening Volume vs. Severity</h2>
+                    <p>Bubble size = children screened for malnutrition.</p>
+                  </div>
+                  <div id="fcvRegSamScatterChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header">
+                  <h2>GBV &amp; MHPSS Cases Managed</h2>
+                  <p>Abnormally low values are flagged directly on the chart — likely under-reporting, not absence of need.</p>
+                </div>
+                <div id="fcvRegProtectionBarChart" class="chart"></div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header">
+                    <h2>H3 Package Implementation</h2>
+                    <p>Proposed thresholds (tune via <code>FCV_THRESHOLDS.h3</code>): good &ge;80%, warn 50&ndash;79%, critical &lt;50%.</p>
+                  </div>
+                  <div id="fcvRegH3Chart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header">
+                    <h2>Health Facilities</h2>
+                    <p>Flags a country when the latest count looks like a multi-month sum rather than the real network size.</p>
+                  </div>
+                  <div id="fcvRegFacilitiesKpiGrid" class="metric-grid"></div>
+                  <div id="fcvRegFacilitiesFlagList" class="summary"></div>
+                </div>
+              </section>
+            </div>
+
+            <div id="fcvDeepDiveView" class="fcv-view" hidden>
+              <section class="panel">
+                <label class="fcv-inline-select">Focus country<select id="fcvDeepDiveCountrySelect"></select></label>
+                <div id="fcvDdSummaryCards" class="metric-grid"></div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header"><h2>Reporting Status</h2></div>
+                  <div id="fcvDdReportingStrip" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header"><h2>Completeness by Indicator</h2></div>
+                  <div id="fcvDdCompletenessByIndicatorChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header"><h2>Service Volumes Over Time</h2></div>
+                <div id="fcvDdVolumeTrendChart" class="chart" style="min-height:640px"></div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header"><h2>Service Volumes by Admin1 (Latest Quarter)</h2></div>
+                <label class="fcv-inline-select">Indicator<select id="fcvDdAdmin1VolumeIndicatorSelect"></select></label>
+                <div id="fcvDdAdmin1VolumeChart" class="chart"></div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header"><h2>Coverage Over Time</h2></div>
+                  <div id="fcvDdCoverageTrendChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header"><h2>Coverage by Admin1 (Latest Quarter)</h2></div>
+                  <div id="fcvDdAdmin1CoverageChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header"><h2>SAM Over Time</h2></div>
+                  <div id="fcvDdSamTrendChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header"><h2>SAM by Admin1 (Latest Quarter)</h2></div>
+                  <div id="fcvDdAdmin1SamChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header"><h2>Protection / MHPSS Over Time</h2></div>
+                  <div id="fcvDdProtectionTrendChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header"><h2>Protection / MHPSS by Admin1 (Latest Quarter)</h2></div>
+                  <div id="fcvDdAdmin1ProtectionChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel two-col">
+                <div>
+                  <div class="panel-header"><h2>Health System Over Time</h2></div>
+                  <div id="fcvDdHealthSystemTrendChart" class="chart"></div>
+                </div>
+                <div>
+                  <div class="panel-header"><h2>Health Facilities Over Time</h2></div>
+                  <div id="fcvDdFacilitiesTrendChart" class="chart"></div>
+                </div>
+              </section>
+
+              <section class="panel">
+                <div class="panel-header"><h2>Quarter-by-Quarter Detail</h2></div>
+                <div class="table-wrap">
+                  <table id="fcvDdQuarterDetailTable">
+                    <thead></thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+              </section>
+            </div>
           </section>
 
           <section id="foodSecurityPage" class="page">

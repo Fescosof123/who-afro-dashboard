@@ -15,6 +15,7 @@ let hasAutoStarted = false;
 let autoRotateEnabled = false;
 let currentLanguage = localStorage.getItem("who_afro_dashboard_lang") || "en";
 let showOriginalSourceExcerpts = false;
+let fcvFilterState = { countries: [], admin1s: [], quarters: [], view: "regional", deepDiveCountry: null };
 let attacksHealthStatusCache = {
   fetchedAt: 0,
   payload: null,
@@ -42,10 +43,11 @@ const PAGE_ROTATION_MULTIPLIER = {
   cyclonePage: 1,
   forecastPage: 1.1,
   countryPage: 0.95,
-  operationalReportPage: 1.1
+  operationalReportPage: 1.1,
+  fcvDataPage: 1.1
 };
 
-const PAGE_ORDER = ["overviewPage", "foodSecurityPage", "nutritionPage", "conflictsDisplacementPage", "attacksHealthPage", "hazardPage", "cyclonePage", "forecastPage", "countryPage", "operationalReportPage"];
+const PAGE_ORDER = ["overviewPage", "fcvDataPage", "foodSecurityPage", "nutritionPage", "conflictsDisplacementPage", "attacksHealthPage", "hazardPage", "cyclonePage", "forecastPage", "countryPage", "operationalReportPage"];
 
 const PAGE_CAVEATS = {
   en: {
@@ -58,7 +60,8 @@ const PAGE_CAVEATS = {
     cyclonePage: "Cyclone caveat: event signals indicate pressure and readiness needs, but operational actions require country-level validation.",
     hazardPage: "Hazard caveat: GDACS and linked sources provide event context; critical decisions require triangulation with validated country and partner updates.",
     conflictsDisplacementPage: "Conflicts and displacements caveat: this page reflects source-reported conflict and displacement signals from online reporting, not verified event totals or population counts.",
-    operationalReportPage: "Operational report caveat: this bulletin is refresh-driven and reflects currently loaded source signals; country decisions still require final validation."
+    operationalReportPage: "Operational report caveat: this bulletin is refresh-driven and reflects currently loaded source signals; country decisions still require final validation.",
+    fcvDataPage: "FCV data caveat: coverage reflects only the FCV Prioritized/Accelerated countries in the reporting feed. Thresholds for H3 and completeness are proposed defaults, not validated targets."
   },
   fr: {
     overviewPage: "Note vue d'ensemble: les scores priorisent les evenements humanitaires et la charge de securite alimentaire. Valider avec les canaux operationnels pays avant action.",
@@ -70,7 +73,8 @@ const PAGE_CAVEATS = {
     cyclonePage: "Note cyclone: les signaux d'evenement indiquent une pression et des besoins de preparation, mais les actions exigent une validation niveau pays.",
     hazardPage: "Note aleas: GDACS et les sources liees donnent le contexte evenementiel. Les decisions critiques exigent une triangulation avec des mises a jour pays et partenaires validees.",
     conflictsDisplacementPage: "Note conflits et deplacements: cette page reflete des signaux de conflits/deplacements rapportes en ligne, et non des totaux verifies d'evenements ou de population.",
-    operationalReportPage: "Note bulletin operationnel: ce bulletin depend du cycle de rafraichissement et reflete les signaux actuellement charges; les decisions pays exigent une validation finale."
+    operationalReportPage: "Note bulletin operationnel: ce bulletin depend du cycle de rafraichissement et reflete les signaux actuellement charges; les decisions pays exigent une validation finale.",
+    fcvDataPage: "Note donnees FCV: la couverture ne concerne que les pays FCV Prioritaires/Acceleres du flux de rapportage. Les seuils H3 et de completude sont des valeurs par defaut proposees, non validees."
   }
 };
 
@@ -380,10 +384,55 @@ const els = {
   overviewInsightBox: document.getElementById("overviewInsightBox"),
   topAlerts: document.getElementById("topAlerts"),
   summaryBox: document.getElementById("summaryBox"),
-  serviceDeliverySummary: document.getElementById("serviceDeliverySummary"),
-  serviceDeliveryTableBody: document.querySelector("#serviceDeliveryTable tbody"),
   fcvCountryProfileSummary: document.getElementById("fcvCountryProfileSummary"),
   fcvCountryProfileTableBody: document.querySelector("#fcvCountryProfileTable tbody"),
+  fcvViewToggle: document.getElementById("fcvViewToggle"),
+  fcvFilterBar: document.getElementById("fcvFilterBar"),
+  fcvCountryTrigger: document.getElementById("fcvCountryTrigger"),
+  fcvCountryPanel: document.getElementById("fcvCountryPanel"),
+  fcvAdmin1Trigger: document.getElementById("fcvAdmin1Trigger"),
+  fcvAdmin1Panel: document.getElementById("fcvAdmin1Panel"),
+  fcvQuarterTrigger: document.getElementById("fcvQuarterTrigger"),
+  fcvQuarterPanel: document.getElementById("fcvQuarterPanel"),
+  fcvFilterResetBtn: document.getElementById("fcvFilterResetBtn"),
+  fcvThresholdLegend: document.getElementById("fcvThresholdLegend"),
+  fcvRegionalView: document.getElementById("fcvRegionalView"),
+  fcvDeepDiveView: document.getElementById("fcvDeepDiveView"),
+  fcvRegCompletenessByCountryChart: document.getElementById("fcvRegCompletenessByCountryChart"),
+  fcvRegCompletenessByIndicatorChart: document.getElementById("fcvRegCompletenessByIndicatorChart"),
+  fcvRegReportingHeatmap: document.getElementById("fcvRegReportingHeatmap"),
+  fcvRegVolumeKpiGrid: document.getElementById("fcvRegVolumeKpiGrid"),
+  fcvVolumeIndicatorSelect: document.getElementById("fcvVolumeIndicatorSelect"),
+  fcvRegVolumeTrendChart: document.getElementById("fcvRegVolumeTrendChart"),
+  fcvRegVolumeContributionChart: document.getElementById("fcvRegVolumeContributionChart"),
+  fcvRegCoverageScorecardChart: document.getElementById("fcvRegCoverageScorecardChart"),
+  fcvRegCoverageTableBody: document.querySelector("#fcvRegCoverageTable tbody"),
+  fcvRegPentaMeaslesGapChart: document.getElementById("fcvRegPentaMeaslesGapChart"),
+  fcvCoverageMapIndicatorSelect: document.getElementById("fcvCoverageMapIndicatorSelect"),
+  fcvRegCoverageMapChart: document.getElementById("fcvRegCoverageMapChart"),
+  fcvRegSamSeverityChart: document.getElementById("fcvRegSamSeverityChart"),
+  fcvRegSamScatterChart: document.getElementById("fcvRegSamScatterChart"),
+  fcvRegProtectionBarChart: document.getElementById("fcvRegProtectionBarChart"),
+  fcvRegH3Chart: document.getElementById("fcvRegH3Chart"),
+  fcvRegFacilitiesKpiGrid: document.getElementById("fcvRegFacilitiesKpiGrid"),
+  fcvRegFacilitiesFlagList: document.getElementById("fcvRegFacilitiesFlagList"),
+  fcvDeepDiveCountrySelect: document.getElementById("fcvDeepDiveCountrySelect"),
+  fcvDdSummaryCards: document.getElementById("fcvDdSummaryCards"),
+  fcvDdReportingStrip: document.getElementById("fcvDdReportingStrip"),
+  fcvDdCompletenessByIndicatorChart: document.getElementById("fcvDdCompletenessByIndicatorChart"),
+  fcvDdVolumeTrendChart: document.getElementById("fcvDdVolumeTrendChart"),
+  fcvDdAdmin1VolumeIndicatorSelect: document.getElementById("fcvDdAdmin1VolumeIndicatorSelect"),
+  fcvDdAdmin1VolumeChart: document.getElementById("fcvDdAdmin1VolumeChart"),
+  fcvDdCoverageTrendChart: document.getElementById("fcvDdCoverageTrendChart"),
+  fcvDdAdmin1CoverageChart: document.getElementById("fcvDdAdmin1CoverageChart"),
+  fcvDdSamTrendChart: document.getElementById("fcvDdSamTrendChart"),
+  fcvDdAdmin1SamChart: document.getElementById("fcvDdAdmin1SamChart"),
+  fcvDdProtectionTrendChart: document.getElementById("fcvDdProtectionTrendChart"),
+  fcvDdAdmin1ProtectionChart: document.getElementById("fcvDdAdmin1ProtectionChart"),
+  fcvDdHealthSystemTrendChart: document.getElementById("fcvDdHealthSystemTrendChart"),
+  fcvDdFacilitiesTrendChart: document.getElementById("fcvDdFacilitiesTrendChart"),
+  fcvDdQuarterDetailTableBody: document.querySelector("#fcvDdQuarterDetailTable tbody"),
+  fcvDdQuarterDetailTableHead: document.querySelector("#fcvDdQuarterDetailTable thead"),
   foodSecurityTableBody: document.querySelector("#foodSecurityTable tbody"),
   foodSecurityFewsStamp: document.getElementById("foodSecurityFewsStamp"),
   foodSecurityRecommendations: document.getElementById("foodSecurityRecommendations"),
@@ -1514,6 +1563,10 @@ function setActivePage(pageId) {
   if (pageId === "operationalReportPage") {
     renderOperationalReportPage();
   }
+  if (pageId === "fcvDataPage") {
+    populateFcvFilterOptions();
+    renderAllFcvCharts();
+  }
 
   scheduleActivePageVisualRefresh(pageId);
 }
@@ -2460,6 +2513,9 @@ function refreshActivePageVisuals(pageId = activePageId()) {
     const preferredIso3 = preferredForecastCountryIso3(els.countrySelect.value);
     renderForecast(preferredIso3 || els.countrySelect.value);
   }
+  if (pageId === "fcvDataPage") {
+    renderAllFcvCharts();
+  }
 }
 
 function scheduleActivePageVisualRefresh(pageId = activePageId()) {
@@ -2725,6 +2781,1148 @@ function setCurrentDate() {
 
 function buildBandLegend() {
   els.bandLegend.innerHTML = RISK_BANDS.map((b) => `<div class="band-item" style="background:${b.color}">${(b.labels && b.labels[currentLanguage]) || (b.labels && b.labels.en) || ""}</div>`).join("");
+}
+
+// ---------------------------------------------------------------------------
+// FCV Data section: thresholds, flag detection, filters, and chart renderers.
+// ---------------------------------------------------------------------------
+
+const FCV_THRESHOLDS = {
+  // Proposed defaults (not user-specified) — tune here if targets differ.
+  default: { good: 80, warn: 50 },
+  // User-specified exact thresholds for SAM case severity.
+  sam: { good: 15, warn: 30, invert: true }
+};
+
+// Literal hex values, kept in sync with --th-good/--th-warn/--th-bad in
+// styles.css. Plotly renders SVG directly from these strings — it cannot
+// resolve CSS custom properties (var(--th-good)), so trace colors must be
+// plain hex here even though the on-page legend chip can safely use the
+// CSS variable.
+const FCV_COLORS = {
+  good: "#0f8f6c",
+  warn: "#b8790f",
+  bad: "#7a1f3d",
+  noData: "#c7cfd8"
+};
+
+// Validated colorblind-safe categorical order (fixed hue order, never
+// cycled per-value) for charts where color carries country/series identity
+// rather than a good/warn/bad status.
+const FCV_CATEGORICAL_PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7", "#e34948"];
+
+// Shared chart chrome so every FCV chart shares one visual language
+// (transparent surface blending into the panel, recessive gridlines, the
+// app's typeface, and the categorical palette above for multi-series
+// charts) instead of Plotly's bare defaults.
+function fcvBaseLayout(overrides = {}) {
+  const { xaxis, yaxis, legend, ...rest } = overrides;
+  return {
+    paper_bgcolor: "rgba(0,0,0,0)",
+    plot_bgcolor: "rgba(0,0,0,0)",
+    font: { family: "Barlow, sans-serif", color: "#0d1f33", size: 13 },
+    colorway: FCV_CATEGORICAL_PALETTE,
+    margin: { l: 60, r: 20, t: 10, b: 40 },
+    xaxis: { gridcolor: "#e7edf3", zeroline: false, linecolor: "#c7cfd8", tickfont: { size: 13, color: "#0d1f33" }, title: { font: { size: 14 } }, ...xaxis },
+    yaxis: { gridcolor: "#e7edf3", zeroline: false, linecolor: "#c7cfd8", tickfont: { size: 13, color: "#0d1f33" }, title: { font: { size: 14 } }, ...yaxis },
+    legend: { font: { size: 13 }, ...legend },
+    ...rest
+  };
+}
+
+const FCV_PLOT_CONFIG = { displayModeBar: false, responsive: true };
+
+const FCV_INDICATOR_META = {
+  mental_health_beneficiaries: { label: "MHPSS beneficiaries", agg: "sum" },
+  gbv_cases_managed: { label: "GBV cases managed", agg: "sum" },
+  people_reached: { label: "People reached", agg: "sum" },
+  children_screened_malnutrition: { label: "Children screened (malnutrition)", agg: "sum" },
+  opd_consultations_per_person_per_month: { label: "OPD consultations / person / month", agg: "avg" },
+  deliveries_in_health_institution_pct: { label: "Institutional delivery %", agg: "avg" },
+  anc_visits_mean: { label: "Mean ANC visits", agg: "avg" },
+  measles_vaccination_coverage_pct: { label: "Measles coverage %", agg: "avg" },
+  penta_vaccination_coverage_pct: { label: "PENTA coverage %", agg: "avg" },
+  sam_complications_pct: { label: "SAM complications %", agg: "avg" },
+  sam_complications_managed_pct: { label: "SAM complications managed %", agg: "avg" },
+  total_health_facilities: { label: "Health facilities", agg: "latest" },
+  facility_disruption_pct: { label: "Facility disruption %", agg: "avg" },
+  h3_package_pct: { label: "H3 package implementation %", agg: "avg" }
+};
+
+const FCV_TRACKED_FIELDS = Object.keys(FCV_INDICATOR_META);
+const FCV_VOLUME_INDICATORS = ["people_reached", "mental_health_beneficiaries", "gbv_cases_managed", "children_screened_malnutrition", "opd_consultations_per_person_per_month"];
+const FCV_COVERAGE_FIELDS = ["deliveries_in_health_institution_pct", "measles_vaccination_coverage_pct", "penta_vaccination_coverage_pct"];
+
+function thresholdColor(value, thresholds) {
+  if (value == null || Number.isNaN(Number(value))) {
+    return FCV_COLORS.noData;
+  }
+  const v = Number(value);
+  if (thresholds.invert) {
+    if (v < thresholds.good) return FCV_COLORS.good;
+    if (v <= thresholds.warn) return FCV_COLORS.warn;
+    return FCV_COLORS.bad;
+  }
+  if (v >= thresholds.good) return FCV_COLORS.good;
+  if (v >= thresholds.warn) return FCV_COLORS.warn;
+  return FCV_COLORS.bad;
+}
+
+function renderThresholdLegend(container, labels = { good: "On track", warn: "Needs attention", bad: "Critical" }) {
+  if (!container) {
+    return;
+  }
+  const items = [
+    { color: FCV_COLORS.good, label: labels.good },
+    { color: FCV_COLORS.warn, label: labels.warn },
+    { color: FCV_COLORS.bad, label: labels.bad }
+  ];
+  container.innerHTML = items.map((item) => `<div class="band-item" style="background:${item.color}">${item.label}</div>`).join("");
+}
+
+// Shared data-quality flag detector: fires on out-of-range values (>100%/<0%
+// by default) and on suspicious uniform series (every value exactly 0 or the
+// max, across >=3 points) — reused across Coverage, Nutrition, and Health
+// System charts so flags render on the chart itself rather than being lost
+// inside an aggregate number.
+function detectValueFlags(series = [], opts = {}) {
+  const max = opts.max ?? 100;
+  const min = opts.min ?? 0;
+  const flags = [];
+  series.forEach((pt) => {
+    if (pt.value != null && (pt.value > max || pt.value < min)) {
+      flags.push({ key: pt.key, type: "out_of_range", detail: `${pt.value} outside expected ${min}-${max}` });
+    }
+  });
+  const nonNull = series.map((p) => p.value).filter((v) => v != null);
+  if (nonNull.length >= 3 && new Set(nonNull).size === 1 && (nonNull[0] === 0 || nonNull[0] === max)) {
+    flags.push({ key: "__series__", type: "suspicious_uniform", detail: `Every value is exactly ${nonNull[0]}` });
+  }
+  return flags;
+}
+
+// Builds a small marker overlay trace for any out-of-range point in a
+// single-series bar chart (values keyed by category label), so a >100%
+// value (confirmed present in the real feed, e.g. measles coverage) shows
+// up directly on the chart rather than only in an aggregate.
+function buildFlagOverlayTrace(labels = [], values = [], opts = {}) {
+  const flags = detectValueFlags(labels.map((l, i) => ({ key: l, value: values[i] })), opts);
+  const flaggedSet = new Set(flags.filter((f) => f.type === "out_of_range").map((f) => f.key));
+  if (!flaggedSet.size) {
+    return null;
+  }
+  const points = labels.map((l, i) => ({ l, v: values[i] })).filter((p) => flaggedSet.has(p.l));
+  return {
+    type: "scatter",
+    mode: "markers",
+    name: "Data quality flag",
+    x: points.map((p) => p.l),
+    y: points.map((p) => p.v),
+    marker: { symbol: "triangle-up", size: 11, color: "#7a1f3d", line: { color: "#fff", width: 1 } },
+    hovertemplate: "%{x}: value outside expected range — verify denominator<extra></extra>",
+    showlegend: true
+  };
+}
+
+// Flags a country when its latest reported facility count looks like it
+// could be a multi-month sum rather than the real network size: compares
+// the latest value against that country's own rolling median of prior
+// reported counts.
+function detectFacilityInflationFlag(monthlySeries = [], multiplier = 1.75) {
+  const values = monthlySeries.map((m) => m.total_health_facilities).filter((v) => v != null);
+  if (values.length < 2) {
+    return null;
+  }
+  const latest = values[values.length - 1];
+  const prior = values.slice(0, -1).slice().sort((a, b) => a - b);
+  const median = prior.length % 2 === 1
+    ? prior[(prior.length - 1) / 2]
+    : (prior[prior.length / 2 - 1] + prior[prior.length / 2]) / 2;
+  if (median > 0 && latest >= median * multiplier) {
+    return { latest, median, ratio: Number((latest / median).toFixed(2)) };
+  }
+  return null;
+}
+
+// Tukey-fence-style "abnormally low" detector for the Protection/MHPSS
+// chart: values well below the cross-country spread are flagged as likely
+// under-reporting rather than a genuine absence of need. Returns a
+// predicate rather than a fixed list since it's evaluated per-value.
+function detectUnderReportingFlag(valuesAcrossCountries = []) {
+  const sorted = valuesAcrossCountries.filter((v) => v != null).slice().sort((a, b) => a - b);
+  if (sorted.length < 4) {
+    return () => false;
+  }
+  const q1 = sorted[Math.floor(sorted.length * 0.25)];
+  const q3 = sorted[Math.floor(sorted.length * 0.75)];
+  const iqr = q3 - q1;
+  const lowerFence = Math.max(0, q1 - 1.5 * iqr);
+  return (value) => iqr > 0 && value != null && value < lowerFence;
+}
+
+function fcvKnownCountries() {
+  return (dashboardState?.service_delivery_by_country || [])
+    .map((c) => ({ iso3: c.iso3, country: c.country }))
+    .sort((a, b) => a.country.localeCompare(b.country));
+}
+
+function fcvScopedCountries() {
+  const known = fcvKnownCountries();
+  if (!fcvFilterState.countries.length) {
+    return known;
+  }
+  return known.filter((c) => fcvFilterState.countries.includes(c.iso3));
+}
+
+function fcvScopedQuarters() {
+  const rows = dashboardState?.service_delivery_quarterly_rows || [];
+  const bySort = new Map();
+  rows.forEach((r) => {
+    if (r.quarter_label && !bySort.has(r.quarter_label)) {
+      bySort.set(r.quarter_label, r.quarter_sort || 0);
+    }
+  });
+  const ordered = Array.from(bySort.entries()).sort((a, b) => a[1] - b[1]).map(([q]) => q);
+  if (!fcvFilterState.quarters.length) {
+    return ordered;
+  }
+  return ordered.filter((q) => fcvFilterState.quarters.includes(q));
+}
+
+function applyFcvFilters(rows = []) {
+  return rows.filter((r) =>
+    (!fcvFilterState.countries.length || fcvFilterState.countries.includes(r.iso3)) &&
+    (!fcvFilterState.admin1s.length || !r.admin1 || fcvFilterState.admin1s.includes(r.admin1)) &&
+    (!fcvFilterState.quarters.length || fcvFilterState.quarters.includes(r.quarter_label))
+  );
+}
+
+// Collapses (possibly multiple, filter-scoped) quarterly rows per country
+// into one row per country: count-type fields sum, rate/pct-type fields
+// average, and total_health_facilities uses the latest quarter's value
+// (never a sum — see the server-side rationale for the same rule).
+function aggregateFcvRowsByCountry(rows = []) {
+  const byCountry = new Map();
+  rows.forEach((r) => {
+    if (!byCountry.has(r.iso3)) {
+      byCountry.set(r.iso3, { iso3: r.iso3, country: r.country, rows: [] });
+    }
+    byCountry.get(r.iso3).rows.push(r);
+  });
+  return Array.from(byCountry.values()).map((entry) => {
+    const rs = entry.rows.slice().sort((a, b) => a.quarter_sort - b.quarter_sort);
+    const latest = rs[rs.length - 1];
+    const out = { iso3: entry.iso3, country: entry.country, reporting_rows: rs.reduce((sum, r) => sum + (r.reporting_rows || 0), 0) };
+    FCV_TRACKED_FIELDS.forEach((field) => {
+      const meta = FCV_INDICATOR_META[field];
+      if (meta.agg === "latest") {
+        out[field] = latest[field] != null ? latest[field] : null;
+        return;
+      }
+      const values = rs.map((r) => r[field]).filter((v) => v != null);
+      if (!values.length) {
+        out[field] = null;
+        return;
+      }
+      out[field] = meta.agg === "sum"
+        ? values.reduce((a, b) => a + b, 0)
+        : values.reduce((a, b) => a + b, 0) / values.length;
+    });
+    return out;
+  }).sort((a, b) => a.country.localeCompare(b.country));
+}
+
+// Renders a checkbox-list dropdown panel (used for the Countries/Admin1/
+// Quarters filters) and updates its trigger button's label — a closed
+// dropdown by default rather than an always-expanded native multi-select.
+function fcvDropdownLabelText(baseLabel, selectedCount, totalCount) {
+  if (!totalCount || selectedCount === 0 || selectedCount === totalCount) {
+    return `${baseLabel}: All`;
+  }
+  return `${baseLabel}: ${selectedCount} selected`;
+}
+
+function renderFcvDropdownPanel(panelEl, triggerEl, baseLabel, options, selectedValues) {
+  if (!panelEl || !triggerEl) {
+    return;
+  }
+  const selectedSet = new Set(selectedValues);
+  triggerEl.textContent = fcvDropdownLabelText(baseLabel, selectedSet.size, options.length);
+  triggerEl.classList.toggle("has-selection", selectedSet.size > 0);
+  if (!options.length) {
+    panelEl.innerHTML = '<p class="fcv-dropdown-empty">No options available.</p>';
+    return;
+  }
+  const actions = `
+    <div class="fcv-dropdown-panel-actions">
+      <button type="button" data-fcv-dropdown-action="all">Select all</button>
+      <button type="button" data-fcv-dropdown-action="clear">Clear</button>
+    </div>
+  `;
+  const rows = options.map((opt) => `
+    <label class="fcv-dropdown-option">
+      <input type="checkbox" value="${opt.value}" ${selectedSet.has(opt.value) ? "checked" : ""} />
+      <span>${opt.label}</span>
+    </label>
+  `).join("");
+  panelEl.innerHTML = actions + rows;
+}
+
+function updateFcvDropdownTriggerLabel(key) {
+  const configs = {
+    countries: { trigger: els.fcvCountryTrigger, panel: els.fcvCountryPanel, label: "Countries" },
+    admin1s: { trigger: els.fcvAdmin1Trigger, panel: els.fcvAdmin1Panel, label: "Admin1 / Region" },
+    quarters: { trigger: els.fcvQuarterTrigger, panel: els.fcvQuarterPanel, label: "Quarters" }
+  };
+  const entry = configs[key];
+  if (!entry || !entry.trigger) {
+    return;
+  }
+  const total = entry.panel ? entry.panel.querySelectorAll('input[type="checkbox"]').length : 0;
+  const selectedCount = fcvFilterState[key].length;
+  entry.trigger.textContent = fcvDropdownLabelText(entry.label, selectedCount, total);
+  entry.trigger.classList.toggle("has-selection", selectedCount > 0);
+}
+
+function closeAllFcvDropdowns() {
+  document.querySelectorAll(".fcv-dropdown-panel").forEach((p) => {
+    p.hidden = true;
+  });
+  document.querySelectorAll(".fcv-dropdown-trigger").forEach((t) => {
+    t.classList.remove("is-open");
+  });
+}
+
+function onFcvDropdownChange(key) {
+  if (key === "countries") {
+    populateFcvAdmin1Options();
+  }
+  updateFcvDropdownTriggerLabel(key);
+  if (dashboardState) {
+    renderAllFcvCharts();
+  }
+}
+
+function populateFcvAdmin1Options() {
+  if (!els.fcvAdmin1Panel || !dashboardState) {
+    return;
+  }
+  const scopeIso3 = fcvFilterState.countries.length ? new Set(fcvFilterState.countries) : null;
+  const admin1s = [...new Set(
+    (dashboardState.service_delivery_admin1_quarterly_rows || [])
+      .filter((r) => !scopeIso3 || scopeIso3.has(r.iso3))
+      .map((r) => r.admin1)
+  )].filter(Boolean).sort();
+  fcvFilterState.admin1s = fcvFilterState.admin1s.filter((a) => admin1s.includes(a));
+  renderFcvDropdownPanel(els.fcvAdmin1Panel, els.fcvAdmin1Trigger, "Admin1 / Region", admin1s.map((a) => ({ value: a, label: a })), fcvFilterState.admin1s);
+}
+
+function populateFcvFilterOptions() {
+  if (!dashboardState) {
+    return;
+  }
+  const countries = fcvKnownCountries();
+
+  renderFcvDropdownPanel(els.fcvCountryPanel, els.fcvCountryTrigger, "Countries", countries.map((c) => ({ value: c.iso3, label: c.country })), fcvFilterState.countries);
+
+  const everyQuarter = [...new Set((dashboardState.service_delivery_quarterly_rows || []).map((r) => r.quarter_label))].filter(Boolean).sort();
+  fcvFilterState.quarters = fcvFilterState.quarters.filter((q) => everyQuarter.includes(q));
+  renderFcvDropdownPanel(els.fcvQuarterPanel, els.fcvQuarterTrigger, "Quarters", everyQuarter.map((q) => ({ value: q, label: q })), fcvFilterState.quarters);
+
+  populateFcvAdmin1Options();
+
+  if (els.fcvDeepDiveCountrySelect) {
+    const preferred = fcvFilterState.deepDiveCountry && countries.some((c) => c.iso3 === fcvFilterState.deepDiveCountry)
+      ? fcvFilterState.deepDiveCountry
+      : (countries.some((c) => c.iso3 === els.countrySelect?.value) ? els.countrySelect.value : countries[0]?.iso3);
+    fcvFilterState.deepDiveCountry = preferred || null;
+    els.fcvDeepDiveCountrySelect.innerHTML = countries.map((c) => `<option value="${c.iso3}" ${c.iso3 === preferred ? "selected" : ""}>${c.country}</option>`).join("");
+  }
+
+  if (els.fcvVolumeIndicatorSelect && !els.fcvVolumeIndicatorSelect.options.length) {
+    els.fcvVolumeIndicatorSelect.innerHTML = FCV_VOLUME_INDICATORS.map((f) => `<option value="${f}">${FCV_INDICATOR_META[f].label}</option>`).join("");
+  }
+  if (els.fcvCoverageMapIndicatorSelect && !els.fcvCoverageMapIndicatorSelect.options.length) {
+    els.fcvCoverageMapIndicatorSelect.innerHTML = FCV_COVERAGE_FIELDS.map((f) => `<option value="${f}">${FCV_INDICATOR_META[f].label}</option>`).join("");
+  }
+  if (els.fcvDdAdmin1VolumeIndicatorSelect && !els.fcvDdAdmin1VolumeIndicatorSelect.options.length) {
+    els.fcvDdAdmin1VolumeIndicatorSelect.innerHTML = FCV_VOLUME_INDICATORS.map((f) => `<option value="${f}">${FCV_INDICATOR_META[f].label}</option>`).join("");
+  }
+
+  renderThresholdLegend(els.fcvThresholdLegend);
+}
+
+function renderAllFcvCharts() {
+  if (!dashboardState) {
+    return;
+  }
+  if (fcvFilterState.view === "regional") {
+    renderFcvRegCompletenessByCountryChart();
+    renderFcvRegCompletenessByIndicatorChart();
+    renderFcvRegReportingHeatmap();
+    renderFcvRegVolumeKpis();
+    renderFcvRegVolumeTrendChart();
+    renderFcvRegVolumeContributionChart();
+    renderFcvRegCoverageScorecardChart();
+    renderFcvRegPentaMeaslesGapChart();
+    renderFcvRegCoverageMapChart();
+    renderFcvRegSamSeverityChart();
+    renderFcvRegSamScatterChart();
+    renderFcvRegProtectionBarChart();
+    renderFcvRegH3Chart();
+    renderFcvRegFacilities();
+  } else {
+    renderFcvDdSummaryCards();
+    renderFcvDdReportingStrip();
+    renderFcvDdCompletenessByIndicatorChart();
+    renderFcvDdVolumeTrendChart();
+    renderFcvDdAdmin1VolumeChart();
+    renderFcvDdCoverageTrendChart();
+    renderFcvDdAdmin1CoverageChart();
+    renderFcvDdSamTrendChart();
+    renderFcvDdAdmin1SamChart();
+    renderFcvDdProtectionTrendChart();
+    renderFcvDdAdmin1ProtectionChart();
+    renderFcvDdHealthSystemTrendChart();
+    renderFcvDdFacilitiesTrendChart();
+    renderFcvDdQuarterDetailTable();
+  }
+}
+
+// --- Group 1: Data Quality & Completeness (Regional) ------------------------
+
+function renderFcvRegCompletenessByCountryChart() {
+  if (!els.fcvRegCompletenessByCountryChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const byCountry = new Map();
+  rows.forEach((r) => {
+    if (!byCountry.has(r.iso3)) {
+      byCountry.set(r.iso3, { country: r.country, total: 0, present: 0 });
+    }
+    const bucket = byCountry.get(r.iso3);
+    FCV_TRACKED_FIELDS.forEach((f) => {
+      bucket.total += 1;
+      if (r[f] != null) bucket.present += 1;
+    });
+  });
+  const data = Array.from(byCountry.values())
+    .map((b) => ({ country: b.country, pct: b.total ? (b.present / b.total) * 100 : 0 }))
+    .sort((a, b) => a.pct - b.pct);
+
+  renderPlotWithSentinel(
+    "fcvRegCompletenessByCountryChart",
+    [{
+      type: "bar",
+      orientation: "h",
+      y: data.map((d) => d.country),
+      x: data.map((d) => d.pct),
+      marker: { color: data.map((d) => thresholdColor(d.pct, FCV_THRESHOLDS.default)) },
+      text: data.map((d) => `${d.pct.toFixed(0)}%`),
+      textposition: "outside",
+      hovertemplate: "%{y}: %{x:.0f}%% complete<extra></extra>"
+    }],
+    fcvBaseLayout({ margin: { l: 220, r: 40, t: 10, b: 30 }, xaxis: { title: "% of tracked fields reported", range: [0, 100] }, height: Math.max(280, data.length * 28) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "quality" }
+  );
+}
+
+function renderFcvRegCompletenessByIndicatorChart() {
+  if (!els.fcvRegCompletenessByIndicatorChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = FCV_TRACKED_FIELDS.map((field) => {
+    const total = rows.length;
+    const present = rows.filter((r) => r[field] != null).length;
+    return { label: FCV_INDICATOR_META[field].label, pct: total ? (present / total) * 100 : 0 };
+  }).sort((a, b) => a.pct - b.pct);
+
+  renderPlotWithSentinel(
+    "fcvRegCompletenessByIndicatorChart",
+    [{
+      type: "bar",
+      orientation: "h",
+      y: data.map((d) => d.label),
+      x: data.map((d) => d.pct),
+      marker: { color: data.map((d) => thresholdColor(d.pct, FCV_THRESHOLDS.default)) },
+      text: data.map((d) => `${d.pct.toFixed(0)}%`),
+      textposition: "outside",
+      hovertemplate: "%{y}: %{x:.0f}%% of country-quarters reported<extra></extra>"
+    }],
+    fcvBaseLayout({ margin: { l: 220, r: 40, t: 10, b: 30 }, xaxis: { title: "% of country-quarters reported", range: [0, 100] }, height: Math.max(320, data.length * 26) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "quality" }
+  );
+}
+
+function renderFcvRegReportingHeatmap() {
+  if (!els.fcvRegReportingHeatmap) return;
+  const allRows = dashboardState.service_delivery_quarterly_rows || [];
+  const countries = fcvScopedCountries();
+  const quarters = fcvScopedQuarters();
+  const findRow = (iso3, q) => allRows.find((r) => r.iso3 === iso3 && r.quarter_label === q);
+
+  const z = countries.map((c) => quarters.map((q) => {
+    const row = findRow(c.iso3, q);
+    if (!row) return 0;
+    return FCV_TRACKED_FIELDS.some((f) => row[f] != null) ? 2 : 1;
+  }));
+  const text = countries.map((c) => quarters.map((q) => {
+    const row = findRow(c.iso3, q);
+    if (!row) return `${c.country} / ${q}: never submitted`;
+    const usable = FCV_TRACKED_FIELDS.some((f) => row[f] != null);
+    return `${c.country} / ${q}: ${usable ? "up to date" : "unusable (no usable indicator values)"}`;
+  }));
+
+  renderPlotWithSentinel(
+    "fcvRegReportingHeatmap",
+    [{
+      type: "heatmap",
+      x: quarters,
+      y: countries.map((c) => c.country),
+      z,
+      text,
+      hovertemplate: "%{text}<extra></extra>",
+      colorscale: [[0, "#7a1f3d"], [0.25, "#7a1f3d"], [0.25, "#b8790f"], [0.75, "#b8790f"], [0.75, "#0f8f6c"], [1, "#0f8f6c"]],
+      zmin: 0,
+      zmax: 2,
+      showscale: false,
+      xgap: 3,
+      ygap: 3
+    }],
+    fcvBaseLayout({ margin: { l: 220, r: 20, t: 10, b: 40 }, height: Math.max(280, countries.length * 26) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "quality" }
+  );
+}
+
+// --- Group 2: Service Volumes (Regional) ------------------------------------
+
+function fcvVolumeIndicator() {
+  return els.fcvVolumeIndicatorSelect?.value || FCV_VOLUME_INDICATORS[0];
+}
+
+function renderFcvRegVolumeKpis() {
+  if (!els.fcvRegVolumeKpiGrid) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const cards = FCV_VOLUME_INDICATORS.map((field) => {
+    const meta = FCV_INDICATOR_META[field];
+    const values = rows.map((r) => r[field]).filter((v) => v != null);
+    const value = values.length
+      ? (meta.agg === "sum" ? values.reduce((a, b) => a + b, 0) : values.reduce((a, b) => a + b, 0) / values.length)
+      : null;
+    return { label: meta.label, value };
+  });
+  els.fcvRegVolumeKpiGrid.innerHTML = cards.map((c) => `
+    <article class="metric-card">
+      <h3>${c.label}</h3>
+      <div class="metric-value">${c.value != null ? formatCount(Math.round(c.value)) : "n/a"}</div>
+    </article>
+  `).join("");
+}
+
+function renderFcvRegVolumeTrendChart() {
+  if (!els.fcvRegVolumeTrendChart) return;
+  const field = fcvVolumeIndicator();
+  const meta = FCV_INDICATOR_META[field];
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const quarters = fcvScopedQuarters();
+  const countries = fcvScopedCountries();
+  const traces = countries.map((c) => ({
+    type: "scatter",
+    mode: "lines+markers",
+    name: c.country,
+    x: quarters,
+    y: quarters.map((q) => {
+      const row = rows.find((r) => r.iso3 === c.iso3 && r.quarter_label === q);
+      return row ? row[field] : null;
+    }),
+    connectgaps: false
+  }));
+  renderPlotWithSentinel(
+    "fcvRegVolumeTrendChart",
+    traces,
+    fcvBaseLayout({ yaxis: { title: meta.label }, legend: { orientation: "h" } }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "volumes" }
+  );
+}
+
+function renderFcvRegVolumeContributionChart() {
+  if (!els.fcvRegVolumeContributionChart) return;
+  const field = fcvVolumeIndicator();
+  const meta = FCV_INDICATOR_META[field];
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const quarters = fcvScopedQuarters();
+  const countries = fcvScopedCountries();
+  const traces = countries.map((c) => ({
+    type: "bar",
+    name: c.country,
+    x: quarters,
+    y: quarters.map((q) => {
+      const row = rows.find((r) => r.iso3 === c.iso3 && r.quarter_label === q);
+      return row && row[field] != null ? row[field] : 0;
+    })
+  }));
+  renderPlotWithSentinel(
+    "fcvRegVolumeContributionChart",
+    traces,
+    fcvBaseLayout({ barmode: "stack", barnorm: "percent", margin: { l: 50, r: 20, t: 10, b: 40 }, yaxis: { title: `% of total ${meta.label}` }, legend: { orientation: "h" } }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "volumes" }
+  );
+}
+
+// --- Group 3: Coverage (Regional) -------------------------------------------
+
+function renderFcvRegCoverageScorecardChart() {
+  if (!els.fcvRegCoverageScorecardChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows);
+
+  // Values >100% are real in this feed (e.g. measles/PENTA coverage can
+  // exceed 100% when the reporting denominator undercounts the target
+  // population) — flag them directly on the bar rather than only in
+  // hover text, per-series so grouped-bar offsets don't matter.
+  const traces = FCV_COVERAGE_FIELDS.map((field) => ({
+    type: "bar",
+    name: FCV_INDICATOR_META[field].label,
+    x: data.map((d) => d.country),
+    y: data.map((d) => d[field]),
+    marker: { color: data.map((d) => thresholdColor(d[field], FCV_THRESHOLDS.default)) },
+    text: data.map((d) => (d[field] != null && d[field] > 100 ? "⚠ >100%" : "")),
+    textposition: "outside",
+    hovertemplate: "%{x}<br>" + FCV_INDICATOR_META[field].label + ": %{y:.1f}%<extra></extra>"
+  }));
+
+  renderPlotWithSentinel(
+    "fcvRegCoverageScorecardChart",
+    traces,
+    fcvBaseLayout({ barmode: "group", margin: { l: 50, r: 20, t: 10, b: 170 }, yaxis: { title: "%" }, xaxis: { tickangle: -35 }, legend: { orientation: "h", y: -0.45, yanchor: "top" } }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "coverage" }
+  );
+
+  if (els.fcvRegCoverageTableBody) {
+    els.fcvRegCoverageTableBody.innerHTML = data.map((d) => `
+      <tr>
+        <td><strong>${d.country}</strong></td>
+        <td>${serviceValue(d.deliveries_in_health_institution_pct, 1)}</td>
+        <td>${serviceValue(d.measles_vaccination_coverage_pct, 1)}</td>
+        <td>${serviceValue(d.penta_vaccination_coverage_pct, 1)}</td>
+      </tr>
+    `).join("");
+  }
+}
+
+function renderFcvRegPentaMeaslesGapChart() {
+  if (!els.fcvRegPentaMeaslesGapChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows)
+    .map((d) => ({
+      country: d.country,
+      gap: (d.penta_vaccination_coverage_pct != null && d.measles_vaccination_coverage_pct != null)
+        ? d.penta_vaccination_coverage_pct - d.measles_vaccination_coverage_pct
+        : null
+    }))
+    .filter((d) => d.gap != null)
+    .sort((a, b) => a.gap - b.gap);
+
+  renderPlotWithSentinel(
+    "fcvRegPentaMeaslesGapChart",
+    [{
+      type: "bar",
+      orientation: "h",
+      y: data.map((d) => d.country),
+      x: data.map((d) => d.gap),
+      marker: { color: data.map((d) => (d.gap >= 0 ? "#2a78d6" : "#e34948")) },
+      hovertemplate: "%{y}: %{x:.1f} pts<extra></extra>"
+    }],
+    fcvBaseLayout({ margin: { l: 220, r: 30, t: 10, b: 30 }, xaxis: { title: "PENTA % minus Measles % (points)", zeroline: true }, height: Math.max(280, data.length * 26) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "coverage" }
+  );
+}
+
+function renderFcvRegCoverageMapChart() {
+  if (!els.fcvRegCoverageMapChart) return;
+  const field = els.fcvCoverageMapIndicatorSelect?.value || FCV_COVERAGE_FIELDS[0];
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows);
+
+  renderPlotWithSentinel(
+    "fcvRegCoverageMapChart",
+    [{
+      type: "choropleth",
+      locationmode: "ISO-3",
+      locations: data.map((d) => d.iso3),
+      z: data.map((d) => (d[field] != null ? d[field] : null)),
+      zmin: 0,
+      zmax: 100,
+      text: data.map((d) => `${d.country}<br>${FCV_INDICATOR_META[field].label}: ${d[field] != null ? d[field].toFixed(1) + "%" : "no data"}`),
+      hovertemplate: "%{text}<extra></extra>",
+      colorscale: [[0, "#7a1f3d"], [0.5, "#b8790f"], [0.8, "#0f8f6c"], [1, "#0f8f6c"]],
+      marker: { line: { color: "#ffffff", width: 1 } },
+      colorbar: { title: "%" }
+    }],
+    fcvBaseLayout({ margin: { l: 0, r: 0, t: 10, b: 0 }, geo: getMapGeoLayout(), height: 420 }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "coverage" }
+  );
+}
+
+// --- Group 4: Nutrition / SAM (Regional) ------------------------------------
+
+function renderFcvRegSamSeverityChart() {
+  if (!els.fcvRegSamSeverityChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows)
+    .filter((d) => d.sam_complications_pct != null)
+    .sort((a, b) => a.sam_complications_pct - b.sam_complications_pct);
+
+  const bar = {
+    type: "bar",
+    name: "SAM complications %",
+    x: data.map((d) => d.country),
+    y: data.map((d) => d.sam_complications_pct),
+    marker: { color: data.map((d) => thresholdColor(d.sam_complications_pct, FCV_THRESHOLDS.sam)) },
+    hovertemplate: "%{x}: %{y:.1f}%% complications<extra></extra>"
+  };
+  const flagTrace = buildFlagOverlayTrace(data.map((d) => d.country), data.map((d) => d.sam_complications_pct));
+
+  renderPlotWithSentinel(
+    "fcvRegSamSeverityChart",
+    flagTrace ? [bar, flagTrace] : [bar],
+    fcvBaseLayout({ margin: { l: 50, r: 20, t: 10, b: 130 }, yaxis: { title: "% SAM cases with complications" }, xaxis: { tickangle: -35 }, legend: { y: -0.55, yanchor: "top" }, showlegend: Boolean(flagTrace) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "nutrition" }
+  );
+}
+
+function renderFcvRegSamScatterChart() {
+  if (!els.fcvRegSamScatterChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows)
+    .filter((d) => d.sam_complications_pct != null && d.sam_complications_managed_pct != null);
+
+  const sizes = data.map((d) => Math.sqrt(Math.max(d.children_screened_malnutrition || 0, 1)));
+  const maxSize = Math.max(...sizes, 1);
+
+  renderPlotWithSentinel(
+    "fcvRegSamScatterChart",
+    [{
+      type: "scatter",
+      mode: "markers+text",
+      x: data.map((d) => d.sam_complications_managed_pct),
+      y: data.map((d) => d.sam_complications_pct),
+      text: data.map((d) => d.country),
+      textposition: "top center",
+      marker: {
+        size: sizes.map((s) => 10 + (s / maxSize) * 40),
+        color: data.map((d) => thresholdColor(d.sam_complications_pct, FCV_THRESHOLDS.sam)),
+        line: { color: "#fff", width: 1 }
+      },
+      hovertemplate: "%{text}<br>Managed: %{x:.1f}%<br>Severity: %{y:.1f}%<extra></extra>"
+    }],
+    fcvBaseLayout({ xaxis: { title: "SAM complications managed (%)" }, yaxis: { title: "SAM complications (%)" } }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "nutrition" }
+  );
+}
+
+// --- Group 5: Protection & Mental Health (Regional) -------------------------
+
+function renderFcvRegProtectionBarChart() {
+  if (!els.fcvRegProtectionBarChart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows);
+  const gbvFlag = detectUnderReportingFlag(data.map((d) => d.gbv_cases_managed));
+  const mhpssFlag = detectUnderReportingFlag(data.map((d) => d.mental_health_beneficiaries));
+
+  renderPlotWithSentinel(
+    "fcvRegProtectionBarChart",
+    [
+      {
+        type: "bar",
+        orientation: "h",
+        name: "GBV cases managed",
+        y: data.map((d) => d.country),
+        x: data.map((d) => d.gbv_cases_managed),
+        text: data.map((d) => (gbvFlag(d.gbv_cases_managed) ? "⚠ possibly under-reported" : "")),
+        textposition: "outside"
+      },
+      {
+        type: "bar",
+        orientation: "h",
+        name: "MHPSS beneficiaries",
+        y: data.map((d) => d.country),
+        x: data.map((d) => d.mental_health_beneficiaries),
+        text: data.map((d) => (mhpssFlag(d.mental_health_beneficiaries) ? "⚠ possibly under-reported" : "")),
+        textposition: "outside"
+      }
+    ],
+    fcvBaseLayout({ barmode: "group", margin: { l: 220, r: 60, t: 10, b: 30 }, legend: { orientation: "h" }, height: Math.max(320, data.length * 30) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "protection" }
+  );
+}
+
+// --- Group 6: Health System (Regional) --------------------------------------
+
+function renderFcvRegH3Chart() {
+  if (!els.fcvRegH3Chart) return;
+  const rows = applyFcvFilters(dashboardState.service_delivery_quarterly_rows || []);
+  const data = aggregateFcvRowsByCountry(rows)
+    .filter((d) => d.h3_package_pct != null)
+    .sort((a, b) => a.h3_package_pct - b.h3_package_pct);
+
+  const bar = {
+    type: "bar",
+    name: "H3 package %",
+    x: data.map((d) => d.country),
+    y: data.map((d) => d.h3_package_pct),
+    marker: { color: data.map((d) => thresholdColor(d.h3_package_pct, FCV_THRESHOLDS.default)) },
+    hovertemplate: "%{x}: %{y:.1f}%<extra></extra>"
+  };
+  const flagTrace = buildFlagOverlayTrace(data.map((d) => d.country), data.map((d) => d.h3_package_pct));
+
+  renderPlotWithSentinel(
+    "fcvRegH3Chart",
+    flagTrace ? [bar, flagTrace] : [bar],
+    fcvBaseLayout({ margin: { l: 50, r: 20, t: 10, b: 130 }, yaxis: { title: "% facilities implementing H3 package", range: [0, 100] }, xaxis: { tickangle: -35 }, legend: { y: -0.55, yanchor: "top" }, showlegend: Boolean(flagTrace) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "health_system" }
+  );
+}
+
+function renderFcvRegFacilities() {
+  if (!els.fcvRegFacilitiesKpiGrid) return;
+  const byCountry = (dashboardState.service_delivery_by_country || [])
+    .filter((c) => !fcvFilterState.countries.length || fcvFilterState.countries.includes(c.iso3));
+
+  const cards = [];
+  const flags = [];
+  byCountry.forEach((c) => {
+    const series = c.service_delivery?.monthly_series || [];
+    const latest = c.service_delivery?.latest;
+    if (latest?.total_health_facilities != null) {
+      cards.push({ country: c.country, value: latest.total_health_facilities });
+    }
+    const flag = detectFacilityInflationFlag(series);
+    if (flag) {
+      flags.push({ country: c.country, ...flag });
+    }
+  });
+
+  els.fcvRegFacilitiesKpiGrid.innerHTML = cards.length
+    ? cards.map((c) => {
+        const isFlagged = flags.some((f) => f.country === c.country);
+        return `
+          <article class="metric-card">
+            <h3>${c.country}${isFlagged ? '<span class="fcv-flag-chip">⚠ multi-month sum?</span>' : ""}</h3>
+            <div class="metric-value">${formatCount(c.value)}</div>
+            <div class="metric-note">Health facilities (latest)</div>
+          </article>
+        `;
+      }).join("")
+    : "<p>No health facility counts reported yet for this selection.</p>";
+
+  if (els.fcvRegFacilitiesFlagList) {
+    els.fcvRegFacilitiesFlagList.innerHTML = flags.length
+      ? `<p><strong>Flagged for possible multi-month sum:</strong></p><ul>${flags.map((f) => `<li>${f.country}: latest ${formatCount(f.latest)} vs. rolling median ${formatCount(Math.round(f.median))} (${f.ratio}x)</li>`).join("")}</ul>`
+      : "<p>No countries currently flagged.</p>";
+  }
+}
+
+// --- Country Deep-Dive view --------------------------------------------------
+
+function fcvDdCountry() {
+  return fcvFilterState.deepDiveCountry || dashboardState?.service_delivery_by_country?.[0]?.iso3 || null;
+}
+
+function fcvDdEntry() {
+  const iso3 = fcvDdCountry();
+  return (dashboardState?.service_delivery_by_country || []).find((c) => c.iso3 === iso3) || null;
+}
+
+function fcvDdLatestAdmin1Quarter() {
+  const iso3 = fcvDdCountry();
+  const rows = (dashboardState?.service_delivery_admin1_quarterly_rows || []).filter((r) => r.iso3 === iso3);
+  if (!rows.length) {
+    return { quarter: null, rows: [] };
+  }
+  const latestSort = rows.reduce((max, r) => (r.quarter_sort > max ? r.quarter_sort : max), -Infinity);
+  return { quarter: rows.find((r) => r.quarter_sort === latestSort)?.quarter_label || null, rows: rows.filter((r) => r.quarter_sort === latestSort) };
+}
+
+function renderFcvDdSummaryCards() {
+  if (els.fcvDeepDiveCountrySelect && fcvDdCountry()) {
+    els.fcvDeepDiveCountrySelect.value = fcvDdCountry();
+  }
+  if (!els.fcvDdSummaryCards) return;
+  const entry = fcvDdEntry();
+  if (!entry) {
+    els.fcvDdSummaryCards.innerHTML = "<p>No service-delivery data for this country.</p>";
+    return;
+  }
+  const latest = entry.service_delivery?.latest || {};
+  const cards = [
+    { label: "Latest month", value: latest.month_label || "n/a" },
+    { label: "People reached", value: latest.people_reached != null ? formatCount(latest.people_reached) : "n/a" },
+    { label: "GBV cases managed", value: latest.gbv_cases_managed != null ? formatCount(latest.gbv_cases_managed) : "n/a" },
+    { label: "MHPSS beneficiaries", value: latest.mental_health_beneficiaries != null ? formatCount(latest.mental_health_beneficiaries) : "n/a" }
+  ];
+  els.fcvDdSummaryCards.innerHTML = cards.map((c) => `
+    <article class="metric-card">
+      <h3>${c.label}</h3>
+      <div class="metric-value">${c.value}</div>
+    </article>
+  `).join("");
+}
+
+function renderFcvDdReportingStrip() {
+  if (!els.fcvDdReportingStrip) return;
+  const iso3 = fcvDdCountry();
+  const label = fcvDdEntry()?.country || iso3 || "n/a";
+  const allRows = (dashboardState?.service_delivery_quarterly_rows || []).filter((r) => r.iso3 === iso3);
+  const quarters = fcvScopedQuarters();
+  const z = [quarters.map((q) => {
+    const row = allRows.find((r) => r.quarter_label === q);
+    if (!row) return 0;
+    return FCV_TRACKED_FIELDS.some((f) => row[f] != null) ? 2 : 1;
+  })];
+  renderPlotWithSentinel(
+    "fcvDdReportingStrip",
+    [{
+      type: "heatmap",
+      x: quarters,
+      y: [label],
+      z,
+      colorscale: [[0, "#7a1f3d"], [0.25, "#7a1f3d"], [0.25, "#b8790f"], [0.75, "#b8790f"], [0.75, "#0f8f6c"], [1, "#0f8f6c"]],
+      zmin: 0,
+      zmax: 2,
+      showscale: false,
+      xgap: 3,
+      ygap: 3
+    }],
+    fcvBaseLayout({ margin: { l: 120, r: 20, t: 10, b: 40 }, height: 140 }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "quality-dd" }
+  );
+}
+
+function renderFcvDdCompletenessByIndicatorChart() {
+  if (!els.fcvDdCompletenessByIndicatorChart) return;
+  const iso3 = fcvDdCountry();
+  const rows = (dashboardState?.service_delivery_quarterly_rows || []).filter((r) => r.iso3 === iso3);
+  const data = FCV_TRACKED_FIELDS.map((field) => {
+    const total = rows.length;
+    const present = rows.filter((r) => r[field] != null).length;
+    return { label: FCV_INDICATOR_META[field].label, pct: total ? (present / total) * 100 : 0 };
+  }).sort((a, b) => a.pct - b.pct);
+
+  renderPlotWithSentinel(
+    "fcvDdCompletenessByIndicatorChart",
+    [{
+      type: "bar",
+      orientation: "h",
+      y: data.map((d) => d.label),
+      x: data.map((d) => d.pct),
+      marker: { color: data.map((d) => thresholdColor(d.pct, FCV_THRESHOLDS.default)) },
+      text: data.map((d) => `${d.pct.toFixed(0)}%`),
+      textposition: "outside"
+    }],
+    fcvBaseLayout({ margin: { l: 220, r: 40, t: 10, b: 30 }, xaxis: { range: [0, 100] }, height: Math.max(320, data.length * 26) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: "quality-dd" }
+  );
+}
+
+// Shared "nothing to show" state for any FCV chart with no data in the
+// current scope (a quiet blank plot reads as broken; an explicit message
+// reads as "no data reported here yet").
+function renderFcvEmptyChart(containerId, message, groupLabel) {
+  renderPlotWithSentinel(
+    containerId,
+    [],
+    fcvBaseLayout({
+      xaxis: { visible: false },
+      yaxis: { visible: false },
+      annotations: [{ text: message, showarrow: false, xref: "paper", yref: "paper", x: 0.5, y: 0.5, font: { size: 14, color: "#767676" } }]
+    }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: groupLabel }
+  );
+}
+
+// Multi-indicator trend as independent Plotly subplots (one row per field)
+// so each indicator keeps its own correctly-scaled axis — never a
+// dual-axis chart — while still being one render call/one sentinel id.
+function renderDdMultiFieldTrend(containerId, fields, groupLabel) {
+  const entry = fcvDdEntry();
+  const series = entry?.service_delivery?.monthly_series || [];
+  if (!series.length) {
+    renderFcvEmptyChart(containerId, "No data reported for this country yet.", groupLabel);
+    return;
+  }
+  const traces = fields.map((field, idx) => ({
+    type: "scatter",
+    mode: "lines+markers",
+    name: FCV_INDICATOR_META[field].label,
+    x: series.map((s) => s.month_label),
+    y: series.map((s) => s[field]),
+    xaxis: `x${idx + 1}`,
+    yaxis: `y${idx + 1}`,
+    line: { color: FCV_CATEGORICAL_PALETTE[idx % FCV_CATEGORICAL_PALETTE.length], width: 2 },
+    marker: { color: FCV_CATEGORICAL_PALETTE[idx % FCV_CATEGORICAL_PALETTE.length] }
+  }));
+  const layout = fcvBaseLayout({
+    grid: { rows: fields.length, columns: 1, pattern: "independent" },
+    margin: { l: 70, r: 20, t: 10, b: 30 },
+    height: Math.max(220, fields.length * 200),
+    showlegend: true
+  });
+  fields.forEach((field, idx) => {
+    layout[idx === 0 ? "yaxis" : `yaxis${idx + 1}`] = { title: FCV_INDICATOR_META[field].label, gridcolor: "#e7edf3", zeroline: false, linecolor: "#c7cfd8" };
+    layout[idx === 0 ? "xaxis" : `xaxis${idx + 1}`] = { gridcolor: "#e7edf3", zeroline: false, linecolor: "#c7cfd8" };
+  });
+  // A subplot whose field has no reported values at all would otherwise
+  // render as a bare empty grid — annotate it directly instead.
+  layout.annotations = fields
+    .map((field, idx) => {
+      if (series.some((s) => s[field] != null)) {
+        return null;
+      }
+      const axisNum = idx === 0 ? "" : String(idx + 1);
+      return {
+        text: "No data reported for this indicator.",
+        showarrow: false,
+        xref: `x${axisNum} domain`,
+        yref: `y${axisNum} domain`,
+        x: 0.5,
+        y: 0.5,
+        font: { size: 13, color: "#767676" }
+      };
+    })
+    .filter(Boolean);
+  renderPlotWithSentinel(containerId, traces, layout, FCV_PLOT_CONFIG, { pageId: "fcvDataPage", group: groupLabel });
+}
+
+function renderDdAdmin1SingleFieldBar(containerId, field, thresholds, groupLabel) {
+  const { rows } = fcvDdLatestAdmin1Quarter();
+  const data = rows.filter((r) => r[field] != null).sort((a, b) => a[field] - b[field]);
+  if (!data.length) {
+    renderFcvEmptyChart(containerId, "No admin1-level data for this indicator in the latest quarter.", groupLabel);
+    return;
+  }
+  const marker = thresholds
+    ? { color: data.map((d) => thresholdColor(d[field], thresholds)) }
+    : { color: FCV_CATEGORICAL_PALETTE[0] };
+  renderPlotWithSentinel(
+    containerId,
+    [{
+      type: "bar",
+      orientation: "h",
+      y: data.map((d) => d.admin1),
+      x: data.map((d) => d[field]),
+      marker,
+      hovertemplate: "%{y}: %{x}<extra></extra>"
+    }],
+    fcvBaseLayout({ margin: { l: 220, r: 30, t: 10, b: 30 }, height: Math.max(240, data.length * 26) }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: groupLabel }
+  );
+}
+
+function renderDdAdmin1GroupedBar(containerId, fields, groupLabel) {
+  const { rows } = fcvDdLatestAdmin1Quarter();
+  const admin1List = [...new Set(rows.map((r) => r.admin1))].sort();
+  if (!admin1List.length) {
+    renderFcvEmptyChart(containerId, "No admin1-level data in the latest quarter.", groupLabel);
+    return;
+  }
+  const traces = fields.map((field) => ({
+    type: "bar",
+    name: FCV_INDICATOR_META[field].label,
+    x: admin1List,
+    y: admin1List.map((a) => {
+      const r = rows.find((x) => x.admin1 === a);
+      return r ? r[field] : null;
+    })
+  }));
+  renderPlotWithSentinel(
+    containerId,
+    traces,
+    fcvBaseLayout({ barmode: "group", margin: { l: 50, r: 20, t: 10, b: 170 }, xaxis: { tickangle: -35 }, legend: { orientation: "h", y: -0.45, yanchor: "top" } }),
+    FCV_PLOT_CONFIG,
+    { pageId: "fcvDataPage", group: groupLabel }
+  );
+}
+
+function renderFcvDdVolumeTrendChart() {
+  if (!els.fcvDdVolumeTrendChart) return;
+  renderDdMultiFieldTrend("fcvDdVolumeTrendChart", FCV_VOLUME_INDICATORS, "volumes-dd");
+}
+
+function renderFcvDdAdmin1VolumeChart() {
+  if (!els.fcvDdAdmin1VolumeChart) return;
+  const field = els.fcvDdAdmin1VolumeIndicatorSelect?.value || FCV_VOLUME_INDICATORS[0];
+  renderDdAdmin1SingleFieldBar("fcvDdAdmin1VolumeChart", field, null, "volumes-dd");
+}
+
+function renderFcvDdCoverageTrendChart() {
+  if (!els.fcvDdCoverageTrendChart) return;
+  renderDdMultiFieldTrend("fcvDdCoverageTrendChart", FCV_COVERAGE_FIELDS, "coverage-dd");
+}
+
+function renderFcvDdAdmin1CoverageChart() {
+  if (!els.fcvDdAdmin1CoverageChart) return;
+  renderDdAdmin1GroupedBar("fcvDdAdmin1CoverageChart", FCV_COVERAGE_FIELDS, "coverage-dd");
+}
+
+function renderFcvDdSamTrendChart() {
+  if (!els.fcvDdSamTrendChart) return;
+  renderDdMultiFieldTrend("fcvDdSamTrendChart", ["sam_complications_pct", "sam_complications_managed_pct"], "nutrition-dd");
+}
+
+function renderFcvDdAdmin1SamChart() {
+  if (!els.fcvDdAdmin1SamChart) return;
+  renderDdAdmin1SingleFieldBar("fcvDdAdmin1SamChart", "sam_complications_pct", FCV_THRESHOLDS.sam, "nutrition-dd");
+}
+
+function renderFcvDdProtectionTrendChart() {
+  if (!els.fcvDdProtectionTrendChart) return;
+  renderDdMultiFieldTrend("fcvDdProtectionTrendChart", ["gbv_cases_managed", "mental_health_beneficiaries"], "protection-dd");
+}
+
+function renderFcvDdAdmin1ProtectionChart() {
+  if (!els.fcvDdAdmin1ProtectionChart) return;
+  renderDdAdmin1GroupedBar("fcvDdAdmin1ProtectionChart", ["gbv_cases_managed", "mental_health_beneficiaries"], "protection-dd");
+}
+
+function renderFcvDdHealthSystemTrendChart() {
+  if (!els.fcvDdHealthSystemTrendChart) return;
+  renderDdMultiFieldTrend("fcvDdHealthSystemTrendChart", ["h3_package_pct", "facility_disruption_pct"], "health-system-dd");
+}
+
+function renderFcvDdFacilitiesTrendChart() {
+  if (!els.fcvDdFacilitiesTrendChart) return;
+  renderDdMultiFieldTrend("fcvDdFacilitiesTrendChart", ["total_health_facilities"], "health-system-dd");
+}
+
+function renderFcvDdQuarterDetailTable() {
+  if (!els.fcvDdQuarterDetailTableHead || !els.fcvDdQuarterDetailTableBody) return;
+  const iso3 = fcvDdCountry();
+  const rows = (dashboardState?.service_delivery_quarterly_rows || [])
+    .filter((r) => r.iso3 === iso3)
+    .sort((a, b) => b.quarter_sort - a.quarter_sort);
+
+  els.fcvDdQuarterDetailTableHead.innerHTML = `<tr><th>Quarter</th>${FCV_TRACKED_FIELDS.map((f) => `<th>${FCV_INDICATOR_META[f].label}</th>`).join("")}</tr>`;
+  els.fcvDdQuarterDetailTableBody.innerHTML = rows.map((r) => `
+    <tr>
+      <td><strong>${r.quarter_label}</strong></td>
+      ${FCV_TRACKED_FIELDS.map((f) => `<td>${serviceValue(r[f], FCV_INDICATOR_META[f].agg === "avg" ? 1 : 0)}</td>`).join("")}
+    </tr>
+  `).join("");
 }
 
 function getFloodContext() {
@@ -3641,98 +4839,6 @@ function serviceDeliverySummaryParts(rows = [], status = null) {
     coverageLine: `Coverage: ${coverageCount} FCV countries represented across ${monthCount || "n/a"} reporting months. Latest feed month: ${latestMonthLabel}.`,
     leadersLine: `Current table leaders: People reached ${topPeopleReached ? `${topPeopleReached.country} (${formatCount(topPeopleReached.value)})` : "n/a"}; children screened ${topChildrenScreened ? `${topChildrenScreened.country} (${formatCount(topChildrenScreened.value)})` : "n/a"}; mental health support ${topMentalHealth ? `${topMentalHealth.country} (${formatCount(topMentalHealth.value)})` : "n/a"}.`
   };
-}
-
-function renderServiceDeliveryPanel() {
-  if (!els.serviceDeliverySummary || !els.serviceDeliveryTableBody) {
-    return;
-  }
-
-  const status = dashboardState?.service_delivery_status || null;
-  const rows = dashboardState?.service_delivery_by_country || [];
-  if (!status || !rows.length) {
-    els.serviceDeliverySummary.innerHTML = "No FCV service-delivery feed has been ingested yet.";
-    els.serviceDeliveryTableBody.innerHTML = "";
-    return;
-  }
-
-  const summary = serviceDeliverySummaryParts(rows, status);
-  els.serviceDeliverySummary.innerHTML = `
-    <p><strong>Feed status:</strong> ${status.source || "service feed"}. Values shown below are FCV country-level summaries for each country's latest month in the feed.</p>
-    <p><strong>${summary.coverageLine}</strong></p>
-    <p>${summary.leadersLine}</p>
-  `;
-
-  const sumMetric = (list, metricKey) => {
-    const values = list
-      .map((entry) => parseNumericOrNull(entry?.service_delivery?.latest?.[metricKey]))
-      .filter((value) => value != null);
-    if (!values.length) {
-      return null;
-    }
-    return values.reduce((acc, value) => acc + value, 0);
-  };
-
-  const avgMetric = (list, metricKey) => {
-    const values = list
-      .map((entry) => parseNumericOrNull(entry?.service_delivery?.latest?.[metricKey]))
-      .filter((value) => value != null);
-    if (!values.length) {
-      return null;
-    }
-    return values.reduce((acc, value) => acc + value, 0) / values.length;
-  };
-
-  const totals = {
-    reporting_rows: sumMetric(rows, "reporting_rows"),
-    mental_health_beneficiaries: sumMetric(rows, "mental_health_beneficiaries"),
-    gbv_cases_managed: sumMetric(rows, "gbv_cases_managed"),
-    people_reached: sumMetric(rows, "people_reached"),
-    children_screened_malnutrition: sumMetric(rows, "children_screened_malnutrition"),
-    opd_consultations_per_person_per_month: avgMetric(rows, "opd_consultations_per_person_per_month"),
-    anc_visits_mean: avgMetric(rows, "anc_visits_mean"),
-    measles_vaccination_coverage_pct: avgMetric(rows, "measles_vaccination_coverage_pct"),
-    penta_vaccination_coverage_pct: avgMetric(rows, "penta_vaccination_coverage_pct")
-  };
-
-  const bodyRows = rows
-    .map((entry) => {
-      const latest = entry?.service_delivery?.latest || {};
-      return `
-        <tr>
-          <td><strong>${entry.country || latest.country || entry.iso3}</strong></td>
-          <td>${latest.month_label || latest.iso_month || "n/a"}</td>
-          <td>${serviceValue(latest.reporting_rows, 0)}</td>
-          <td>${serviceValue(latest.mental_health_beneficiaries, 0)}</td>
-          <td>${serviceValue(latest.gbv_cases_managed, 0)}</td>
-          <td>${serviceValue(latest.people_reached, 0)}</td>
-          <td>${serviceValue(latest.children_screened_malnutrition, 0)}</td>
-          <td>${serviceValue(latest.opd_consultations_per_person_per_month, 2)}</td>
-          <td>${serviceValue(latest.anc_visits_mean, 2)}</td>
-          <td>${serviceValue(latest.measles_vaccination_coverage_pct, 2)}</td>
-          <td>${serviceValue(latest.penta_vaccination_coverage_pct, 2)}</td>
-        </tr>
-      `;
-    })
-    .join("");
-
-  const totalRow = `
-    <tr class="service-delivery-total-row">
-      <td><strong>Total / Mean</strong></td>
-      <td>Latest by country</td>
-      <td><strong>${serviceValue(totals.reporting_rows, 0)}</strong></td>
-      <td><strong>${serviceValue(totals.mental_health_beneficiaries, 0)}</strong></td>
-      <td><strong>${serviceValue(totals.gbv_cases_managed, 0)}</strong></td>
-      <td><strong>${serviceValue(totals.people_reached, 0)}</strong></td>
-      <td><strong>${serviceValue(totals.children_screened_malnutrition, 0)}</strong></td>
-      <td><strong>${serviceValue(totals.opd_consultations_per_person_per_month, 2)}</strong></td>
-      <td><strong>${serviceValue(totals.anc_visits_mean, 2)}</strong></td>
-      <td><strong>${serviceValue(totals.measles_vaccination_coverage_pct, 2)}</strong></td>
-      <td><strong>${serviceValue(totals.penta_vaccination_coverage_pct, 2)}</strong></td>
-    </tr>
-  `;
-
-  els.serviceDeliveryTableBody.innerHTML = `${bodyRows}${totalRow}`;
 }
 
 function renderFcvCountryProfile() {
@@ -5885,7 +6991,6 @@ function bindEvents() {
       renderOverviewInsights();
       renderTopAlerts();
       renderCountryTable();
-      renderServiceDeliveryPanel();
       renderFoodSecurityPage();
       renderNutritionPage();
       renderHazards();
@@ -6207,6 +7312,111 @@ function bindEvents() {
       hideAcapsModeToast();
     }
   });
+
+  els.fcvViewToggle?.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-fcv-view]");
+    if (!btn) {
+      return;
+    }
+    fcvFilterState.view = btn.dataset.fcvView;
+    els.fcvViewToggle.querySelectorAll(".map-mode-btn").forEach((b) => b.classList.toggle("active", b === btn));
+    els.fcvRegionalView.hidden = fcvFilterState.view !== "regional";
+    els.fcvDeepDiveView.hidden = fcvFilterState.view !== "deepdive";
+    if (dashboardState) {
+      renderAllFcvCharts();
+    }
+  });
+
+  // Countries/Admin1/Quarters filters are closed-by-default checkbox
+  // dropdowns rather than native multi-select listboxes. A trigger click
+  // opens/closes its own panel (closing any other open one); an "all"/
+  // "clear" action button bulk-sets the filter; a checkbox change toggles
+  // one value. All three funnel into onFcvDropdownChange (app.js), which
+  // re-populates the dependent Admin1 panel and re-renders the charts.
+  els.fcvFilterBar?.addEventListener("click", (e) => {
+    const trigger = e.target.closest(".fcv-dropdown-trigger");
+    if (trigger) {
+      const dropdown = trigger.closest(".fcv-dropdown");
+      const panel = dropdown?.querySelector(".fcv-dropdown-panel");
+      const willOpen = Boolean(panel?.hidden);
+      closeAllFcvDropdowns();
+      if (panel && willOpen) {
+        panel.hidden = false;
+        trigger.classList.add("is-open");
+      }
+      return;
+    }
+
+    const actionBtn = e.target.closest("[data-fcv-dropdown-action]");
+    if (actionBtn) {
+      const dropdown = actionBtn.closest(".fcv-dropdown");
+      const key = dropdown?.dataset.fcvDropdown;
+      const panel = dropdown?.querySelector(".fcv-dropdown-panel");
+      if (!key || !panel) return;
+      const checkboxes = Array.from(panel.querySelectorAll('input[type="checkbox"]'));
+      fcvFilterState[key] = actionBtn.dataset.fcvDropdownAction === "all" ? checkboxes.map((cb) => cb.value) : [];
+      checkboxes.forEach((cb) => {
+        cb.checked = fcvFilterState[key].includes(cb.value);
+      });
+      onFcvDropdownChange(key);
+    }
+  });
+
+  els.fcvFilterBar?.addEventListener("change", (e) => {
+    const checkbox = e.target.closest('input[type="checkbox"]');
+    if (!checkbox) return;
+    const dropdown = checkbox.closest(".fcv-dropdown");
+    const key = dropdown?.dataset.fcvDropdown;
+    if (!key) return;
+    const list = fcvFilterState[key];
+    const idx = list.indexOf(checkbox.value);
+    if (checkbox.checked && idx === -1) list.push(checkbox.value);
+    if (!checkbox.checked && idx !== -1) list.splice(idx, 1);
+    onFcvDropdownChange(key);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".fcv-dropdown")) {
+      closeAllFcvDropdowns();
+    }
+  });
+
+  els.fcvFilterResetBtn?.addEventListener("click", () => {
+    fcvFilterState.countries = [];
+    fcvFilterState.admin1s = [];
+    fcvFilterState.quarters = [];
+    populateFcvFilterOptions();
+    closeAllFcvDropdowns();
+    if (dashboardState) {
+      renderAllFcvCharts();
+    }
+  });
+
+  els.fcvDeepDiveCountrySelect?.addEventListener("change", (e) => {
+    fcvFilterState.deepDiveCountry = e.target.value || null;
+    if (dashboardState) {
+      renderAllFcvCharts();
+    }
+  });
+
+  els.fcvVolumeIndicatorSelect?.addEventListener("change", () => {
+    if (dashboardState) {
+      renderFcvRegVolumeTrendChart();
+      renderFcvRegVolumeContributionChart();
+    }
+  });
+
+  els.fcvCoverageMapIndicatorSelect?.addEventListener("change", () => {
+    if (dashboardState) {
+      renderFcvRegCoverageMapChart();
+    }
+  });
+
+  els.fcvDdAdmin1VolumeIndicatorSelect?.addEventListener("change", () => {
+    if (dashboardState) {
+      renderFcvDdAdmin1VolumeChart();
+    }
+  });
 }
 
 function scheduleAutoDataRefresh() {
@@ -6359,8 +7569,9 @@ async function loadDashboard(options = {}) {
     renderOverviewInsights();
     renderTopAlerts();
     renderCountryTable();
-    renderServiceDeliveryPanel();
     renderFcvCountryProfile();
+    populateFcvFilterOptions();
+    renderAllFcvCharts();
     aiRecommendations = buildAiRecommendations();
     renderFoodSecurityPage();
     renderNutritionPage();
@@ -6419,8 +7630,9 @@ async function loadDashboard(options = {}) {
         renderOverviewInsights();
         renderTopAlerts();
         renderCountryTable();
-        renderServiceDeliveryPanel();
         renderFcvCountryProfile();
+        populateFcvFilterOptions();
+        renderAllFcvCharts();
         aiRecommendations = buildAiRecommendations();
         renderFoodSecurityPage();
         renderNutritionPage();

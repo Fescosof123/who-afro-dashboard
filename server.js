@@ -1316,7 +1316,7 @@ function parseIpcCsv(csvText, iso3) {
   };
 }
 
-function parseCsvLine(line) {
+function parseCsvLine(line, delimiter = ",") {
   const cells = [];
   let cur = "";
   let inQuotes = false;
@@ -1331,7 +1331,7 @@ function parseCsvLine(line) {
       }
       continue;
     }
-    if (ch === "," && !inQuotes) {
+    if (ch === delimiter && !inQuotes) {
       cells.push(cur);
       cur = "";
       continue;
@@ -1342,16 +1342,57 @@ function parseCsvLine(line) {
   return cells.map((c) => String(c || "").trim());
 }
 
+// Sniffs the header line only: the new WHO service-delivery export uses ";"
+// (with "," reserved as the decimal separator inside numbers), while older
+// exports and other feeds use ",". Counting delimiter occurrences in the
+// header (not per-row) keeps this a one-shot, inspectable decision per file.
+function detectCsvDelimiter(headerLine) {
+  const header = String(headerLine || "");
+  const semiCount = (header.match(/;/g) || []).length;
+  const commaCount = (header.match(/,/g) || []).length;
+  return semiCount > commaCount ? ";" : ",";
+}
+
+// Decodes a raw file/response buffer to text, tolerating the non-UTF-8
+// encoding used by some WHO-provided exports (e.g. "N°" saved as a raw
+// Latin-1/CP1252 byte rather than UTF-8). Honors an explicit UTF-8 BOM,
+// otherwise tries strict UTF-8 and falls back to Latin-1 byte-for-byte
+// decoding (correct for the accented characters actually seen in these files).
+function decodeCsvBuffer(buffer) {
+  if (!Buffer.isBuffer(buffer)) {
+    return String(buffer || "");
+  }
+  if (buffer.length >= 3 && buffer[0] === 0xef && buffer[1] === 0xbb && buffer[2] === 0xbf) {
+    return buffer.slice(3).toString("utf8");
+  }
+  try {
+    return new TextDecoder("utf-8", { fatal: true }).decode(buffer);
+  } catch {
+    return buffer.toString("latin1");
+  }
+}
+
 function isMissingValue(value) {
   const normalized = String(value == null ? "" : value).trim().toLowerCase();
   return !normalized || normalized === "na" || normalized === "n/a" || normalized === "null" || normalized === "nil" || normalized === "none";
 }
 
-function toFiniteNumber(value) {
+// numberFormat "plain" (default): legacy exports where "," is a thousands
+// separator (e.g. "4,762") and "." is the decimal point.
+// numberFormat "comma_decimal": newer semicolon-delimited exports where " "
+// (or NBSP) is the thousands separator and "," is the decimal point
+// (e.g. "4 762" = 4762, "103,1" = 103.1).
+function toFiniteNumber(value, numberFormat = "plain") {
   if (isMissingValue(value)) {
     return null;
   }
-  const parsed = Number(String(value).replace(/,/g, "").trim());
+  let str = String(value).trim();
+  if (numberFormat === "comma_decimal") {
+    str = str.replace(/[\s ]/g, "").replace(/,/g, ".");
+  } else {
+    str = str.replace(/,/g, "");
+  }
+  const parsed = Number(str);
   return Number.isFinite(parsed) ? parsed : null;
 }
 
@@ -1409,17 +1450,59 @@ function parseMonthReportLabel(value) {
   };
 }
 
+// Newer exports split "Month Report" into separate "Month of Report" /
+// "Year of Report" columns. Sample data shows "Month of Report" already
+// contains the year (e.g. "January 2026"), but the regex guard below makes
+// this robust even if a future export sends a bare month name.
+function parseMonthYearLabel(monthValue, yearValue) {
+  if (isMissingValue(monthValue)) {
+    return null;
+  }
+  const monthName = String(monthValue).trim();
+  const year = toFiniteNumber(yearValue, "plain");
+  const candidate = /\d{4}/.test(monthName) ? monthName : `${monthName} ${year || ""}`.trim();
+  const parsed = new Date(`1 ${candidate} UTC`);
+  if (Number.isNaN(parsed.getTime())) {
+    return null;
+  }
+  return {
+    label: monthName,
+    iso_month: `${parsed.getUTCFullYear()}-${String(parsed.getUTCMonth() + 1).padStart(2, "0")}`,
+    sort_value: parsed.getTime(),
+    month_start: parsed.toISOString()
+  };
+}
+
+function quarterOfIsoMonth(isoMonth) {
+  const [yearStr, monthStr] = String(isoMonth || "").split("-");
+  const year = Number(yearStr);
+  const month = Number(monthStr);
+  if (!Number.isFinite(year) || !Number.isFinite(month)) {
+    return null;
+  }
+  const quarter = Math.ceil(month / 3);
+  return {
+    quarter,
+    quarter_label: `${year}-Q${quarter}`,
+    quarter_sort: year * 10 + quarter
+  };
+}
+
 function hasServiceDeliverySchema(records = []) {
   const row = records.find((item) => item && typeof item === "object");
   if (!row) {
     return false;
   }
-  return Object.prototype.hasOwnProperty.call(row, "Admin0 (Country/State)")
-    && Object.prototype.hasOwnProperty.call(row, "Month Report");
+  const hasCountry = Object.prototype.hasOwnProperty.call(row, "Admin0 (Country/State)");
+  const hasOldMonth = Object.prototype.hasOwnProperty.call(row, "Month Report");
+  const hasNewMonth = Object.prototype.hasOwnProperty.call(row, "Month of Report")
+    && Object.prototype.hasOwnProperty.call(row, "Year of Report");
+  return hasCountry && (hasOldMonth || hasNewMonth);
 }
 
-function parseServiceDeliveryFeedRows(records = []) {
-  const grouped = new Map();
+function parseServiceDeliveryFeedRows(records = [], numberFormat = "plain") {
+  const groupedByCountryMonth = new Map();
+  const groupedByAdmin1Month = new Map();
   let rawRowCount = 0;
 
   function addNullableMetric(bucket, metricKey, value) {
@@ -1430,108 +1513,215 @@ function parseServiceDeliveryFeedRows(records = []) {
     bucket[`${metricKey}_reported_count`] += 1;
   }
 
-  records.forEach((row) => {
-    if (!row || typeof row !== "object") {
-      return;
-    }
-    const iso3 = findFcvIso3FromCountryName(row["Admin0 (Country/State)"]);
-    const month = parseMonthReportLabel(row["Month Report"]);
-    if (!iso3 || !month) {
-      return;
-    }
+  function createServiceDeliveryBucket(common) {
+    return {
+      ...common,
+      reporting_rows: 0,
+      mental_health_beneficiaries: 0,
+      mental_health_beneficiaries_reported_count: 0,
+      gbv_cases_managed: 0,
+      gbv_cases_managed_reported_count: 0,
+      people_reached: 0,
+      people_reached_reported_count: 0,
+      children_screened_malnutrition: 0,
+      children_screened_malnutrition_reported_count: 0,
+      total_health_facilities: 0,
+      total_health_facilities_reported_count: 0,
+      opd_consultations_per_person_per_month_values: [],
+      deliveries_in_health_institution_pct_values: [],
+      anc_visits_mean_values: [],
+      measles_vaccination_coverage_pct_values: [],
+      penta_vaccination_coverage_pct_values: [],
+      sam_complications_pct_values: [],
+      sam_complications_managed_pct_values: [],
+      facility_disruption_pct_values: [],
+      h3_package_pct_values: []
+    };
+  }
 
-    rawRowCount += 1;
-    const key = `${iso3}__${month.iso_month}`;
-    if (!grouped.has(key)) {
-      grouped.set(key, {
-        iso3,
-        country: row["Admin0 (Country/State)"],
-        month_label: month.label,
-        iso_month: month.iso_month,
-        month_start: month.month_start,
-        sort_value: month.sort_value,
-        admin1: new Set(),
-        admin2: new Set(),
-        respondent_names: new Set(),
-        reporting_rows: 0,
-        mental_health_beneficiaries: 0,
-        mental_health_beneficiaries_reported_count: 0,
-        gbv_cases_managed: 0,
-        gbv_cases_managed_reported_count: 0,
-        people_reached: 0,
-        people_reached_reported_count: 0,
-        children_screened_malnutrition: 0,
-        children_screened_malnutrition_reported_count: 0,
-        opd_consultations_per_person_per_month_values: [],
-        deliveries_in_health_institution_pct_values: [],
-        anc_visits_mean_values: [],
-        measles_vaccination_coverage_pct_values: [],
-        penta_vaccination_coverage_pct_values: [],
-        sam_complications_pct_values: [],
-        sam_complications_managed_pct_values: []
-      });
-    }
-
-    const bucket = grouped.get(key);
+  function accumulateServiceDeliveryRow(bucket, row) {
     bucket.reporting_rows += 1;
-    if (row["Admin1 (Province/Region/LGA)"]) {
-      const admin1 = coalesceString(row["Admin1 (Province/Region/LGA)"]);
-      if (admin1) {
-        bucket.admin1.add(admin1);
-      }
-    }
-    if (row["Admin2 (District)"]) {
-      const admin2 = coalesceString(row["Admin2 (District)"]);
-      if (admin2) {
-        bucket.admin2.add(admin2);
-      }
-    }
-    if (row["Name of Respondent"]) {
-      const respondentName = coalesceString(row["Name of Respondent"]);
-      if (respondentName) {
-        bucket.respondent_names.add(respondentName);
-      }
-    }
+    addNullableMetric(bucket, "mental_health_beneficiaries", toFiniteNumber(row["Number of persons benefiting from mental health services and psychological support"], numberFormat));
+    addNullableMetric(bucket, "gbv_cases_managed", toFiniteNumber(row["Number of GBV cases identified and clinically managed (GBVIMS)"], numberFormat));
+    addNullableMetric(bucket, "people_reached", toFiniteNumber(row["Number of people reached"], numberFormat));
+    addNullableMetric(bucket, "children_screened_malnutrition", toFiniteNumber(row["Number of children screened for malnutrition"], numberFormat));
+    addNullableMetric(bucket, "total_health_facilities", toFiniteNumber(row["Total number of Health Facilities"], numberFormat));
 
-    addNullableMetric(bucket, "mental_health_beneficiaries", toFiniteNumber(row["Number of persons benefiting from mental health services and psychological support"]));
-    addNullableMetric(bucket, "gbv_cases_managed", toFiniteNumber(row["Number of GBV cases identified and clinically managed (GBVIMS)"]));
-    addNullableMetric(bucket, "people_reached", toFiniteNumber(row["Number of people reached"]));
-    addNullableMetric(bucket, "children_screened_malnutrition", toFiniteNumber(row["Number of children screened for malnutrition"]));
+    bucket.opd_consultations_per_person_per_month_values.push(toFiniteNumber(row["Total outpatient department (OPD) consultations per person per month"], numberFormat));
+    bucket.deliveries_in_health_institution_pct_values.push(toFiniteNumber(row["% of deliveries in a health institution"], numberFormat));
+    bucket.anc_visits_mean_values.push(toFiniteNumber(row["Mean number of ANC visits per pregnant woman during the time period"], numberFormat));
+    bucket.measles_vaccination_coverage_pct_values.push(toFiniteNumber(row["Measles vaccination coverage (%)"], numberFormat));
+    bucket.penta_vaccination_coverage_pct_values.push(toFiniteNumber(row["PENTA vaccination coverage (%)"], numberFormat));
+    bucket.sam_complications_pct_values.push(toFiniteNumber(row["Percentage of severe acute malnutrition (SAM) cases with complications"], numberFormat));
+    bucket.sam_complications_managed_pct_values.push(toFiniteNumber(row["Percentage of severe acute malnutrition (SAM) cases with complications managed"], numberFormat));
+    bucket.facility_disruption_pct_values.push(toFiniteNumber(row["Percentage of healthcare facilities that reported a service disruption during the last 90 days."], numberFormat));
+    bucket.h3_package_pct_values.push(toFiniteNumber(row["Percentage of health facilities that implement essential health (H3) package."], numberFormat));
+  }
 
-    bucket.opd_consultations_per_person_per_month_values.push(toFiniteNumber(row["Total outpatient department (OPD) consultations per person per month"]));
-    bucket.deliveries_in_health_institution_pct_values.push(toFiniteNumber(row["% of deliveries in a health institution"]));
-    bucket.anc_visits_mean_values.push(toFiniteNumber(row["Mean number of ANC visits per pregnant woman during the time period"]));
-    bucket.measles_vaccination_coverage_pct_values.push(toFiniteNumber(row["Measles vaccination coverage (%)"]));
-    bucket.penta_vaccination_coverage_pct_values.push(toFiniteNumber(row["PENTA vaccination coverage (%)"]));
-    bucket.sam_complications_pct_values.push(toFiniteNumber(row["Percentage of severe acute malnutrition (SAM) cases with complications"]));
-    bucket.sam_complications_managed_pct_values.push(toFiniteNumber(row["Percentage of severe acute malnutrition (SAM) cases with complications managed"]));
-  });
-
-  const monthlyRows = Array.from(grouped.values())
-    .map((bucket) => ({
+  function finalizeServiceDeliveryBucket(bucket) {
+    const q = quarterOfIsoMonth(bucket.iso_month) || {};
+    return {
       iso3: bucket.iso3,
       country: bucket.country,
+      admin1: bucket.admin1 ?? undefined,
       month_label: bucket.month_label,
       iso_month: bucket.iso_month,
       month_start: bucket.month_start,
       sort_value: bucket.sort_value,
+      quarter_label: q.quarter_label || null,
+      quarter_sort: q.quarter_sort || null,
       reporting_rows: bucket.reporting_rows,
-      admin1_count: bucket.admin1.size,
-      admin2_count: bucket.admin2.size,
-      respondent_count: bucket.respondent_names.size,
+      admin1_count: bucket.admin1Set ? bucket.admin1Set.size : undefined,
+      admin2_count: bucket.admin2Set ? bucket.admin2Set.size : undefined,
+      respondent_count: bucket.respondentSet ? bucket.respondentSet.size : undefined,
       mental_health_beneficiaries: bucket.mental_health_beneficiaries_reported_count > 0 ? Math.round(bucket.mental_health_beneficiaries) : null,
       gbv_cases_managed: bucket.gbv_cases_managed_reported_count > 0 ? Math.round(bucket.gbv_cases_managed) : null,
       people_reached: bucket.people_reached_reported_count > 0 ? Math.round(bucket.people_reached) : null,
       children_screened_malnutrition: bucket.children_screened_malnutrition_reported_count > 0 ? Math.round(bucket.children_screened_malnutrition) : null,
+      total_health_facilities: bucket.total_health_facilities_reported_count > 0 ? Math.round(bucket.total_health_facilities) : null,
       opd_consultations_per_person_per_month: averageOf(bucket.opd_consultations_per_person_per_month_values),
       deliveries_in_health_institution_pct: averageOf(bucket.deliveries_in_health_institution_pct_values),
       anc_visits_mean: averageOf(bucket.anc_visits_mean_values),
       measles_vaccination_coverage_pct: averageOf(bucket.measles_vaccination_coverage_pct_values),
       penta_vaccination_coverage_pct: averageOf(bucket.penta_vaccination_coverage_pct_values),
       sam_complications_pct: averageOf(bucket.sam_complications_pct_values),
-      sam_complications_managed_pct: averageOf(bucket.sam_complications_managed_pct_values)
-    }))
+      sam_complications_managed_pct: averageOf(bucket.sam_complications_managed_pct_values),
+      facility_disruption_pct: averageOf(bucket.facility_disruption_pct_values),
+      h3_package_pct: averageOf(bucket.h3_package_pct_values)
+    };
+  }
+
+  function sumOrNull(values = []) {
+    const valid = values.filter((v) => v != null && Number.isFinite(Number(v))).map(Number);
+    if (!valid.length) {
+      return null;
+    }
+    return Math.round(valid.reduce((sum, v) => sum + v, 0));
+  }
+
+  // Re-aggregates already-computed monthly rows into quarterly rows (no extra
+  // I/O / no re-reading of raw CSV rows). Count-type metrics are summed
+  // across the months present in the quarter; percentage/rate-type metrics
+  // are averaged. total_health_facilities is the exception: it uses the
+  // LATEST month's value in the quarter rather than a sum, specifically to
+  // avoid manufacturing the "3-month sum inflates the real network count"
+  // problem this field is prone to in the source data.
+  function aggregateMonthlyToQuarterly(monthlyRows, keyFields) {
+    const grouped = new Map();
+    monthlyRows.forEach((row) => {
+      if (!row.quarter_label) {
+        return;
+      }
+      const key = [...keyFields.map((f) => row[f]), row.quarter_label].join("__");
+      if (!grouped.has(key)) {
+        grouped.set(key, []);
+      }
+      grouped.get(key).push(row);
+    });
+
+    return Array.from(grouped.values())
+      .map((rows) => {
+        const sorted = rows.slice().sort((a, b) => a.sort_value - b.sort_value);
+        const latest = sorted[sorted.length - 1];
+        const base = {};
+        keyFields.forEach((f) => {
+          base[f] = latest[f];
+        });
+        return {
+          ...base,
+          country: latest.country,
+          quarter_label: latest.quarter_label,
+          quarter_sort: latest.quarter_sort,
+          reporting_rows: sumOrNull(rows.map((r) => r.reporting_rows)) || 0,
+          mental_health_beneficiaries: sumOrNull(rows.map((r) => r.mental_health_beneficiaries)),
+          gbv_cases_managed: sumOrNull(rows.map((r) => r.gbv_cases_managed)),
+          people_reached: sumOrNull(rows.map((r) => r.people_reached)),
+          children_screened_malnutrition: sumOrNull(rows.map((r) => r.children_screened_malnutrition)),
+          total_health_facilities: latest.total_health_facilities,
+          opd_consultations_per_person_per_month: averageOf(rows.map((r) => r.opd_consultations_per_person_per_month)),
+          deliveries_in_health_institution_pct: averageOf(rows.map((r) => r.deliveries_in_health_institution_pct)),
+          anc_visits_mean: averageOf(rows.map((r) => r.anc_visits_mean)),
+          measles_vaccination_coverage_pct: averageOf(rows.map((r) => r.measles_vaccination_coverage_pct)),
+          penta_vaccination_coverage_pct: averageOf(rows.map((r) => r.penta_vaccination_coverage_pct)),
+          sam_complications_pct: averageOf(rows.map((r) => r.sam_complications_pct)),
+          sam_complications_managed_pct: averageOf(rows.map((r) => r.sam_complications_managed_pct)),
+          facility_disruption_pct: averageOf(rows.map((r) => r.facility_disruption_pct)),
+          h3_package_pct: averageOf(rows.map((r) => r.h3_package_pct))
+        };
+      })
+      .sort((a, b) => a.quarter_sort - b.quarter_sort || String(a.country || "").localeCompare(String(b.country || "")));
+  }
+
+  records.forEach((row) => {
+    if (!row || typeof row !== "object") {
+      return;
+    }
+    const iso3 = findFcvIso3FromCountryName(row["Admin0 (Country/State)"]);
+    const month = Object.prototype.hasOwnProperty.call(row, "Month of Report")
+      ? parseMonthYearLabel(row["Month of Report"], row["Year of Report"])
+      : parseMonthReportLabel(row["Month Report"]);
+    if (!iso3 || !month) {
+      return;
+    }
+
+    rawRowCount += 1;
+    const admin1Display = coalesceString(row["Admin1 (Province/Region/LGA)"]);
+    const admin2Display = coalesceString(row["Admin2 (District)"]);
+    const respondentDisplay = coalesceString(row["Name of Respondent"]);
+
+    const countryKey = `${iso3}__${month.iso_month}`;
+    if (!groupedByCountryMonth.has(countryKey)) {
+      groupedByCountryMonth.set(countryKey, createServiceDeliveryBucket({
+        iso3,
+        country: row["Admin0 (Country/State)"],
+        month_label: month.label,
+        iso_month: month.iso_month,
+        month_start: month.month_start,
+        sort_value: month.sort_value,
+        admin1Set: new Set(),
+        admin2Set: new Set(),
+        respondentSet: new Set()
+      }));
+    }
+    const countryBucket = groupedByCountryMonth.get(countryKey);
+    if (admin1Display) {
+      countryBucket.admin1Set.add(admin1Display);
+    }
+    if (admin2Display) {
+      countryBucket.admin2Set.add(admin2Display);
+    }
+    if (respondentDisplay) {
+      countryBucket.respondentSet.add(respondentDisplay);
+    }
+    accumulateServiceDeliveryRow(countryBucket, row);
+
+    if (admin1Display) {
+      const admin1Key = `${iso3}__${admin1Display}__${month.iso_month}`;
+      if (!groupedByAdmin1Month.has(admin1Key)) {
+        groupedByAdmin1Month.set(admin1Key, createServiceDeliveryBucket({
+          iso3,
+          country: row["Admin0 (Country/State)"],
+          admin1: admin1Display,
+          month_label: month.label,
+          iso_month: month.iso_month,
+          month_start: month.month_start,
+          sort_value: month.sort_value
+        }));
+      }
+      accumulateServiceDeliveryRow(groupedByAdmin1Month.get(admin1Key), row);
+    }
+  });
+
+  const monthlyRows = Array.from(groupedByCountryMonth.values())
+    .map(finalizeServiceDeliveryBucket)
     .sort((a, b) => a.sort_value - b.sort_value || a.country.localeCompare(b.country));
+
+  const admin1MonthlyRows = Array.from(groupedByAdmin1Month.values())
+    .map(finalizeServiceDeliveryBucket)
+    .sort((a, b) => a.sort_value - b.sort_value || a.country.localeCompare(b.country) || a.admin1.localeCompare(b.admin1));
+
+  const quarterlyRows = aggregateMonthlyToQuarterly(monthlyRows, ["iso3"]);
+  const admin1QuarterlyRows = aggregateMonthlyToQuarterly(admin1MonthlyRows, ["iso3", "admin1"]);
 
   const byIso3 = new Map();
   monthlyRows.forEach((row) => {
@@ -1566,13 +1756,15 @@ function parseServiceDeliveryFeedRows(records = []) {
     latest_month: months[months.length - 1] || null,
     months,
     records: latestCountryRows,
-    monthly_rows: monthlyRows
+    monthly_rows: monthlyRows,
+    quarterly_rows: quarterlyRows,
+    admin1_quarterly_rows: admin1QuarterlyRows
   };
 }
 
-function parseCountryFeedRows(records = []) {
+function parseCountryFeedRows(records = [], numberFormat = "plain") {
   if (hasServiceDeliverySchema(records)) {
-    return parseServiceDeliveryFeedRows(records);
+    return parseServiceDeliveryFeedRows(records, numberFormat);
   }
 
   const parsed = [];
@@ -1650,7 +1842,9 @@ function parseCountryFeedRows(records = []) {
     latest_month: null,
     months: [],
     records: parsed,
-    monthly_rows: []
+    monthly_rows: [],
+    quarterly_rows: [],
+    admin1_quarterly_rows: []
   };
 }
 
@@ -1660,17 +1854,19 @@ function parseCountryFeedCsv(csvText) {
     .map((line) => line.trim())
     .filter(Boolean);
   if (lines.length < 2) {
-    return [];
+    return { schema_kind: "empty", raw_row_count: 0, country_count: 0, month_count: 0, latest_month: null, months: [], records: [], monthly_rows: [], quarterly_rows: [], admin1_quarterly_rows: [] };
   }
-  const headers = parseCsvLine(lines[0]);
+  const delimiter = detectCsvDelimiter(lines[0]);
+  const numberFormat = delimiter === ";" ? "comma_decimal" : "plain";
+  const headers = parseCsvLine(lines[0], delimiter);
   const records = lines.slice(1).map((line) => {
-    const cells = parseCsvLine(line);
+    const cells = parseCsvLine(line, delimiter);
     return headers.reduce((acc, header, idx) => {
       acc[header] = cells[idx] != null ? cells[idx] : "";
       return acc;
     }, {});
   });
-  return parseCountryFeedRows(records);
+  return parseCountryFeedRows(records, numberFormat);
 }
 
 function persistCountryFeedSnapshot(snapshot) {
@@ -1814,7 +2010,7 @@ async function refreshCountryFeedFromRemote(force = false) {
         return { attempted: false, reason: "fresh_cache", age_minutes: currentAge, source: "local_file" };
       }
 
-      const fileText = fs.readFileSync(COUNTRY_FEED_LOCAL_FILE, "utf8");
+      const fileText = decodeCsvBuffer(fs.readFileSync(COUNTRY_FEED_LOCAL_FILE));
       const parsed = parseCountryFeedCsv(fileText || "");
       countryFeedSnapshot = {
         mode: "local_file",
@@ -1825,6 +2021,8 @@ async function refreshCountryFeedFromRemote(force = false) {
         saved_at: new Date().toISOString(),
         records: parsed.records,
         monthly_rows: parsed.monthly_rows,
+        quarterly_rows: parsed.quarterly_rows,
+        admin1_quarterly_rows: parsed.admin1_quarterly_rows,
         row_count: parsed.raw_row_count,
         country_count: parsed.country_count,
         month_count: parsed.month_count,
@@ -1862,13 +2060,13 @@ async function refreshCountryFeedFromRemote(force = false) {
 
     const response = await axios.get(COUNTRY_FEED_CSV_URL, {
       timeout: 20000,
-      responseType: "text",
+      responseType: "arraybuffer",
       headers: {
         "User-Agent": "WHO-AFRO-Dashboard/1.0 (+country-feed)",
         Accept: "text/csv,application/octet-stream,text/plain"
       }
     });
-    const parsed = parseCountryFeedCsv(response.data || "");
+    const parsed = parseCountryFeedCsv(decodeCsvBuffer(Buffer.from(response.data || "")));
     countryFeedSnapshot = {
       mode: "remote_csv",
       schema_kind: parsed.schema_kind,
@@ -1876,6 +2074,8 @@ async function refreshCountryFeedFromRemote(force = false) {
       saved_at: new Date().toISOString(),
       records: parsed.records,
       monthly_rows: parsed.monthly_rows,
+      quarterly_rows: parsed.quarterly_rows,
+      admin1_quarterly_rows: parsed.admin1_quarterly_rows,
       row_count: parsed.raw_row_count,
       country_count: parsed.country_count,
       month_count: parsed.month_count,
@@ -6309,6 +6509,8 @@ app.post("/api/country-feed", express.text({ type: "*/*", limit: "3mb" }), async
       saved_at: new Date().toISOString(),
       records,
       monthly_rows: parsedFeed.monthly_rows,
+      quarterly_rows: parsedFeed.quarterly_rows,
+      admin1_quarterly_rows: parsedFeed.admin1_quarterly_rows,
       row_count: parsedFeed.raw_row_count,
       country_count: parsedFeed.country_count,
       month_count: parsedFeed.month_count,
@@ -6659,6 +6861,12 @@ app.get("/api/dashboard-data", async (req, res) => {
             }))
             .sort((a, b) => a.country.localeCompare(b.country))
         : [],
+      service_delivery_quarterly_rows: countryFeedSnapshot?.schema_kind === "service_delivery"
+        ? (countryFeedSnapshot.quarterly_rows || [])
+        : [],
+      service_delivery_admin1_quarterly_rows: countryFeedSnapshot?.schema_kind === "service_delivery"
+        ? (countryFeedSnapshot.admin1_quarterly_rows || [])
+        : [],
       countries,
       hazards: serializedHazards,
       regional_flood_signals: regionalFloodSignals,
@@ -6848,5 +7056,14 @@ if (require.main === module) {
 module.exports = {
   app,
   classifyEnsoRisk,
-  extractEnsoAdvisoryFromHtml
+  extractEnsoAdvisoryFromHtml,
+  detectCsvDelimiter,
+  decodeCsvBuffer,
+  toFiniteNumber,
+  parseMonthYearLabel,
+  parseMonthReportLabel,
+  quarterOfIsoMonth,
+  hasServiceDeliverySchema,
+  parseServiceDeliveryFeedRows,
+  parseCountryFeedCsv
 };
