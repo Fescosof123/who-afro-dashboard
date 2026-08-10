@@ -1,8 +1,8 @@
 {
-  "saved_at": "2026-08-10T14:38:32.938Z",
+  "saved_at": "2026-08-10T15:34:56.784Z",
   "items": [
     {
-      "title": "Orange earthquake (Magnitude 7.4M, Depth:110.285km) in Colombia 10/08/2026 12:34 UTC, 2 million (in MMI>=VII).",
+      "title": "Orange earthquake (Magnitude 7.4M, Depth:110.285km) in Colombia 10/08/2026 12:34 UTC, 1.5 million (in MMI>=VII).",
       "link": "https://www.gdacs.org/report.aspx?eventtype=EQ&eventid=1557236",
       "pubDate": "Mon, 10 Aug 2026 12:50:33 GMT",
       "enclosure": {
@@ -10,8 +10,8 @@
         "length": "1",
         "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/eq/eq1724218_1.png"
       },
-      "content": "On 8/10/2026 12:34:28 PM, an earthquake occurred in Colombia potentially affecting 2 million (in MMI>=VII). The earthquake had Magnitude 7.4M, Depth:110.285km.",
-      "contentSnippet": "On 8/10/2026 12:34:28 PM, an earthquake occurred in Colombia potentially affecting 2 million (in MMI>=VII). The earthquake had Magnitude 7.4M, Depth:110.285km.",
+      "content": "On 8/10/2026 12:34:28 PM, an earthquake occurred in Colombia potentially affecting 1.5 million (in MMI>=VII). The earthquake had Magnitude 7.4M, Depth:110.285km.",
+      "contentSnippet": "On 8/10/2026 12:34:28 PM, an earthquake occurred in Colombia potentially affecting 1.5 million (in MMI>=VII). The earthquake had Magnitude 7.4M, Depth:110.285km.",
       "guid": "EQ1557236",
       "isoDate": "2026-08-10T12:50:33.000Z"
     },
@@ -30,20 +30,6 @@
       "isoDate": "2026-08-10T06:02:52.000Z"
     },
     {
-      "title": "Green notification for tropical cyclone FIFTEEN-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001300",
-      "pubDate": "Mon, 10 Aug 2026 02:21:18 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001300/1001300_2_tn.png"
-      },
-      "content": "From 10/08/2026 to 10/08/2026, a Tropical Storm (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 10/08/2026 to 10/08/2026, a Tropical Storm (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "guid": "TC1001300",
-      "isoDate": "2026-08-10T02:21:18.000Z"
-    },
-    {
       "title": "Green forest fire notification in Australia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030307",
       "pubDate": "Mon, 10 Aug 2026 11:00:29 GMT",
@@ -56,6 +42,20 @@
       "contentSnippet": "On 10/08/2026, a forest fire started in Australia,  until 10/08/2026.",
       "guid": "WF1030307",
       "isoDate": "2026-08-10T11:00:29.000Z"
+    },
+    {
+      "title": "Green notification for tropical cyclone FIFTEEN-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001300",
+      "pubDate": "Mon, 10 Aug 2026 02:21:18 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001300/1001300_3_tn.png"
+      },
+      "content": "From 10/08/2026 to 10/08/2026, a Tropical Depression (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 10/08/2026 to 10/08/2026, a Tropical Depression (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "guid": "TC1001300",
+      "isoDate": "2026-08-10T02:21:18.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
