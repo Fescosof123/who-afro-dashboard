@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-08-11T05:37:48.127Z",
+  "saved_at": "2026-08-11T06:34:34.554Z",
   "items": [
     {
       "title": "Orange earthquake (Magnitude 7.4M, Depth:110.285km) in Colombia 10/08/2026 12:34 UTC, 1.5 million (in MMI>=VII).",
@@ -30,18 +30,18 @@
       "isoDate": "2026-08-10T06:02:52.000Z"
     },
     {
-      "title": "Green forest fire notification in Brazil",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030351",
-      "pubDate": "Tue, 11 Aug 2026 03:01:07 GMT",
+      "title": "Green notification for tropical cyclone FIFTEEN-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001300",
+      "pubDate": "Mon, 10 Aug 2026 02:21:18 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": ""
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001300/1001300_5_tn.png"
       },
-      "content": "On 10/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
-      "contentSnippet": "On 10/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
-      "guid": "WF1030351",
-      "isoDate": "2026-08-11T03:01:07.000Z"
+      "content": "From 10/08/2026 to 11/08/2026, a Tropical Depression (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 10/08/2026 to 11/08/2026, a Tropical Depression (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "guid": "TC1001300",
+      "isoDate": "2026-08-10T02:21:18.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -58,18 +58,18 @@
       "isoDate": "2026-08-10T19:00:36.000Z"
     },
     {
-      "title": "Green notification for tropical cyclone FIFTEEN-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001300",
-      "pubDate": "Mon, 10 Aug 2026 02:21:18 GMT",
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030351",
+      "pubDate": "Tue, 11 Aug 2026 03:01:07 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001300/1001300_5_tn.png"
+        "url": ""
       },
-      "content": "From 10/08/2026 to 11/08/2026, a Tropical Depression (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 10/08/2026 to 11/08/2026, a Tropical Depression (maximum wind speed of 65 km/h) FIFTEEN-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "guid": "TC1001300",
-      "isoDate": "2026-08-10T02:21:18.000Z"
+      "content": "On 10/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
+      "contentSnippet": "On 10/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
+      "guid": "WF1030351",
+      "isoDate": "2026-08-11T03:01:07.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -198,6 +198,104 @@
       "isoDate": "2026-08-08T04:56:21.000Z"
     },
     {
+      "title": "Green flood alert in Morocco",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104083",
+      "pubDate": "Tue, 11 Aug 2026 05:51:58 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1104083.png"
+      },
+      "content": "On 08/08/2026, a flood started in Morocco, lasting until 10/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "contentSnippet": "On 08/08/2026, a flood started in Morocco, lasting until 10/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "guid": "FL1104083",
+      "isoDate": "2026-08-11T05:51:58.000Z"
+    },
+    {
+      "title": "Green flood alert in France",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104084",
+      "pubDate": "Tue, 11 Aug 2026 05:52:14 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1104084.png"
+      },
+      "content": "On 08/08/2026, a flood started in France, lasting until 10/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "contentSnippet": "On 08/08/2026, a flood started in France, lasting until 10/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "guid": "FL1104084",
+      "isoDate": "2026-08-11T05:52:14.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030308",
+      "pubDate": "Mon, 10 Aug 2026 19:01:40 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "guid": "WF1030308",
+      "isoDate": "2026-08-10T19:01:40.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030309",
+      "pubDate": "Mon, 10 Aug 2026 15:01:49 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "contentSnippet": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "guid": "WF1030309",
+      "isoDate": "2026-08-10T15:01:49.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030310",
+      "pubDate": "Mon, 10 Aug 2026 15:00:55 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "contentSnippet": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "guid": "WF1030310",
+      "isoDate": "2026-08-10T15:00:55.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030304",
+      "pubDate": "Mon, 10 Aug 2026 07:01:49 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "guid": "WF1030304",
+      "isoDate": "2026-08-10T07:01:49.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030305",
+      "pubDate": "Mon, 10 Aug 2026 07:02:09 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "contentSnippet": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "guid": "WF1030305",
+      "isoDate": "2026-08-10T07:02:09.000Z"
+    },
+    {
       "title": "Green forest fire notification in Australia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030273",
       "pubDate": "Mon, 10 Aug 2026 07:01:22 GMT",
@@ -324,90 +422,6 @@
       "isoDate": "2026-08-08T19:00:25.000Z"
     },
     {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030308",
-      "pubDate": "Mon, 10 Aug 2026 19:01:40 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "guid": "WF1030308",
-      "isoDate": "2026-08-10T19:01:40.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030309",
-      "pubDate": "Mon, 10 Aug 2026 15:01:49 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "contentSnippet": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "guid": "WF1030309",
-      "isoDate": "2026-08-10T15:01:49.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030310",
-      "pubDate": "Mon, 10 Aug 2026 15:00:55 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "contentSnippet": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "guid": "WF1030310",
-      "isoDate": "2026-08-10T15:00:55.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030304",
-      "pubDate": "Mon, 10 Aug 2026 07:01:49 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "guid": "WF1030304",
-      "isoDate": "2026-08-10T07:01:49.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030305",
-      "pubDate": "Mon, 10 Aug 2026 07:02:09 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "contentSnippet": "On 08/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "guid": "WF1030305",
-      "isoDate": "2026-08-10T07:02:09.000Z"
-    },
-    {
-      "title": "Green notification for tropical cyclone CHAN-HOM-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001299",
-      "pubDate": "Fri, 07 Aug 2026 02:37:14 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001299/1001299_17_tn.png"
-      },
-      "content": "From 07/08/2026 to 11/08/2026, a Tropical Storm (maximum wind speed of 93 km/h) CHAN-HOM-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 07/08/2026 to 11/08/2026, a Tropical Storm (maximum wind speed of 93 km/h) CHAN-HOM-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "guid": "TC1001299",
-      "isoDate": "2026-08-07T02:37:14.000Z"
-    },
-    {
       "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030208",
       "pubDate": "Sat, 08 Aug 2026 15:00:54 GMT",
@@ -476,6 +490,20 @@
       "contentSnippet": "On 07/08/2026, a forest fire started in Angola,  until 09/08/2026.",
       "guid": "WF1030284",
       "isoDate": "2026-08-11T03:03:46.000Z"
+    },
+    {
+      "title": "Green notification for tropical cyclone CHAN-HOM-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001299",
+      "pubDate": "Fri, 07 Aug 2026 02:37:14 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001299/1001299_17_tn.png"
+      },
+      "content": "From 07/08/2026 to 11/08/2026, a Tropical Storm (maximum wind speed of 93 km/h) CHAN-HOM-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 07/08/2026 to 11/08/2026, a Tropical Storm (maximum wind speed of 93 km/h) CHAN-HOM-26 was active in NWPacific. The cyclone affects these countries: Japan (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "guid": "TC1001299",
+      "isoDate": "2026-08-07T02:37:14.000Z"
     },
     {
       "title": "Green flood alert in Spain",
