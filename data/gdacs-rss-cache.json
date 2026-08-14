@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-08-14T05:47:07.021Z",
+  "saved_at": "2026-08-14T06:45:55.489Z",
   "items": [
     {
       "title": "Green earthquake (Magnitude 5.6M, Depth:10km) in Kermadec Islands Region 13/08/2026 16:11 UTC, [unknown].",
@@ -44,20 +44,6 @@
       "isoDate": "2026-08-13T00:42:23.000Z"
     },
     {
-      "title": "Green notification for tropical cyclone ONE-C-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 8049 .",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001303",
-      "pubDate": "Thu, 13 Aug 2026 14:50:11 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001303/1001303_7_tn.png"
-      },
-      "content": "From 12/08/2026 to 14/08/2026, a Tropical Storm (maximum wind speed of 130 km/h) ONE-C-26 was active in CentralPacific. The cyclone affects these countries: United States (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 8049 .",
-      "contentSnippet": "From 12/08/2026 to 14/08/2026, a Tropical Storm (maximum wind speed of 130 km/h) ONE-C-26 was active in CentralPacific. The cyclone affects these countries: United States (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 8049 .",
-      "guid": "TC1001303",
-      "isoDate": "2026-08-13T14:50:11.000Z"
-    },
-    {
       "title": "Green notification for tropical cyclone CRISTOBAL-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
       "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001302",
       "pubDate": "Wed, 12 Aug 2026 15:06:05 GMT",
@@ -70,6 +56,20 @@
       "contentSnippet": "From 12/08/2026 to 13/08/2026, a Tropical Depression (maximum wind speed of 74 km/h) CRISTOBAL-26 was active in Atlantic. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
       "guid": "TC1001302",
       "isoDate": "2026-08-12T15:06:05.000Z"
+    },
+    {
+      "title": "Green notification for tropical cyclone ONE-C-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 8049 .",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001303",
+      "pubDate": "Thu, 13 Aug 2026 14:50:11 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001303/1001303_7_tn.png"
+      },
+      "content": "From 12/08/2026 to 14/08/2026, a Tropical Storm (maximum wind speed of 130 km/h) ONE-C-26 was active in CentralPacific. The cyclone affects these countries: United States (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 8049 .",
+      "contentSnippet": "From 12/08/2026 to 14/08/2026, a Tropical Storm (maximum wind speed of 130 km/h) ONE-C-26 was active in CentralPacific. The cyclone affects these countries: United States (vulnerability Low). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 8049 .",
+      "guid": "TC1001303",
+      "isoDate": "2026-08-13T14:50:11.000Z"
     },
     {
       "title": "Green notification for tropical cyclone NANGKA-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
@@ -100,18 +100,18 @@
       "isoDate": "2026-08-12T12:11:12.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030419",
-      "pubDate": "Wed, 12 Aug 2026 15:00:45 GMT",
+      "title": "Green flood alert in Romania",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104088",
+      "pubDate": "Fri, 14 Aug 2026 05:54:37 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": ""
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1104088.png"
       },
-      "content": "On 12/08/2026, a forest fire started in Russian Federation,  until 12/08/2026.",
-      "contentSnippet": "On 12/08/2026, a forest fire started in Russian Federation,  until 12/08/2026.",
-      "guid": "WF1030419",
-      "isoDate": "2026-08-12T15:00:45.000Z"
+      "content": "On 12/08/2026, a flood started in Romania, lasting until 14/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "contentSnippet": "On 12/08/2026, a flood started in Romania, lasting until 14/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "guid": "FL1104088",
+      "isoDate": "2026-08-14T05:54:37.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -198,32 +198,32 @@
       "isoDate": "2026-08-13T11:01:22.000Z"
     },
     {
-      "title": "Green forest fire notification in Brazil",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030457",
-      "pubDate": "Thu, 13 Aug 2026 11:01:39 GMT",
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030419",
+      "pubDate": "Wed, 12 Aug 2026 15:00:45 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
-      "contentSnippet": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
-      "guid": "WF1030457",
-      "isoDate": "2026-08-13T11:01:39.000Z"
+      "content": "On 12/08/2026, a forest fire started in Russian Federation,  until 12/08/2026.",
+      "contentSnippet": "On 12/08/2026, a forest fire started in Russian Federation,  until 12/08/2026.",
+      "guid": "WF1030419",
+      "isoDate": "2026-08-12T15:00:45.000Z"
     },
     {
-      "title": "Green forest fire notification in Brazil",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030448",
-      "pubDate": "Thu, 13 Aug 2026 07:01:28 GMT",
+      "title": "Green flood alert in Chad",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104086",
+      "pubDate": "Fri, 14 Aug 2026 05:53:54 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": ""
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1104086.png"
       },
-      "content": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
-      "contentSnippet": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
-      "guid": "WF1030448",
-      "isoDate": "2026-08-13T07:01:28.000Z"
+      "content": "On 11/08/2026, a flood started in Chad, lasting until 13/08/2026 (last update). The flood caused 3 deaths and 0 displaced .",
+      "contentSnippet": "On 11/08/2026, a flood started in Chad, lasting until 13/08/2026 (last update). The flood caused 3 deaths and 0 displaced .",
+      "guid": "FL1104086",
+      "isoDate": "2026-08-14T05:53:54.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -266,6 +266,34 @@
       "contentSnippet": "On 11/08/2026, a forest fire started in The Democratic Republic of Congo,  until 13/08/2026.",
       "guid": "WF1030461",
       "isoDate": "2026-08-13T15:01:43.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030457",
+      "pubDate": "Thu, 13 Aug 2026 11:01:39 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
+      "contentSnippet": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
+      "guid": "WF1030457",
+      "isoDate": "2026-08-13T11:01:39.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030448",
+      "pubDate": "Thu, 13 Aug 2026 07:01:28 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
+      "contentSnippet": "On 11/08/2026, a forest fire started in Brazil,  until 13/08/2026.",
+      "guid": "WF1030448",
+      "isoDate": "2026-08-13T07:01:28.000Z"
     },
     {
       "title": "Green forest fire notification in United States",
@@ -997,20 +1025,6 @@
     },
     {
       "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030308",
-      "pubDate": "Mon, 10 Aug 2026 19:01:40 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 08/08/2026, a forest fire started in Australia,  until 13/08/2026.",
-      "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 13/08/2026.",
-      "guid": "WF1030308",
-      "isoDate": "2026-08-10T19:01:40.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030304",
       "pubDate": "Mon, 10 Aug 2026 07:01:49 GMT",
       "enclosure": {
@@ -1022,6 +1036,20 @@
       "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 13/08/2026.",
       "guid": "WF1030304",
       "isoDate": "2026-08-10T07:01:49.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030308",
+      "pubDate": "Mon, 10 Aug 2026 19:01:40 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 08/08/2026, a forest fire started in Australia,  until 13/08/2026.",
+      "contentSnippet": "On 08/08/2026, a forest fire started in Australia,  until 13/08/2026.",
+      "guid": "WF1030308",
+      "isoDate": "2026-08-10T19:01:40.000Z"
     },
     {
       "title": "Green forest fire notification in Zambia, The Democratic Republic of Congo",
@@ -1248,20 +1276,6 @@
       "isoDate": "2026-08-13T15:08:47.000Z"
     },
     {
-      "title": "Green forest fire notification in Zambia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030354",
-      "pubDate": "Tue, 11 Aug 2026 11:05:17 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 07/08/2026, a forest fire started in Zambia,  until 13/08/2026.",
-      "contentSnippet": "On 07/08/2026, a forest fire started in Zambia,  until 13/08/2026.",
-      "guid": "WF1030354",
-      "isoDate": "2026-08-11T11:05:17.000Z"
-    },
-    {
       "title": "Green forest fire notification in Spain",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030237",
       "pubDate": "Sat, 08 Aug 2026 07:00:44 GMT",
@@ -1330,6 +1344,20 @@
       "contentSnippet": "On 07/08/2026, a forest fire started in Angola,  until 13/08/2026.",
       "guid": "WF1030433",
       "isoDate": "2026-08-13T11:09:35.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Zambia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030354",
+      "pubDate": "Tue, 11 Aug 2026 11:05:17 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 07/08/2026, a forest fire started in Zambia,  until 13/08/2026.",
+      "contentSnippet": "On 07/08/2026, a forest fire started in Zambia,  until 13/08/2026.",
+      "guid": "WF1030354",
+      "isoDate": "2026-08-11T11:05:17.000Z"
     },
     {
       "title": "Green forest fire notification in Zambia",
@@ -1472,102 +1500,18 @@
       "isoDate": "2026-08-14T03:09:34.000Z"
     },
     {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030275",
-      "pubDate": "Sun, 09 Aug 2026 19:03:05 GMT",
+      "title": "Green flood alert in Spain",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104080",
+      "pubDate": "Fri, 07 Aug 2026 11:16:22 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": ""
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/fl/dfo2026_1104080.png"
       },
-      "content": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "guid": "WF1030275",
-      "isoDate": "2026-08-09T19:03:05.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030249",
-      "pubDate": "Sun, 09 Aug 2026 03:01:33 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Angola,  until 10/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 10/08/2026.",
-      "guid": "WF1030249",
-      "isoDate": "2026-08-09T03:01:33.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030200",
-      "pubDate": "Fri, 07 Aug 2026 19:00:43 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "guid": "WF1030200",
-      "isoDate": "2026-08-07T19:00:43.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030285",
-      "pubDate": "Sun, 09 Aug 2026 23:03:42 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "guid": "WF1030285",
-      "isoDate": "2026-08-09T23:03:42.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030322",
-      "pubDate": "Tue, 11 Aug 2026 15:06:53 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "guid": "WF1030322",
-      "isoDate": "2026-08-11T15:06:53.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030306",
-      "pubDate": "Mon, 10 Aug 2026 07:03:13 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Australia,  until 11/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Australia,  until 11/08/2026.",
-      "guid": "WF1030306",
-      "isoDate": "2026-08-10T07:03:13.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Brazil",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030269",
-      "pubDate": "Sat, 08 Aug 2026 23:01:56 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Brazil,  until 12/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Brazil,  until 12/08/2026.",
-      "guid": "WF1030269",
-      "isoDate": "2026-08-08T23:01:56.000Z"
+      "content": "On 06/08/2026, a flood started in Spain, lasting until 08/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "contentSnippet": "On 06/08/2026, a flood started in Spain, lasting until 08/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
+      "guid": "FL1104080",
+      "isoDate": "2026-08-07T11:16:22.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -1582,6 +1526,20 @@
       "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
       "guid": "WF1030388",
       "isoDate": "2026-08-11T23:08:12.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030269",
+      "pubDate": "Sat, 08 Aug 2026 23:01:56 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Brazil,  until 12/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Brazil,  until 12/08/2026.",
+      "guid": "WF1030269",
+      "isoDate": "2026-08-08T23:01:56.000Z"
     },
     {
       "title": "Green forest fire notification in Indonesia",
@@ -1680,6 +1638,90 @@
       "contentSnippet": "On 06/08/2026, a forest fire started in Mozambique,  until 12/08/2026.",
       "guid": "WF1030435",
       "isoDate": "2026-08-14T03:13:30.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030275",
+      "pubDate": "Sun, 09 Aug 2026 19:03:05 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "guid": "WF1030275",
+      "isoDate": "2026-08-09T19:03:05.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030249",
+      "pubDate": "Sun, 09 Aug 2026 03:01:33 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Angola,  until 10/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 10/08/2026.",
+      "guid": "WF1030249",
+      "isoDate": "2026-08-09T03:01:33.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030200",
+      "pubDate": "Fri, 07 Aug 2026 19:00:43 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "guid": "WF1030200",
+      "isoDate": "2026-08-07T19:00:43.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030285",
+      "pubDate": "Sun, 09 Aug 2026 23:03:42 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "guid": "WF1030285",
+      "isoDate": "2026-08-09T23:03:42.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030322",
+      "pubDate": "Tue, 11 Aug 2026 15:06:53 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "guid": "WF1030322",
+      "isoDate": "2026-08-11T15:06:53.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030306",
+      "pubDate": "Mon, 10 Aug 2026 07:03:13 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in Australia,  until 11/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Australia,  until 11/08/2026.",
+      "guid": "WF1030306",
+      "isoDate": "2026-08-10T07:03:13.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -1850,18 +1892,18 @@
       "isoDate": "2026-08-08T07:00:49.000Z"
     },
     {
-      "title": "Green forest fire notification in United States",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030201",
-      "pubDate": "Fri, 07 Aug 2026 15:00:47 GMT",
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030250",
+      "pubDate": "Sun, 09 Aug 2026 03:02:21 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 06/08/2026, a forest fire started in United States,  until 13/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in United States,  until 13/08/2026.",
-      "guid": "WF1030201",
-      "isoDate": "2026-08-07T15:00:47.000Z"
+      "content": "On 06/08/2026, a forest fire started in Angola,  until 13/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 13/08/2026.",
+      "guid": "WF1030250",
+      "isoDate": "2026-08-09T03:02:21.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -1879,20 +1921,6 @@
     },
     {
       "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030250",
-      "pubDate": "Sun, 09 Aug 2026 03:02:21 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 06/08/2026, a forest fire started in Angola,  until 13/08/2026.",
-      "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 13/08/2026.",
-      "guid": "WF1030250",
-      "isoDate": "2026-08-09T03:02:21.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030355",
       "pubDate": "Tue, 11 Aug 2026 07:06:59 GMT",
       "enclosure": {
@@ -1904,6 +1932,20 @@
       "contentSnippet": "On 06/08/2026, a forest fire started in Angola,  until 12/08/2026.",
       "guid": "WF1030355",
       "isoDate": "2026-08-11T07:06:59.000Z"
+    },
+    {
+      "title": "Green forest fire notification in United States",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030201",
+      "pubDate": "Fri, 07 Aug 2026 15:00:47 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 06/08/2026, a forest fire started in United States,  until 13/08/2026.",
+      "contentSnippet": "On 06/08/2026, a forest fire started in United States,  until 13/08/2026.",
+      "guid": "WF1030201",
+      "isoDate": "2026-08-07T15:00:47.000Z"
     },
     {
       "title": "Green forest fire notification in Zambia, The Democratic Republic of Congo",
@@ -1977,8 +2019,8 @@
     },
     {
       "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030137",
-      "pubDate": "Thu, 06 Aug 2026 11:00:58 GMT",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030202",
+      "pubDate": "Fri, 07 Aug 2026 19:01:49 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -1986,8 +2028,22 @@
       },
       "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
       "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "guid": "WF1030137",
-      "isoDate": "2026-08-06T11:00:58.000Z"
+      "guid": "WF1030202",
+      "isoDate": "2026-08-07T19:01:49.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030203",
+      "pubDate": "Fri, 07 Aug 2026 19:01:08 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "guid": "WF1030203",
+      "isoDate": "2026-08-07T19:01:08.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -2018,20 +2074,6 @@
       "isoDate": "2026-08-07T07:01:41.000Z"
     },
     {
-      "title": "Green forest fire notification in Serbia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030252",
-      "pubDate": "Sat, 08 Aug 2026 19:02:45 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 05/08/2026, a forest fire started in Serbia,  until 13/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Serbia,  until 13/08/2026.",
-      "guid": "WF1030252",
-      "isoDate": "2026-08-08T19:02:45.000Z"
-    },
-    {
       "title": "Green forest fire notification in Tanzania",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030288",
       "pubDate": "Mon, 10 Aug 2026 11:07:55 GMT",
@@ -2046,32 +2088,18 @@
       "isoDate": "2026-08-10T11:07:55.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030202",
-      "pubDate": "Fri, 07 Aug 2026 19:01:49 GMT",
+      "title": "Green forest fire notification in Serbia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030252",
+      "pubDate": "Sat, 08 Aug 2026 19:02:45 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "guid": "WF1030202",
-      "isoDate": "2026-08-07T19:01:49.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030203",
-      "pubDate": "Fri, 07 Aug 2026 19:01:08 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "guid": "WF1030203",
-      "isoDate": "2026-08-07T19:01:08.000Z"
+      "content": "On 05/08/2026, a forest fire started in Serbia,  until 13/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Serbia,  until 13/08/2026.",
+      "guid": "WF1030252",
+      "isoDate": "2026-08-08T19:02:45.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -2086,6 +2114,20 @@
       "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
       "guid": "WF1030234",
       "isoDate": "2026-08-08T03:01:00.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030137",
+      "pubDate": "Thu, 06 Aug 2026 11:00:58 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "guid": "WF1030137",
+      "isoDate": "2026-08-06T11:00:58.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -2257,6 +2299,62 @@
     },
     {
       "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030325",
+      "pubDate": "Tue, 11 Aug 2026 07:11:22 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "guid": "WF1030325",
+      "isoDate": "2026-08-11T07:11:22.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030169",
+      "pubDate": "Thu, 06 Aug 2026 23:01:10 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
+      "guid": "WF1030169",
+      "isoDate": "2026-08-06T23:01:10.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030170",
+      "pubDate": "Fri, 07 Aug 2026 07:01:04 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 05/08/2026, a forest fire started in Australia,  until 11/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Australia,  until 11/08/2026.",
+      "guid": "WF1030170",
+      "isoDate": "2026-08-07T07:01:04.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030302",
+      "pubDate": "Sun, 09 Aug 2026 23:08:17 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 05/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "guid": "WF1030302",
+      "isoDate": "2026-08-09T23:08:17.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030330",
       "pubDate": "Tue, 11 Aug 2026 03:10:20 GMT",
       "enclosure": {
@@ -2326,34 +2424,6 @@
       "isoDate": "2026-08-12T15:12:23.000Z"
     },
     {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030389",
-      "pubDate": "Fri, 14 Aug 2026 03:17:19 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "guid": "WF1030389",
-      "isoDate": "2026-08-14T03:17:19.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030356",
-      "pubDate": "Tue, 11 Aug 2026 07:10:34 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "guid": "WF1030356",
-      "isoDate": "2026-08-11T07:10:34.000Z"
-    },
-    {
       "title": "Green forest fire notification in Russian Federation",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030171",
       "pubDate": "Thu, 06 Aug 2026 23:01:37 GMT",
@@ -2397,8 +2467,8 @@
     },
     {
       "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030325",
-      "pubDate": "Tue, 11 Aug 2026 07:11:22 GMT",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030389",
+      "pubDate": "Fri, 14 Aug 2026 03:17:19 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -2406,50 +2476,22 @@
       },
       "content": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
       "contentSnippet": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "guid": "WF1030325",
-      "isoDate": "2026-08-11T07:11:22.000Z"
+      "guid": "WF1030389",
+      "isoDate": "2026-08-14T03:17:19.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030169",
-      "pubDate": "Thu, 06 Aug 2026 23:01:10 GMT",
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030356",
+      "pubDate": "Tue, 11 Aug 2026 07:10:34 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 05/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
-      "guid": "WF1030169",
-      "isoDate": "2026-08-06T23:01:10.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030170",
-      "pubDate": "Fri, 07 Aug 2026 07:01:04 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 05/08/2026, a forest fire started in Australia,  until 11/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Australia,  until 11/08/2026.",
-      "guid": "WF1030170",
-      "isoDate": "2026-08-07T07:01:04.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030302",
-      "pubDate": "Sun, 09 Aug 2026 23:08:17 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 05/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "contentSnippet": "On 05/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "guid": "WF1030302",
-      "isoDate": "2026-08-09T23:08:17.000Z"
+      "content": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "contentSnippet": "On 05/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "guid": "WF1030356",
+      "isoDate": "2026-08-11T07:10:34.000Z"
     },
     {
       "title": "Green notification for tropical cyclone PEILOU-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0.874 million in Tropical Storm).",
@@ -2520,104 +2562,6 @@
       "contentSnippet": "On 04/08/2026, a forest fire started in Zambia,  until 12/08/2026.",
       "guid": "WF1030424",
       "isoDate": "2026-08-12T15:16:22.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030290",
-      "pubDate": "Sun, 09 Aug 2026 23:09:35 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in Angola,  until 10/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in Angola,  until 10/08/2026.",
-      "guid": "WF1030290",
-      "isoDate": "2026-08-09T23:09:35.000Z"
-    },
-    {
-      "title": "Green forest fire notification in The Democratic Republic of Congo",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030213",
-      "pubDate": "Fri, 07 Aug 2026 19:04:27 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in The Democratic Republic of Congo,  until 10/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in The Democratic Republic of Congo,  until 10/08/2026.",
-      "guid": "WF1030213",
-      "isoDate": "2026-08-07T19:04:27.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030197",
-      "pubDate": "Fri, 07 Aug 2026 19:04:14 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030197",
-      "isoDate": "2026-08-07T19:04:14.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Brazil",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030205",
-      "pubDate": "Fri, 07 Aug 2026 19:04:06 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in Brazil,  until 08/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in Brazil,  until 08/08/2026.",
-      "guid": "WF1030205",
-      "isoDate": "2026-08-07T19:04:06.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Australia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030140",
-      "pubDate": "Thu, 06 Aug 2026 19:03:22 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in Australia,  until 10/08/2026.",
-      "guid": "WF1030140",
-      "isoDate": "2026-08-06T19:03:22.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030144",
-      "pubDate": "Thu, 06 Aug 2026 19:03:07 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
-      "guid": "WF1030144",
-      "isoDate": "2026-08-06T19:03:07.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030333",
-      "pubDate": "Tue, 11 Aug 2026 03:11:44 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 04/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "contentSnippet": "On 04/08/2026, a forest fire started in Angola,  until 11/08/2026.",
-      "guid": "WF1030333",
-      "isoDate": "2026-08-11T03:11:44.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -2786,6 +2730,104 @@
       "contentSnippet": "On 04/08/2026, a forest fire started in Mozambique,  until 11/08/2026.",
       "guid": "WF1030370",
       "isoDate": "2026-08-11T15:15:44.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030290",
+      "pubDate": "Sun, 09 Aug 2026 23:09:35 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in Angola,  until 10/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in Angola,  until 10/08/2026.",
+      "guid": "WF1030290",
+      "isoDate": "2026-08-09T23:09:35.000Z"
+    },
+    {
+      "title": "Green forest fire notification in The Democratic Republic of Congo",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030213",
+      "pubDate": "Fri, 07 Aug 2026 19:04:27 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in The Democratic Republic of Congo,  until 10/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in The Democratic Republic of Congo,  until 10/08/2026.",
+      "guid": "WF1030213",
+      "isoDate": "2026-08-07T19:04:27.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030197",
+      "pubDate": "Fri, 07 Aug 2026 19:04:14 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "guid": "WF1030197",
+      "isoDate": "2026-08-07T19:04:14.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030205",
+      "pubDate": "Fri, 07 Aug 2026 19:04:06 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in Brazil,  until 08/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in Brazil,  until 08/08/2026.",
+      "guid": "WF1030205",
+      "isoDate": "2026-08-07T19:04:06.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Australia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030140",
+      "pubDate": "Thu, 06 Aug 2026 19:03:22 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in Australia,  until 10/08/2026.",
+      "guid": "WF1030140",
+      "isoDate": "2026-08-06T19:03:22.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030144",
+      "pubDate": "Thu, 06 Aug 2026 19:03:07 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in Russian Federation,  until 11/08/2026.",
+      "guid": "WF1030144",
+      "isoDate": "2026-08-06T19:03:07.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030333",
+      "pubDate": "Tue, 11 Aug 2026 03:11:44 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 04/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "contentSnippet": "On 04/08/2026, a forest fire started in Angola,  until 11/08/2026.",
+      "guid": "WF1030333",
+      "isoDate": "2026-08-11T03:11:44.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -2998,20 +3040,6 @@
       "isoDate": "2026-08-09T19:11:14.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030242",
-      "pubDate": "Sat, 08 Aug 2026 11:09:16 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 03/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "contentSnippet": "On 03/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
-      "guid": "WF1030242",
-      "isoDate": "2026-08-08T11:09:16.000Z"
-    },
-    {
       "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030219",
       "pubDate": "Sat, 08 Aug 2026 15:07:29 GMT",
@@ -3038,6 +3066,20 @@
       "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 10/08/2026.",
       "guid": "WF1030238",
       "isoDate": "2026-08-08T15:08:00.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030242",
+      "pubDate": "Sat, 08 Aug 2026 11:09:16 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 03/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "contentSnippet": "On 03/08/2026, a forest fire started in Russian Federation,  until 10/08/2026.",
+      "guid": "WF1030242",
+      "isoDate": "2026-08-08T11:09:16.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -3194,76 +3236,6 @@
       "isoDate": "2026-08-12T15:26:01.000Z"
     },
     {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030392",
-      "pubDate": "Wed, 12 Aug 2026 15:22:01 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
-      "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
-      "guid": "WF1030392",
-      "isoDate": "2026-08-12T15:22:01.000Z"
-    },
-    {
-      "title": "Green forest fire notification in The Democratic Republic of Congo",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030396",
-      "pubDate": "Tue, 11 Aug 2026 19:24:11 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 03/08/2026, a forest fire started in The Democratic Republic of Congo,  until 11/08/2026.",
-      "contentSnippet": "On 03/08/2026, a forest fire started in The Democratic Republic of Congo,  until 11/08/2026.",
-      "guid": "WF1030396",
-      "isoDate": "2026-08-11T19:24:11.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Brazil",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030349",
-      "pubDate": "Mon, 10 Aug 2026 23:15:33 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 03/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
-      "contentSnippet": "On 03/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
-      "guid": "WF1030349",
-      "isoDate": "2026-08-10T23:15:33.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030141",
-      "pubDate": "Thu, 06 Aug 2026 15:02:33 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
-      "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
-      "guid": "WF1030141",
-      "isoDate": "2026-08-06T15:02:33.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030083",
-      "pubDate": "Wed, 05 Aug 2026 15:00:45 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 03/08/2026, a forest fire started in Angola,  until 10/08/2026.",
-      "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 10/08/2026.",
-      "guid": "WF1030083",
-      "isoDate": "2026-08-05T15:00:45.000Z"
-    },
-    {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030341",
       "pubDate": "Tue, 11 Aug 2026 03:17:18 GMT",
@@ -3332,6 +3304,76 @@
       "contentSnippet": "On 03/08/2026, a forest fire started in The Democratic Republic of Congo,  until 10/08/2026.",
       "guid": "WF1030296",
       "isoDate": "2026-08-10T15:14:59.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030392",
+      "pubDate": "Wed, 12 Aug 2026 15:22:01 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
+      "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
+      "guid": "WF1030392",
+      "isoDate": "2026-08-12T15:22:01.000Z"
+    },
+    {
+      "title": "Green forest fire notification in The Democratic Republic of Congo",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030396",
+      "pubDate": "Tue, 11 Aug 2026 19:24:11 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 03/08/2026, a forest fire started in The Democratic Republic of Congo,  until 11/08/2026.",
+      "contentSnippet": "On 03/08/2026, a forest fire started in The Democratic Republic of Congo,  until 11/08/2026.",
+      "guid": "WF1030396",
+      "isoDate": "2026-08-11T19:24:11.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Brazil",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030349",
+      "pubDate": "Mon, 10 Aug 2026 23:15:33 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 03/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
+      "contentSnippet": "On 03/08/2026, a forest fire started in Brazil,  until 10/08/2026.",
+      "guid": "WF1030349",
+      "isoDate": "2026-08-10T23:15:33.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030141",
+      "pubDate": "Thu, 06 Aug 2026 15:02:33 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
+      "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 12/08/2026.",
+      "guid": "WF1030141",
+      "isoDate": "2026-08-06T15:02:33.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030083",
+      "pubDate": "Wed, 05 Aug 2026 15:00:45 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 03/08/2026, a forest fire started in Angola,  until 10/08/2026.",
+      "contentSnippet": "On 03/08/2026, a forest fire started in Angola,  until 10/08/2026.",
+      "guid": "WF1030083",
+      "isoDate": "2026-08-05T15:00:45.000Z"
     },
     {
       "title": "Green forest fire notification in Indonesia",
@@ -3502,20 +3544,6 @@
       "isoDate": "2026-08-08T07:09:57.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030206",
-      "pubDate": "Fri, 07 Aug 2026 19:08:41 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 02/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "contentSnippet": "On 02/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030206",
-      "isoDate": "2026-08-07T19:08:41.000Z"
-    },
-    {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030258",
       "pubDate": "Sun, 09 Aug 2026 15:11:38 GMT",
@@ -3559,48 +3587,6 @@
     },
     {
       "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030155",
-      "pubDate": "Thu, 06 Aug 2026 19:05:24 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 02/08/2026, a forest fire started in Angola,  until 09/08/2026.",
-      "contentSnippet": "On 02/08/2026, a forest fire started in Angola,  until 09/08/2026.",
-      "guid": "WF1030155",
-      "isoDate": "2026-08-06T19:05:24.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030179",
-      "pubDate": "Thu, 06 Aug 2026 23:07:01 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 02/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "contentSnippet": "On 02/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "guid": "WF1030179",
-      "isoDate": "2026-08-06T23:07:01.000Z"
-    },
-    {
-      "title": "Green forest fire notification in United States",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030029",
-      "pubDate": "Sun, 02 Aug 2026 11:00:16 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 02/08/2026, a forest fire started in United States,  until 09/08/2026.",
-      "contentSnippet": "On 02/08/2026, a forest fire started in United States,  until 09/08/2026.",
-      "guid": "WF1030029",
-      "isoDate": "2026-08-02T11:00:16.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030084",
       "pubDate": "Wed, 05 Aug 2026 07:01:26 GMT",
       "enclosure": {
@@ -3626,6 +3612,62 @@
       "contentSnippet": "On 02/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
       "guid": "WF1030094",
       "isoDate": "2026-08-05T03:01:01.000Z"
+    },
+    {
+      "title": "Green forest fire notification in United States",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030029",
+      "pubDate": "Sun, 02 Aug 2026 11:00:16 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 02/08/2026, a forest fire started in United States,  until 09/08/2026.",
+      "contentSnippet": "On 02/08/2026, a forest fire started in United States,  until 09/08/2026.",
+      "guid": "WF1030029",
+      "isoDate": "2026-08-02T11:00:16.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030155",
+      "pubDate": "Thu, 06 Aug 2026 19:05:24 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 02/08/2026, a forest fire started in Angola,  until 09/08/2026.",
+      "contentSnippet": "On 02/08/2026, a forest fire started in Angola,  until 09/08/2026.",
+      "guid": "WF1030155",
+      "isoDate": "2026-08-06T19:05:24.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030206",
+      "pubDate": "Fri, 07 Aug 2026 19:08:41 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 02/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "contentSnippet": "On 02/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "guid": "WF1030206",
+      "isoDate": "2026-08-07T19:08:41.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030179",
+      "pubDate": "Thu, 06 Aug 2026 23:07:01 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 02/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "contentSnippet": "On 02/08/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "guid": "WF1030179",
+      "isoDate": "2026-08-06T23:07:01.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -3654,20 +3696,6 @@
       "contentSnippet": "On 01/08/2026, a forest fire started in The Democratic Republic of Congo,  until 13/08/2026.",
       "guid": "WF1030480",
       "isoDate": "2026-08-13T23:39:37.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Namibia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030052",
-      "pubDate": "Tue, 04 Aug 2026 15:02:11 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 01/08/2026, a forest fire started in Namibia,  until 07/08/2026.",
-      "contentSnippet": "On 01/08/2026, a forest fire started in Namibia,  until 07/08/2026.",
-      "guid": "WF1030052",
-      "isoDate": "2026-08-04T15:02:11.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -3712,18 +3740,18 @@
       "isoDate": "2026-08-06T23:11:02.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030142",
-      "pubDate": "Thu, 06 Aug 2026 11:05:33 GMT",
+      "title": "Green forest fire notification in Namibia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030052",
+      "pubDate": "Tue, 04 Aug 2026 15:02:11 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 01/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "contentSnippet": "On 01/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030142",
-      "isoDate": "2026-08-06T11:05:33.000Z"
+      "content": "On 01/08/2026, a forest fire started in Namibia,  until 07/08/2026.",
+      "contentSnippet": "On 01/08/2026, a forest fire started in Namibia,  until 07/08/2026.",
+      "guid": "WF1030052",
+      "isoDate": "2026-08-04T15:02:11.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
@@ -3780,6 +3808,20 @@
       "contentSnippet": "On 01/08/2026, a forest fire started in United States,  until 09/08/2026.",
       "guid": "WF1030276",
       "isoDate": "2026-08-09T11:16:58.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030142",
+      "pubDate": "Thu, 06 Aug 2026 11:05:33 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 01/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "contentSnippet": "On 01/08/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "guid": "WF1030142",
+      "isoDate": "2026-08-06T11:05:33.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
@@ -4104,20 +4146,6 @@
       "isoDate": "2026-08-13T03:50:33.000Z"
     },
     {
-      "title": "Green forest fire notification in Indonesia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030303",
-      "pubDate": "Sun, 09 Aug 2026 23:25:19 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 31/07/2026, a forest fire started in Indonesia,  until 09/08/2026.",
-      "contentSnippet": "On 31/07/2026, a forest fire started in Indonesia,  until 09/08/2026.",
-      "guid": "WF1030303",
-      "isoDate": "2026-08-09T23:25:19.000Z"
-    },
-    {
       "title": "Green forest fire notification in Zambia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030226",
       "pubDate": "Sat, 08 Aug 2026 15:15:52 GMT",
@@ -4174,20 +4202,6 @@
       "isoDate": "2026-08-08T03:14:21.000Z"
     },
     {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030053",
-      "pubDate": "Tue, 04 Aug 2026 03:02:24 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 31/07/2026, a forest fire started in Angola,  until 08/08/2026.",
-      "contentSnippet": "On 31/07/2026, a forest fire started in Angola,  until 08/08/2026.",
-      "guid": "WF1030053",
-      "isoDate": "2026-08-04T03:02:24.000Z"
-    },
-    {
       "title": "Green forest fire notification in Brazil",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030074",
       "pubDate": "Tue, 04 Aug 2026 19:04:07 GMT",
@@ -4200,6 +4214,34 @@
       "contentSnippet": "On 31/07/2026, a forest fire started in Brazil,  until 08/08/2026.",
       "guid": "WF1030074",
       "isoDate": "2026-08-04T19:04:07.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Indonesia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030303",
+      "pubDate": "Sun, 09 Aug 2026 23:25:19 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 31/07/2026, a forest fire started in Indonesia,  until 09/08/2026.",
+      "contentSnippet": "On 31/07/2026, a forest fire started in Indonesia,  until 09/08/2026.",
+      "guid": "WF1030303",
+      "isoDate": "2026-08-09T23:25:19.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030053",
+      "pubDate": "Tue, 04 Aug 2026 03:02:24 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 31/07/2026, a forest fire started in Angola,  until 08/08/2026.",
+      "contentSnippet": "On 31/07/2026, a forest fire started in Angola,  until 08/08/2026.",
+      "guid": "WF1030053",
+      "isoDate": "2026-08-04T03:02:24.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -4228,76 +4270,6 @@
       "contentSnippet": "On 30/07/2026, a flood started in Thailand, lasting until 05/08/2026 (last update). The flood caused 0 deaths and 0 displaced .",
       "guid": "FL1104067",
       "isoDate": "2026-08-03T12:22:07.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030192",
-      "pubDate": "Fri, 07 Aug 2026 03:13:54 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
-      "guid": "WF1030192",
-      "isoDate": "2026-08-07T03:13:54.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030403",
-      "pubDate": "Wed, 12 Aug 2026 15:40:32 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 30/07/2026, a forest fire started in Angola,  until 12/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 12/08/2026.",
-      "guid": "WF1030403",
-      "isoDate": "2026-08-12T15:40:32.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Zambia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030230",
-      "pubDate": "Sat, 08 Aug 2026 15:19:48 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 30/07/2026, a forest fire started in Zambia,  until 08/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in Zambia,  until 08/08/2026.",
-      "guid": "WF1030230",
-      "isoDate": "2026-08-08T15:19:48.000Z"
-    },
-    {
-      "title": "Green forest fire notification in The Democratic Republic of Congo",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030191",
-      "pubDate": "Sat, 08 Aug 2026 15:20:29 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 30/07/2026, a forest fire started in The Democratic Republic of Congo,  until 08/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in The Democratic Republic of Congo,  until 08/08/2026.",
-      "guid": "WF1030191",
-      "isoDate": "2026-08-08T15:20:29.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Zambia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030280",
-      "pubDate": "Sun, 09 Aug 2026 15:24:15 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 30/07/2026, a forest fire started in Zambia,  until 09/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in Zambia,  until 09/08/2026.",
-      "guid": "WF1030280",
-      "isoDate": "2026-08-09T15:24:15.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -4356,18 +4328,18 @@
       "isoDate": "2026-07-31T19:00:46.000Z"
     },
     {
-      "title": "Green forest fire notification in Canada",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030146",
-      "pubDate": "Thu, 06 Aug 2026 15:08:37 GMT",
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030190",
+      "pubDate": "Fri, 07 Aug 2026 07:12:50 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 30/07/2026, a forest fire started in Canada,  until 13/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in Canada,  until 13/08/2026.",
-      "guid": "WF1030146",
-      "isoDate": "2026-08-06T15:08:37.000Z"
+      "content": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
+      "guid": "WF1030190",
+      "isoDate": "2026-08-07T07:12:50.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -4385,20 +4357,6 @@
     },
     {
       "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030190",
-      "pubDate": "Fri, 07 Aug 2026 07:12:50 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
-      "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
-      "guid": "WF1030190",
-      "isoDate": "2026-08-07T07:12:50.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030266",
       "pubDate": "Sun, 09 Aug 2026 15:22:49 GMT",
       "enclosure": {
@@ -4410,6 +4368,20 @@
       "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
       "guid": "WF1030266",
       "isoDate": "2026-08-09T15:22:49.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Canada",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030146",
+      "pubDate": "Thu, 06 Aug 2026 15:08:37 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 30/07/2026, a forest fire started in Canada,  until 13/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in Canada,  until 13/08/2026.",
+      "guid": "WF1030146",
+      "isoDate": "2026-08-06T15:08:37.000Z"
     },
     {
       "title": "Green forest fire notification in Brazil",
@@ -4438,6 +4410,132 @@
       "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 10/08/2026.",
       "guid": "WF1030346",
       "isoDate": "2026-08-11T03:30:33.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Zambia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030230",
+      "pubDate": "Sat, 08 Aug 2026 15:19:48 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 30/07/2026, a forest fire started in Zambia,  until 08/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in Zambia,  until 08/08/2026.",
+      "guid": "WF1030230",
+      "isoDate": "2026-08-08T15:19:48.000Z"
+    },
+    {
+      "title": "Green forest fire notification in The Democratic Republic of Congo",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030191",
+      "pubDate": "Sat, 08 Aug 2026 15:20:29 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 30/07/2026, a forest fire started in The Democratic Republic of Congo,  until 08/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in The Democratic Republic of Congo,  until 08/08/2026.",
+      "guid": "WF1030191",
+      "isoDate": "2026-08-08T15:20:29.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Zambia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030280",
+      "pubDate": "Sun, 09 Aug 2026 15:24:15 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 30/07/2026, a forest fire started in Zambia,  until 09/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in Zambia,  until 09/08/2026.",
+      "guid": "WF1030280",
+      "isoDate": "2026-08-09T15:24:15.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030192",
+      "pubDate": "Fri, 07 Aug 2026 03:13:54 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 08/08/2026.",
+      "guid": "WF1030192",
+      "isoDate": "2026-08-07T03:13:54.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030403",
+      "pubDate": "Wed, 12 Aug 2026 15:40:32 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 30/07/2026, a forest fire started in Angola,  until 12/08/2026.",
+      "contentSnippet": "On 30/07/2026, a forest fire started in Angola,  until 12/08/2026.",
+      "guid": "WF1030403",
+      "isoDate": "2026-08-12T15:40:32.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Tanzania",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030445",
+      "pubDate": "Thu, 13 Aug 2026 19:50:27 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 29/07/2026, a forest fire started in Tanzania,  until 12/08/2026.",
+      "contentSnippet": "On 29/07/2026, a forest fire started in Tanzania,  until 12/08/2026.",
+      "guid": "WF1030445",
+      "isoDate": "2026-08-13T19:50:27.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030034",
+      "pubDate": "Sun, 02 Aug 2026 19:06:41 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "guid": "WF1030034",
+      "isoDate": "2026-08-02T19:06:41.000Z"
+    },
+    {
+      "title": "Green forest fire notification in United States",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029927",
+      "pubDate": "Thu, 30 Jul 2026 03:00:37 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 29/07/2026, a forest fire started in United States,  until 08/08/2026.",
+      "contentSnippet": "On 29/07/2026, a forest fire started in United States,  until 08/08/2026.",
+      "guid": "WF1029927",
+      "isoDate": "2026-07-30T03:00:37.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030194",
+      "pubDate": "Thu, 06 Aug 2026 23:21:52 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "guid": "WF1030194",
+      "isoDate": "2026-08-06T23:21:52.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
@@ -4482,20 +4580,6 @@
       "isoDate": "2026-08-08T15:22:26.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030193",
-      "pubDate": "Thu, 06 Aug 2026 23:20:42 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030193",
-      "isoDate": "2026-08-06T23:20:42.000Z"
-    },
-    {
       "title": "Green forest fire notification in Angola",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030165",
       "pubDate": "Thu, 06 Aug 2026 19:17:41 GMT",
@@ -4511,17 +4595,17 @@
     },
     {
       "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030131",
-      "pubDate": "Thu, 06 Aug 2026 03:10:08 GMT",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030193",
+      "pubDate": "Thu, 06 Aug 2026 23:20:42 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
-      "guid": "WF1030131",
-      "isoDate": "2026-08-06T03:10:08.000Z"
+      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
+      "guid": "WF1030193",
+      "isoDate": "2026-08-06T23:20:42.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -4567,17 +4651,17 @@
     },
     {
       "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030099",
-      "pubDate": "Wed, 05 Aug 2026 11:10:57 GMT",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030131",
+      "pubDate": "Thu, 06 Aug 2026 03:10:08 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030099",
-      "isoDate": "2026-08-05T11:10:57.000Z"
+      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 13/08/2026.",
+      "guid": "WF1030131",
+      "isoDate": "2026-08-06T03:10:08.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -4594,23 +4678,9 @@
       "isoDate": "2026-08-04T15:09:13.000Z"
     },
     {
-      "title": "Green forest fire notification in United States",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1029927",
-      "pubDate": "Thu, 30 Jul 2026 03:00:37 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 29/07/2026, a forest fire started in United States,  until 08/08/2026.",
-      "contentSnippet": "On 29/07/2026, a forest fire started in United States,  until 08/08/2026.",
-      "guid": "WF1029927",
-      "isoDate": "2026-07-30T03:00:37.000Z"
-    },
-    {
       "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030194",
-      "pubDate": "Thu, 06 Aug 2026 23:21:52 GMT",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030099",
+      "pubDate": "Wed, 05 Aug 2026 11:10:57 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -4618,36 +4688,50 @@
       },
       "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
       "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030194",
-      "isoDate": "2026-08-06T23:21:52.000Z"
+      "guid": "WF1030099",
+      "isoDate": "2026-08-05T11:10:57.000Z"
     },
     {
-      "title": "Green forest fire notification in Tanzania",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030445",
-      "pubDate": "Thu, 13 Aug 2026 19:50:27 GMT",
+      "title": "Green forest fire notification in Zambia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030091",
+      "pubDate": "Wed, 05 Aug 2026 15:13:23 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 29/07/2026, a forest fire started in Tanzania,  until 12/08/2026.",
-      "contentSnippet": "On 29/07/2026, a forest fire started in Tanzania,  until 12/08/2026.",
-      "guid": "WF1030445",
-      "isoDate": "2026-08-13T19:50:27.000Z"
+      "content": "On 28/07/2026, a forest fire started in Zambia,  until 04/08/2026.",
+      "contentSnippet": "On 28/07/2026, a forest fire started in Zambia,  until 04/08/2026.",
+      "guid": "WF1030091",
+      "isoDate": "2026-08-05T15:13:23.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030034",
-      "pubDate": "Sun, 02 Aug 2026 19:06:41 GMT",
+      "title": "Green forest fire notification in Angola",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030120",
+      "pubDate": "Thu, 06 Aug 2026 15:14:43 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
         "url": ""
       },
-      "content": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "contentSnippet": "On 29/07/2026, a forest fire started in Russian Federation,  until 08/08/2026.",
-      "guid": "WF1030034",
-      "isoDate": "2026-08-02T19:06:41.000Z"
+      "content": "On 28/07/2026, a forest fire started in Angola,  until 07/08/2026.",
+      "contentSnippet": "On 28/07/2026, a forest fire started in Angola,  until 07/08/2026.",
+      "guid": "WF1030120",
+      "isoDate": "2026-08-06T15:14:43.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Zambia",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030347",
+      "pubDate": "Wed, 12 Aug 2026 19:52:01 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 28/07/2026, a forest fire started in Zambia,  until 10/08/2026.",
+      "contentSnippet": "On 28/07/2026, a forest fire started in Zambia,  until 10/08/2026.",
+      "guid": "WF1030347",
+      "isoDate": "2026-08-12T19:52:01.000Z"
     },
     {
       "title": "Green forest fire notification in The Democratic Republic of Congo",
@@ -4704,48 +4788,6 @@
       "contentSnippet": "On 28/07/2026, a forest fire started in Italy,  until 09/08/2026.",
       "guid": "WF1030270",
       "isoDate": "2026-08-09T07:27:00.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Zambia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030091",
-      "pubDate": "Wed, 05 Aug 2026 15:13:23 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 28/07/2026, a forest fire started in Zambia,  until 04/08/2026.",
-      "contentSnippet": "On 28/07/2026, a forest fire started in Zambia,  until 04/08/2026.",
-      "guid": "WF1030091",
-      "isoDate": "2026-08-05T15:13:23.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Angola",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030120",
-      "pubDate": "Thu, 06 Aug 2026 15:14:43 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 28/07/2026, a forest fire started in Angola,  until 07/08/2026.",
-      "contentSnippet": "On 28/07/2026, a forest fire started in Angola,  until 07/08/2026.",
-      "guid": "WF1030120",
-      "isoDate": "2026-08-06T15:14:43.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Zambia",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1030347",
-      "pubDate": "Wed, 12 Aug 2026 19:52:01 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 28/07/2026, a forest fire started in Zambia,  until 10/08/2026.",
-      "contentSnippet": "On 28/07/2026, a forest fire started in Zambia,  until 10/08/2026.",
-      "guid": "WF1030347",
-      "isoDate": "2026-08-12T19:52:01.000Z"
     },
     {
       "title": "Green forest fire notification in Australia",
@@ -4820,7 +4862,7 @@
     {
       "title": "Green flood alert in Italy",
       "link": "https://www.gdacs.org/report.aspx?eventtype=FL&eventid=1104053",
-      "pubDate": "Mon, 27 Jul 2026 09:20:39 GMT",
+      "pubDate": "Fri, 14 Aug 2026 06:07:43 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
@@ -4829,7 +4871,7 @@
       "content": "On 26/07/2026, a flood started in Italy, lasting until 28/07/2026 (last update). The flood caused 0 deaths and 30 displaced .",
       "contentSnippet": "On 26/07/2026, a flood started in Italy, lasting until 28/07/2026 (last update). The flood caused 0 deaths and 30 displaced .",
       "guid": "FL1104053",
-      "isoDate": "2026-07-27T09:20:39.000Z"
+      "isoDate": "2026-08-14T06:07:43.000Z"
     },
     {
       "title": "Green forest fire notification in United States",
