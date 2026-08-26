@@ -1,5 +1,5 @@
 {
-  "saved_at": "2026-08-26T13:37:11.999Z",
+  "saved_at": "2026-08-26T14:29:32.821Z",
   "items": [
     {
       "title": "Green notification for tropical cyclone TWENTY-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 0  (0 in Tropical Storm).",
@@ -8,10 +8,10 @@
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001311/1001311_1_tn.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001311/1001311_2_tn.png"
       },
-      "content": "From 26/08/2026 to 26/08/2026, a Tropical Depression (maximum wind speed of 120 km/h) TWENTY-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
-      "contentSnippet": "From 26/08/2026 to 26/08/2026, a Tropical Depression (maximum wind speed of 120 km/h) TWENTY-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "content": "From 26/08/2026 to 26/08/2026, a Tropical Depression (maximum wind speed of 111 km/h) TWENTY-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
+      "contentSnippet": "From 26/08/2026 to 26/08/2026, a Tropical Depression (maximum wind speed of 111 km/h) TWENTY-26 was active in NWPacific. The cyclone affects these countries: [unknown] (vulnerability [unknown]). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 0  (0 in tropical storm).",
       "guid": "TC1001311",
       "isoDate": "2026-08-26T08:33:16.000Z"
     },
@@ -1178,20 +1178,6 @@
       "isoDate": "2026-08-24T23:09:07.000Z"
     },
     {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1031153",
-      "pubDate": "Wed, 26 Aug 2026 03:07:33 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 20/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
-      "contentSnippet": "On 20/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
-      "guid": "WF1031153",
-      "isoDate": "2026-08-26T03:07:33.000Z"
-    },
-    {
       "title": "Green forest fire notification in Indonesia",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1031147",
       "pubDate": "Tue, 25 Aug 2026 23:08:06 GMT",
@@ -1218,6 +1204,20 @@
       "contentSnippet": "On 20/08/2026, a forest fire started in Indonesia,  until 26/08/2026.",
       "guid": "WF1031148",
       "isoDate": "2026-08-26T07:09:01.000Z"
+    },
+    {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1031153",
+      "pubDate": "Wed, 26 Aug 2026 03:07:33 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 20/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
+      "contentSnippet": "On 20/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
+      "guid": "WF1031153",
+      "isoDate": "2026-08-26T03:07:33.000Z"
     },
     {
       "title": "Green forest fire notification in Russian Federation",
@@ -1276,6 +1276,20 @@
       "isoDate": "2026-08-25T12:12:41.000Z"
     },
     {
+      "title": "Green forest fire notification in Russian Federation",
+      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1031154",
+      "pubDate": "Wed, 26 Aug 2026 07:11:52 GMT",
+      "enclosure": {
+        "type": "image/png",
+        "length": "1",
+        "url": ""
+      },
+      "content": "On 19/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
+      "contentSnippet": "On 19/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
+      "guid": "WF1031154",
+      "isoDate": "2026-08-26T07:11:52.000Z"
+    },
+    {
       "title": "Green forest fire notification in Brazil",
       "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1031149",
       "pubDate": "Tue, 25 Aug 2026 23:12:37 GMT",
@@ -1302,20 +1316,6 @@
       "contentSnippet": "On 19/08/2026, a forest fire started in Brazil,  until 25/08/2026.",
       "guid": "WF1031150",
       "isoDate": "2026-08-26T07:12:59.000Z"
-    },
-    {
-      "title": "Green forest fire notification in Russian Federation",
-      "link": "https://www.gdacs.org/report.aspx?eventtype=WF&eventid=1031154",
-      "pubDate": "Wed, 26 Aug 2026 07:11:52 GMT",
-      "enclosure": {
-        "type": "image/png",
-        "length": "1",
-        "url": ""
-      },
-      "content": "On 19/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
-      "contentSnippet": "On 19/08/2026, a forest fire started in Russian Federation,  until 25/08/2026.",
-      "guid": "WF1031154",
-      "isoDate": "2026-08-26T07:11:52.000Z"
     },
     {
       "title": "Green forest fire notification in Angola",
@@ -1598,16 +1598,16 @@
       "isoDate": "2026-08-26T11:13:26.000Z"
     },
     {
-      "title": "Orange notification for tropical cyclone SAUDEL-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 7.679 million .",
+      "title": "Orange notification for tropical cyclone SAUDEL-26. Population affected by Category 1 (120 km/h) wind speeds or higher is 5.095 million .",
       "link": "https://www.gdacs.org/report.aspx?eventtype=TC&eventid=1001305",
       "pubDate": "Tue, 18 Aug 2026 13:37:43 GMT",
       "enclosure": {
         "type": "image/png",
         "length": "1",
-        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001305/1001305_32_tn.png"
+        "url": "https://www.gdacs.org/contentdata/resources/imgtemp/gdacs/tc/1001305/1001305_33_tn.png"
       },
-      "content": "From 18/08/2026 to 26/08/2026, a Hurricane/Typhoon > 74 mph (maximum wind speed of 213 km/h) SAUDEL-26 was active in NWPacific. The cyclone affects these countries: Japan, Northern Mariana Islands, China (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 7.679 million .",
-      "contentSnippet": "From 18/08/2026 to 26/08/2026, a Hurricane/Typhoon > 74 mph (maximum wind speed of 213 km/h) SAUDEL-26 was active in NWPacific. The cyclone affects these countries: Japan, Northern Mariana Islands, China (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 7.679 million .",
+      "content": "From 18/08/2026 to 26/08/2026, a Hurricane/Typhoon > 74 mph (maximum wind speed of 213 km/h) SAUDEL-26 was active in NWPacific. The cyclone affects these countries: Japan, China, Northern Mariana Islands (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 5.095 million .",
+      "contentSnippet": "From 18/08/2026 to 26/08/2026, a Hurricane/Typhoon > 74 mph (maximum wind speed of 213 km/h) SAUDEL-26 was active in NWPacific. The cyclone affects these countries: Japan, China, Northern Mariana Islands (vulnerability Medium). Estimated population affected by category 1 (120 km/h) wind speeds or higher is 5.095 million .",
       "guid": "TC1001305",
       "isoDate": "2026-08-18T13:37:43.000Z"
     },
