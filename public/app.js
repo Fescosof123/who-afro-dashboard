@@ -34,7 +34,10 @@ const PRINT_MODE_CLASS = "printing-bulletin";
 const PRINT_REPORT_PAGE_ID = "operationalReportPage";
 
 const PAGE_ROTATION_MULTIPLIER = {
-  overviewPage: 1.35,
+  overviewPage: 1.6,
+  gradingPage: 1.2,
+  signalsPage: 1,
+  dataHealthPage: 0.8,
   foodSecurityPage: 1.3,
   nutritionPage: 1,
   conflictsDisplacementPage: 1.1,
@@ -47,11 +50,14 @@ const PAGE_ROTATION_MULTIPLIER = {
   fcvDataPage: 1.1
 };
 
-const PAGE_ORDER = ["overviewPage", "fcvDataPage", "foodSecurityPage", "nutritionPage", "conflictsDisplacementPage", "attacksHealthPage", "hazardPage", "cyclonePage", "forecastPage", "countryPage", "operationalReportPage"];
+const PAGE_ORDER = ["overviewPage", "gradingPage", "fcvDataPage", "countryPage", "conflictsDisplacementPage", "attacksHealthPage", "foodSecurityPage", "nutritionPage", "hazardPage", "cyclonePage", "forecastPage", "operationalReportPage", "signalsPage", "dataHealthPage"];
 
 const PAGE_CAVEATS = {
   en: {
-    overviewPage: "Overview caveat: scores prioritize humanitarian events and food security burden signals. Validate with country operations channels before action.",
+    overviewPage: "Overview: strategic indicators from verified sources (OCHA HDX HAPI and FTS, IOM DTM, UNHCR, IPC, INFORM, WHO SSA). Each figure carries its own source and reference date.",
+    gradingPage: "Crisis classification: WHO grades come only from the WHO grading process. The DHM classification is a rule-based triage aid, not a grade.",
+    signalsPage: "Event signals: counts of public reports and hazard alerts for monitoring. They are not verified incident or population figures and should not be used to rank crises.",
+    dataHealthPage: "Data health: source status and values excluded at ingest. For the data team and country focal points.",
     countryPage: "Country explorer caveat: this page is a supporting profile. Decision priority remains food security and humanitarian event pressure.",
     foodSecurityPage: "Food security caveat: this is the primary decision lens. IPC and FEWS values are source snapshots and require date-validity checks.",
     nutritionPage: "Nutrition context caveat: this page is a supporting layer and should not override food security or event-driven triggers.",
@@ -64,7 +70,10 @@ const PAGE_CAVEATS = {
     fcvDataPage: "FCV data caveat: coverage reflects only the FCV Prioritized/Accelerated countries in the reporting feed. Thresholds for H3 and completeness are proposed defaults, not validated targets."
   },
   fr: {
-    overviewPage: "Note vue d'ensemble: les scores priorisent les evenements humanitaires et la charge de securite alimentaire. Valider avec les canaux operationnels pays avant action.",
+    overviewPage: "Vue d'ensemble: indicateurs strategiques issus de sources verifiees (OCHA HDX HAPI et FTS, OIM DTM, HCR, IPC, INFORM, OMS SSA). Chaque chiffre indique sa source et sa date de reference.",
+    gradingPage: "Classification des crises: les grades OMS proviennent uniquement du processus de gradation de l'OMS. La classification DHM est une aide au triage fondee sur des regles, pas un grade.",
+    signalsPage: "Signaux d'evenements: comptages de rapports publics et d'alertes, pour le suivi. Ce ne sont pas des chiffres verifies et ils ne doivent pas servir a classer les crises.",
+    dataHealthPage: "Sante des donnees: statut des sources et valeurs exclues a l'ingestion. Pour l'equipe donnees et les points focaux pays.",
     countryPage: "Note profil pays: cette page est un profil d'appui. La priorite decisionnelle reste la securite alimentaire et la pression des evenements.",
     foodSecurityPage: "Note securite alimentaire: c'est la grille principale de decision. Les valeurs IPC et FEWS sont des instantanes source et exigent une verification de date.",
     nutritionPage: "Note nutrition: cette page est une couche d'appui et ne doit pas remplacer les declencheurs de securite alimentaire ou d'evenements.",
@@ -982,16 +991,16 @@ function getSourceTrustMeta(source) {
   }
   if (/gdacs|reliefweb|ocha|idmc|unhcr|iom|dtm/i.test(normalized)) {
     return {
-      label: "Verified",
+      label: "Recognised outlet",
       className: "verified",
-      description: "Verified humanitarian source"
+      description: "Published by a recognised humanitarian outlet and matched by keywords. The item itself is not a verified incident or figure."
     };
   }
   if (/fews\s*net/i.test(normalized)) {
     return {
-      label: "Verified",
+      label: "Recognised outlet",
       className: "verified",
-      description: "FEWS NET — USAID famine early warning system"
+      description: "FEWS NET famine early warning system; narrative item matched by keywords."
     };
   }
   return null;
@@ -1344,7 +1353,9 @@ function ageDays(value) {
 
 function bandForRisk(score) {
   const v = Number(score || 0);
-  return RISK_BANDS.find((b) => v >= b.min && v <= b.max) || RISK_BANDS[0];
+  const band = RISK_BANDS.find((b) => v >= b.min && v <= b.max) || RISK_BANDS[0];
+  // Bands store localized labels; expose the active-language label as .label.
+  return { ...band, label: (band.labels && (band.labels[currentLanguage] || band.labels.en)) || "" };
 }
 
 function qualityTag(country) {
@@ -1467,8 +1478,10 @@ function updateBriefingStripVisibility(pageId) {
   if (!els.briefingStrip) {
     return;
   }
-  // Keep strip available on every page; content is page-aware.
-  els.briefingStrip.classList.remove("briefing-strip-hidden");
+  // The operational briefing strip (crawl status, signal counts) stays off the strategic pages.
+  // Source-signal counts and crawl diagnostics are unverified monitoring aids: show them only
+  // on the Event Signals page, never next to the verified strategic figures.
+  els.briefingStrip.classList.toggle("briefing-strip-hidden", pageId !== "signalsPage");
 }
 
 function hideAcapsModeToast() {
@@ -1528,11 +1541,14 @@ function setActivePage(pageId) {
     return;
   }
 
-  if (pageId === "overviewPage") {
+  if (pageId === "signalsPage") {
     renderMap();
   }
   if (pageId === "countryPage") {
     renderTrend(els.countrySelect.value);
+  }
+  if (window.StrategicDashboard) {
+    window.StrategicDashboard.onPage(pageId);
   }
   if (pageId === "foodSecurityPage") {
     renderFoodSecurityPage();
@@ -2448,6 +2464,30 @@ function renderRecommendationList(el, recs, emptyText) {
 }
 
 // Parse a "Mon YYYY" formatted IPC analysis date and return months elapsed since that date.
+// Display helper for IPC values: never turns a missing value into 0%, falls back to the
+// projection when the current period is missing, and flags analyses older than 18 months.
+function ipcDisplay(ipc) {
+  if (!ipc) {
+    return { html: "n/a", pct: null };
+  }
+  const current = ipc.phase3plus_pct;
+  const projected = ipc.projection_phase3plus_pct;
+  const usePct = current != null ? current : projected;
+  const label = current != null ? "current" : projected != null ? "projected" : null;
+  const age = ipcAnalysisAgeMonths(current != null ? ipc.analysis_date : ipc.projection_date);
+  const stale = age != null && age > FEWS_OPERATIONAL_MAX_AGE_MONTHS;
+  if (usePct == null) {
+    return { html: '<span class="tag">no current analysis</span>', pct: null };
+  }
+  const level = usePct >= 0.3 ? "bad" : usePct >= 0.2 ? "warn" : "good";
+  const staleTag = stale ? ' <span class="tag warn" title="Analysis older than 18 months">stale</span>' : "";
+  return {
+    html: `<strong>${formatNum(usePct * 100, 1)}%</strong> <span class="tag ${level}">${label}</span>${staleTag}`,
+    pct: usePct,
+    stale
+  };
+}
+
 function ipcAnalysisAgeMonths(dateStr) {
   const MONTHS = { Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5, Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11 };
   const m = (dateStr || "").trim().match(/^([A-Za-z]{3})\s+(\d{4})$/);
@@ -2503,8 +2543,11 @@ function refreshActivePageVisuals(pageId = activePageId()) {
   if (!dashboardState) {
     return;
   }
-  if (pageId === "overviewPage") {
+  if (pageId === "signalsPage") {
     renderMap();
+  }
+  if (window.StrategicDashboard) {
+    window.StrategicDashboard.onPage(pageId, { resizeOnly: true });
   }
   if (pageId === "countryPage") {
     renderTrend(els.countrySelect.value);
@@ -2605,7 +2648,7 @@ function renderFoodSecurityPage() {
       return `
         <tr>
           <td><strong>${c.country}</strong></td>
-          <td>${ipc ? `${formatNum((ipc.phase3plus_pct || 0) * 100, 1)}%` : "n/a"}</td>
+          <td>${ipcDisplay(ipc).html}</td>
           <td>${ipc ? projectedTag : "n/a"}</td>
           <td>${ipc ? (ipc.phase3plus_number || 0).toLocaleString() : "n/a"}</td>
           <td>${ipc ? ((ipc.phase4_number || 0) + (ipc.phase5_number || 0)).toLocaleString() : "n/a"}</td>
@@ -2850,7 +2893,8 @@ const FCV_INDICATOR_META = {
 };
 
 const FCV_TRACKED_FIELDS = Object.keys(FCV_INDICATOR_META);
-const FCV_VOLUME_INDICATORS = ["people_reached", "mental_health_beneficiaries", "gbv_cases_managed", "children_screened_malnutrition", "opd_consultations_per_person_per_month"];
+// Volumes are counts only. OPD per person per month is a rate and is not summed.
+const FCV_VOLUME_INDICATORS = ["people_reached", "mental_health_beneficiaries", "gbv_cases_managed", "children_screened_malnutrition"];
 const FCV_COVERAGE_FIELDS = ["deliveries_in_health_institution_pct", "measles_vaccination_coverage_pct", "penta_vaccination_coverage_pct"];
 
 function thresholdColor(value, thresholds) {
@@ -4261,7 +4305,7 @@ function renderBriefingStrip() {
   const attacksSignalsTotal = (dashboardState.healthcare_attack_signals || []).length;
 
   const pageCards = {
-    overviewPage: `
+    signalsPage: `
       <article class="strip-card"><h3>Current Highest Risk</h3><p>${top ? `${top.country} (${top.risk_score})` : "n/a"}</p></article>
       <article class="strip-card"><h3>IPC Crisis Countries</h3><p>${crisisCountries}</p></article>
       <article class="strip-card"><h3>Top Alerts Active</h3><p>${alertCount}</p></article>
@@ -4340,7 +4384,7 @@ function renderBriefingStrip() {
     </article>
   `;
 
-  els.briefingStrip.innerHTML = `${pageCards[pageId] || pageCards.overviewPage}${commonTail}`;
+  els.briefingStrip.innerHTML = `${pageCards[pageId] || pageCards.signalsPage}${commonTail}`;
 }
 
 function burdenTag(value, mediumThreshold, highThreshold) {
@@ -4514,9 +4558,9 @@ function openFullscreenMap() {
       [0.20,"#e67e22"],[0.35,"#e67e22"],[0.35,"#c0392b"],[0.60,"#c0392b"],
       [0.60,"#7b0000"],[1,"#7b0000"]
     ];
-    const vals = countries.map((c) => (c.ipc ? c.ipc.phase3plus_pct * 100 : null));
+    const vals = countries.map((c) => (c.ipc && c.ipc.phase3plus_pct != null ? c.ipc.phase3plus_pct * 100 : null));
     const hoverText = countries.map((c) =>
-      c.ipc
+      c.ipc && c.ipc.phase3plus_pct != null
         ? `${c.country}<br>IPC Phase 3+: ${(c.ipc.phase3plus_pct * 100).toFixed(1)}%`
         : `${c.country}<br>IPC data not available`
     );
@@ -4582,14 +4626,14 @@ function renderMap() {
       [0.60, "#7b0000"],
       [1,    "#7b0000"]
     ];
-    const vals = countries.map((c) => (c.ipc ? c.ipc.phase3plus_pct * 100 : null));
+    const vals = countries.map((c) => (c.ipc && c.ipc.phase3plus_pct != null ? c.ipc.phase3plus_pct * 100 : null));
     const hoverText = countries.map((c) =>
-      c.ipc
+      c.ipc && c.ipc.phase3plus_pct != null
         ? `${c.country}<br>IPC Phase 3+: ${(c.ipc.phase3plus_pct * 100).toFixed(1)}%<br>Phase 4/5: ${((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0)).toLocaleString()}<br>${c.ipc.ipc_crisis_level.toUpperCase()}<br>Analysis: ${c.ipc.analysis_date}`
         : `${c.country}<br>IPC data not available`
     );
     // Countries without IPC data get a grey fill via a separate trace
-    const noIpcIso = countries.filter((c) => !c.ipc).map((c) => c.iso3);
+    const noIpcIso = countries.filter((c) => !c.ipc || c.ipc.phase3plus_pct == null).map((c) => c.iso3);
     const traces = [
       {
         type: "choropleth",
@@ -4736,7 +4780,7 @@ function renderCountryTable() {
           <td><strong>${c.country}</strong><br>${qualityTag(c)}</td>
           <td>${compactTrackLabel(c.fcv_track)}</td>
           <td><span class="tag" style="background:${b.color}; color:#fff">${c.risk_score}</span></td>
-          <td>${c.ipc ? `<strong>${formatNum(c.ipc.phase3plus_pct * 100, 1)}%</strong> <span class="tag ${c.ipc.ipc_crisis_level === 'crisis' ? 'bad' : c.ipc.ipc_crisis_level === 'stress' ? 'warn' : 'good'}">${c.ipc.ipc_crisis_level}</span>` : 'n/a'}</td>
+          <td>${ipcDisplay(c.ipc).html}</td>
           <td>${c.ipc ? formatNum((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0), 0).replace(/\B(?=(\d{3})+(?!\d))/g, ',') : 'n/a'}</td>
           <td>${c.ipc ? c.ipc.analysis_date : 'n/a'}</td>
           <td>${wastingCell}</td>
@@ -4970,8 +5014,16 @@ function renderSummary(countryIso3) {
     ? `OPD per person <strong>${serviceValue(serviceDelivery.opd_consultations_per_person_per_month, 2)}</strong>, ANC mean <strong>${serviceValue(serviceDelivery.anc_visits_mean, 2)}</strong>, institutional deliveries <strong>${serviceValue(serviceDelivery.deliveries_in_health_institution_pct, 2)}</strong>.`
     : "";
 
-  const ipcBlock = c.ipc
-    ? `<p><strong>IPC Phase Classification (${c.ipc.analysis_date}):</strong> Phase 3+ population <strong>${formatNum(c.ipc.phase3plus_pct * 100, 1)}%</strong> (${(c.ipc.phase3plus_number || 0).toLocaleString()} people) — <span class="tag ${c.ipc.ipc_crisis_level === 'crisis' ? 'bad' : c.ipc.ipc_crisis_level === 'stress' ? 'warn' : 'good'}">${c.ipc.ipc_crisis_level.toUpperCase()}</span>. Phase 4/5 emergency: <strong>${((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0)).toLocaleString()}</strong> people. Source: IPC via HDX open data.</p>`
+  const ipcView = ipcDisplay(c.ipc);
+  const staleIpcNote = c.ipc?.stale_current
+    ? `<p><span class="tag warn">IPC analysis older than 18 months</span> Last analysis (${c.ipc.stale_current.analysis_date}) showed ${formatNum(c.ipc.stale_current.phase3plus_pct * 100, 1)}% in Phase 3+. It is not used for prioritisation.</p>`
+    : "";
+  const ipcBlock = c.ipc && c.ipc.phase3plus_pct == null && c.ipc.projection_phase3plus_pct == null
+    ? staleIpcNote || `<p><span class="tag">No current IPC analysis</span></p>`
+    : c.ipc && c.ipc.phase3plus_pct == null && c.ipc.projection_phase3plus_pct != null
+    ? `<p><strong>IPC projection (${c.ipc.projection_date || "n/a"}):</strong> Phase 3+ population ${ipcView.html} (${(c.ipc.projection_phase3plus_number || 0).toLocaleString()} people). No current-period figure in the latest analysis. Source: IPC via HDX open data.</p>`
+    : c.ipc
+    ? `<p><strong>IPC Phase Classification (${c.ipc.analysis_date}):</strong>${ipcView.stale ? ' <span class="tag warn">older than 18 months, not used for prioritisation</span>' : ""} Phase 3+ population <strong>${formatNum(c.ipc.phase3plus_pct * 100, 1)}%</strong> (${(c.ipc.phase3plus_number || 0).toLocaleString()} people): <span class="tag ${c.ipc.ipc_crisis_level === 'crisis' ? 'bad' : c.ipc.ipc_crisis_level === 'stress' ? 'warn' : 'good'}">${c.ipc.ipc_crisis_level.toUpperCase()}</span>. Phase 4/5 emergency: <strong>${((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0)).toLocaleString()}</strong> people. Source: IPC via HDX open data.</p>`
     : `<p><span class="tag bad">IPC data not available</span> No IPC phase classification found for this country in HDX open datasets.${c.iso3 === "ERI" ? " <strong>Eritrea data gap:</strong> No IPC or HDX acute malnutrition source is currently configured for Eritrea. This is a known data access constraint." : ""}</p>`;
 
   els.summaryBox.innerHTML = `
@@ -6451,7 +6503,7 @@ function renderCyclonePage() {
         <td>${c.cyclone_count}</td>
         <td>${c.hazard_count}</td>
         <td>${c.risk_score}</td>
-        <td>${c.ipc ? `${formatNum(c.ipc.phase3plus_pct * 100, 1)}%` : "n/a"}</td>
+        <td>${ipcDisplay(c.ipc).html}</td>
       </tr>
     `).join("")
     : '<tr><td colspan="5">No cyclone-linked countries in this refresh.</td></tr>';
@@ -6917,7 +6969,7 @@ function updateNavBadges() {
     const page = btn.dataset.page;
     let badge = null;
 
-    if (page === "overviewPage" && crisisSignal) {
+    if (page === "signalsPage" && crisisSignal) {
       badge = document.createElement("span");
       badge.className = "nav-badge badge-crisis";
       badge.textContent = "!";
@@ -7604,6 +7656,9 @@ async function loadDashboard(options = {}) {
     }
 
     renderMap();
+    if (window.StrategicDashboard) {
+      window.StrategicDashboard.onDashboardData(dashboardState);
+    }
     setActivePage(activePageId());
     localizeDynamicBlocks();
     localizePageTextTree(document.body);

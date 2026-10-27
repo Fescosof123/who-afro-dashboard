@@ -62,15 +62,21 @@ function run() {
 
   const janRow = bfa.service_delivery.monthly_series.find((r) => r.iso_month === "2026-01");
   assert.ok(janRow, "Expected a January 2026 monthly row for BFA");
-  // This is a REAL >100% value already present in the source data — the
-  // data-quality "values >100%" flag must fire on this, not a hypothetical.
-  assert.equal(janRow.deliveries_in_health_institution_pct, 103.1);
-  assert.equal(janRow.measles_vaccination_coverage_pct, 114.4);
+  // These are REAL >100% values from the source data. Ingest validation keeps
+  // them out of every average and records them for correction.
+  assert.equal(janRow.deliveries_in_health_institution_pct, null);
+  assert.equal(janRow.measles_vaccination_coverage_pct, null);
   assert.equal(janRow.quarter_label, "2026-Q1");
+  assert.equal(parsed.validation.fields.deliveries_in_health_institution_pct.excluded_rows, 2);
+  assert.equal(parsed.validation.fields.measles_vaccination_coverage_pct.excluded_rows, 2);
+  assert.equal(parsed.validation.fields.measles_vaccination_coverage_pct.by_country["Burkina Faso"], 2);
 
   const marRow = bfa.service_delivery.monthly_series.find((r) => r.iso_month === "2026-03");
   assert.ok(marRow, "Expected a March 2026 monthly row for BFA");
-  assert.equal(marRow.opd_consultations_per_person_per_month, 4762, "Space-thousands number should parse correctly");
+  // 4 762 "consultations per person per month" is a count entered in a rate column:
+  // it parses correctly but is excluded from the rate.
+  assert.equal(marRow.opd_consultations_per_person_per_month, null, "Implausible OPD rate should be excluded");
+  assert.equal(parsed.validation.fields.opd_consultations_per_person_per_month.examples[0].value, 4762, "Space-thousands number should parse correctly");
   assert.equal(marRow.children_screened_malnutrition, 500);
   assert.equal(marRow.total_health_facilities, 120);
   assert.equal(marRow.facility_disruption_pct, 12.5);

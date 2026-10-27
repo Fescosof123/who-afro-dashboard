@@ -3158,3 +3158,350 @@ footer {
 .map-square-wrap {
   position: relative;
 }
+
+/* ===== Strategic view (Overview, Crisis Classification, Data Health) ===== */
+.strategic-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.strategic-head-row h2 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.strat-scope,
+.strat-inline-select {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.strat-scope select,
+.strat-inline-select select {
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  max-width: 100%;
+}
+
+.strat-inline-select {
+  margin-top: 6px;
+  max-width: 320px;
+}
+
+.strat-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.strat-kpi-grid-3 {
+  margin-bottom: 12px;
+}
+
+#gradingSummary.strat-kpi-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.strat-kpi {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+  padding: 14px 14px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--who-blue);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.strat-kpi:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(0, 74, 159, 0.14);
+}
+
+.strat-kpi-static {
+  cursor: default;
+}
+
+.strat-kpi-static:hover {
+  transform: none;
+}
+
+.strat-kpi-warn {
+  border-top-color: var(--warn);
+}
+
+.strat-kpi-bad {
+  border-top-color: var(--th-bad);
+}
+
+.strat-kpi-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.strat-kpi-value {
+  font-family: "Sora", sans-serif;
+  font-size: 1.85rem;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.strat-kpi-value small {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.strat-kpi-sub {
+  font-size: 0.86rem;
+  line-height: 1.35;
+}
+
+.strat-source {
+  font-size: 0.74rem;
+  color: #6b7e91;
+  line-height: 1.3;
+}
+
+.strat-messages {
+  margin: 4px 0 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.strat-map {
+  min-height: 430px;
+}
+
+.strat-chart {
+  min-height: 280px;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.strat-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.86rem;
+}
+
+.strat-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--muted);
+  border-bottom: 2px solid var(--line);
+  padding: 7px 8px;
+  white-space: nowrap;
+  position: sticky;
+  top: 0;
+  background: #f7fbff;
+}
+
+.strat-table td {
+  border-bottom: 1px solid rgba(140, 175, 209, 0.28);
+  padding: 7px 8px;
+  vertical-align: top;
+}
+
+.strat-table td.num {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.strat-table small {
+  color: var(--muted);
+}
+
+.strat-level {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.strat-stale {
+  color: #8a97a5;
+  text-decoration: underline dotted;
+}
+
+.strat-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  color: var(--who-blue);
+  cursor: pointer;
+  text-align: left;
+}
+
+.strat-link:hover {
+  text-decoration: underline;
+}
+
+.strat-points {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.strat-link-list {
+  columns: 2;
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.strat-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.strat-card-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.strat-card-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.strat-card-value {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.strat-ssa-grid {
+  align-items: start;
+}
+
+@media (max-width: 1180px) {
+  .strat-kpi-grid,
+  #gradingSummary.strat-kpi-grid,
+  .strat-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .strat-kpi-grid,
+  #gradingSummary.strat-kpi-grid,
+  .strat-card-grid {
+    grid-template-columns: 1fr;
+  }
+  .strat-link-list {
+    columns: 1;
+  }
+}
+
+@media print {
+  .strat-kpi {
+    box-shadow: none;
+    break-inside: avoid;
+  }
+}
+
+/* Keep wide tables inside their scroll container instead of widening the page. */
+.content,
+.content main,
+.page.active {
+  min-width: 0;
+}
+
+.page.active {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.page.active > .panel,
+.page.active > section {
+  min-width: 0;
+}
+
+.strat-where > div {
+  min-width: 0;
+}
+
+@media (min-width: 1181px) {
+  #overviewPage .two-col,
+  #gradingPage .two-col,
+  .strat-ssa-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+/* Compact header: title left, controls in one row on wide screens. */
+@media (min-width: 1181px) {
+  .topbar {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    padding: 12px 18px;
+  }
+  .topbar-controls {
+    grid-auto-flow: column;
+    align-items: end;
+    gap: 12px;
+  }
+  .topbar-controls label {
+    min-width: 200px;
+  }
+}
+
+#stratKpiGrid.strat-kpi-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+#gradingSummary.strat-kpi-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+@media (max-width: 1180px) {
+  #stratKpiGrid.strat-kpi-grid,
+  #gradingSummary.strat-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 700px) {
+  #stratKpiGrid.strat-kpi-grid,
+  #gradingSummary.strat-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+}

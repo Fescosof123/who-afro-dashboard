@@ -6,6 +6,11 @@ const XLSX = require("xlsx");
 const cheerio = require("cheerio");
 const path = require("path");
 const fs = require("fs");
+const strategic = require("./lib/strategic");
+// The HDX "acute malnutrition proxy" produced implausible wasting values (for example 56% in
+// South Sudan) because the source columns are caseload shares, not survey prevalence.
+// It is kept for reference but no longer shown as the latest wasting value unless enabled.
+const HDX_WASTING_PROXY_AS_LATEST = String(process.env.HDX_WASTING_PROXY_AS_LATEST || "off").toLowerCase() === "on";
 
 const app = express();
 const parser = new Parser({
@@ -1402,7 +1407,11 @@ function normalizeIso3(value) {
 }
 
 function classifyIpcLevel(phase3plusPct) {
-  const pct = Number(phase3plusPct || 0);
+  // A missing value is not zero: keep it unclassified rather than "watch".
+  if (phase3plusPct == null || !Number.isFinite(Number(phase3plusPct))) {
+    return "no_current_analysis";
+  }
+  const pct = Number(phase3plusPct);
   if (pct >= 0.3) {
     return "crisis";
   }
@@ -1505,6 +1514,44 @@ function parseServiceDeliveryFeedRows(records = [], numberFormat = "plain") {
   const groupedByAdmin1Month = new Map();
   let rawRowCount = 0;
 
+  // Ingest validation. Rates and percentages outside plausible limits are kept
+  // out of every average and counted here so the dashboard can flag them and the
+  // country focal points can correct the source rows.
+  const RATE_LIMITS = {
+    opd_consultations_per_person_per_month: { min: 0, max: 5, rule: "OPD consultations per person per month above 5 (likely a count, not a rate)" },
+    anc_visits_mean: { min: 0, max: 12, rule: "Mean ANC visits above 12 (likely a count, not a mean)" },
+    deliveries_in_health_institution_pct: { min: 0, max: 100, rule: "Percentage above 100" },
+    measles_vaccination_coverage_pct: { min: 0, max: 100, rule: "Coverage above 100% (denominator problem)" },
+    penta_vaccination_coverage_pct: { min: 0, max: 100, rule: "Coverage above 100% (denominator problem)" },
+    sam_complications_pct: { min: 0, max: 100, rule: "Percentage above 100" },
+    sam_complications_managed_pct: { min: 0, max: 100, rule: "Percentage above 100" },
+    facility_disruption_pct: { min: 0, max: 100, rule: "Percentage above 100" },
+    h3_package_pct: { min: 0, max: 100, rule: "Percentage above 100" }
+  };
+  const validation = {};
+  function validatedRate(field, value, row, countRow) {
+    if (value == null) {
+      return null;
+    }
+    const limit = RATE_LIMITS[field];
+    if (limit && (value < limit.min || value > limit.max)) {
+      if (countRow) {
+        if (!validation[field]) {
+          validation[field] = { rule: limit.rule, excluded_rows: 0, by_country: {}, examples: [] };
+        }
+        const v = validation[field];
+        v.excluded_rows += 1;
+        const country = String(row["Admin0 (Country/State)"] || "").trim();
+        v.by_country[country] = (v.by_country[country] || 0) + 1;
+        if (v.examples.length < 8) {
+          v.examples.push({ country, admin1: row["Admin1 (Province/Region/LGA)"] || null, admin2: row["Admin2 (District)"] || null, month: row["Month of Report"] || row["Month Report"] || null, value });
+        }
+      }
+      return null;
+    }
+    return value;
+  }
+
   function addNullableMetric(bucket, metricKey, value) {
     if (value == null) {
       return;
@@ -1539,7 +1586,8 @@ function parseServiceDeliveryFeedRows(records = [], numberFormat = "plain") {
     };
   }
 
-  function accumulateServiceDeliveryRow(bucket, row) {
+  function accumulateServiceDeliveryRow(bucket, row, countRow = false) {
+    const rate = (field, header) => validatedRate(field, toFiniteNumber(row[header], numberFormat), row, countRow);
     bucket.reporting_rows += 1;
     addNullableMetric(bucket, "mental_health_beneficiaries", toFiniteNumber(row["Number of persons benefiting from mental health services and psychological support"], numberFormat));
     addNullableMetric(bucket, "gbv_cases_managed", toFiniteNumber(row["Number of GBV cases identified and clinically managed (GBVIMS)"], numberFormat));
@@ -1547,15 +1595,15 @@ function parseServiceDeliveryFeedRows(records = [], numberFormat = "plain") {
     addNullableMetric(bucket, "children_screened_malnutrition", toFiniteNumber(row["Number of children screened for malnutrition"], numberFormat));
     addNullableMetric(bucket, "total_health_facilities", toFiniteNumber(row["Total number of Health Facilities"], numberFormat));
 
-    bucket.opd_consultations_per_person_per_month_values.push(toFiniteNumber(row["Total outpatient department (OPD) consultations per person per month"], numberFormat));
-    bucket.deliveries_in_health_institution_pct_values.push(toFiniteNumber(row["% of deliveries in a health institution"], numberFormat));
-    bucket.anc_visits_mean_values.push(toFiniteNumber(row["Mean number of ANC visits per pregnant woman during the time period"], numberFormat));
-    bucket.measles_vaccination_coverage_pct_values.push(toFiniteNumber(row["Measles vaccination coverage (%)"], numberFormat));
-    bucket.penta_vaccination_coverage_pct_values.push(toFiniteNumber(row["PENTA vaccination coverage (%)"], numberFormat));
-    bucket.sam_complications_pct_values.push(toFiniteNumber(row["Percentage of severe acute malnutrition (SAM) cases with complications"], numberFormat));
-    bucket.sam_complications_managed_pct_values.push(toFiniteNumber(row["Percentage of severe acute malnutrition (SAM) cases with complications managed"], numberFormat));
-    bucket.facility_disruption_pct_values.push(toFiniteNumber(row["Percentage of healthcare facilities that reported a service disruption during the last 90 days."], numberFormat));
-    bucket.h3_package_pct_values.push(toFiniteNumber(row["Percentage of health facilities that implement essential health (H3) package."], numberFormat));
+    bucket.opd_consultations_per_person_per_month_values.push(rate("opd_consultations_per_person_per_month", "Total outpatient department (OPD) consultations per person per month"));
+    bucket.deliveries_in_health_institution_pct_values.push(rate("deliveries_in_health_institution_pct", "% of deliveries in a health institution"));
+    bucket.anc_visits_mean_values.push(rate("anc_visits_mean", "Mean number of ANC visits per pregnant woman during the time period"));
+    bucket.measles_vaccination_coverage_pct_values.push(rate("measles_vaccination_coverage_pct", "Measles vaccination coverage (%)"));
+    bucket.penta_vaccination_coverage_pct_values.push(rate("penta_vaccination_coverage_pct", "PENTA vaccination coverage (%)"));
+    bucket.sam_complications_pct_values.push(rate("sam_complications_pct", "Percentage of severe acute malnutrition (SAM) cases with complications"));
+    bucket.sam_complications_managed_pct_values.push(rate("sam_complications_managed_pct", "Percentage of severe acute malnutrition (SAM) cases with complications managed"));
+    bucket.facility_disruption_pct_values.push(rate("facility_disruption_pct", "Percentage of healthcare facilities that reported a service disruption during the last 90 days."));
+    bucket.h3_package_pct_values.push(rate("h3_package_pct", "Percentage of health facilities that implement essential health (H3) package."));
   }
 
   function finalizeServiceDeliveryBucket(bucket) {
@@ -1693,7 +1741,7 @@ function parseServiceDeliveryFeedRows(records = [], numberFormat = "plain") {
     if (respondentDisplay) {
       countryBucket.respondentSet.add(respondentDisplay);
     }
-    accumulateServiceDeliveryRow(countryBucket, row);
+    accumulateServiceDeliveryRow(countryBucket, row, true);
 
     if (admin1Display) {
       const admin1Key = `${iso3}__${admin1Display}__${month.iso_month}`;
@@ -1751,6 +1799,7 @@ function parseServiceDeliveryFeedRows(records = [], numberFormat = "plain") {
   return {
     schema_kind: "service_delivery",
     raw_row_count: rawRowCount,
+    validation: { rules_version: "sd-validation-v1", fields: validation },
     country_count: latestCountryRows.length,
     month_count: months.length,
     latest_month: months[months.length - 1] || null,
@@ -2021,6 +2070,7 @@ async function refreshCountryFeedFromRemote(force = false) {
         saved_at: new Date().toISOString(),
         records: parsed.records,
         monthly_rows: parsed.monthly_rows,
+        validation: parsed.validation || null,
         quarterly_rows: parsed.quarterly_rows,
         admin1_quarterly_rows: parsed.admin1_quarterly_rows,
         row_count: parsed.raw_row_count,
@@ -2074,6 +2124,7 @@ async function refreshCountryFeedFromRemote(force = false) {
       saved_at: new Date().toISOString(),
       records: parsed.records,
       monthly_rows: parsed.monthly_rows,
+      validation: parsed.validation || null,
       quarterly_rows: parsed.quarterly_rows,
       admin1_quarterly_rows: parsed.admin1_quarterly_rows,
       row_count: parsed.raw_row_count,
@@ -4317,7 +4368,7 @@ async function fetchHdxAcuteMalnutritionFallback(countryMap, freshnessMode = "st
       const ind = countryMap[iso3].indicators.wasting_u5_pct;
       const wbFresh = ind.latest;
       const wbAny = ind.latest_any;
-      const shouldApplyFallback = !wbFresh || (!!wbAny && !isNutritionYearFresh(wbAny.year));
+      const shouldApplyFallback = HDX_WASTING_PROXY_AS_LATEST && (!wbFresh || (!!wbAny && !isNutritionYearFresh(wbAny.year)));
 
       ind.hdx_proxy = {
         source: "HDX acute malnutrition",
@@ -4374,7 +4425,7 @@ async function fetchHdxAcuteMalnutritionFallback(countryMap, freshnessMode = "st
             const ind = countryMap[iso3].indicators.wasting_u5_pct;
             const wbFresh = ind.latest;
             const wbAny = ind.latest_any;
-            const shouldApplyFallback = !wbFresh || (!!wbAny && !isNutritionYearFresh(wbAny.year));
+            const shouldApplyFallback = HDX_WASTING_PROXY_AS_LATEST && (!wbFresh || (!!wbAny && !isNutritionYearFresh(wbAny.year)));
             ind.hdx_proxy = { source: "HDX acute malnutrition (offline)", value: parsed.value, year: parsed.year, method: parsed.method, updated_at: new Date().toISOString() };
             if (shouldApplyFallback) {
               ind.latest = { value: parsed.value, year: parsed.year, source: "HDX acute malnutrition proxy (offline)", method: parsed.method };
@@ -6094,7 +6145,38 @@ function cycloneIntelligence(countryMap, hazards, reports, forecasts, dedicatedC
   };
 }
 
+// IPC analyses older than 18 months stay visible as history but are removed from
+// every current figure (risk score, crisis counts) so they are not read as current.
+const IPC_MAX_AGE_MONTHS_FOR_DECISIONS = 18;
+function ipcAgeMonths(label) {
+  const m = String(label || "").trim().match(/^([A-Za-z]{3})[a-z]*\s+(\d{4})$/);
+  if (!m) return null;
+  const months = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+  const mon = months[m[1].toLowerCase()];
+  if (mon == null) return null;
+  const now = new Date();
+  return (now.getFullYear() - Number(m[2])) * 12 + (now.getMonth() - mon);
+}
+function markStaleIpc(countryMap) {
+  Object.values(countryMap).forEach((c) => {
+    const ipc = c.ipc;
+    if (!ipc) return;
+    const currentAge = ipcAgeMonths(ipc.analysis_date);
+    if (ipc.phase3plus_pct != null && currentAge != null && currentAge > IPC_MAX_AGE_MONTHS_FOR_DECISIONS) {
+      ipc.stale_current = { phase3plus_pct: ipc.phase3plus_pct, analysis_date: ipc.analysis_date, age_months: currentAge };
+      ipc.phase3plus_pct = null;
+      ipc.ipc_crisis_level = "no_current_analysis";
+    }
+    const projAge = ipcAgeMonths(ipc.projection_date);
+    if (ipc.projection_phase3plus_pct != null && projAge != null && projAge > IPC_MAX_AGE_MONTHS_FOR_DECISIONS) {
+      ipc.stale_projection = { phase3plus_pct: ipc.projection_phase3plus_pct, projection_date: ipc.projection_date, age_months: projAge };
+      ipc.projection_phase3plus_pct = null;
+    }
+  });
+}
+
 function computeRiskScores(countryMap) {
+  markStaleIpc(countryMap);
   const countries = Object.values(countryMap);
   const wastingValues = countries.map((c) => c.indicators?.wasting_u5_pct?.latest?.value).filter((v) => v != null);
   const ipcValues = countries.map((c) => c.ipc?.phase3plus_pct ?? 0);
@@ -6446,6 +6528,39 @@ function attacksHealthResponseFromCache(query = {}) {
   };
 }
 
+// Strategic humanitarian KPIs (HDX HAPI, OCHA FTS, WHO SSA, WHO grading register).
+app.get("/api/strategic", (req, res) => {
+  try {
+    res.json(strategic.buildStrategicPayload(fcvCountryProfileSnapshot));
+  } catch (err) {
+    res.status(500).json({ error: "strategic_payload_failed", detail: err.message });
+  }
+});
+
+app.post("/api/strategic/refresh", async (req, res) => {
+  const token = String(req.get("x-refresh-token") || "");
+  const expected = String(process.env.STRATEGIC_REFRESH_TOKEN || COUNTRY_FEED_INGEST_TOKEN || "");
+  if (!expected || token !== expected) {
+    return res.status(403).json({ error: "forbidden" });
+  }
+  try {
+    await strategic.refreshStrategicCache();
+    res.json({ ok: true, payload: strategic.buildStrategicPayload(fcvCountryProfileSnapshot).sources });
+  } catch (err) {
+    res.status(500).json({ error: "refresh_failed", detail: err.message });
+  }
+});
+
+function scheduleStrategicRefresh() {
+  if (String(process.env.STRATEGIC_REFRESH_ENABLED || "on").toLowerCase() === "off") {
+    return;
+  }
+  const run = () => strategic.refreshStrategicCache().catch((err) => console.error("[strategic] refresh failed:", err.message));
+  const ageHours = strategic.cacheAgeHours(strategic.readCache());
+  setTimeout(run, ageHours >= strategic.REFRESH_HOURS ? 15000 : 60 * 60 * 1000);
+  setInterval(run, strategic.REFRESH_HOURS * 60 * 60 * 1000).unref?.();
+}
+
 app.get("/api/health", (req, res) => {
   res.json({ ok: true, service: "who-afro-public-dashboard", timestamp: new Date().toISOString() });
 });
@@ -6509,6 +6624,7 @@ app.post("/api/country-feed", express.text({ type: "*/*", limit: "3mb" }), async
       saved_at: new Date().toISOString(),
       records,
       monthly_rows: parsedFeed.monthly_rows,
+      validation: parsedFeed.validation || null,
       quarterly_rows: parsedFeed.quarterly_rows,
       admin1_quarterly_rows: parsedFeed.admin1_quarterly_rows,
       row_count: parsedFeed.raw_row_count,
@@ -6847,7 +6963,8 @@ app.get("/api/dashboard-data", async (req, res) => {
             country_count: Number(countryFeedSnapshot?.country_count || 0),
             month_count: Number(countryFeedSnapshot?.month_count || 0),
             latest_month: countryFeedSnapshot?.latest_month || null,
-            saved_at: countryFeedSnapshot?.saved_at || null
+            saved_at: countryFeedSnapshot?.saved_at || null,
+            validation: countryFeedSnapshot?.validation || null
           }
         : null,
       service_delivery_by_country: countryFeedSnapshot?.schema_kind === "service_delivery"
@@ -7041,6 +7158,7 @@ if (require.main === module) {
   const server = app.listen(PORT, () => {
     console.log(`WHO AFRO public dashboard running at http://localhost:${PORT}`);
     startBackgroundCacheWarmup(PORT);
+    scheduleStrategicRefresh();
   });
 
   server.on("error", (err) => {

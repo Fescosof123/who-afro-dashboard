@@ -1,0 +1,41 @@
+{
+  "source": "FCV Countries - Humanitarian Reset Country Prioritization, AFRO Call to Action (IASC Emergency Directors Group); FCV country profile workbook (DHM)",
+  "owner": "WHO AFRO DHM",
+  "notes": "Single FCV reference table read by every page. The 13 Prioritized and Accelerated countries are the default scope and the only countries counted in FCV totals. Other FCV-classified countries and cross-border context countries are shown separately.",
+  "tracks": {
+    "fcv_prioritized": "FCV Prioritized (humanitarian operations)",
+    "fcv_accelerated": "FCV Accelerated transition",
+    "fcv_other": "Other FCV-classified (FCV profile workbook)",
+    "context": "Cross-border context (outside WHO AFRO)"
+  },
+  "groups": {
+    "fcv_prioritized": [
+      { "iso3": "BFA", "name": "Burkina Faso", "profile_name": "Burkina Faso", "ssa_id": 24 },
+      { "iso3": "CAF", "name": "Central African Republic", "profile_name": "Central African Republic", "ssa_id": 39 },
+      { "iso3": "TCD", "name": "Chad", "profile_name": "Chad" },
+      { "iso3": "COD", "name": "Democratic Republic of the Congo", "profile_name": "Democratic Republic of the Congo", "ssa_id": 49 },
+      { "iso3": "ETH", "name": "Ethiopia", "profile_name": "Ethiopia" },
+      { "iso3": "MLI", "name": "Mali", "profile_name": "Mali", "ssa_id": 134 },
+      { "iso3": "MOZ", "name": "Mozambique", "profile_name": "Mozambique" },
+      { "iso3": "NER", "name": "Niger", "profile_name": "Niger", "ssa_id": 163 },
+      { "iso3": "SSD", "name": "South Sudan", "profile_name": "South Sudan", "ssa_id": 247 }
+    ],
+    "fcv_accelerated": [
+      { "iso3": "CMR", "name": "Cameroon", "profile_name": "Cameroon", "ssa_id": 38 },
+      { "iso3": "ERI", "name": "Eritrea", "profile_name": "Eritrea" },
+      { "iso3": "NGA", "name": "Nigeria", "profile_name": "Nigeria", "ssa_id": 162 },
+      { "iso3": "ZWE", "name": "Zimbabwe", "profile_name": "Zimbabwe" }
+    ],
+    "fcv_other": [
+      { "iso3": "BDI", "name": "Burundi", "profile_name": "Burundi" },
+      { "iso3": "COM", "name": "Comoros", "profile_name": "Comoros" },
+      { "iso3": "COG", "name": "Republic of the Congo", "profile_name": "Republic of Congo" },
+      { "iso3": "GNB", "name": "Guinea-Bissau", "profile_name": "Guinea-Bissau" },
+      { "iso3": "STP", "name": "Sao Tome and Principe", "profile_name": "Sao Tome and Príncipe" }
+    ],
+    "context": [
+      { "iso3": "SDN", "name": "Sudan", "profile_name": "Sudan", "ssa_id": 205 },
+      { "iso3": "SOM", "name": "Somalia", "profile_name": "Somalia", "ssa_id": 201 }
+    ]
+  }
+}

@@ -41,7 +41,7 @@ npm start
 
 Open: <http://localhost:3000>
 
-If port 3000 is stuck from a previous run, use `start-local.bat` — it clears the port first.
+If port 3000 is stuck from a previous run, use `start-local.bat`; it clears the port first.
 
 ---
 
@@ -98,7 +98,7 @@ Create a `.env` file in this folder for local overrides. On Render, set these un
 
 | Endpoint | Description |
 | --- | --- |
-| `GET /api/health` | Health check — returns `{"ok": true}` |
+| `GET /api/health` | Health check: returns `{"ok": true}` |
 | `GET /api/dashboard-data` | Full aggregated dashboard payload |
 | `GET /api/country-feed/status` | Service delivery data freshness |
 | `POST /api/country-feed` | Ingest service delivery CSV or JSON |
@@ -107,12 +107,30 @@ Create a `.env` file in this folder for local overrides. On Render, set these un
 
 ## Pages
 
-1. **Overview** — Risk map, top alerts, country comparison table
-2. **Food Security** — IPC phase analysis by country
-3. **Nutrition** — Acute malnutrition indicators (HDX)
-4. **Conflicts & Displacements** — ACLED conflict index, displacement signals
-5. **Hazard Monitor** — GDACS flood and hazard events
-6. **Cyclone Watch** — Active cyclone signals (Meteo-France, WMO)
-7. **Forecast Studio** — ICPAC weekly/monthly/seasonal bulletins
-8. **Country Profiles** — Per-country humanitarian response brief
-9. **Operational Report** — Auto-generated situation bulletin for briefings
+Strategic view (verified sources only):
+
+1. **Overview**: six headline KPIs for the 13 FCV countries (humanitarian classification, health people in need, health reach, health funding gap, displaced people, attacks on health care), monthly strategic messages, map, health funding against plan, FCV country scorecard, plan coverage and MHPSS.
+2. **Crisis Classification**: WHO grading register (entered by DHM) and the DHM rule-based humanitarian classification with points per criterion.
+3. **FCV Response**: service delivery from the FCV service database, with implausible values excluded at ingest.
+4. **Country Profiles**: strategic country card plus the existing country brief.
+
+Risk monitoring: Conflict & Displacement (verified IDP and refugee figures on top), Attacks on Health Care (WHO SSA figures on top), Food Security, Nutrition, Hazards & Floods, Cyclone Watch, Climate Forecasts.
+
+Outputs and data: Operational Bulletin, Event Signals (the former overview of public-signal counts, for monitoring only) and Data Health (source status, values excluded at ingest, validation ledger).
+
+---
+
+## Strategic data sources
+
+| File / endpoint | Source | Maintained by |
+| --- | --- | --- |
+| `data/strategic-cache.json` | OCHA HDX HAPI (needs, appeals, IOM DTM IDPs, UNHCR refugees, IPC, INFORM Risk), OCHA FTS (health cluster funding), WHO SSA | Server, refreshed every 12 hours; seeded snapshot committed |
+| `data/who-grading.csv` | WHO grading decisions | DHM (one row per graded event) |
+| `data/fcv-reference.json` | FCV country list and tracks | DHM |
+| `FCV-Services-Deliveries-Database.csv` | FCV service database | FCV data focal point |
+| `GET /api/strategic` | Strategic payload used by the Overview | Server |
+| `POST /api/strategic/refresh` | Forces a refresh (header `x-refresh-token`) | Admin |
+
+Strategic environment variables: `HDX_HAPI_APP_IDENTIFIER` (base64 of `app-name:contact-email`, set this on Render), `STRATEGIC_REFRESH_HOURS` (default 12), `STRATEGIC_REFRESH_ENABLED` (`on`/`off`), `STRATEGIC_REFRESH_TOKEN`, `HDX_WASTING_PROXY_AS_LATEST` (default `off`).
+
+The pre-overhaul version is kept as git tag `v1.0-pre-overhaul` and branch `backup/v1-2026-10-27`.

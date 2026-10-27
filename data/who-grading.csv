@@ -1,0 +1,5 @@
+# WHO grading register for the FCV countries. Maintained by WHO AFRO DHM.
+# Enter only grades confirmed through the WHO grading process (Emergency Response Framework).
+# grade: Grade 1, Grade 2, Grade 3, Protracted 1, Protracted 2, Protracted 3
+# Dates as YYYY-MM-DD. One row per graded event. Lines starting with # are ignored.
+iso3,country,event,grade,date_graded,last_reviewed,incident_manager_level,source_reference

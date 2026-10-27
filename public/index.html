@@ -25,24 +25,27 @@
 
         <nav class="side-nav" id="sideNav">
           <div class="nav-group">
-            <p class="nav-group-label">Primary Priorities</p>
+            <p class="nav-group-label">Strategic View</p>
             <button class="nav-btn active" data-page="overviewPage" type="button">Overview</button>
-            <button class="nav-btn" data-page="fcvDataPage" type="button">FCV Data</button>
-            <button class="nav-btn" data-page="foodSecurityPage" type="button">Food Security Priority</button>
-            <button class="nav-btn" data-page="nutritionPage" type="button">Nutrition Context</button>
-          </div>
-          <div class="nav-group">
-            <p class="nav-group-label">Event Monitoring</p>
-            <button class="nav-btn" data-page="conflictsDisplacementPage" type="button">Conflicts &amp; Displacements</button>
-            <button class="nav-btn" data-page="attacksHealthPage" type="button">Attacks on Healthcare</button>
-            <button class="nav-btn" data-page="hazardPage" type="button">Hazard &amp; Flood Monitor</button>
-            <button class="nav-btn" data-page="cyclonePage" type="button">Cyclone Watch</button>
-          </div>
-          <div class="nav-group">
-            <p class="nav-group-label">Decision Support</p>
-            <button class="nav-btn" data-page="forecastPage" type="button">Forecast Studio</button>
+            <button class="nav-btn" data-page="gradingPage" type="button">Crisis Classification</button>
+            <button class="nav-btn" data-page="fcvDataPage" type="button">FCV Response</button>
             <button class="nav-btn" data-page="countryPage" type="button">Country Profiles</button>
-            <button class="nav-btn" data-page="operationalReportPage" type="button">Operational Report</button>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-label">Risk Monitoring</p>
+            <button class="nav-btn" data-page="conflictsDisplacementPage" type="button">Conflict &amp; Displacement</button>
+            <button class="nav-btn" data-page="attacksHealthPage" type="button">Attacks on Health Care</button>
+            <button class="nav-btn" data-page="foodSecurityPage" type="button">Food Security</button>
+            <button class="nav-btn" data-page="nutritionPage" type="button">Nutrition</button>
+            <button class="nav-btn" data-page="hazardPage" type="button">Hazards &amp; Floods</button>
+            <button class="nav-btn" data-page="cyclonePage" type="button">Cyclone Watch</button>
+            <button class="nav-btn" data-page="forecastPage" type="button">Climate Forecasts</button>
+          </div>
+          <div class="nav-group">
+            <p class="nav-group-label">Outputs &amp; Data</p>
+            <button class="nav-btn" data-page="operationalReportPage" type="button">Operational Bulletin</button>
+            <button class="nav-btn" data-page="signalsPage" type="button">Event Signals</button>
+            <button class="nav-btn" data-page="dataHealthPage" type="button">Data Health</button>
           </div>
         </nav>
 
@@ -81,7 +84,7 @@
       <section class="content">
         <header class="topbar">
           <div>
-            <h1>Humanitarian Events Decision Dashboard</h1>
+            <h1>WHO AFRO Humanitarian Dashboard</h1>
           </div>
           <div class="topbar-controls">
             <div class="date-pill" id="currentDate"></div>
@@ -107,21 +110,135 @@
 
         <main>
           <section id="overviewPage" class="page active">
-            <section class="metric-grid" id="metricGrid"></section>
+            <section class="panel strategic-head">
+              <div class="strategic-head-row">
+                <div>
+                  <h2 id="stratTitle">Humanitarian health situation in FCV countries</h2>
+                  <p id="stratScopeNote" class="muted">Strategic indicators from verified sources. Each figure shows its source and reference date.</p>
+                </div>
+                <label class="strat-scope">
+                  <span>Scope</span>
+                  <select id="stratScopeSelect">
+                    <option value="fcv13" selected>13 FCV countries (9 Prioritized + 4 Accelerated)</option>
+                    <option value="fcvall">All FCV-classified countries (18)</option>
+                    <option value="withcontext">FCV + cross-border context (Sudan, Somalia)</option>
+                  </select>
+                </label>
+              </div>
+              <div id="stratKpiGrid" class="strat-kpi-grid" aria-live="polite"></div>
+            </section>
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Data Validation Ledger</h2>
-                <p>Audit trail for high-priority country metrics in the current refresh.</p>
+                <h2>Strategic Messages</h2>
+                <p>Draft generated from the indicators on this page. The DHM lead reviews and edits it each month before it is used.</p>
               </div>
-              <div id="dataValidationSummary" class="summary data-validation-summary"></div>
+              <ol id="stratMessages" class="strat-messages"></ol>
             </section>
+
+            <section class="panel two-col strat-where">
+              <div>
+                <div class="panel-header">
+                  <h2>Where the Burden Sits</h2>
+                  <label class="strat-inline-select">
+                    <span>Map layer</span>
+                    <select id="stratMapLayer">
+                      <option value="classification" selected>DHM triage tier</option>
+                      <option value="health_pin">People in need of health assistance</option>
+                      <option value="funding_pct">Health funding received (%)</option>
+                      <option value="displaced">Displaced (IDPs + refugees)</option>
+                      <option value="ipc">IPC/CH Phase 3+ (share analysed)</option>
+                      <option value="attacks">Attacks on health care this year</option>
+                    </select>
+                  </label>
+                </div>
+                <div id="stratMap" class="chart strat-map"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Progress Against Plan</h2>
+                  <p>Health cluster funding in 2026 humanitarian plans, ranked by unfunded amount.</p>
+                </div>
+                <div id="stratFundingChart" class="chart strat-chart"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>FCV Country Scorecard</h2>
+                <p>One row per country, sorted by DHM triage tier. Click a country to open its profile; hover a value for its source and date. Grey values are outdated (displacement more than 24 months, IPC/CH more than 18 months) and are excluded from totals.</p>
+              </div>
+              <div class="table-wrap">
+                <table id="stratTable" class="strat-table"></table>
+              </div>
+            </section>
+
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>Health Needs Covered by the Plan</h2>
+                  <p>People targeted for health assistance as a share of people in need of health assistance, latest plan year. Health reach is not yet published in a verified source.</p>
+                </div>
+                <div id="stratCoverageChart" class="chart strat-chart"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Mental Health and Psychosocial Support (MHPSS)</h2>
+                  <p>People reached with mental health and psychosocial support (MHPSS) in the latest reported quarter, per 10,000 people in need of health assistance. Source: FCV service database. No regional MHPSS target is published yet.</p>
+                </div>
+                <div id="stratMhpssChart" class="chart strat-chart"></div>
+              </div>
+            </section>
+
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Sources and Links</h2>
+              </div>
+              <div id="stratSources" class="strat-sources"></div>
+            </section>
+          </section>
+
+          <section id="gradingPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Humanitarian Crisis Classification</h2>
+                <p>WHO grades come only from the WHO grading process and are entered by DHM in the grading register. The DHM triage tier is a transparent, rule-based aid built from verified indicators. It is not a WHO grade.</p>
+              </div>
+              <div id="gradingSummary" class="strat-kpi-grid"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <h2>DHM Triage Tier by Country</h2>
+                <p>Points per criterion are shown so the result can be checked and challenged.</p>
+              </div>
+              <div class="table-wrap"><table id="gradingTable" class="strat-table"></table></div>
+            </section>
+            <section class="panel two-col">
+              <div>
+                <div class="panel-header">
+                  <h2>WHO Grading Register</h2>
+                  <p>Maintained by DHM in <code>data/who-grading.csv</code>.</p>
+                </div>
+                <div id="gradingRegister"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2>Classification Rules</h2>
+                </div>
+                <div id="gradingRules" class="summary"></div>
+              </div>
+            </section>
+          </section>
+
+          <section id="signalsPage" class="page">
+            <section class="metric-grid" id="metricGrid"></section>
+
 
             <section class="panel two-col overview-focus-panel">
               <div>
                 <div class="panel-header">
-                  <h2>FCV Risk Map</h2>
-                  <p>Africa map.</p>
+                  <h2>Event Signal Map</h2>
+                  <p>Composite of public event signals (news volume, hazards, IPC). Use for monitoring, not for ranking crises.</p>
                   <div class="map-mode-toggle">
                     <button id="mapModeRisk" class="map-mode-btn active" type="button">Composite Risk</button>
                     <button id="mapModeIpc" class="map-mode-btn" type="button">IPC Phase 3+</button>
@@ -152,7 +269,32 @@
             </section>
           </section>
 
+          <section id="dataHealthPage" class="page">
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Strategic Source Status</h2>
+                <p>Verified sources behind the Overview and Crisis Classification pages.</p>
+              </div>
+              <div id="dataHealthSources" class="summary"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <h2>FCV Service Database: Values Excluded at Ingest</h2>
+                <p>Rows outside plausible limits are kept out of every average and listed here for correction by country focal points.</p>
+              </div>
+              <div id="dataHealthValidation"></div>
+            </section>
+            <section class="panel">
+              <div class="panel-header">
+                <h2>Data Validation Ledger</h2>
+                <p>Audit trail for high-priority country metrics in the current refresh.</p>
+              </div>
+              <div id="dataValidationSummary" class="summary data-validation-summary"></div>
+            </section>
+          </section>
+
           <section id="countryPage" class="page">
+            <section class="panel" id="stratCountryCard"></section>
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
@@ -234,8 +376,8 @@
           <section id="fcvDataPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>FCV Service Delivery Data</h2>
-                <p>District-reported service delivery indicators for FCV-prioritized/accelerated countries. Regional view compares countries; Country Deep-Dive shows one country's own trend and admin1 breakdown. Coverage reflects only the ~13 FCV Prioritized/Accelerated countries in the reporting feed, not the full AFRO country list.</p>
+                <h2>FCV Response: Service Delivery</h2>
+                <p>District-reported service delivery from the FCV service database (maintained in GitHub by the FCV data focal point). Rates and percentages outside plausible limits, such as coverage above 100% or counts entered as rates, are excluded from all averages; see Data Health for the list to correct.</p>
               </div>
               <div class="map-mode-toggle" id="fcvViewToggle">
                 <button class="map-mode-btn active" data-fcv-view="regional" type="button">Regional</button>
@@ -256,7 +398,7 @@
                 </div>
                 <button id="fcvFilterResetBtn" type="button">Reset filters</button>
               </div>
-              <p class="panel-header-note">Admin1 filtering only affects Country Deep-Dive charts — Regional charts compare whole countries, so a region filter doesn't apply to them.</p>
+              <p class="panel-header-note">Admin1 filtering only affects Country Deep-Dive charts, Regional charts compare whole countries, so a region filter doesn't apply to them.</p>
               <div class="band-legend fcv-threshold-legend" id="fcvThresholdLegend"></div>
             </section>
 
@@ -366,7 +508,7 @@
               <section class="panel">
                 <div class="panel-header">
                   <h2>GBV &amp; MHPSS Cases Managed</h2>
-                  <p>Abnormally low values are flagged directly on the chart — likely under-reporting, not absence of need.</p>
+                  <p>Abnormally low values are flagged directly on the chart, likely under-reporting, not absence of need.</p>
                 </div>
                 <div id="fcvRegProtectionBarChart" class="chart"></div>
               </section>
@@ -514,7 +656,7 @@
             <section class="panel">
               <div class="panel-header">
                 <h2>Recent Food Security Reporting</h2>
-                <p>Verified source items (ReliefWeb, FEWS NET) matched to food security keywords — up to 180-day window.</p>
+                <p>Source items (ReliefWeb, FEWS NET) matched to food security keywords, up to 180-day window.</p>
               </div>
               <div id="foodSecurityFeed" class="feed"></div>
             </section>
@@ -542,7 +684,7 @@
                       <th>Group</th>
                       <th>Child Wasting (%)</th>
                       <th>Child Stunting (%)</th>
-                      <th title="Anemia prevalence (World Bank SH.ANM.PREG.ZS) — not an acute malnutrition indicator">Pregnant Women Anemia (%) &#9888;</th>
+                      <th title="Anemia prevalence (World Bank SH.ANM.PREG.ZS), not an acute malnutrition indicator">Pregnant Women Anemia (%) &#9888;</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -553,7 +695,7 @@
             <section class="panel">
               <div class="panel-header">
                 <h2>Recent Nutrition Reporting</h2>
-                <p>Verified source items (ReliefWeb) matched to acute malnutrition and nutrition response keywords — up to 180-day window.</p>
+                <p>Source items (ReliefWeb) matched to acute malnutrition and nutrition response keywords, up to 180-day window.</p>
               </div>
               <div id="nutritionFeed" class="feed"></div>
             </section>
@@ -692,7 +834,7 @@
               <div>
                 <div class="panel-header">
                   <h2>Disease Outbreak Evidence Feed</h2>
-                  <p>Verified source items (ReliefWeb, WHO DON) matched to outbreak keywords — 30-day window.</p>
+                  <p>Source items (ReliefWeb, WHO DON) matched to outbreak keywords, 30-day window.</p>
                 </div>
                 <div id="diseaseOutbreakFeed" class="feed"></div>
               </div>
@@ -701,9 +843,9 @@
             <section class="panel">
               <div class="panel-header">
                 <h2>Historical Disaster Impact (EM-DAT)</h2>
-                <p>Natural disasters in Africa since 2000 — EM-DAT public database, CRED/UCLouvain. Updated manually a few times per year.</p>
+                <p>Natural disasters in Africa since 2000, EM-DAT public database, CRED/UCLouvain. Updated manually a few times per year.</p>
               </div>
-              <div id="emdatSummary" class="summary"><p class="loading-note">Loading EM-DAT historical data — the first load after the server has been idle can take a minute or two…</p></div>
+              <div id="emdatSummary" class="summary"><p class="loading-note">Loading EM-DAT historical data, the first load after the server has been idle can take a minute or two.</p></div>
               <div id="emdatChart" class="chart" aria-describedby="emdatChartAxisCaption"></div>
               <p id="emdatChartAxisCaption" class="chart-axis-caption">Bars: disaster events per year by type (left axis). Line: total people affected per year (right axis).</p>
             </section>
@@ -742,6 +884,7 @@
           </section>
 
           <section id="conflictsDisplacementPage" class="page">
+            <section class="panel" id="stratDisplacementPanel"></section>
             <section class="panel">
               <div class="panel-header">
                 <h2>Conflict And Displacement Pressure</h2>
@@ -785,7 +928,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Population Movement — IDP Estimates (IOM DTM)</h2>
+                <h2>Population Movement: IDP Estimates (IOM DTM)</h2>
                 <p>Internally displaced persons by country. Source: IOM Displacement Tracking Matrix via HDX. Refreshed every 24 hours.</p>
               </div>
               <div id="dtmDisplacementSummary" class="summary"></div>
@@ -814,9 +957,10 @@
           </section>
 
           <section id="attacksHealthPage" class="page">
+            <section class="panel" id="stratSsaPanel"></section>
             <section class="panel">
               <div class="panel-header">
-                <h2>Attacks on Healthcare Snapshot</h2>
+                <h2>Public Reporting Signals (context only)</h2>
                 <p>Signals on violence affecting health workers and facilities.</p>
               </div>
               <div id="attacksHealthSummary" class="summary"></div>
@@ -1069,5 +1213,6 @@
       </section>
     </div>
     <script src="/app.js"></script>
+    <script src="/strategic.js"></script>
   </body>
 </html>
