@@ -1,10 +1,10 @@
 {
-  "saved_at": "2026-06-03T09:31:36.017Z",
+  "saved_at": "2026-07-27T08:00:54.956Z",
   "by_iso3": {
     "AFG": {
-      "idp_count": 295,
-      "reporting_date": "2025-05-31",
-      "displacement_reason": "Natural disaster"
+      "idp_count": 16872,
+      "reporting_date": "2026-01-31",
+      "displacement_reason": "Natural Disaster"
     },
     "ATG": {
       "idp_count": 263,
@@ -22,9 +22,9 @@
       "displacement_reason": "Natural disaster"
     },
     "BEN": {
-      "idp_count": 4359,
+      "idp_count": 72,
       "reporting_date": "2025-07-31",
-      "displacement_reason": "Conflict"
+      "displacement_reason": "Other reason"
     },
     "BOL": {
       "idp_count": 231,
@@ -32,7 +32,7 @@
       "displacement_reason": "Natural disaster"
     },
     "BFA": {
-      "idp_count": 212,
+      "idp_count": 288,
       "reporting_date": "2019-08-30",
       "displacement_reason": "Insecurity"
     },
@@ -47,19 +47,19 @@
       "displacement_reason": "Conflict"
     },
     "CAF": {
-      "idp_count": 4463,
+      "idp_count": 959,
       "reporting_date": "2025-11-30",
-      "displacement_reason": "Conflict"
+      "displacement_reason": "Natural Disaster"
     },
     "TCD": {
-      "idp_count": 5182,
+      "idp_count": 214413,
       "reporting_date": "2025-10-30",
-      "displacement_reason": "Natural disaster"
+      "displacement_reason": "Conflict"
     },
     "COD": {
-      "idp_count": 18463,
-      "reporting_date": "2026-04-30",
-      "displacement_reason": "Other reason"
+      "idp_count": 4669061,
+      "reporting_date": "2026-02-28",
+      "displacement_reason": "Conflict"
     },
     "DJI": {
       "idp_count": 6086,
@@ -102,9 +102,9 @@
       "displacement_reason": "Natural disaster"
     },
     "HTI": {
-      "idp_count": 17356,
-      "reporting_date": "2025-12-31",
-      "displacement_reason": "Natural disaster"
+      "idp_count": 1089332,
+      "reporting_date": "2026-05-31",
+      "displacement_reason": "Conflict"
     },
     "HND": {
       "idp_count": 25465,
@@ -117,14 +117,14 @@
       "displacement_reason": "Natural disaster"
     },
     "IRQ": {
-      "idp_count": 579138,
+      "idp_count": 42000,
       "reporting_date": "2024-12-31",
       "displacement_reason": "Conflict"
     },
     "KEN": {
-      "idp_count": 234,
+      "idp_count": 351,
       "reporting_date": "2024-12-31",
-      "displacement_reason": "Natural disaster"
+      "displacement_reason": "Conflict"
     },
     "LAO": {
       "idp_count": 4270,
@@ -137,24 +137,24 @@
       "displacement_reason": "Conflict"
     },
     "LBY": {
-      "idp_count": 1000,
+      "idp_count": 55902,
       "reporting_date": "2024-05-31",
-      "displacement_reason": "No reason for displacement reported"
+      "displacement_reason": "Insecurity"
     },
     "MDG": {
-      "idp_count": 1250,
+      "idp_count": 5641,
       "reporting_date": "2022-09-30",
       "displacement_reason": "Natural disaster"
     },
     "MWI": {
-      "idp_count": 233,
+      "idp_count": 520,
       "reporting_date": "2024-12-31",
       "displacement_reason": "Other reason"
     },
     "MLI": {
-      "idp_count": 1505,
+      "idp_count": 17444,
       "reporting_date": "2023-04-30",
-      "displacement_reason": "No reason for displacement reported"
+      "displacement_reason": "Conflict"
     },
     "MNG": {
       "idp_count": 164,
@@ -172,14 +172,14 @@
       "displacement_reason": "Natural disaster"
     },
     "NER": {
-      "idp_count": 800,
-      "reporting_date": "2024-12-31",
+      "idp_count": 91,
+      "reporting_date": "2025-09-30",
       "displacement_reason": "Other reason"
     },
     "NGA": {
-      "idp_count": 41187,
+      "idp_count": 1125,
       "reporting_date": "2025-10-31",
-      "displacement_reason": "Natural disaster"
+      "displacement_reason": "Natural Disaster"
     },
     "PAK": {
       "idp_count": 523083,
@@ -212,9 +212,9 @@
       "displacement_reason": "Natural disaster"
     },
     "SOM": {
-      "idp_count": 750,
+      "idp_count": 23250,
       "reporting_date": "2024-09-30",
-      "displacement_reason": "Other reason"
+      "displacement_reason": "Natural disaster"
     },
     "ZAF": {
       "idp_count": 21448,
@@ -222,9 +222,9 @@
       "displacement_reason": "Natural disaster"
     },
     "SSD": {
-      "idp_count": 4815,
+      "idp_count": 23,
       "reporting_date": "2025-02-28",
-      "displacement_reason": "Natural disaster"
+      "displacement_reason": "Conflict"
     },
     "LKA": {
       "idp_count": 205238,
@@ -232,13 +232,13 @@
       "displacement_reason": "Natural disaster"
     },
     "SDN": {
-      "idp_count": 374990,
-      "reporting_date": "2026-02-28",
+      "idp_count": 120002,
+      "reporting_date": "2026-05-31",
       "displacement_reason": "Conflict"
     },
     "SYR": {
-      "idp_count": 5872203,
-      "reporting_date": "2026-03-31",
+      "idp_count": 5869779,
+      "reporting_date": "2026-04-30",
       "displacement_reason": "Conflict"
     },
     "UGA": {
@@ -247,8 +247,8 @@
       "displacement_reason": "Natural disaster"
     },
     "UKR": {
-      "idp_count": 343374,
-      "reporting_date": "2026-04-30",
+      "idp_count": 814466,
+      "reporting_date": "2026-05-31",
       "displacement_reason": "Conflict"
     },
     "VUT": {
@@ -257,19 +257,19 @@
       "displacement_reason": "Natural disaster"
     },
     "YEM": {
-      "idp_count": 1085,
+      "idp_count": 191268,
       "reporting_date": "2025-02-01",
-      "displacement_reason": "Natural disaster"
+      "displacement_reason": "Conflict"
     },
     "ZMB": {
-      "idp_count": 7023,
-      "reporting_date": "2024-12-31",
-      "displacement_reason": "Other reason"
-    },
-    "ZWE": {
-      "idp_count": 1772,
+      "idp_count": 117,
       "reporting_date": "2024-12-31",
       "displacement_reason": "Natural disaster"
+    },
+    "ZWE": {
+      "idp_count": 807,
+      "reporting_date": "2024-12-31",
+      "displacement_reason": "Other reason"
     }
   }
 }
