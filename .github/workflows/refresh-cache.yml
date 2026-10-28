@@ -10,9 +10,14 @@ on:
     - cron: '15 * * * *'
   workflow_dispatch:
 
+concurrency:
+  group: refresh-cache
+  cancel-in-progress: false
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: write
 
@@ -36,11 +41,19 @@ jobs:
         run: node scripts/refresh-rss-cache.js
         continue-on-error: true
 
+      - name: Refresh strategic data and record this month's KPI snapshot
+        run: node scripts/refresh-strategic.js
+        continue-on-error: true
+        env:
+          HDX_HAPI_APP_IDENTIFIER: ${{ secrets.HDX_HAPI_APP_IDENTIFIER }}
+
       - name: Commit updated cache files
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/*.json || true
           git diff --cached --quiet && echo "No changes - skipping commit" && exit 0
-          git commit -m "Auto-refresh: RSS cache update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git commit -m "Auto-refresh: data cache update $(date -u +'%Y-%m-%d %H:%M UTC')"
+          # Someone may have pushed while this job ran; replay on top of it.
+          git pull --rebase origin main
           git push
