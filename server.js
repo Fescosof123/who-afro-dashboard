@@ -189,6 +189,32 @@ function parseChoiceEnv(raw, allowedValues, fallbackValue) {
   return allowedValues.includes(normalized) ? normalized : fallbackValue;
 }
 
+// Optional password protection (off unless DASHBOARD_PASSWORD is set on the host).
+// Browsers show their standard sign-in box; the user name is DASHBOARD_USER (default "who").
+// /api/health stays open so the host can check the service is up.
+const DASHBOARD_PASSWORD = String(process.env.DASHBOARD_PASSWORD || "");
+const DASHBOARD_USER = String(process.env.DASHBOARD_USER || "who");
+if (DASHBOARD_PASSWORD) {
+  const crypto = require("crypto");
+  // Hashing first makes the comparison constant-time whatever the lengths.
+  const digest = (v) => crypto.createHash("sha256").update(String(v)).digest();
+  const same = (a, b) => crypto.timingSafeEqual(digest(a), digest(b));
+  app.use((req, res, next) => {
+    if (/^\/api\/health\/?$/.test(req.path) || req.method === "OPTIONS") return next();
+    const header = String(req.headers.authorization || "");
+    const [scheme, encoded] = header.split(" ");
+    if (/^basic$/i.test(scheme || "") && encoded) {
+      const decoded = Buffer.from(encoded, "base64").toString("utf8");
+      const i = decoded.indexOf(":");
+      if (i > 0 && same(decoded.slice(0, i), DASHBOARD_USER) && same(decoded.slice(i + 1), DASHBOARD_PASSWORD)) {
+        return next();
+      }
+    }
+    res.set("WWW-Authenticate", 'Basic realm="WHO AFRO Humanitarian Dashboard", charset="UTF-8"');
+    return res.status(401).send("Sign-in required.");
+  });
+}
+
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
@@ -7152,7 +7178,10 @@ function startBackgroundCacheWarmup(serverPort) {
     try {
       const resp = await axios.get(warmupUrl, {
         timeout: 130000,
-        headers: { "User-Agent": "WHO-AFRO-Dashboard/1.0 (+background-warmup)" }
+        headers: {
+          "User-Agent": "WHO-AFRO-Dashboard/1.0 (+background-warmup)",
+          ...(DASHBOARD_PASSWORD ? { Authorization: `Basic ${Buffer.from(`${DASHBOARD_USER}:${DASHBOARD_PASSWORD}`).toString("base64")}` } : {})
+        }
       });
       if (resp.status === 200) {
         console.log(`[Background] Cache warm-up OK at ${new Date().toISOString()}`);

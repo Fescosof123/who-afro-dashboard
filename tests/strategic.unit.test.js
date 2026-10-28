@@ -165,6 +165,17 @@ function run() {
   assert.equal(hist.base.month, "2026-09");
   assert.equal(strategic.historyForPayload(merged, new Date("2026-09-15T00:00:00Z")).base, null);
 
+  // Weekly snapshots: one per ISO week; the week base is the latest earlier week.
+  assert.equal(strategic.weekKey(new Date("2026-10-28T00:00:00Z")), "2026-W44");
+  const w1 = strategic.snapshotFromRows(rows, new Date("2026-10-19T08:00:00Z"));
+  const w2 = strategic.snapshotFromRows(rows, new Date("2026-10-25T08:00:00Z"));
+  const w3 = strategic.snapshotFromRows(rows, new Date("2026-10-28T08:00:00Z"));
+  const mergedW = strategic.mergeHistory({ snapshots: [w1, w2, w3], weekly: [w1, w2, w3] });
+  assert.deepEqual(mergedW.weekly.map((x) => x.week), ["2026-W43", "2026-W44"]);
+  const hw = strategic.historyForPayload(mergedW, new Date("2026-10-28T12:00:00Z"));
+  assert.equal(hw.week_base.week, "2026-W43");
+  assert.equal(hw.week_base.taken_at, w2.taken_at);
+
   console.log("strategic unit test passed");
 }
 

@@ -142,4 +142,6 @@ Rules worth knowing:
 
 Strategic environment variables: `HDX_HAPI_APP_IDENTIFIER` (base64 of `app-name:contact-email`, set this on Render), `STRATEGIC_REFRESH_HOURS` (default 12), `STRATEGIC_REFRESH_ENABLED` (`on`/`off`), `STRATEGIC_REFRESH_TOKEN`, `STRATEGIC_HISTORY_URL` (where the server pulls committed snapshots from; `off` to disable), `HDX_WASTING_PROXY_AS_LATEST` (default `off`). For the GitHub refresh job, add the same `HDX_HAPI_APP_IDENTIFIER` as a repository secret.
 
+Optional sign-in: set `DASHBOARD_PASSWORD` (and optionally `DASHBOARD_USER`, default `who`) on Render to require a user name and password for every page. `/api/health` stays open; if Render has a health check configured, point it to `/api/health`. Remove the variable to make the dashboard public again.
+
 The pre-overhaul version is kept as git tag `v1.0-pre-overhaul` and branch `backup/v1-2026-10-27`.

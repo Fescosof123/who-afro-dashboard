@@ -104,7 +104,7 @@
       "Democratic Republic of the Congo": "DR Congo",
       "Central African Republic": "CAR",
       "Republic of the Congo": "Congo",
-      "Sao Tome and Principe": "Sao Tome & Principe"
+      "São Tomé and Príncipe": "São Tomé & Príncipe"
     };
     return map[name] || name;
   }
@@ -919,7 +919,7 @@
       const g = state.payload.grading.rows || [];
       reg.innerHTML = g.length
         ? `<div class="table-wrap"><table class="strat-table"><thead><tr><th>Country</th><th>Event</th><th>Grade</th><th>Graded</th><th>Last review</th></tr></thead><tbody>${g.map((x) => `<tr><td>${esc(x.country || x.iso3)}</td><td>${esc(x.event)}</td><td>${esc(x.grade)}</td><td>${esc(x.date_graded)}</td><td>${esc(x.last_reviewed)}</td></tr>`).join("")}</tbody></table></div>`
-        : `<p>No WHO grades have been entered yet. DHM adds one row per graded event (Grade 1 to 3 or Protracted 1 to 3) to <code>data/who-grading.csv</code> in the GitHub repository; the dashboard picks it up on the next deploy.</p>`;
+        : `<p><strong>No WHO grades entered yet.</strong> Grades come only from the WHO grading process (Emergency Response Framework); the dashboard never estimates them. The DHM focal point adds one line per graded event (country, event, grade [Grade 1 to 3, or Protracted 1 to 3], date graded, last review, incident management level, reference) to the grading register, and the grade appears here, on the Overview and in the bulletin after the next update.</p>`;
     }
 
     const rules = el("gradingRules");
@@ -1301,9 +1301,9 @@
     const excluded = Object.values(v).reduce((s2, x) => s2 + (x.excluded_rows || 0), 0);
     renderStrip("fcvDataPage", "FCV Response: Key Figures", `Most recent quarter in the FCV service database: ${esc(q?.label || "n/a")}.`, [
       { id: "fvReporting", title: "Countries reporting", value: `${rows.length}<small> of 13</small>`, sub: `In ${esc(q?.label || "the latest quarter")}. Reports for the most recent quarter may still be arriving.`, source: "FCV service database", target: "fcvDataPage#fcvRegReportingHeatmap", tone: rows.length < 9 ? "warn" : "" },
-      { id: "fvReached", title: "Service contacts reported", value: fmtCompact(sum(rows, (r) => r.people_reached)), sub: "Sum of monthly \"people reached\" reports in the quarter; the same person may be counted more than once.", source: "FCV service database", target: "fcvDataPage#fcvRegVolumeKpiGrid" },
-      { id: "fvMhpss", title: "People reached with MHPSS", value: fmtCompact(sum(rows, (r) => r.mental_health_beneficiaries)), sub: `GBV cases managed: ${fmtFull(sum(rows, (r) => r.gbv_cases_managed))}.`, source: "FCV service database", target: "overviewPage#stratMhpssChart" },
-      { id: "fvExcluded", title: "Values held back for correction", value: fmtFull(excluded), sub: "Rates and percentages outside plausible limits.", source: "Ingest validation", target: "dataHealthPage#dataHealthValidation", tone: excluded ? "warn" : "" }
+      { id: "fvReached", title: `Service contacts reported (${esc(q?.label || "latest quarter")})`, value: fmtCompact(sum(rows, (r) => r.people_reached)), sub: "Sum of monthly \"people reached\" reports in the quarter; the same person may be counted more than once.", source: "FCV service database", target: "fcvDataPage#fcvRegVolumeKpiGrid" },
+      { id: "fvMhpss", title: `People reached with MHPSS (${esc(q?.label || "latest quarter")})`, value: fmtFull(sum(rows, (r) => r.mental_health_beneficiaries)), sub: `Covers only countries that reported in this quarter. GBV cases managed: ${fmtFull(sum(rows, (r) => r.gbv_cases_managed))}. Totals across all quarters are under Regional Service Volumes.`, source: "FCV service database", target: "fcvDataPage#fcvRegVolumeKpiGrid" },
+      { id: "fvExcluded", title: "Values held back for correction", value: fmtFull(excluded), sub: "Rates and percentages outside plausible limits, left out of all averages until corrected.", source: "Data checks on loading", target: "dataHealthPage#dataHealthValidation", tone: excluded ? "warn" : "" }
     ], ["fcvdb", "herams"]);
   }
 
@@ -1386,6 +1386,79 @@
     if (msgs.length) list.innerHTML = msgs.map((m) => `<li>${m}</li>`).join("");
   }
 
+  // "Since last week": compares with the latest snapshot from an earlier ISO week.
+  // Only like-for-like changes are reported: same source, same plan year, same
+  // calendar year for year-to-date counts, and a new survey round for IPC and DTM.
+  function weeklyChanges(rows) {
+    const wb = state.payload?.history?.week_base;
+    if (!wb) {
+      const first = state.payload?.history?.latest_taken_at;
+      return `<p class="muted">The weekly comparison starts next week${first ? `; figures were first stored on ${esc(fmtDate(first))}` : ""}.</p>`;
+    }
+    const items = [];
+    const prev = (r) => wb.countries?.[r.iso3];
+    const nowYear = String(state.payload.generated_at || new Date().toISOString()).slice(0, 4);
+    const baseYear = String(wb.taken_at || "").slice(0, 4);
+    const lc = (t) => String(t || "").toLowerCase();
+
+    // Tier changes, with their cause.
+    const moves = rows.filter((r) => prev(r)?.level && prev(r).level !== r.classification.level);
+    if (moves.length) {
+      items.push(`DHM triage tier changed: ${moves.map((r) => {
+        const p = prev(r);
+        const cause = p.level === "Insufficient data" ? "enough current data now available"
+          : r.classification.level === "Insufficient data" ? "too few current indicators this week"
+            : isNum(p.score) && p.score !== r.classification.score ? `score ${p.score} to ${r.classification.score} of 8`
+              : "data available changed; score unchanged";
+        return `${esc(shortName(r.country))} (${esc(lc(p.level))} to ${esc(lc(r.classification.level))}; ${cause})`;
+      }).join(", ")}.`);
+    }
+
+    // Attacks added to WHO SSA (year-to-date counts, same calendar year only).
+    const att = rows.filter((r) => r.attacks && isNum(prev(r)?.attacks_ytd)
+      && (prev(r).attacks_year || baseYear) === String(r.attacks.period?.start || nowYear).slice(0, 4)
+      && r.attacks.ytd.attacks > prev(r).attacks_ytd);
+    if (att.length) {
+      items.push(`Attacks on health care added to the WHO Surveillance System for Attacks on Health Care (SSA): ${att.map((r) => {
+        const dDeaths = isNum(prev(r).attack_deaths_ytd) ? r.attacks.ytd.deaths - prev(r).attack_deaths_ytd : null;
+        return `${esc(shortName(r.country))} +${fmtFull(r.attacks.ytd.attacks - prev(r).attacks_ytd)}${dDeaths != null ? ` (${dDeaths > 0 ? `${fmtFull(dDeaths)} more deaths` : "no further deaths"})` : ""}`;
+      }).join(", ")}. Some may have happened earlier and been recorded late.`);
+    }
+
+    // Net change in health funding reported to OCHA FTS (same plan year only).
+    if (baseYear === nowYear) {
+      const fund = rows.filter((r) => r.health_funding && isNum(prev(r)?.health_funding_usd) && Math.abs(r.health_funding.funding_usd - prev(r).health_funding_usd) >= 1000);
+      if (fund.length) {
+        items.push(`Health funding reported to OCHA FTS, net change: ${fund.map((r) => {
+          const d = r.health_funding.funding_usd - prev(r).health_funding_usd;
+          const pPct = isNum(prev(r).health_requirements_usd) && prev(r).health_requirements_usd > 0 ? prev(r).health_funding_usd / prev(r).health_requirements_usd : null;
+          return `${esc(shortName(r.country))} ${d > 0 ? "+" : "-"}${fmtUsd(Math.abs(d))}${pPct != null ? ` (${fmtPct(pPct)} to ${fmtPct(r.health_funding.pct)} funded)` : ""}`;
+        }).join(", ")}.`);
+      }
+    }
+
+    // Plan figures: a revision within the same plan and source, or a change of source.
+    const sameYearPin = rows.filter((r) => isNum(prev(r)?.health_in_need) && prev(r).health_in_need > 0 && isNum(r.health_in_need?.value)
+      && String(prev(r).health_in_need_year || "") === String(r.health_in_need.year || ""));
+    const revised = sameYearPin.filter((r) => (prev(r).health_in_need_publisher || r.health_in_need.source) === r.health_in_need.source
+      && Math.abs(r.health_in_need.value - prev(r).health_in_need) / prev(r).health_in_need >= 0.05);
+    if (revised.length) items.push(`Plan figures for people in need of health assistance revised by 5% or more: ${revised.map((r) => `${esc(shortName(r.country))} ${fmtCompact(prev(r).health_in_need)} to ${fmtCompact(r.health_in_need.value)}`).join(", ")}.`);
+    const reSourced = sameYearPin.filter((r) => prev(r).health_in_need_publisher && prev(r).health_in_need_publisher !== r.health_in_need.source
+      && Math.abs(r.health_in_need.value - prev(r).health_in_need) / prev(r).health_in_need >= 0.05);
+    if (reSourced.length) items.push(`Source of the people in need figure changed: ${reSourced.map((r) => `${esc(shortName(r.country))} now ${fmtCompact(r.health_in_need.value)} from ${esc(plainSource(r.health_in_need.source))} (last week ${fmtCompact(prev(r).health_in_need)} from ${esc(plainSource(prev(r).health_in_need_publisher))})`).join(", ")}.`);
+
+    // New IOM DTM round or new IPC/CH analysis.
+    const dtm = rows.filter((r) => r.idps && !r.idps.stale && isNum(prev(r)?.idps) && prev(r).idps > 0 && prev(r).idps_date && r.idps.date && prev(r).idps_date !== r.idps.date);
+    if (dtm.length) items.push(`New internal displacement figures: ${dtm.map((r) => `${esc(shortName(r.country))} ${fmtCompact(prev(r).idps)} to ${fmtCompact(r.idps.value)} (${esc(fmtMonth(r.idps.date))})`).join(", ")}.`);
+    const ipc = rows.filter((r) => r.ipc && !r.ipc.stale && prev(r)?.ipc_period_end && r.ipc.period_end && prev(r).ipc_period_end !== r.ipc.period_end);
+    if (ipc.length) items.push(`New IPC/CH analysis: ${ipc.map((r) => `${esc(shortName(r.country))} ${isNum(prev(r).ipc_fraction) ? `${fmtPct(prev(r).ipc_fraction)} to ` : ""}${fmtPct(r.ipc.fraction)} in Phase 3 or above`).join(", ")}.`);
+
+    const when = `figures held on ${esc(fmtDate(wb.taken_at))}`;
+    return items.length
+      ? `<ul class="bulletin-list">${items.map((t) => `<li>${t}</li>`).join("")}</ul><p class="muted">Compared with ${when}.</p>`
+      : `<p>No change in tiers, attacks, funding, plan figures, displacement rounds or IPC analyses since ${when}.</p>`;
+  }
+
   function renderBulletinWeekly() {
     setTimeout(renderCoverMessages, 0);
     const node = el("bulletinWeekly");
@@ -1431,6 +1504,8 @@
       <table ${TABLE_ATTR}><thead><tr><th ${TH}>Indicator</th><th ${TH}>Value</th><th ${TH}>Source</th></tr></thead>
         <tbody>${kpiRows.map(([a, b, c]) => `<tr><td>${a}</td><td><strong>${b}</strong></td><td>${c}</td></tr>`).join("")}</tbody></table>
       ${messages ? `<ol class="bulletin-messages">${messages}</ol>` : ""}
+      <h4 class="bulletin-h4">What changed since last week</h4>
+      ${weeklyChanges(rows)}
 
       <h3 class="bulletin-h3">2. Operational situation</h3>
       <ul class="bulletin-list">
@@ -1440,20 +1515,20 @@
       </ul>
       ${noteBox("risk", "Optional note: major health risk this week", "Main health threat this week and where (outbreak, displacement wave, flood).")}
       <h4 class="bulletin-h4">Priority countries (major and severe tiers)</h4>
-      <table ${TABLE_ATTR}><thead><tr><th ${TH}>Country</th><th ${TH}>DHM tier</th><th ${TH}>Health PiN</th><th ${TH}>Health funded</th><th ${TH}>IDPs</th><th ${TH}>IPC/CH 3+</th><th ${TH}>Attacks this year</th></tr></thead>
+      <table ${TABLE_ATTR}><thead><tr><th ${TH}>Country</th><th ${TH}>DHM tier</th><th ${TH}>People in need (health)</th><th ${TH}>Health funded</th><th ${TH}>IDPs</th><th ${TH}>IPC/CH 3+</th><th ${TH}>Attacks this year</th></tr></thead>
         <tbody>${priority.map((r) => `<tr>
           <td><strong>${esc(r.country)}</strong></td><td>${esc(r.classification.level)}</td>
-          <td>${r.health_in_need ? fmtCompact(r.health_in_need.value) : "no plan"}</td>
+          <td>${r.health_in_need ? fmtCompact(r.health_in_need.value) : r.health_outdated ? `${fmtCompact(r.health_outdated.value)} (last plan, ${esc(r.health_outdated.year)})` : "no plan"}</td>
           <td>${r.health_funding ? fmtPct(r.health_funding.pct) : "no plan"}</td>
-          <td>${r.idps && !r.idps.stale ? fmtCompact(r.idps.value) : "outdated"}</td>
-          <td>${r.ipc && !r.ipc.stale ? fmtPct(r.ipc.fraction) : "no current analysis"}</td>
-          <td>${r.attacks ? `${fmtFull(r.attacks.ytd.attacks)} (${fmtFull(r.attacks.ytd.deaths)} killed)` : "not in SSA"}</td></tr>`).join("")}</tbody></table>
+          <td>${r.idps ? `${fmtCompact(r.idps.value)}${r.idps.stale ? ` (outdated, ${esc(fmtMonth(r.idps.date))})` : ""}` : "n/a"}</td>
+          <td>${r.ipc ? `${fmtPct(r.ipc.fraction)}${r.ipc.stale ? ` (outdated, ${esc(fmtMonth(r.ipc.period_end))})` : ""}` : "no analysis"}</td>
+          <td>${r.attacks ? `${fmtFull(r.attacks.ytd.attacks)} (${fmtFull(r.attacks.ytd.deaths)} killed)` : "not covered by WHO SSA"}</td></tr>`).join("")}</tbody></table>
       ${noteBox("countries", "Optional note: country updates", "One or two lines per priority country: what changed and what WHO is doing.")}
 
       <h3 class="bulletin-h3">3. Response</h3>
       <ul class="bulletin-list">
         <li>Health Cluster funding received in 2026 plans: <strong>${fmtUsd(k.got)}</strong> of ${fmtUsd(k.req)} (${fmtPct(k.pct)}; median per country ${fmtPct(k.medianPct)}).</li>
-        <li>FCV service delivery, latest reported quarter per country (${qRows.length} of 13 countries; ${esc(qLabels[0] || "n/a")} to ${esc(qLabels[qLabels.length - 1] || "n/a")}): ${fmtCompact(sum(qRows, (r) => r.people_reached))} service contacts reported (monthly reports summed, so people may be counted more than once), ${fmtFull(sum(qRows, (r) => r.mental_health_beneficiaries))} MHPSS contacts, ${fmtFull(sum(qRows, (r) => r.gbv_cases_managed))} GBV cases managed, ${fmtFull(sum(qRows, (r) => r.children_screened_malnutrition))} children screened for malnutrition.</li>
+        <li>FCV service delivery, latest reported quarter per country (${qRows.length} of 13 countries; ${esc(qLabels[0] || "n/a")} to ${esc(qLabels[qLabels.length - 1] || "n/a")}): ${fmtCompact(sum(qRows, (r) => r.people_reached))} service contacts reported (monthly reports summed, so people may be counted more than once), ${fmtFull(sum(qRows, (r) => r.mental_health_beneficiaries))} people reached with mental health and psychosocial support (MHPSS), ${fmtFull(sum(qRows, (r) => r.gbv_cases_managed))} GBV cases managed, ${fmtFull(sum(qRows, (r) => r.children_screened_malnutrition))} children screened for malnutrition.</li>
       </ul>
       ${noteBox("response", "Optional note: WHO response highlights", "Deployments, supplies, campaigns, coordination decisions this week.")}
 

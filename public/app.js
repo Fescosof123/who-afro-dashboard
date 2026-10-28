@@ -247,7 +247,7 @@ const PHRASE_FR = {
   "All-Events Summary": "Synthese tous evenements",
   "Forecast and Projection Summary": "Synthese previsions et projections",
   "Conflicts and Displacements Summary": "Synthese conflits et deplacements",
-  "Priority Countries": "Pays prioritaires",
+  "Countries with Most Event Signals": "Pays avec le plus de signaux",
   "Recommendations (All Issues)": "Recommandations (toutes thematiques)",
   "Source Intelligence Detail": "Detail intelligence sources",
   "Decision Protocol": "Protocole decisionnel",
@@ -970,11 +970,14 @@ function countryTrackRank(track) {
 
 function scopeCoverageLabel() {
   const scope = dashboardState?.scope || {};
-  const afroCount = scope.afro_country_count || 0;
   const otherCount = scope.other_africa_country_count || 0;
-  if (afroCount && otherCount) {
-    return `${afroCount} WHO AFRO countries + ${otherCount} other African ${otherCount === 1 ? "country" : "countries"}`;
+  const total = scope.country_count || (dashboardState?.countries || []).length;
+  // afro_country_count excludes the FCV countries, which are also WHO AFRO members.
+  const afroAll = Math.max(0, total - otherCount);
+  if (afroAll && otherCount) {
+    return `13 FCV countries for the strategic figures; event monitoring covers ${afroAll} WHO AFRO countries plus ${otherCount === 2 ? "Sudan and Somalia (WHO Eastern Mediterranean Region)" : `${otherCount} other countries`}`;
   }
+  const afroCount = scope.afro_country_count || 0;
   if (afroCount) {
     return `${afroCount} WHO AFRO countries`;
   }
@@ -1194,6 +1197,7 @@ async function exportOperationalBulletinWord() {
     const sourceSummaries = dashboardState.source_summaries || {};
     const forecasts = dashboardState.forecasts || [];
     const cycloneSourceStatus = dashboardState.cyclone_source_status || {};
+    const reliefwebApiStatus = dashboardState.reliefweb_api_status || {};
     const cemsFloodStatus = dashboardState.cems_flood_source_status || {};
     const combinedRecommendations = aiRecommendations?.combined || [];
 
@@ -1254,29 +1258,26 @@ async function exportOperationalBulletinWord() {
   <h1 style="border-bottom:2px solid #004990;text-align:center;font-size:22pt;">Humanitarian Operational Situation Bulletin</h1>
   <p style="font-size:10pt;color:#555;">Weekly operational update for the FCV countries (Part A) with event and source detail (Part B)</p>
   <p style="font-size:10pt;"><strong>Issue:</strong> ${issueCode} | <strong>Date:</strong> ${formatDateTime(dashboardState.generated_at)} | <strong>Coverage:</strong> ${scopeCoverageLabel()}</p>
-  <p style="font-size:10pt;"><strong>Source basis:</strong> GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone checks, Copernicus flood ${cemsFloodStatus.overall || "unknown"}</p>
+  <p style="font-size:10pt;"><strong>Source basis:</strong> GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${reliefwebApiStatus.error ? "unavailable" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports`}, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone sources checked, Copernicus flood forecasts ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable" : (cemsFloodStatus.overall || "status unknown")}</p>
 </div>
 
 ${sectionHtml("bulletinWeekly")}
 
 <h1>Part B: Event and Source Detail</h1>
-<h2>1. Key Messages</h2>
-${sectionHtml("operationalBulletinCover").includes("<ol") ? sectionHtml("operationalBulletinCover").match(/<ol[\s\S]*?<\/ol>/i)?.[0] || "<p>See dashboard for details.</p>" : "<p>See dashboard for details.</p>"}
+<h2>1. About Part B</h2>
+<p>Part B lists hazard, forecast and news signals behind the update. Its country ranking uses news and hazard signals; the crisis ranking is the DHM triage tier in Part A.</p>
 
 <h2>2. Operational Situation Summary</h2>
-<h3>2.1 Bulletin Highlights</h3>
-${sectionHtml("operationalReportHeader")}
-
-<h3>2.2 All-Events Summary</h3>
+<h3>2.1 All-Events Summary</h3>
 ${sectionHtml("operationalEventSummary")}
 
-<h3>2.3 Forecast and Projection Summary</h3>
+<h3>2.2 Forecast and Projection Summary</h3>
 ${sectionHtml("operationalForecastSummary")}
 
 <h2>3. Conflicts and Displacements</h2>
 ${sectionHtml("operationalConflictDisplacementSummary")}
 
-<h2>4. Priority Countries</h2>
+<h2>4. Countries with Most Event Signals</h2>
 ${priorityTableHtml}
 
 <h2>5. Recommendations</h2>
@@ -2909,9 +2910,9 @@ function fcvBaseLayout(overrides = {}) {
 const FCV_PLOT_CONFIG = { displayModeBar: false, responsive: true };
 
 const FCV_INDICATOR_META = {
-  mental_health_beneficiaries: { label: "MHPSS beneficiaries", agg: "sum" },
+  mental_health_beneficiaries: { label: "People reached with MHPSS (reported)", agg: "sum" },
   gbv_cases_managed: { label: "GBV cases managed", agg: "sum" },
-  people_reached: { label: "People reached", agg: "sum" },
+  people_reached: { label: "Service contacts (reported)", agg: "sum" },
   children_screened_malnutrition: { label: "Children screened (malnutrition)", agg: "sum" },
   opd_consultations_per_person_per_month: { label: "OPD consultations / person / month", agg: "avg" },
   deliveries_in_health_institution_pct: { label: "Institutional delivery %", agg: "avg" },
@@ -3389,10 +3390,13 @@ function renderFcvRegVolumeKpis() {
       : null;
     return { label: meta.label, value };
   });
+  const qs = [...new Set(rows.map((r) => r.quarter_label).filter(Boolean))].sort();
+  const period = qs.length > 1 ? `${qs[0]} to ${qs[qs.length - 1]}` : qs[0] || "no quarter selected";
   els.fcvRegVolumeKpiGrid.innerHTML = cards.map((c) => `
     <article class="metric-card">
       <h3>${c.label}</h3>
       <div class="metric-value">${c.value != null ? formatCount(Math.round(c.value)) : "n/a"}</div>
+      <div class="metric-note">Total of all reports in the selected quarters (${period}); monthly reports are summed, so people may be counted more than once.</div>
     </article>
   `).join("");
 }
@@ -5629,8 +5633,8 @@ function renderHazardSourceSummaries() {
     : cemsFloodStatus.overall === "partial"
       ? `Copernicus flood docs verified (${cemsFloodStatus.public_docs_available || 0}/${cemsFloodStatus.public_docs_checked || 0}); live portal remains credentialed.`
       : cemsFloodStatus.overall === "error"
-        ? "Copernicus flood posture could not be verified in this refresh."
-        : "Copernicus flood posture is not yet fully established in this refresh.";
+        ? "Copernicus flood forecasts were unavailable in this update."
+        : "Copernicus flood forecasts were only partly available in this update.";
   const deltaText = (n) => {
     if (n == null) {
       return "n/a (first refresh baseline)";
@@ -5860,27 +5864,33 @@ function renderOperationalReportPage() {
     return !Number.isFinite(t) || Date.now() - t > 48 * 3600 * 1000;
   }).map(([label]) => label);
   if (downFeeds.length) {
-    coverQualitySignals.push(`Not updated in 48 hours: ${downFeeds.join(", ")}`);
+    coverQualitySignals.push(`Not updated in 48 hours: ${downFeeds.join(", ")}.`);
   }
+  // Sources that reported an error in this update.
+  const failing = [];
+  if (String(cemsFloodStatus.overall || "").toLowerCase() === "error") failing.push("Copernicus flood forecasts");
+  if (reliefwebApiStatus.error) failing.push("ReliefWeb reports");
+  if (Number(cycloneSourceStatus.checked_count || 0) > 0 && Number(cycloneSourceStatus.available_count ?? 1) === 0) failing.push("cyclone advisories");
+  failing.forEach((name) => coverQualitySignals.push(`${name.charAt(0).toUpperCase()}${name.slice(1)} unavailable in this update.`));
   const coverQualitySeverity = coverQualitySignals.length >= 2 ? "bad" : coverQualitySignals.length === 1 ? "warn" : "ok";
   const coverQualityLabel = coverQualitySeverity === "bad"
     ? tr("Action needed", "Action requise")
     : coverQualitySeverity === "warn"
       ? tr("Monitor", "Surveiller")
       : tr("Good", "Bon");
-  const coverQualityNote = coverQualitySignals.length ? coverQualitySignals.join(" | ") : "No major data quality flags in this refresh.";
+  const coverQualityNote = coverQualitySignals.length ? coverQualitySignals.map((x) => (/[.]$/.test(x) ? x : `${x}.`)).join(" ") : "No major data quality flags in this refresh.";
   const coverQualityInterpretation = coverQualitySeverity === "bad"
     ? tr(
-      "Action needed indicates at least two active governance risks; leadership decisions should include explicit validation language before operational action.",
+      "Several sources were unavailable or outdated in this update. Treat the affected sections as incomplete and confirm with country offices before acting.",
       "Action requise indique au moins deux risques de gouvernance actifs; les decisions de direction doivent inclure une mention explicite de validation avant action operationnelle."
     )
     : coverQualitySeverity === "warn"
       ? tr(
-        "Monitor indicates one active governance risk; decisions should note the affected source limitation and confirm the latest available validation.",
+        "One source was unavailable or outdated in this update. The section that relies on it may be incomplete.",
         "Surveiller indique un risque de gouvernance actif; les decisions doivent noter la limitation de source concernee et confirmer la derniere validation disponible."
       )
       : tr(
-        "Good indicates no major governance risks are active in this refresh, though routine country validation still applies.",
+        "All core sources updated normally. Routine country validation still applies.",
         "Bon indique qu'aucun risque majeur de gouvernance n'est actif dans ce cycle, mais la validation pays de routine reste necessaire."
       );
   const coverQualityLegendMarkup = ipcVeryStaleCountries.length
@@ -5976,7 +5986,7 @@ function renderOperationalReportPage() {
     {
       title: tr("Flood Exposure", "Exposition aux inondations"),
       body: tr(
-        `${floodCountries.length} countries show mapped flood signals from current GDACS and ReliefWeb evidence, led by ${floodTopCountries}. Copernicus flood posture is ${cemsFloodStatus.overall || "unknown"}.`,
+        `${floodCountries.length} countries show mapped flood signals from current GDACS and ReliefWeb evidence, led by ${floodTopCountries}. Copernicus flood forecasts: ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable in this update" : (cemsFloodStatus.overall || "status unknown")}.`,
         `${floodCountries.length} pays montrent des signaux d'inondation cartographies a partir des evidences GDACS et ReliefWeb actuelles, menes par ${floodTopCountries}. La posture inondation Copernicus est ${cemsFloodStatus.overall || "unknown"}.`
       )
     }
@@ -6006,7 +6016,7 @@ function renderOperationalReportPage() {
         <div class="bulletin-cover-card">
           <span class="bulletin-meta-label">Reporting Basis</span>
           <strong>Compiled from public sources at each update</strong>
-          <p>GDACS ${sourceSummaries.gdacs?.total_events ?? 0}, ReliefWeb ${sourceSummaries.reliefweb?.total_reports_30d ?? 0}, ICPAC ${forecasts.length}, cyclone checks ${cycloneSourceStatus.checked_count ?? 0}, Copernicus flood posture ${cemsFloodStatus.overall || "unknown"}.</p>
+          <p>GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${reliefwebApiStatus.error ? "unavailable" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports`}, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone sources checked, Copernicus flood forecasts ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable" : (cemsFloodStatus.overall || "status unknown")}.</p>
         </div>
         <div class="bulletin-cover-card bulletin-cover-quality-card bulletin-cover-quality-${coverQualitySeverity}" aria-describedby="bulletinCoverQualityNote bulletinCoverQualityInterpretation${ipcVeryStaleCountries.length ? ' bulletinCoverQualityLegend' : ''}">
           <span class="bulletin-meta-label">Data Quality Status</span>
