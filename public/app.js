@@ -54,20 +54,20 @@ const PAGE_CAVEATS = {
     fcvDataPage: "FCV data caveat: coverage reflects only the FCV Prioritized/Accelerated countries in the reporting feed. Thresholds for H3 and completeness are proposed defaults, not validated targets."
   },
   fr: {
-    overviewPage: "Vue d'ensemble: indicateurs strategiques issus de sources verifiees (OCHA HDX HAPI et FTS, OIM DTM, HCR, IPC, INFORM, OMS SSA). Chaque chiffre indique sa source et sa date de reference.",
-    gradingPage: "Classification des crises: les grades OMS proviennent uniquement du processus de gradation de l'OMS. La classification DHM est une aide au triage fondee sur des regles, pas un grade.",
-    signalsPage: "Signaux d'evenements: comptages de rapports publics et d'alertes, pour le suivi. Ce ne sont pas des chiffres verifies et ils ne doivent pas servir a classer les crises.",
-    dataHealthPage: "Sante des donnees: statut des sources et valeurs exclues a l'ingestion. Pour l'equipe donnees et les points focaux pays.",
-    countryPage: "Note profil pays: cette page est un profil d'appui. La priorite decisionnelle reste la securite alimentaire et la pression des evenements.",
-    foodSecurityPage: "Note securite alimentaire: c'est la grille principale de decision. Les valeurs IPC et FEWS sont des instantanes source et exigent une verification de date.",
-    nutritionPage: "Note nutrition: cette page est une couche d'appui et ne doit pas remplacer les declencheurs de securite alimentaire ou d'evenements.",
-    forecastPage: "Note previsions: cette page est basee uniquement sur les sources (IPC, ICPAC et signaux derives secheresse/cyclone). Aucune projection interne de tendance n'est affichee.",
-    attacksHealthPage: "Note attaques contre les soins de sante: cette page presente des signaux rapportes par les sources et des references SSA. Confirmer les details avec la validation pays et les partenaires de protection.",
-    cyclonePage: "Note cyclone: les signaux d'evenement indiquent une pression et des besoins de preparation, mais les actions exigent une validation niveau pays.",
-    hazardPage: "Note aleas: GDACS et les sources liees donnent le contexte evenementiel. Les decisions critiques exigent une triangulation avec des mises a jour pays et partenaires validees.",
-    conflictsDisplacementPage: "Note conflits et deplacements: cette page reflete des signaux de conflits/deplacements rapportes en ligne, et non des totaux verifies d'evenements ou de population.",
-    operationalReportPage: "Note bulletin operationnel: ce bulletin depend du cycle de rafraichissement et reflete les signaux actuellement charges; les decisions pays exigent une validation finale.",
-    fcvDataPage: "Note donnees FCV: la couverture ne concerne que les pays FCV Prioritaires/Acceleres du flux de rapportage. Les seuils H3 et de completude sont des valeurs par defaut proposees, non validees."
+    overviewPage: "Vue d'ensemble\u00a0: indicateurs stratégiques issus de sources vérifiées (HDX HAPI et FTS d'OCHA, DTM de l'OIM, HCR, IPC, INFORM, SSA de l'OMS). Chaque chiffre indique sa source et sa date de référence.",
+    gradingPage: "Classification des crises\u00a0: les grades OMS proviennent uniquement du processus de classement par grade de l'OMS. La classification DHM est une aide au triage fondée sur des règles, pas un grade.",
+    signalsPage: "Signaux d'événements\u00a0: nombres de rapports publics et d'alertes aux aléas, à des fins de suivi. Ce ne sont pas des chiffres vérifiés d'incidents ou de population et ils ne doivent pas servir à classer les crises.",
+    dataHealthPage: "Qualité des données\u00a0: état des sources et valeurs exclues au chargement. Pour l'équipe chargée des données et les points focaux pays.",
+    countryPage: "Note sur les profils pays\u00a0: cette page est un profil d'appui. La priorité décisionnelle reste la sécurité alimentaire et la pression des événements.",
+    foodSecurityPage: "Note sur la sécurité alimentaire\u00a0: c'est la grille de décision principale. Les valeurs IPC et FEWS sont des instantanés des sources et exigent une vérification de leur date de validité.",
+    nutritionPage: "Note sur la nutrition\u00a0: cette page est une couche d'appui et ne doit pas l'emporter sur les seuils de sécurité alimentaire ou liés aux événements.",
+    forecastPage: "Note sur les prévisions\u00a0: cette page repose uniquement sur les sources (IPC, ICPAC et signaux de sécheresse et de cyclone issus des sources). Aucune projection de tendance interne n'est affichée.",
+    attacksHealthPage: "Note sur les attaques contre les soins de santé\u00a0: cette page présente des signaux rapportés par les sources et des références du SSA. Confirmer le détail des incidents avec la vérification pays et les partenaires de protection.",
+    cyclonePage: "Note sur les cyclones\u00a0: les signaux d'événements indiquent une pression et des besoins de préparation, mais les actions opérationnelles exigent une validation au niveau du pays.",
+    hazardPage: "Note sur les aléas\u00a0: GDACS et les sources liées donnent le contexte des événements\u202f; les décisions critiques exigent une triangulation avec des informations validées des pays et des partenaires.",
+    conflictsDisplacementPage: "Note sur les conflits et les déplacements\u00a0: cette page reflète des signaux de conflits et de déplacements rapportés en ligne, et non des totaux vérifiés d'événements ou de population.",
+    operationalReportPage: "Note sur le bulletin opérationnel\u00a0: ce bulletin suit les actualisations et reflète les signaux des sources actuellement chargés\u202f; les décisions concernant les pays exigent une validation finale.",
+    fcvDataPage: "Note sur les données FCV\u00a0: la couverture ne concerne que les pays FCV prioritaires et accélérés présents dans le flux de rapports. Les seuils H3 et de complétude sont des valeurs par défaut proposées, non validées."
   }
 };
 
@@ -179,157 +179,227 @@ const UI_COPY = {
 };
 
 const PHRASE_FR = {
-  "Primary Priorities": "Priorites principales",
+  "Primary Priorities": "Priorités principales",
   "Overview": "Vue d'ensemble",
-  "Food Security Priority": "Priorite securite alimentaire",
+  "Food Security Priority": "Priorité sécurité alimentaire",
   "Nutrition Context": "Contexte nutritionnel",
-  "Event Monitoring": "Suivi des evenements",
-  "Conflicts & Displacements": "Conflits et deplacements",
-  "Attacks on Healthcare": "Attaques contre les soins de sante",
-  "Hazard & Flood Monitor": "Suivi aleas et inondations",
+  "Event Monitoring": "Suivi des événements",
+  "Conflicts & Displacements": "Conflits et déplacements",
+  "Attacks on Healthcare": "Attaques contre les soins de santé",
+  "Hazard & Flood Monitor": "Suivi des aléas et des inondations",
   "Cyclone Watch": "Vigie cyclonique",
-  "Decision Support": "Appui a la decision",
-  "Forecast Studio": "Atelier previsions",
+  "Decision Support": "Appui à la décision",
+  "Forecast Studio": "Atelier de prévisions",
   "Country Profiles": "Profils pays",
-  "Operational Report": "Rapport operationnel",
-  "Export Bulletin (Print)": "Exporter bulletin (impression)",
-  "Export Bulletin (Word)": "Exporter bulletin (Word)",
-  "Export Bulletin": "Exporter bulletin",
+  "Operational Report": "Rapport opérationnel",
+  "Export Bulletin (Print)": "Exporter le bulletin (impression)",
+  "Export Bulletin (Word)": "Exporter le bulletin (Word)",
+  "Export Bulletin": "Exporter le bulletin",
   "Print / Save as PDF": "Imprimer / Enregistrer en PDF",
   "Export to Word": "Exporter en Word",
-  "Export Validation Snapshot": "Exporter instantane validation",
-  "Validation snapshot downloads to the default browser downloads folder.": "L'instantane validation est telecharge dans le dossier telechargements du navigateur.",
-  "Humanitarian Events Decision Dashboard": "Tableau de decision des evenements humanitaires",
-  "Data Validation Ledger": "Registre de validation des donnees",
-  "Audit trail for high-priority country metrics in the current refresh.": "Piste d'audit des indicateurs pays prioritaires pour le cycle courant.",
-  "FCV Risk Map": "Carte risque FCV",
+  "Export Validation Snapshot": "Exporter l'instantané de validation",
+  "Validation snapshot downloads to the default browser downloads folder.": "L'instantané de validation est téléchargé dans le dossier de téléchargements du navigateur.",
+  "Humanitarian Events Decision Dashboard": "Tableau de décision des événements humanitaires",
+  "Data Validation Ledger": "Registre de validation des données",
+  "Audit trail for high-priority country metrics in the current refresh.": "Piste d'audit des indicateurs des pays prioritaires pour l'actualisation en cours.",
+  "FCV Risk Map": "Carte des risques FCV",
   "Composite Risk": "Risque composite",
-  "Food Security And Event Pressure Snapshot": "Synthese securite alimentaire et pression evenementielle",
+  "Food Security And Event Pressure Snapshot": "Synthèse sécurité alimentaire et pression événementielle",
   "Top Alerts": "Alertes prioritaires",
-  "Country Profile Trend": "Tendance profil pays",
-  "Country Operational Brief": "Brief operationnel pays",
-  "Country Comparison Table": "Table comparative pays",
-  "IPC Food Security Snapshot": "Synthese IPC securite alimentaire",
-  "Recommendations: Food Security": "Recommandations: securite alimentaire",
+  "Country Profile Trend": "Tendance du profil pays",
+  "Country Operational Brief": "Note opérationnelle pays",
+  "Country Comparison Table": "Tableau comparatif des pays",
+  "IPC Food Security Snapshot": "Synthèse IPC de la sécurité alimentaire",
+  "Recommendations: Food Security": "Recommandations : sécurité alimentaire",
   "Nutrition Context": "Contexte nutritionnel",
   "Wasting and Stunting by Country (latest survey)": "Émaciation et retard de croissance par pays (dernière enquête)",
-  "Recommendations: Nutrition": "Recommandations: nutrition",
-  "Forecast Outlook": "Perspective des previsions",
-  "Forecast Insights": "Points saillants previsions",
-  "Forecast Source Summary": "Synthese des sources de prevision",
-  "ICPAC Forecast Bulletins": "Bulletins de prevision ICPAC",
-  "ICPAC Source Summary": "Synthese source ICPAC",
-  "Recommendations: Forecasts": "Recommandations: previsions",
-  "Source Intelligence Summary": "Synthese intelligence sources",
+  "Recommendations: Nutrition": "Recommandations : nutrition",
+  "Forecast Outlook": "Perspectives des prévisions",
+  "Forecast Insights": "Points saillants des prévisions",
+  "Forecast Source Summary": "Synthèse des sources de prévision",
+  "ICPAC Forecast Bulletins": "Bulletins de prévision de l'ICPAC",
+  "ICPAC Source Summary": "Synthèse de la source ICPAC",
+  "Recommendations: Forecasts": "Recommandations : prévisions",
+  "Source Intelligence Summary": "Synthèse du renseignement des sources",
   "Flood Watch": "Vigie inondations",
-  "Recent Flood Events": "Evenements inondation recents",
-  "GDACS Hazard Events": "Evenements aleas GDACS",
+  "Recent Flood Events": "Inondations récentes",
+  "GDACS Hazard Events": "Événements d'aléas GDACS",
   "ReliefWeb RSS Situation Reports": "Rapports de situation RSS ReliefWeb",
-  "WHO Disease Outbreak News (DON)": "Nouvelles OMS flambes (DON)",
-  "Recommendations: Hazards": "Recommandations: aleas",
+  "WHO Disease Outbreak News (DON)": "Bulletins d'information sur les flambées épidémiques de l'OMS (DON)",
+  "Recommendations: Hazards": "Recommandations : aléas",
   "Historical Disaster Impact (EM-DAT)": "Impact historique des catastrophes (EM-DAT)",
-  "Largest Disasters by People Affected": "Plus grandes catastrophes par personnes affectees",
-  "Most Affected Countries (EM-DAT)": "Pays les plus affectes (EM-DAT)",
-  "Conflict And Displacement Pressure": "Pression conflits et deplacements",
-  "Conflict And Displacement Prioritization": "Priorisation conflits et deplacements",
-  "Recommendations: Conflicts & Displacements": "Recommandations: conflits et deplacements",
-  "Attacks on Healthcare Snapshot": "Synthese attaques contre les soins de sante",
-  "Recommendations: Attacks on Healthcare": "Recommandations: attaques contre les soins de sante",
-  "WHO SSA Source And Evidence Feed": "Source OMS SSA et flux de preuves",
-  "Evidence Feed": "Flux de preuves",
-  "Cyclone Leadership Snapshot": "Synthese cyclonique",
-  "Cyclone-Affected Country Prioritization": "Priorisation pays affectes par cyclone",
-  "Recommendations: Cyclone": "Recommandations: cyclone",
+  "Largest Disasters by People Affected": "Plus grandes catastrophes selon le nombre de personnes touchées",
+  "Most Affected Countries (EM-DAT)": "Pays les plus touchés (EM-DAT)",
+  "Conflict And Displacement Pressure": "Pression des conflits et des déplacements",
+  "Conflict And Displacement Prioritization": "Priorisation des conflits et des déplacements",
+  "Recommendations: Conflicts & Displacements": "Recommandations : conflits et déplacements",
+  "Attacks on Healthcare Snapshot": "Synthèse des attaques contre les soins de santé",
+  "Recommendations: Attacks on Healthcare": "Recommandations : attaques contre les soins de santé",
+  "WHO SSA Source And Evidence Feed": "Source SSA de l'OMS et flux de données probantes",
+  "Evidence Feed": "Flux de données probantes",
+  "Cyclone Leadership Snapshot": "Synthèse cyclonique",
+  "Cyclone-Affected Country Prioritization": "Priorisation des pays touchés par un cyclone",
+  "Recommendations: Cyclone": "Recommandations : cyclone",
   "Cyclone Projections And Advisories": "Projections et avis cycloniques",
-  "Cyclone Source Diagnostics": "Diagnostic sources cyclone",
-  "Documented Active Cyclones": "Cyclones actifs documentes",
-  "Operational Situation Bulletin": "Bulletin de situation operationnelle",
-  "All-Events Summary": "Synthese tous evenements",
-  "Forecast and Projection Summary": "Synthese previsions et projections",
-  "Conflicts and Displacements Summary": "Synthese conflits et deplacements",
-  "Countries with Most Event Signals": "Pays avec le plus de signaux",
-  "Recommendations (All Issues)": "Recommandations (toutes thematiques)",
-  "Source Intelligence Detail": "Detail intelligence sources",
-  "Decision Protocol": "Protocole decisionnel",
-  "Conflict and Displacement Insert": "Encart conflits et deplacements",
-  "Priority Country Annexes": "Annexes pays prioritaires"
+  "Cyclone Source Diagnostics": "Diagnostic des sources cycloniques",
+  "Documented Active Cyclones": "Cyclones actifs documentés",
+  "Operational Situation Bulletin": "Bulletin de situation opérationnelle",
+  "All-Events Summary": "Synthèse de tous les événements",
+  "Forecast and Projection Summary": "Synthèse des prévisions et projections",
+  "Conflicts and Displacements Summary": "Synthèse des conflits et déplacements",
+  "Countries with Most Event Signals": "Pays présentant le plus de signaux d'événements",
+  "Recommendations (All Issues)": "Recommandations (toutes thématiques)",
+  "Source Intelligence Detail": "Détail du renseignement des sources",
+  "Decision Protocol": "Protocole décisionnel",
+  "Conflict and Displacement Insert": "Encart conflits et déplacements",
+  "Priority Country Annexes": "Annexes pays prioritaires",
+  // Navigation (page names also used by strategic.js PAGE_LABEL_FR).
+  "Strategic View": "Vue stratégique",
+  "Crisis Classification": "Classification des crises",
+  "FCV Response": "Réponse FCV",
+  "Risk Monitoring": "Suivi des risques",
+  "Conflict & Displacement": "Conflits et déplacements",
+  "Attacks on Health Care": "Attaques contre les soins de santé",
+  "Food Security": "Sécurité alimentaire",
+  "Hazards & Floods": "Aléas et inondations",
+  "Climate Forecasts": "Prévisions climatiques",
+  "Outputs & Data": "Produits et données",
+  "Operational Bulletin": "Bulletin opérationnel",
+  "Event Signals": "Signaux d'événements",
+  "Data Health": "Qualité des données",
+  // Panels that the strategic key-figure cards link to ("More detail").
+  "Reporting Status by Quarter": "État des rapports par trimestre",
+  "Regional Service Volumes": "Volumes de services régionaux",
+  "Conflict and Displacement Pressure": "Pression des conflits et des déplacements",
+  "Conflict and Displacement Prioritization": "Priorisation des conflits et des déplacements",
+  "Cyclone Projections and Advisories": "Projections et avis cycloniques",
+  "WHO SSA Source and Evidence Feed": "Source SSA de l'OMS et flux de données probantes",
+  "Food Security and Event Pressure Snapshot": "Synthèse sécurité alimentaire et pression événementielle",
+  // Strategic Overview.
+  "Humanitarian health situation in FCV countries": "Situation sanitaire humanitaire dans les pays FCV",
+  "Strategic indicators from verified sources. Each figure shows its source and reference date.": "Indicateurs stratégiques issus de sources vérifiées. Chaque chiffre indique sa source et sa date de référence.",
+  "Scope": "Périmètre",
+  "13 FCV countries (9 Prioritized + 4 Accelerated)": "13 pays FCV (9 prioritaires + 4 accélérés)",
+  "All FCV-classified countries (18)": "Tous les pays classés FCV (18)",
+  "FCV + cross-border context (Sudan, Somalia)": "FCV + contexte transfrontalier (Soudan, Somalie)",
+  "Strategic KPI Status": "État des indicateurs clés stratégiques",
+  "Each management question, the indicator that answers it, a proposed trigger (to be confirmed by DHM), and the countries that meet it today. Select Detail in any row for the supporting data.": "Chaque question de gestion, l'indicateur qui y répond, un seuil de déclenchement proposé (à confirmer par la DHM) et les pays qui l'atteignent aujourd'hui. Sélectionner Détail sur une ligne pour voir les données correspondantes.",
+  "Strategic Messages": "Messages stratégiques",
+  "Draft generated from the indicators on this page. The DHM lead reviews and edits it each month before it is used.": "Projet généré à partir des indicateurs de cette page. Le responsable DHM le relit et le modifie chaque mois avant son utilisation.",
+  "Where the Burden Sits": "Où se concentre la charge",
+  "Map layer": "Couche de la carte",
+  "DHM triage tier": "Niveau de triage DHM",
+  "People in need of health assistance": "Personnes ayant besoin d'une assistance sanitaire",
+  "Health funding received (%)": "Financement de la santé reçu (%)",
+  "Displaced (IDPs + refugees)": "Déplacés (déplacés internes + réfugiés)",
+  "IPC/CH Phase 3+ (share analysed)": "Phase 3+ IPC/CH (part analysée)",
+  "Attacks on health care this year": "Attaques contre les soins de santé cette année",
+  "Progress Against Plan": "Avancement par rapport au plan",
+  "Health cluster funding in 2026 humanitarian plans, ranked by unfunded amount.": "Financement du Cluster Santé dans les plans de réponse humanitaire 2026, classé selon le montant non financé.",
+  "FCV Country Scorecard": "Tableau synthétique des pays FCV",
+  "One row per country, sorted by DHM triage tier. Click a country to open its profile; hover a value for its source and date. Grey values are outdated (displacement more than 24 months, IPC/CH more than 18 months) and are excluded from totals.": "Une ligne par pays, triée par niveau de triage DHM. Cliquer sur un pays pour ouvrir son profil ; survoler une valeur pour voir sa source et sa date. Les valeurs en gris sont obsolètes (déplacements de plus de 24 mois, IPC/CH de plus de 18 mois) et sont exclues des totaux.",
+  "Health Needs Covered by the Plan": "Besoins en santé couverts par le plan",
+  "People targeted for health assistance as a share of people in need of health assistance, latest plan year. 2026 Health Cluster reach is not yet published by OCHA; the latest full-year reach is on the Health reach card above.": "Personnes ciblées par l'assistance sanitaire en part des personnes ayant besoin d'une assistance sanitaire, dernière année de plan. La couverture 2026 du Cluster Santé n'est pas encore publiée par OCHA ; la dernière couverture annuelle complète figure sur la carte Couverture sanitaire ci-dessus.",
+  "Mental Health and Psychosocial Support (MHPSS)": "Santé mentale et soutien psychosocial (SMSPS)",
+  "People reached with mental health and psychosocial support (MHPSS) in the latest reported quarter, per 10,000 people in need of health assistance. Source: FCV service database. No regional MHPSS target is published yet.": "Personnes ayant bénéficié de services de santé mentale et de soutien psychosocial (SMSPS) au dernier trimestre déclaré, pour 10 000 personnes ayant besoin d'une assistance sanitaire. Source : base de données des services FCV. Aucune cible régionale de SMSPS n'est encore publiée.",
+  "Sources and Links": "Sources et liens",
+  // Crisis Classification.
+  "Humanitarian Crisis Classification": "Classification des crises humanitaires",
+  "WHO grades come only from the WHO grading process and are entered by DHM in the grading register. The DHM triage tier is a transparent, rule-based aid built from verified indicators. It is not a WHO grade.": "Les grades OMS proviennent uniquement du processus de classement par grade de l'OMS et sont saisis par la DHM dans le registre des grades. Le niveau de triage DHM est un outil d'aide transparent, fondé sur des règles et construit à partir d'indicateurs vérifiés. Ce n'est pas un grade OMS.",
+  "DHM Triage Tier by Country": "Niveau de triage DHM par pays",
+  "Points per criterion are shown so the result can be checked and challenged.": "Les points par critère sont affichés afin que le résultat puisse être vérifié et contesté.",
+  "WHO Grading Register": "Registre des grades de l'OMS",
+  "Confirmed WHO grades, entered by the DHM focal point.": "Grades OMS confirmés, saisis par le point focal de la DHM.",
+  "Classification Rules": "Règles de classification",
+  // Event Signals.
+  "Event Signal Map": "Carte des signaux d'événements",
+  "Composite of public event signals (news volume, hazards, IPC). Use for monitoring, not for ranking crises.": "Composite de signaux publics d'événements (volume d'actualités, aléas, IPC). À utiliser pour le suivi, pas pour classer les crises.",
+  // Data Health.
+  "Strategic Source Status": "État des sources stratégiques",
+  "Verified sources behind the Overview and Crisis Classification pages.": "Sources vérifiées utilisées par les pages Vue d'ensemble et Classification des crises.",
+  "FCV Service Database: Values Excluded at Ingest": "Base de données des services FCV : valeurs exclues au chargement",
+  "Rows outside plausible limits are kept out of every average and listed here for correction by country focal points.": "Les lignes hors des limites plausibles sont exclues de toutes les moyennes et listées ici pour correction par les points focaux pays.",
+  // Operational Bulletin.
+  "Part B: Event and Source Detail": "Partie B : détail des événements et des sources",
+  "Hazard, forecast and source detail behind the update above. Detail sections open with \"Show detail\".": "Détail des aléas, des prévisions et des sources à l'appui du point ci-dessus. Les sections de détail s'ouvrent avec « Afficher le détail ».",
+  "Ranked by the news and hazard signal score. For the crisis ranking, see the priority countries in Part A.": "Classement selon le score de signal des actualités et des aléas. Pour le classement des crises, voir les pays prioritaires de la Partie A."
 };
 
 const DYNAMIC_PHRASE_FR = {
-  "Rule-based actions.": "Actions basees sur des regles.",
-  "Current source summary.": "Synthese source actuelle.",
-  "Current values only. Stale values are excluded.": "Valeurs actuelles uniquement. Les valeurs obsoletes sont exclues.",
-  "Current loaded values.": "Valeurs actuellement chargees.",
+  "Rule-based actions.": "Actions fondées sur des règles.",
+  "Current source summary.": "Synthèse des sources actuelles.",
+  "Current values only. Stale values are excluded.": "Valeurs actuelles uniquement. Les valeurs obsolètes sont exclues.",
+  "Current loaded values.": "Valeurs actuellement chargées.",
   "Country indicators and trend.": "Indicateurs pays et tendance.",
   "Country comparison.": "Comparaison pays.",
-  "Recent source items.": "Elements source recents.",
+  "Recent source items.": "Éléments de source récents.",
   "Source status.": "Statut des sources.",
-  "Current bulletin summary.": "Synthese du bulletin courant.",
-  "Forecast interpretation.": "Interpretation des previsions.",
-  "Current events and source counts.": "Evenements actuels et volumes par source.",
+  "Current bulletin summary.": "Synthèse du bulletin en cours.",
+  "Forecast interpretation.": "Interprétation des prévisions.",
+  "Current events and source counts.": "Événements actuels et volumes par source.",
   "Top countries by risk.": "Pays prioritaires selon le risque.",
-  "Source items in this cycle.": "Elements source dans ce cycle.",
+  "Source items in this cycle.": "Éléments de source de cette actualisation.",
   "Country annex pages.": "Pages annexes pays.",
   "Cross-issue report.": "Rapport transversal.",
   "Date / Horizon": "Date / Horizon",
-  "Method": "Methode",
+  "Method": "Méthode",
   "Source": "Source",
   "Country": "Pays",
   "Group": "Groupe",
   "Risk": "Risque",
-  "Hazards": "Aleas",
+  "Hazards": "Aléas",
   "Cyclones": "Cyclones",
   "Analysis Date": "Date d'analyse",
   "Projection Date": "Date de projection",
   "Crisis Level": "Niveau de crise",
   "Current Value / Signal": "Valeur / signal actuel",
-  "Forecast / Projection Signal": "Signal prevision / projection",
-  "Year": "Annee",
-  "Issue Number": "Numero d'edition",
-  "Issue Date": "Date d'edition",
+  "Forecast / Projection Signal": "Signal de prévision / projection",
+  "Year": "Année",
+  "Issue Number": "Numéro d'édition",
+  "Issue Date": "Date de parution",
   "Coverage": "Couverture",
-  "Data Quality Status": "Statut qualite des donnees",
-  "Filter Integrity": "Integrite des filtres",
-  "Key Messages": "Messages cles",
-  "Priority watchlist": "Liste de priorite",
+  "Data Quality Status": "Statut de la qualité des données",
+  "Filter Integrity": "Intégrité des filtres",
+  "Key Messages": "Messages clés",
+  "Priority watchlist": "Liste de priorités",
   "Top alerts by composite risk": "Principales alertes par risque composite",
   "Purpose": "Objet",
-  "Operational Focus": "Priorite operationnelle",
-  "Forecast Outlook": "Perspective previsionnelle",
-  "Source Signal Status": "Statut des signaux source",
-  "Conflict And Displacement": "Conflits et deplacements",
+  "Operational Focus": "Priorité opérationnelle",
+  "Forecast Outlook": "Perspectives prévisionnelles",
+  "Source Signal Status": "Statut des signaux des sources",
+  "Conflict And Displacement": "Conflits et déplacements",
   "Flood Exposure": "Exposition aux inondations",
-  "Current vs projection lens": "Lecture situation actuelle vs projection",
-  "Current event situation": "Situation evenementielle actuelle",
+  "Current vs projection lens": "Lecture : situation actuelle et projection",
+  "Current event situation": "Situation événementielle actuelle",
   "Projection outlook": "Perspective de projection",
-  "Verified cyclone activity now": "Activite cyclonique verifiee actuelle",
-  "Hydrological flood-source posture": "Posture des sources hydrologiques inondation",
-  "Change since previous refresh": "Evolution depuis le cycle precedent",
-  "Recent flood events": "Evenements inondation recents",
-  "Protocol note": "Note protocole",
-  "Recommended Action": "Action recommandee",
+  "Verified cyclone activity now": "Activité cyclonique vérifiée actuelle",
+  "Hydrological flood-source posture": "État des sources hydrologiques sur les inondations",
+  "Change since previous refresh": "Évolution depuis l'actualisation précédente",
+  "Recent flood events": "Inondations récentes",
+  "Protocol note": "Note de protocole",
+  "Recommended Action": "Action recommandée",
   "Current Status": "Statut actuel",
   "Threshold": "Seuil",
-  "Trigger": "Declencheur",
-  "State": "Etat",
+  "Trigger": "Seuil de déclenchement",
+  "State": "État",
   "Use note": "Note d'usage",
-  "Prepared from public sources": "Prepare a partir de sources publiques",
-  "No linked conflict or displacement source item is visible in the current refresh.": "Aucun element source lie aux conflits ou deplacements n'est visible dans ce cycle.",
-  "Operational Reading": "Lecture operationnelle",
-  "Linked Source Evidence": "Elements sources lies",
-  "Operational Considerations": "Considerations operationnelles",
-  "Profile Snapshot": "Instantane du profil",
-  "Forecast References": "References previsionnelles",
-  "Country-Linked Hazard Items": "Elements aleas lies au pays",
-  "Country-Linked Reports": "Rapports lies au pays",
-  "Immediate Decision Focus": "Focus decisionnel immediat",
+  "Prepared from public sources": "Préparé à partir de sources publiques",
+  "No linked conflict or displacement source item is visible in the current refresh.": "Aucun élément de source lié aux conflits ou aux déplacements n'est visible dans cette actualisation.",
+  "Operational Reading": "Lecture opérationnelle",
+  "Linked Source Evidence": "Éléments de source liés",
+  "Operational Considerations": "Considérations opérationnelles",
+  "Profile Snapshot": "Instantané du profil",
+  "Forecast References": "Références prévisionnelles",
+  "Country-Linked Hazard Items": "Éléments d'aléas liés au pays",
+  "Country-Linked Reports": "Rapports liés au pays",
+  "Immediate Decision Focus": "Priorité décisionnelle immédiate",
   "Composite Risk": "Risque composite",
-  "Drought Signals": "Signaux secheresse",
+  "Drought Signals": "Signaux de sécheresse",
   "Reports 30d": "Rapports 30j",
   "Conflict": "Conflit",
-  "Displacement": "Deplacement",
+  "Displacement": "Déplacement",
   "Signal Level": "Niveau de signal",
-  "Conflict And Displacement Watch": "Vigie conflits et deplacements"
+  "Conflict And Displacement Watch": "Vigie conflits et déplacements"
 };
 
 const textNodeOriginalValues = new WeakMap();
@@ -582,8 +652,9 @@ function localizePageTextTree(root) {
     if (translated === trimmedOriginal) {
       // Try in-string substitution for longer narrative text nodes.
       translated = trimmedOriginal;
-      const entries = Object.entries(DYNAMIC_PHRASE_FR).sort((a, b) => b[0].length - a[0].length);
-      entries.forEach(([en, fr]) => {
+      // Only multi-word phrases are swapped inside longer text; single words
+      // ("Country") would otherwise produce mixed headings ("Completeness by Pays").
+      inStringPhraseEntries().forEach(([en, fr]) => {
         translated = translated.split(en).join(fr);
       });
     }
@@ -652,17 +723,31 @@ function escapeRegex(value) {
   return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
+// Multi-word DYNAMIC_PHRASE_FR entries, longest first, built once. Single words are
+// translated only as exact matches, never inside longer text, attributes or ids.
+let inStringPhraseCache = null;
+function inStringPhraseEntries() {
+  if (!inStringPhraseCache) {
+    inStringPhraseCache = Object.entries(DYNAMIC_PHRASE_FR)
+      .filter(([en]) => /\s/.test(en.trim()))
+      .sort((a, b) => b[0].length - a[0].length);
+  }
+  return inStringPhraseCache;
+}
+
 function translateHtmlPhrases(html) {
   if (currentLanguage !== "fr" || !html) {
     return html;
   }
-  let out = html;
-  const entries = Object.entries(DYNAMIC_PHRASE_FR).sort((a, b) => b[0].length - a[0].length);
-  entries.forEach(([en, fr]) => {
-    const rx = new RegExp(escapeRegex(en), "g");
-    out = out.replace(rx, fr);
+  const entries = inStringPhraseEntries();
+  // Only text between tags is translated; tag names, attributes and ids stay as they are.
+  return html.replace(/>([^<]+)</g, (match, text) => {
+    let out = text;
+    entries.forEach(([en, fr]) => {
+      out = out.split(en).join(fr);
+    });
+    return `>${out}<`;
   });
-  return out;
 }
 
 function localizeDynamicBlocks() {
@@ -974,14 +1059,17 @@ function scopeCoverageLabel() {
   const total = scope.country_count || (dashboardState?.countries || []).length;
   // afro_country_count excludes the FCV countries, which are also WHO AFRO members.
   const afroAll = Math.max(0, total - otherCount);
+  const fr = currentLanguage === "fr";
   if (afroAll && otherCount) {
-    return `13 FCV countries for the strategic figures; event monitoring covers ${afroAll} WHO AFRO countries plus ${otherCount === 2 ? "Sudan and Somalia (WHO Eastern Mediterranean Region)" : `${otherCount} other countries`}`;
+    return fr
+      ? `13 pays FCV pour les chiffres stratégiques\u202f; le suivi des événements couvre ${afroAll} pays de la Région africaine de l'OMS ainsi que ${otherCount === 2 ? "le Soudan et la Somalie (Région de la Méditerranée orientale de l'OMS)" : `${otherCount} autres pays`}`
+      : `13 FCV countries for the strategic figures; event monitoring covers ${afroAll} WHO AFRO countries plus ${otherCount === 2 ? "Sudan and Somalia (WHO Eastern Mediterranean Region)" : `${otherCount} other countries`}`;
   }
   const afroCount = scope.afro_country_count || 0;
   if (afroCount) {
-    return `${afroCount} WHO AFRO countries`;
+    return fr ? `${afroCount} pays de la Région africaine de l'OMS` : `${afroCount} WHO AFRO countries`;
   }
-  return `${scope.country_count || (dashboardState?.countries || []).length} monitored countries`;
+  return fr ? `${scope.country_count || (dashboardState?.countries || []).length} pays suivis` : `${scope.country_count || (dashboardState?.countries || []).length} monitored countries`;
 }
 
 function getSourceTrustMeta(source) {
@@ -1161,7 +1249,7 @@ async function exportOperationalBulletinWord() {
       }
       const heading = note.querySelector("h4");
       if (heading) {
-        const label = heading.textContent.replace(/^Optional note:\s*/i, "");
+        const label = heading.textContent.replace(/^(Optional note:|Note facultative\s*:)\s*/i, "");
         heading.textContent = label.charAt(0).toUpperCase() + label.slice(1);
       }
       box.removeAttribute("contenteditable");
@@ -4106,45 +4194,48 @@ function buildMetrics() {
   const hazardCountries = countries.filter((c) => c.hazard_count > 0).length;
   const cycloneActiveCountries = Number(ledgerMetrics.cyclone_active_countries?.count ?? mappedCycloneSignalIso3Set().size);
   const droughtActiveCountries = Number(ledgerMetrics.drought_active_countries?.count ?? countries.filter((c) => (c.drought_signal_count || 0) > 0).length);
-  const ensoStatusLabel = ensoAdvisory?.alert_status || "No ENSO watch loaded";
+  const isFrM = currentLanguage === "fr";
+  const tx = (enText, frText) => (isFrM ? frText : enText);
+  const ensoStatusLabel = ensoAdvisory?.alert_status || tx("No ENSO watch loaded", "Aucune veille ENSO chargée");
   const ensoStatusShort = ensoStatusLabel.length > 18 ? ensoStatusLabel.slice(0, 16).trim() + "…" : ensoStatusLabel;
   const ensoOutlook = deriveEnsoOutlookSummary(ensoAdvisory);
   const ensoNote = ensoAdvisory
-    ? `${ensoOutlook} Issued ${ensoAdvisory.issued_on || "n/a"}${ensoAdvisory.next_update ? ` | Next update ${ensoAdvisory.next_update}` : ""}`
-    : "CPC ENSO advisory not available in this refresh";
+    ? tx(`${ensoOutlook} Issued ${ensoAdvisory.issued_on || "n/a"}${ensoAdvisory.next_update ? ` | Next update ${ensoAdvisory.next_update}` : ""}`,
+      `${ensoOutlook} Publié le ${ensoAdvisory.issued_on || "n.d."}${ensoAdvisory.next_update ? ` | Prochaine mise à jour\u00a0: ${ensoAdvisory.next_update}` : ""}`)
+    : tx("CPC ENSO advisory not available in this refresh", "Bulletin ENSO du CPC non disponible lors de cette actualisation");
 
   const ipcLoaded = countries.some((c) => c.ipc && (c.ipc.phase3plus_pct != null || c.ipc.projection_phase3plus_pct != null));
   // Each card opens the page or panel where the detail sits.
   const cards = [
     {
-      title: "IPC Crisis Countries",
-      value: ipcLoaded ? ipcCrisis : "n/a",
-      note: ipcLoaded ? "IPC/CH Phase 3+ at 30% or more of the population analysed" : "IPC feed not available in this refresh; see Food Security for the verified figures",
+      title: tx("IPC Crisis Countries", "Pays en crise selon l'IPC"),
+      value: ipcLoaded ? ipcCrisis : tx("n/a", "n.d."),
+      note: ipcLoaded ? tx("IPC/CH Phase 3+ at 30% or more of the population analysed", "Phase 3+ IPC/CH pour 30\u00a0% ou plus de la population analysée") : tx("IPC feed not available in this refresh; see Food Security for the verified figures", "Flux IPC non disponible lors de cette actualisation\u202f; voir Sécurité alimentaire pour les chiffres vérifiés"),
       target: "foodSecurityPage#foodSecurityTable"
     },
-    { title: "Conflict/Displacement Active", value: conflictDisplacementCountries, note: "Countries named in conflict or displacement reports (news signals, not verified figures)", target: "conflictsDisplacementPage#conflictsDisplacementTable" },
-    { title: "Countries With Active Hazards", value: hazardCountries, note: "Countries with a current GDACS hazard alert", target: "hazardPage#hazardFeed" },
-    { title: "Cyclone-Active Countries", value: cycloneActiveCountries, note: "Countries with a mapped cyclone event or advisory", target: "cyclonePage" },
+    { title: tx("Conflict/Displacement Active", "Pays signalés en conflit ou déplacement"), value: conflictDisplacementCountries, note: tx("Countries named in conflict or displacement reports (news signals, not verified figures)", "Pays cités dans des rapports sur les conflits ou les déplacements (signaux d'actualité, pas des chiffres vérifiés)"), target: "conflictsDisplacementPage#conflictsDisplacementTable" },
+    { title: tx("Countries With Active Hazards", "Pays avec une alerte d'aléa active"), value: hazardCountries, note: tx("Countries with a current GDACS hazard alert", "Pays faisant l'objet d'une alerte GDACS en cours"), target: "hazardPage#hazardFeed" },
+    { title: tx("Cyclone-Active Countries", "Pays avec un signal cyclonique"), value: cycloneActiveCountries, note: tx("Countries with a mapped cyclone event or advisory", "Pays associés à un cyclone ou à un avis cyclonique cartographié"), target: "cyclonePage" },
     {
-      title: "ENSO Climate Watch",
-      value: ensoAdvisory ? ensoStatusShort : "n/a",
+      title: tx("ENSO Climate Watch", "Veille climatique ENSO"),
+      value: ensoAdvisory ? ensoStatusShort : tx("n/a", "n.d."),
       note: ensoNote,
       target: "forecastPage"
     },
-    { title: "Drought-Active Countries", value: droughtActiveCountries, note: "Countries with a mapped drought report", target: "hazardPage" },
-    { title: "Regional Flood Updates", value: floodCtx.afroFloodEvents.length, note: `Flood reports in the region; ${floodCtx.topFloodCountries.length} countries mapped`, target: "hazardPage#floodWatchSummary" },
+    { title: tx("Drought-Active Countries", "Pays touchés par la sécheresse"), value: droughtActiveCountries, note: tx("Countries with a mapped drought report", "Pays faisant l'objet d'un rapport de sécheresse cartographié"), target: "hazardPage" },
+    { title: tx("Regional Flood Updates", "Informations régionales sur les inondations"), value: floodCtx.afroFloodEvents.length, note: tx(`Flood reports in the region; ${floodCtx.topFloodCountries.length} countries mapped`, `Rapports d'inondation dans la région\u202f; ${floodCtx.topFloodCountries.length} pays cartographiés`), target: "hazardPage#floodWatchSummary" },
     {
-      title: "FCV Service Delivery Feed",
+      title: tx("FCV Service Delivery Feed", "Flux de prestation de services FCV"),
       value: serviceDeliveryStatus ? `${serviceDeliveryStatus.country_count}/${countries.length}` : "0",
       note: serviceDeliveryStatus
-        ? `${serviceDeliverySummary.cardNote}. Latest feed month: ${serviceDeliveryStatus.latest_month || "n/a"}`
-        : "No FCV service-delivery feed loaded",
+        ? tx(`${serviceDeliverySummary.cardNote}. Latest feed month: ${serviceDeliveryStatus.latest_month || "n/a"}`, `${serviceDeliverySummary.cardNoteFr || serviceDeliverySummary.cardNote}. Dernier mois du flux\u00a0: ${serviceDeliveryStatus.latest_month || "n.d."}`)
+        : tx("No FCV service-delivery feed loaded", "Aucun flux de prestation de services FCV chargé"),
       target: "fcvDataPage"
     },
     {
-      title: "ICPAC Forecast Bulletins",
+      title: tx("ICPAC Forecast Bulletins", "Bulletins de prévision de l'ICPAC"),
       value: (dashboardState.forecasts || []).length,
-      note: "Weekly, monthly and seasonal products for the IGAD region",
+      note: tx("Weekly, monthly and seasonal products for the IGAD region", "Produits hebdomadaires, mensuels et saisonniers pour la région de l'IGAD"),
       target: "forecastPage#icpacFeed"
     }
   ];
@@ -4919,6 +5010,7 @@ function serviceDeliverySummaryParts(rows = [], status = null) {
 
   return {
     cardNote: `Coverage: ${coverageCount} FCV countries across ${monthCount || "n/a"} months`,
+    cardNoteFr: `Couverture\u00a0: ${coverageCount} pays FCV sur ${monthCount || "n.d."} mois`,
     coverageLine: `Coverage: ${coverageCount} FCV countries represented across ${monthCount || "n/a"} reporting months. Latest feed month: ${latestMonthLabel}.`,
     leadersLine: `Current table leaders: People reached ${topPeopleReached ? `${topPeopleReached.country} (${formatCount(topPeopleReached.value)})` : "n/a"}; children screened ${topChildrenScreened ? `${topChildrenScreened.country} (${formatCount(topChildrenScreened.value)})` : "n/a"}; mental health support ${topMentalHealth ? `${topMentalHealth.country} (${formatCount(topMentalHealth.value)})` : "n/a"}.`
   };
@@ -5817,8 +5909,8 @@ function renderOperationalReportPage() {
     .slice(0, 6);
   const issueCode = formatIssueCode(dashboardState.generated_at);
   const nextUpdate = humanAgeFromIso(dashboardState.generated_at) === "n/a"
-    ? tr("next refresh cycle", "prochain cycle de rafraichissement")
-    : tr("automatic, at the next data refresh", "automatique, au prochain rafraichissement des donnees");
+    ? tr("next refresh cycle", "prochaine actualisation")
+    : tr("automatic, at the next data refresh", "automatique, à la prochaine actualisation des données");
   // Annex countries follow the DHM triage tier (Major, then Severe) when the
   // strategic layer has loaded; otherwise the news-signal ranking is used.
   const tierOrder = window.StrategicDashboard?.priorityIso3 ? window.StrategicDashboard.priorityIso3() : [];
@@ -5847,14 +5939,14 @@ function renderOperationalReportPage() {
       .slice(0, 4)
       .map((c) => `${c.country} (${c.ageMonths}m)`)
       .join(", ");
-    const coverStaleMore = ipcVeryStaleCountries.length > 4 ? ` plus ${ipcVeryStaleCountries.length - 4} more` : "";
-    coverQualitySignals.push(`${ipcVeryStaleCountries.length} very stale IPC: ${coverStaleNames}${coverStaleMore}`);
+    const coverStaleMore = ipcVeryStaleCountries.length > 4 ? tr(` plus ${ipcVeryStaleCountries.length - 4} more`, ` et ${ipcVeryStaleCountries.length - 4} autre(s)`) : "";
+    coverQualitySignals.push(tr(`${ipcVeryStaleCountries.length} very stale IPC: ${coverStaleNames}${coverStaleMore}`, `${ipcVeryStaleCountries.length} analyse(s) IPC très ancienne(s)\u00a0: ${coverStaleNames}${coverStaleMore}`));
   }
   if (acapsWarning) {
-    coverQualitySignals.push("ACAPS cap pressure");
+    coverQualitySignals.push(tr("ACAPS cap pressure", "Limite de pagination ACAPS atteinte"));
   }
   if (unhcrFallbackOnly) {
-    coverQualitySignals.push("UNHCR fallback-only");
+    coverQualitySignals.push(tr("UNHCR fallback-only", "HCR en solution de repli uniquement"));
   }
   // Core feeds that did not update in the last 48 hours lower the quality rating.
   const coreFeeds = [["GDACS", "gdacs"], ["ReliefWeb", "reliefweb"], ["WHO DON", "who_don"], ["IPC/HDX", "ipc_hdx"], ["Cyclone sources", "cyclone_dedicated"]];
@@ -5864,37 +5956,38 @@ function renderOperationalReportPage() {
     return !Number.isFinite(t) || Date.now() - t > 48 * 3600 * 1000;
   }).map(([label]) => label);
   if (downFeeds.length) {
-    coverQualitySignals.push(`Not updated in 48 hours: ${downFeeds.join(", ")}.`);
+    coverQualitySignals.push(tr(`Not updated in 48 hours: ${downFeeds.join(", ")}.`, `Non mis à jour depuis 48\u00a0heures\u00a0: ${downFeeds.map((x) => (x === "Cyclone sources" ? "sources cycloniques" : x)).join(", ")}.`));
   }
   // Sources that reported an error in this update.
   const failing = [];
   if (String(cemsFloodStatus.overall || "").toLowerCase() === "error") failing.push("Copernicus flood forecasts");
   if (reliefwebApiStatus.error) failing.push("ReliefWeb reports");
   if (Number(cycloneSourceStatus.checked_count || 0) > 0 && Number(cycloneSourceStatus.available_count ?? 1) === 0) failing.push("cyclone advisories");
-  failing.forEach((name) => coverQualitySignals.push(`${name.charAt(0).toUpperCase()}${name.slice(1)} unavailable in this update.`));
+  const failingFr = { "Copernicus flood forecasts": "Prévisions d'inondations Copernicus", "ReliefWeb reports": "Rapports ReliefWeb", "cyclone advisories": "Avis cycloniques" };
+  failing.forEach((name) => coverQualitySignals.push(tr(`${name.charAt(0).toUpperCase()}${name.slice(1)} unavailable in this update.`, `${failingFr[name] || name}\u00a0: non disponible(s) lors de cette actualisation.`)));
   const coverQualitySeverity = coverQualitySignals.length >= 2 ? "bad" : coverQualitySignals.length === 1 ? "warn" : "ok";
   const coverQualityLabel = coverQualitySeverity === "bad"
     ? tr("Action needed", "Action requise")
     : coverQualitySeverity === "warn"
       ? tr("Monitor", "Surveiller")
       : tr("Good", "Bon");
-  const coverQualityNote = coverQualitySignals.length ? coverQualitySignals.map((x) => (/[.]$/.test(x) ? x : `${x}.`)).join(" ") : "No major data quality flags in this refresh.";
+  const coverQualityNote = coverQualitySignals.length ? coverQualitySignals.map((x) => (/[.]$/.test(x) ? x : `${x}.`)).join(" ") : tr("No major data quality flags in this refresh.", "Aucune alerte majeure sur la qualité des données lors de cette actualisation.");
   const coverQualityInterpretation = coverQualitySeverity === "bad"
     ? tr(
       "Several sources were unavailable or outdated in this update. Treat the affected sections as incomplete and confirm with country offices before acting.",
-      "Action requise indique au moins deux risques de gouvernance actifs; les decisions de direction doivent inclure une mention explicite de validation avant action operationnelle."
+      "Plusieurs sources étaient indisponibles ou obsolètes lors de cette actualisation. Considérer les sections concernées comme incomplètes et confirmer auprès des bureaux de pays avant d'agir."
     )
     : coverQualitySeverity === "warn"
       ? tr(
         "One source was unavailable or outdated in this update. The section that relies on it may be incomplete.",
-        "Surveiller indique un risque de gouvernance actif; les decisions doivent noter la limitation de source concernee et confirmer la derniere validation disponible."
+        "Une source était indisponible ou obsolète lors de cette actualisation. La section qui en dépend peut être incomplète."
       )
       : tr(
         "All core sources updated normally. Routine country validation still applies.",
-        "Bon indique qu'aucun risque majeur de gouvernance n'est actif dans ce cycle, mais la validation pays de routine reste necessaire."
+        "Toutes les sources principales ont été mises à jour normalement. La validation de routine par les pays reste nécessaire."
       );
   const coverQualityLegendMarkup = ipcVeryStaleCountries.length
-    ? '<p id="bulletinCoverQualityLegend" class="bulletin-cover-quality-legend"><strong>Legend:</strong> m = months since latest IPC analysis.</p>'
+    ? tr('<p id="bulletinCoverQualityLegend" class="bulletin-cover-quality-legend"><strong>Legend:</strong> m = months since latest IPC analysis.</p>', `<p id="bulletinCoverQualityLegend" class="bulletin-cover-quality-legend"><strong>Légende\u00a0:</strong> m = mois écoulés depuis la dernière analyse IPC.</p>`)
     : "";
   const rwDroppedScope = Number(reliefwebApiStatus.dropped_scope_filtered || 0);
   const rwDroppedUnmapped = Number(reliefwebApiStatus.dropped_unmapped_country || 0);
@@ -5917,28 +6010,28 @@ function renderOperationalReportPage() {
     ? tr("Escalate review", "Escalader la revue")
     : filterIntegritySeverity === "warn"
       ? tr("Filtering active", "Filtrage actif")
-      : tr("No scope drops", "Aucune exclusion de perimetre");
+      : tr("No scope drops", "Aucune exclusion de périmètre");
   const filterIntegrityDetail = `ReliefWeb API dropped ${rwDroppedScope} off-scope + ${rwDroppedUnmapped} unmapped (total ${filterIntegrityTotalDropped}); deduped ${rwDroppedDup} duplicates. Thresholds warn>=${filterIntegrityWarnThreshold}, bad>=${filterIntegrityBadThreshold}.`;
   const coverMessages = [
     tr(
       `Top operational attention remains centered on ${highestRiskCountry} and the current watchlist of ${priorityWatchlist}.`,
-      `L'attention operationnelle prioritaire reste concentree sur ${highestRiskCountry} et la liste de surveillance actuelle ${priorityWatchlist}.`
+      `L'attention opérationnelle prioritaire reste concentrée sur ${highestRiskCountry} et la liste de surveillance actuelle ${priorityWatchlist}.`
     ),
     tr(
       `${projectedHigh} countries currently show projected IPC Phase 3+ burden at or above 30%, requiring close follow-up on food-security deterioration.`,
-      `${projectedHigh} pays montrent actuellement une charge IPC Phase 3+ projetee egale ou superieure a 30%, necessitant un suivi etroit de la deterioration de la securite alimentaire.`
+      `${projectedHigh} pays présentent actuellement une part projetée en phase 3+ IPC égale ou supérieure à 30\u00a0%, ce qui exige un suivi étroit de la dégradation de la sécurité alimentaire.`
     ),
     tr(
       `${fewsMl1High} countries currently show FEWS near-term phase 3+ conditions, adding forward-looking food-security stress context.`,
-      `${fewsMl1High} pays montrent actuellement des conditions FEWS a court terme phase 3+, ajoutant un contexte de stress alimentaire prospectif.`
+      `${fewsMl1High} pays présentent actuellement des conditions FEWS de phase 3+ à court terme, ce qui ajoute un contexte prospectif de stress alimentaire.`
     ),
     tr(
       `${cycloneIntel.projection_signal_count || 0} cyclone projection or advisory signals, ${droughtSignals.length} drought signals, and ${floodCountries.length} countries with mapped flood signals were captured in this refresh.`,
-      `${cycloneIntel.projection_signal_count || 0} signaux de projection/avis cyclone, ${droughtSignals.length} signaux secheresse et ${floodCountries.length} pays avec signaux inondation cartographies ont ete captures dans ce cycle.`
+      `${cycloneIntel.projection_signal_count || 0} signaux de projection ou d'avis cyclonique, ${droughtSignals.length} signaux de sécheresse et ${floodCountries.length} pays avec des signaux d'inondation cartographiés ont été relevés lors de cette actualisation.`
     ),
     tr(
       `${conflictDisplacementSignals.length} conflict or displacement reporting signals were matched from online source items (${conflictSourceMix}), led by ${leadingSignalCountries}.`,
-      `${conflictDisplacementSignals.length} signaux de rapportage conflit/deplacement ont ete identifies a partir d'elements source en ligne (${conflictSourceMix}), menes par ${leadingSignalCountries}.`
+      `${conflictDisplacementSignals.length} signaux de rapports sur les conflits ou les déplacements ont été identifiés à partir de sources en ligne (${conflictSourceMix}), principalement pour ${leadingSignalCountries}.`
     )
   ];
   const activeCycloneLocations = summarizeActiveCycloneLocations(cycloneIntel.active_cyclones || []);
@@ -5950,44 +6043,44 @@ function renderOperationalReportPage() {
       ? "warn"
       : "bad";
   const operationalConfidenceText = operationalConfidenceLevel === "good"
-    ? tr("Multiple verified event and projection channels are active in this refresh.", "Plusieurs canaux verifies d'evenements et de projections sont actifs dans ce cycle.")
+    ? tr("Multiple verified event and projection channels are active in this refresh.", "Plusieurs canaux vérifiés d'événements et de projections sont actifs lors de cette actualisation.")
     : operationalConfidenceLevel === "warn"
-      ? tr("Partial source coverage is active; verify priority calls with country teams.", "Une couverture partielle des sources est active; verifier les priorites avec les equipes pays.")
-      : tr("Low source coverage in this cycle; defer high-stakes interpretation until next refresh.", "Couverture source faible dans ce cycle; reporter les interpretations a fort enjeu jusqu'au prochain cycle.");
+      ? tr("Partial source coverage is active; verify priority calls with country teams.", "La couverture des sources est partielle\u202f; vérifier les priorités avec les équipes pays.")
+      : tr("Low source coverage in this cycle; defer high-stakes interpretation until next refresh.", "Couverture des sources faible lors de cette actualisation\u202f; reporter les interprétations à fort enjeu à la prochaine actualisation.");
   const bulletinHighlights = [
     {
-      title: tr("Operational Focus", "Focus operationnel"),
+      title: tr("Operational Focus", "Priorité opérationnelle"),
       body: tr(
         `Highest immediate composite pressure is concentrated in ${highestRiskCountry}, with the current priority watchlist covering ${priorityWatchlist}.`,
-        `La pression composite immediate la plus elevee est concentree sur ${highestRiskCountry}, avec une liste de priorite couvrant ${priorityWatchlist}.`
+        `La pression composite immédiate la plus élevée est concentrée sur ${highestRiskCountry}, avec une liste de priorités couvrant ${priorityWatchlist}.`
       )
     },
     {
-      title: tr("Forecast Outlook", "Perspective previsionnelle"),
+      title: tr("Forecast Outlook", "Perspectives prévisionnelles"),
       body: tr(
         `${forecasts.length} ICPAC bulletins are loaded; IPC projected Phase 3+ is >=30% in ${projectedHigh} countries, and FEWS near-term phase 3+ appears in ${fewsMl1High} countries.`,
-        `${forecasts.length} bulletins ICPAC sont charges; l'IPC phase 3+ projetee est >=30% dans ${projectedHigh} pays, et FEWS court terme phase 3+ apparait dans ${fewsMl1High} pays.`
+        `${forecasts.length} bulletins de l'ICPAC sont chargés\u202f; la part projetée en phase 3+ IPC atteint au moins 30\u00a0% dans ${projectedHigh} pays, et la phase 3+ FEWS à court terme apparaît dans ${fewsMl1High} pays.`
       )
     },
     {
-      title: tr("Source Signal Status", "Statut des signaux source"),
+      title: tr("Source Signal Status", "Statut des signaux des sources"),
       body: tr(
         `This bulletin draws on GDACS, ReliefWeb, IPC, ICPAC, FEWS Data Warehouse, ${cycloneSourceStatus.checked_count ?? 0} dedicated cyclone-source checks, and Copernicus flood-source posture checks in the current refresh cycle.`,
-        `Ce bulletin s'appuie sur GDACS, ReliefWeb, IPC, ICPAC, FEWS Data Warehouse, ${cycloneSourceStatus.checked_count ?? 0} verifications de sources cyclone dediees, et les verifications de posture source inondation Copernicus dans ce cycle.`
+        `Ce bulletin s'appuie sur GDACS, ReliefWeb, IPC, ICPAC, FEWS Data Warehouse, ${cycloneSourceStatus.checked_count ?? 0} vérifications de sources cycloniques dédiées et les vérifications de l'état des sources d'inondation Copernicus lors de cette actualisation.`
       )
     },
     {
-      title: tr("Conflict And Displacement", "Conflits et deplacements"),
+      title: tr("Conflict And Displacement", "Conflits et déplacements"),
       body: tr(
         `${conflictCountries.length} countries show conflict-related reporting signals and ${displacementCountries.length} show displacement-related reporting signals in the current source window.`,
-        `${conflictCountries.length} pays montrent des signaux de rapportage lies aux conflits et ${displacementCountries.length} montrent des signaux lies aux deplacements dans la fenetre source actuelle.`
+        `${conflictCountries.length} pays présentent des signaux de rapports liés aux conflits et ${displacementCountries.length} des signaux liés aux déplacements dans la fenêtre actuelle des sources.`
       )
     },
     {
       title: tr("Flood Exposure", "Exposition aux inondations"),
       body: tr(
         `${floodCountries.length} countries show mapped flood signals from current GDACS and ReliefWeb evidence, led by ${floodTopCountries}. Copernicus flood forecasts: ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable in this update" : (cemsFloodStatus.overall || "status unknown")}.`,
-        `${floodCountries.length} pays montrent des signaux d'inondation cartographies a partir des evidences GDACS et ReliefWeb actuelles, menes par ${floodTopCountries}. La posture inondation Copernicus est ${cemsFloodStatus.overall || "unknown"}.`
+        `${floodCountries.length} pays présentent des signaux d'inondation cartographiés à partir des données GDACS et ReliefWeb actuelles, principalement ${floodTopCountries}. Prévisions d'inondations Copernicus\u00a0: ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "indisponibles lors de cette actualisation" : (cemsFloodStatus.overall || "état inconnu")}.`
       )
     }
   ];
@@ -6001,25 +6094,28 @@ function renderOperationalReportPage() {
           alt="World Health Organization"
         />
         <div>
-          <p class="bulletin-cover-kicker">World Health Organization Regional Office for Africa</p>
-          <h2 class="bulletin-cover-title">Humanitarian Operational Situation Bulletin</h2>
-          <p class="bulletin-cover-subtitle">Weekly regional brief on humanitarian health needs, hazards, food security and conflict, compiled from verified and public sources.</p>
+          <p class="bulletin-cover-kicker">${tr("World Health Organization Regional Office for Africa", "Organisation mondiale de la Santé, Bureau régional de l'Afrique")}</p>
+          <h2 class="bulletin-cover-title">${tr("Humanitarian Operational Situation Bulletin", "Bulletin de situation opérationnelle humanitaire")}</h2>
+          <p class="bulletin-cover-subtitle">${tr("Weekly regional brief on humanitarian health needs, hazards, food security and conflict, compiled from verified and public sources.", "Note régionale hebdomadaire sur les besoins sanitaires humanitaires, les aléas, la sécurité alimentaire et les conflits, établie à partir de sources vérifiées et publiques.")}</p>
         </div>
       </div>
       <div class="bulletin-cover-grid">
         <div class="bulletin-cover-card bulletin-cover-card-primary">
-          <span class="bulletin-meta-label">Issue Number</span>
+          <span class="bulletin-meta-label">${tr("Issue Number", "Numéro d'édition")}</span>
           <strong>${issueCode}</strong>
-          <p><strong>Issue date:</strong> <span title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</span></p>
-          <p><strong>Coverage:</strong> ${scopeCoverageLabel()}.</p>
+          <p><strong>${tr("Issue date:", `Date de parution\u00a0:`)}</strong> <span title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</span></p>
+          <p><strong>${tr("Coverage:", `Couverture\u00a0:`)}</strong> ${scopeCoverageLabel()}.</p>
         </div>
         <div class="bulletin-cover-card">
-          <span class="bulletin-meta-label">Reporting Basis</span>
-          <strong>Compiled from public sources at each update</strong>
-          <p>GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${reliefwebApiStatus.error ? "unavailable" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports`}, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone sources checked, Copernicus flood forecasts ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable" : (cemsFloodStatus.overall || "status unknown")}.</p>
+          <span class="bulletin-meta-label">${tr("Reporting Basis", "Base du rapport")}</span>
+          <strong>${tr("Compiled from public sources at each update", "Établi à partir de sources publiques à chaque mise à jour")}</strong>
+          <p>${tr(
+            `GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${reliefwebApiStatus.error ? "unavailable" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports`}, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone sources checked, Copernicus flood forecasts ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable" : (cemsFloodStatus.overall || "status unknown")}.`,
+            `GDACS\u00a0: ${sourceSummaries.gdacs?.total_events ?? 0} événements, ReliefWeb\u00a0: ${reliefwebApiStatus.error ? "indisponible" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} rapports`}, ICPAC\u00a0: ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} sources cycloniques vérifiées, prévisions d'inondations Copernicus\u00a0: ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "indisponibles" : (cemsFloodStatus.overall || "état inconnu")}.`
+          )}</p>
         </div>
         <div class="bulletin-cover-card bulletin-cover-quality-card bulletin-cover-quality-${coverQualitySeverity}" aria-describedby="bulletinCoverQualityNote bulletinCoverQualityInterpretation${ipcVeryStaleCountries.length ? ' bulletinCoverQualityLegend' : ''}">
-          <span class="bulletin-meta-label">Data Quality Status</span>
+          <span class="bulletin-meta-label">${tr("Data Quality Status", "Statut de la qualité des données")}</span>
           <strong>${coverQualityLabel}</strong>
           <p id="bulletinCoverQualityNote">${coverQualityNote}</p>
           <p id="bulletinCoverQualityInterpretation" class="bulletin-cover-quality-interpretation">${coverQualityInterpretation}</p>
@@ -6027,7 +6123,7 @@ function renderOperationalReportPage() {
         </div>
       </div>
       <div class="bulletin-cover-message-box">
-        <h3>Key Messages</h3>
+        <h3>${tr("Key Messages", "Messages clés")}</h3>
         <ol class="bulletin-cover-messages">
           ${coverMessages.map((item) => `<li>${item}</li>`).join("")}
         </ol>

@@ -1,0 +1,7 @@
+# Health Cluster reach register for the FCV countries. Maintained by WHO AFRO DHM.
+# Enter only figures published by the country Health Cluster (bulletin, dashboard, 4W) for the current humanitarian plan.
+# The dashboard uses a row only until OCHA Response Monitoring publishes reach for that plan, and always shows the reference.
+# people_reached: cumulative people reached by Health Cluster partners since the start of the plan year, up to period_end.
+# people_targeted: the Health Cluster target in the plan (leave blank to use the plan target).
+# Dates as YYYY-MM-DD. One row per country and reporting period; the latest period is used. Lines starting with # are ignored.
+iso3,country,plan_year,period_end,people_reached,people_targeted,source_reference,entered_by

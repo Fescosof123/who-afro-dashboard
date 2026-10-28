@@ -154,6 +154,14 @@ function run() {
   assert.equal(jan.find((r) => r.iso3 === "BBB").health_in_need.value, 5000);
   assert.equal(jan.find((r) => r.iso3 === "BBB").health_in_need.year, "2026");
 
+  // Reach register: used for the current plan year when OCHA has not published reach.
+  const regRows = [{ iso3: "AAA", plan_year: "2026", period_end: "2026-09-30", reached: 250, targeted: 500, reference: "Health Cluster bulletin Sep 2026" }];
+  const withReg = strategic.buildCountryRows(cache, reference, null, { rows: [] }, now, regRows);
+  assert.equal(withReg.find((r) => r.iso3 === "AAA").health_reached.value, 250);
+  assert.ok(/Health Cluster report/.test(withReg.find((r) => r.iso3 === "AAA").health_reached.source));
+  const badReg = strategic.buildCountryRows(cache, reference, null, { rows: [] }, now, [{ ...regRows[0], reached: 1 }]);
+  assert.equal(badReg.find((r) => r.iso3 === "AAA").health_reached, null);
+
   // Monthly snapshots: the latest snapshot in a month wins; the base is the latest earlier month.
   const snapA = strategic.snapshotFromRows(rows, new Date("2026-09-10T00:00:00Z"));
   const snapB = strategic.snapshotFromRows(rows, new Date("2026-09-30T00:00:00Z"));

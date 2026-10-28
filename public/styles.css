@@ -3770,3 +3770,5 @@ button.strat-kpi {
 body.printing-bulletin .panel.is-collapsed .panel-header ~ *,
 body.printing-bulletin .panel.two-col.is-collapsed > div:not(:first-child) { display: revert !important; }
 body.printing-bulletin .panel-toggle { display: none !important; }
+
+.strat-subhead { margin: 14px 0 6px; font-size: 1rem; }
