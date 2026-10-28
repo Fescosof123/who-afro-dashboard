@@ -1137,6 +1137,24 @@ async function exportOperationalBulletinWord() {
     const clone = el.cloneNode(true);
     // Remove plotly charts, they cannot render in Word
     clone.querySelectorAll(".js-plotly-plot, .plotly, svg, canvas").forEach((n) => n.remove());
+    // Optional note boxes: drop empty ones, keep line breaks in filled ones.
+    clone.querySelectorAll(".bulletin-note").forEach((note) => {
+      const box = note.querySelector(".bulletin-note-box");
+      const text = box ? box.innerText || box.textContent || "" : "";
+      if (!text.trim()) {
+        note.remove();
+        return;
+      }
+      const heading = note.querySelector("h4");
+      if (heading) {
+        const label = heading.textContent.replace(/^Optional note:\s*/i, "");
+        heading.textContent = label.charAt(0).toUpperCase() + label.slice(1);
+      }
+      box.removeAttribute("contenteditable");
+      box.removeAttribute("data-placeholder");
+      box.removeAttribute("data-note-key");
+      box.innerHTML = text.split(/\n/).map((line) => line.replace(/&/g, "&amp;").replace(/</g, "&lt;")).join("<br>");
+    });
     // Strip class attributes (they reference web-only CSS)
     clone.querySelectorAll("*").forEach((n) => n.removeAttribute("class"));
     return clone.innerHTML || "";
@@ -1223,11 +1241,14 @@ async function exportOperationalBulletinWord() {
 <div style="text-align:center;margin-bottom:20pt;">
   <h1 style="border-bottom:none;text-align:center;">WHO AFRO</h1>
   <h1 style="border-bottom:2px solid #004990;text-align:center;font-size:22pt;">Humanitarian Operational Situation Bulletin</h1>
-  <p style="font-size:10pt;color:#555;">Regional Africa decision brief synthesizing public hazard, forecast, nutrition, and food-security signals</p>
+  <p style="font-size:10pt;color:#555;">Weekly operational update for the FCV countries (Part A) with event and source detail (Part B)</p>
   <p style="font-size:10pt;"><strong>Issue:</strong> ${issueCode} | <strong>Date:</strong> ${formatDateTime(dashboardState.generated_at)} | <strong>Coverage:</strong> ${scopeCoverageLabel()}</p>
   <p style="font-size:10pt;"><strong>Source basis:</strong> GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone checks, Copernicus flood ${cemsFloodStatus.overall || "unknown"}</p>
 </div>
 
+${sectionHtml("bulletinWeekly")}
+
+<h1>Part B: Event and Source Detail</h1>
 <h2>1. Key Messages</h2>
 ${sectionHtml("operationalBulletinCover").includes("<ol") ? sectionHtml("operationalBulletinCover").match(/<ol[\s\S]*?<\/ol>/i)?.[0] || "<p>See dashboard for details.</p>" : "<p>See dashboard for details.</p>"}
 
