@@ -33,22 +33,6 @@ const ATTACKS_HEALTH_STATUS_TTL_MS = 5 * 60 * 1000;
 const PRINT_MODE_CLASS = "printing-bulletin";
 const PRINT_REPORT_PAGE_ID = "operationalReportPage";
 
-const PAGE_ROTATION_MULTIPLIER = {
-  overviewPage: 1.6,
-  gradingPage: 1.2,
-  signalsPage: 1,
-  dataHealthPage: 0.8,
-  foodSecurityPage: 1.3,
-  nutritionPage: 1,
-  conflictsDisplacementPage: 1.1,
-  attacksHealthPage: 1,
-  hazardPage: 1,
-  cyclonePage: 1,
-  forecastPage: 1.1,
-  countryPage: 0.95,
-  operationalReportPage: 1.1,
-  fcvDataPage: 1.1
-};
 
 const PAGE_ORDER = ["overviewPage", "gradingPage", "fcvDataPage", "countryPage", "conflictsDisplacementPage", "attacksHealthPage", "foodSecurityPage", "nutritionPage", "hazardPage", "cyclonePage", "forecastPage", "operationalReportPage", "signalsPage", "dataHealthPage"];
 
@@ -129,7 +113,7 @@ const UI_COPY = {
     disablePresentationMode: "Disable Presentation Mode",
     autoDisplayOff: "Auto display is off.",
     autoDisplayPaused: "Auto display paused: {reason}",
-    autoDisplayOn: "Auto display is on ({seconds} sec base, page-aware timing).",
+    autoDisplayOn: "Auto display is on: each page shows for {seconds}.",
     updateDashboard: "Update Dashboard",
     updating: "Updating...",
     preparingExport: "Preparing export...",
@@ -166,7 +150,7 @@ const UI_COPY = {
     disablePresentationMode: "Desactiver mode presentation",
     autoDisplayOff: "Affichage auto inactif.",
     autoDisplayPaused: "Affichage auto en pause: {reason}",
-    autoDisplayOn: "Affichage auto actif ({seconds} sec base, tempo selon page).",
+    autoDisplayOn: "Affichage auto actif : {seconds} par page.",
     updateDashboard: "Mettre a jour le tableau",
     updating: "Mise a jour...",
     preparingExport: "Preparation export...",
@@ -227,8 +211,8 @@ const PHRASE_FR = {
   "Country Comparison Table": "Table comparative pays",
   "IPC Food Security Snapshot": "Synthese IPC securite alimentaire",
   "Recommendations: Food Security": "Recommandations: securite alimentaire",
-  "Nutrition Context (Supporting Layer)": "Contexte nutritionnel (couche d'appui)",
-  "Current Indicator Table": "Tableau des indicateurs actuels",
+  "Nutrition Context": "Contexte nutritionnel",
+  "Wasting and Stunting by Country (latest survey)": "Émaciation et retard de croissance par pays (dernière enquête)",
   "Recommendations: Nutrition": "Recommandations: nutrition",
   "Forecast Outlook": "Perspective des previsions",
   "Forecast Insights": "Points saillants previsions",
@@ -646,6 +630,12 @@ function startLocalizationObserver() {
   });
 }
 
+function formatRotateInterval(ms) {
+  const sec = Math.round(ms / 1000);
+  if (sec < 60) return currentLanguage === "fr" ? `${sec} s` : `${sec} sec`;
+  return `${Math.round(sec / 60)} min`;
+}
+
 function setTextPreserveChildren(node, text) {
   if (!node) {
     return;
@@ -733,6 +723,11 @@ function applyStaticLanguage() {
 
   const staticNodes = Array.from(document.querySelectorAll(".brand-sub, #sideNav .nav-group-label, #sideNav .nav-btn, .page .panel-header h2, .page .panel-header p, #trendChartAxisCaption, #forecastChartAxisCaption, #nutritionCurrentStamp, .topbar h1, #mapModeRisk, #mapModeIpc"));
   staticNodes.forEach((node) => {
+    // Nodes with child elements (links, code) keep their markup; only nodes made of
+    // plain text are translated, so text is never duplicated.
+    if (node.children.length) {
+      return;
+    }
     if (!node.dataset.i18nBaseText) {
       node.dataset.i18nBaseText = node.textContent.trim();
     }
@@ -761,8 +756,7 @@ function applyStaticLanguage() {
 
   const secLabels = els.rotateIntervalSelect ? Array.from(els.rotateIntervalSelect.options) : [];
   secLabels.forEach((opt) => {
-    const sec = Math.round(Number(opt.value || 0) / 1000);
-    opt.textContent = currentLanguage === "fr" ? `${sec} s` : `${sec} sec`;
+    opt.textContent = formatRotateInterval(Number(opt.value || 0));
   });
 }
 
@@ -773,7 +767,7 @@ function applyLanguage() {
   }
   if (els.languageSelect && els.languageSelect.options.length >= 2) {
     els.languageSelect.options[0].textContent = currentLanguage === "fr" ? "Anglais" : "English";
-    els.languageSelect.options[1].textContent = "Francais";
+    els.languageSelect.options[1].textContent = "Français";
   }
   if (els.presentationModeBtn) {
     els.presentationModeBtn.textContent = isPresentationMode ? t("disablePresentationMode") : t("enablePresentationMode");
@@ -782,8 +776,8 @@ function applyLanguage() {
     els.autoRotateBtn.textContent = autoRotateEnabled ? t("stopAutoDisplay") : t("startAutoDisplay");
   }
   if (autoRotateEnabled) {
-    const interval = Number(els.rotateIntervalSelect?.value || 20000);
-    setAutoStatus(t("autoDisplayOn", { seconds: Math.round(interval / 1000) }));
+    const interval = Number(els.rotateIntervalSelect?.value || 60000);
+    setAutoStatus(t("autoDisplayOn", { seconds: formatRotateInterval(interval) }));
   } else {
     setAutoStatus(t("autoDisplayOff"));
   }
@@ -896,6 +890,12 @@ function waitForChartSentinels(chartIds, options = {}) {
 
 // Exposed for deterministic QA and export checks in browser automation.
 window.__dashboardWaitForChartsReady = waitForChartSentinels;
+// Lets the strategic layer refresh the bulletin once the DHM tiers have loaded.
+window.__dashboardRerenderBulletin = () => {
+  if (dashboardState) {
+    renderOperationalReportPage();
+  }
+};
 
 function formatNum(value, digits = 1) {
   if (value == null || Number.isNaN(value)) {
@@ -913,6 +913,17 @@ function formatDate(value) {
     return value;
   }
   return d.toISOString().slice(0, 10);
+}
+
+function formatMonthYear(value) {
+  if (!value) {
+    return "n/a";
+  }
+  const d = new Date(value);
+  if (Number.isNaN(d.getTime())) {
+    return value;
+  }
+  return d.toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
 }
 
 function formatDateTime(value) {
@@ -1283,10 +1294,6 @@ ${sectionHtml("operationalConflictDisplacementInsert")}
 <h2>9. Priority Country Annexes</h2>
 ${sectionHtml("operationalCountryAnnexes")}
 
-<hr>
-<h2>Governance and Approval</h2>
-${sectionHtml("operationalBulletinGovernance")}
-${sectionHtml("operationalBulletinApproval")}
 
 <hr>
 <p style="font-size:9pt;color:#666;text-align:center;">
@@ -1390,6 +1397,8 @@ function qualityTag(country) {
 }
 
 function compactTrackLabel(track) {
+  // Sudan and Somalia are cross-border context countries outside WHO AFRO.
+  if (track === "Other Africa") return "Context";
   return track || "n/a";
 }
 
@@ -2606,7 +2615,7 @@ function renderFoodSecurityPage() {
     const feedsResolved = Number(fewsCountryStatus.feeds_resolved || 0);
     const feedsSucceeded = Number(fewsCountryStatus.feeds_succeeded || 0);
     const mappedCountries = Number(fewsCountryStatus.mapped_countries || 0);
-    els.foodSecurityFewsStamp.innerHTML = `<span class="tag good">FEWS status</span> Updated ${checkedLabel} | Country feeds ${feedsSucceeded}/${feedsResolved} | Countries mapped ${mappedCountries}`;
+    els.foodSecurityFewsStamp.innerHTML = `<span class="tag ${feedsSucceeded > 0 ? "good" : "warn"}">FEWS status</span> Updated ${checkedLabel} | Country feeds ${feedsSucceeded}/${feedsResolved} | Countries mapped ${mappedCountries}`;
   }
 
   const rows = [...(dashboardState.countries || [])]
@@ -2624,9 +2633,9 @@ function renderFoodSecurityPage() {
         : `<span class="tag ${projectedPct >= 0.3 ? "bad" : projectedPct >= 0.2 ? "warn" : "good"}">${formatNum(projectedPct * 100, 1)}%</span>`;
       const ipcAgeMos = ipcAnalysisAgeMonths(ipc?.analysis_date);
       const ipcStaleTag = ipcAgeMos != null && ipcAgeMos >= 36
-        ? ` <span class="tag bad" title="${ipcAgeMos} months old — IPC classification is very stale; verify with the latest IPC cycle before using this for decisions">Very stale</span>`
+        ? ` <span class="tag bad" title="${ipcAgeMos} months old; IPC classification is very stale; verify with the latest IPC cycle before using this for decisions">Very stale</span>`
         : ipcAgeMos != null && ipcAgeMos >= 18
-          ? ` <span class="tag warn" title="${ipcAgeMos} months old — IPC classification is older than 18 months">Stale</span>`
+          ? ` <span class="tag warn" title="${ipcAgeMos} months old; IPC classification is older than 18 months">Stale</span>`
           : "";
       const fews = c.fews_ipc;
       const fewsPhaseClass = (phase) => phase >= 4 ? "bad" : phase >= 3 ? "warn" : phase >= 1 ? "good" : "";
@@ -2643,26 +2652,26 @@ function renderFoodSecurityPage() {
       const useFewsDateFallback = ipcAgeMos != null && ipcAgeMos >= 18 && fewsAge != null && fewsAge <= FEWS_OPERATIONAL_MAX_AGE_MONTHS;
       const fewsProjectionRef = fews?.ml1_projection_end || fews?.cs_projection_end || fewsDateRef || null;
       const analysisDateCell = useFewsDateFallback
-        ? `<span class="tag good" title="Using FEWS as-of date because IPC analysis is stale">FEWS ${formatDate(fewsDateRef)}</span>`
+        ? `<span class="tag good" title="Using FEWS as-of date because IPC analysis is stale">${formatMonthYear(fewsDateRef)} (FEWS)</span>`
         : ipc
           ? `${ipc.analysis_date || "n/a"}${ipcStaleTag}`
           : fewsDateRef
-            ? `<span class="tag good" title="FEWS country/API as-of ${fewsDateRef}">FEWS ${formatDate(fewsDateRef)}</span>`
+            ? `<span class="tag good" title="FEWS country/API as-of ${fewsDateRef}">${formatMonthYear(fewsDateRef)} (FEWS)</span>`
             : "n/a";
       const projectionDateCell = useFewsDateFallback
-        ? `<span class="tag good" title="Using FEWS projection window because IPC projection is stale">FEWS ${formatDate(fewsProjectionRef)}</span>`
+        ? `<span class="tag good" title="Using FEWS projection window because IPC projection is stale">${formatMonthYear(fewsProjectionRef)} (FEWS)</span>`
         : ipc
           ? (ipc.projection_date || "n/a")
           : fewsProjectionRef
-            ? `<span class="tag good" title="FEWS projection period end ${fewsProjectionRef}">FEWS ${formatDate(fewsProjectionRef)}</span>`
+            ? `<span class="tag good" title="FEWS projection period end ${fewsProjectionRef}">${formatMonthYear(fewsProjectionRef)} (FEWS)</span>`
             : "n/a";
       const fewsCSCell = fews?.cs_phase != null
-        ? `<span class="tag ${fewsPhaseClass(fews.cs_phase)}" title="${fews.cs_description || ""} — as of: ${fewsDateRef || "n/a"} — ${fewsSourceHint}">Phase ${fews.cs_phase}</span>${fewsAgeTag}`
+        ? `<span class="tag ${fewsPhaseClass(fews.cs_phase)}" title="${fews.cs_description || ""} | as of: ${fewsDateRef || "n/a"} | ${fewsSourceHint}">Phase ${fews.cs_phase}</span>${fewsAgeTag}`
         : fews == null
           ? '<span class="tag">No FEWS coverage</span>'
           : '<span class="tag warn">n/a</span>';
       const fewsML1Cell = fews?.ml1_phase != null
-        ? `<span class="tag ${fewsPhaseClass(fews.ml1_phase)}" title="${fews.ml1_description || ""} — as of: ${fewsDateRef || "n/a"} — ${fewsSourceHint}">Phase ${fews.ml1_phase}</span>${fewsAgeTag}`
+        ? `<span class="tag ${fewsPhaseClass(fews.ml1_phase)}" title="${fews.ml1_description || ""} | as of: ${fewsDateRef || "n/a"} | ${fewsSourceHint}">Phase ${fews.ml1_phase}</span>${fewsAgeTag}`
         : fews == null
           ? '<span class="tag">No FEWS coverage</span>'
           : '<span class="tag warn">n/a</span>';
@@ -2682,6 +2691,9 @@ function renderFoodSecurityPage() {
       `;
     })
     .join("");
+  if (!rows.length) {
+    els.foodSecurityTableBody.innerHTML = '<tr><td colspan="10" class="muted">IPC and FEWS NET country data did not load in this refresh. The verified IPC/CH figures on the Overview and in the Food Security key figures above come from HDX HAPI and are not affected.</td></tr>';
+  }
 
   renderRecommendationList(
     els.foodSecurityRecommendations,
@@ -2746,11 +2758,11 @@ function rotateToNextPage() {
   const next = PAGE_ORDER[(idx + 1) % PAGE_ORDER.length];
   setActivePage(next);
 
-  const countries = dashboardState.countries || [];
-  const topCountries = countries.slice(0, 5);
+  // Auto display cycles through the FCV countries listed first in the country menu.
+  const topCountries = Array.from(els.countrySelect.options).slice(0, 13).map((o) => o.value);
   if (topCountries.length > 0) {
     rotatingCountryIndex = (rotatingCountryIndex + 1) % topCountries.length;
-    const nextCountryIso = topCountries[rotatingCountryIndex].iso3;
+    const nextCountryIso = topCountries[rotatingCountryIndex];
     els.countrySelect.value = nextCountryIso;
     renderTrend(nextCountryIso);
     renderSummary(nextCountryIso);
@@ -2800,9 +2812,9 @@ function stopAutoRotate(reason = "") {
 }
 
 function rotateDelayForPage(pageId) {
-  const baseInterval = Number(els.rotateIntervalSelect?.value || 20000);
-  const multiplier = PAGE_ROTATION_MULTIPLIER[pageId] || 1;
-  return Math.round(baseInterval * multiplier);
+  const baseInterval = Number(els.rotateIntervalSelect?.value || 60000);
+  // Every page shows for the interval the user picked.
+  return Math.round(baseInterval);
 }
 
 function queueNextAutoRotate() {
@@ -2831,9 +2843,9 @@ function startAutoRotate() {
   }
   autoRotateEnabled = true;
   queueNextAutoRotate();
-  const interval = Number(els.rotateIntervalSelect?.value || 20000);
+  const interval = Number(els.rotateIntervalSelect?.value || 60000);
   els.autoRotateBtn.textContent = t("stopAutoDisplay");
-  setAutoStatus(t("autoDisplayOn", { seconds: Math.round(interval / 1000) }));
+  setAutoStatus(t("autoDisplayOn", { seconds: formatRotateInterval(interval) }));
 }
 
 function setCurrentDate() {
@@ -2984,7 +2996,7 @@ function buildFlagOverlayTrace(labels = [], values = [], opts = {}) {
     x: points.map((p) => p.l),
     y: points.map((p) => p.v),
     marker: { symbol: "triangle-up", size: 11, color: "#7a1f3d", line: { color: "#fff", width: 1 } },
-    hovertemplate: "%{x}: value outside expected range — verify denominator<extra></extra>",
+    hovertemplate: "%{x}: value outside expected range; verify denominator<extra></extra>",
     showlegend: true
   };
 }
@@ -4085,14 +4097,11 @@ function buildMetrics() {
   const serviceDeliveryStatus = dashboardState.service_delivery_status || null;
   const serviceDeliveryRows = dashboardState.service_delivery_by_country || [];
   const serviceDeliverySummary = serviceDeliverySummaryParts(serviceDeliveryRows, serviceDeliveryStatus);
-  const highRisk = Number(ledgerMetrics.priority_escalation_countries?.count ?? countries.filter((c) => c.risk_score >= 65).length);
-  const maxRisk = countries.reduce((max, c) => Math.max(max, Number(c.risk_score || 0)), 0);
   const ipcCrisis = countries.filter((c) => (c.ipc?.phase3plus_pct || 0) >= 0.3).length;
   const conflictDisplacementCountries = countries.filter((c) => (c.conflict_signal_count || 0) > 0 || (c.displacement_signal_count || 0) > 0).length;
   const hazardCountries = countries.filter((c) => c.hazard_count > 0).length;
   const cycloneActiveCountries = Number(ledgerMetrics.cyclone_active_countries?.count ?? mappedCycloneSignalIso3Set().size);
   const droughtActiveCountries = Number(ledgerMetrics.drought_active_countries?.count ?? countries.filter((c) => (c.drought_signal_count || 0) > 0).length);
-  const foodSecurityCoverage = countries.filter((c) => c.ipc != null || c.fews_ipc != null).length;
   const ensoStatusLabel = ensoAdvisory?.alert_status || "No ENSO watch loaded";
   const ensoStatusShort = ensoStatusLabel.length > 18 ? ensoStatusLabel.slice(0, 16).trim() + "…" : ensoStatusLabel;
   const ensoOutlook = deriveEnsoOutlookSummary(ensoAdvisory);
@@ -4100,50 +4109,55 @@ function buildMetrics() {
     ? `${ensoOutlook} Issued ${ensoAdvisory.issued_on || "n/a"}${ensoAdvisory.next_update ? ` | Next update ${ensoAdvisory.next_update}` : ""}`
     : "CPC ENSO advisory not available in this refresh";
 
+  const ipcLoaded = countries.some((c) => c.ipc && (c.ipc.phase3plus_pct != null || c.ipc.projection_phase3plus_pct != null));
+  // Each card opens the page or panel where the detail sits.
   const cards = [
-    { title: "Priority Escalation Countries", value: highRisk, note: `Humanitarian risk score >= 65 (current max: ${maxRisk})` },
-    { title: "IPC Crisis Countries", value: ipcCrisis, note: "IPC Phase 3+ >= 30%" },
-    { title: "Conflict/Displacement Active", value: conflictDisplacementCountries, note: "Source-linked pressure signals" },
-    { title: "Countries With Active Hazards", value: hazardCountries, note: "GDACS-linked hazard events" },
-    { title: "Cyclone-Active Countries", value: cycloneActiveCountries, note: "Mapped cyclone event or advisory signals" },
+    {
+      title: "IPC Crisis Countries",
+      value: ipcLoaded ? ipcCrisis : "n/a",
+      note: ipcLoaded ? "IPC/CH Phase 3+ at 30% or more of the population analysed" : "IPC feed not available in this refresh; see Food Security for the verified figures",
+      target: "foodSecurityPage#foodSecurityTable"
+    },
+    { title: "Conflict/Displacement Active", value: conflictDisplacementCountries, note: "Countries named in conflict or displacement reports (news signals, not verified figures)", target: "conflictsDisplacementPage#conflictsDisplacementTable" },
+    { title: "Countries With Active Hazards", value: hazardCountries, note: "Countries with a current GDACS hazard alert", target: "hazardPage#hazardFeed" },
+    { title: "Cyclone-Active Countries", value: cycloneActiveCountries, note: "Countries with a mapped cyclone event or advisory", target: "cyclonePage" },
     {
       title: "ENSO Climate Watch",
       value: ensoAdvisory ? ensoStatusShort : "n/a",
       note: ensoNote,
-      actionLabel: "Open forecast",
-      action: "open-forecast"
+      target: "forecastPage"
     },
-    { title: "Drought-Active Countries", value: droughtActiveCountries, note: "Mapped drought source signals" },
-    { title: "Regional Flood Updates", value: floodCtx.afroFloodEvents.length, note: `Mapped AFRO countries: ${floodCtx.topFloodCountries.length}` },
+    { title: "Drought-Active Countries", value: droughtActiveCountries, note: "Countries with a mapped drought report", target: "hazardPage" },
+    { title: "Regional Flood Updates", value: floodCtx.afroFloodEvents.length, note: `Flood reports in the region; ${floodCtx.topFloodCountries.length} countries mapped`, target: "hazardPage#floodWatchSummary" },
     {
       title: "FCV Service Delivery Feed",
       value: serviceDeliveryStatus ? `${serviceDeliveryStatus.country_count}/${countries.length}` : "0",
       note: serviceDeliveryStatus
         ? `${serviceDeliverySummary.cardNote}. Latest feed month: ${serviceDeliveryStatus.latest_month || "n/a"}`
         : "No FCV service-delivery feed loaded",
-      actionLabel: serviceDeliveryStatus ? "Open snapshot" : null,
-      action: serviceDeliveryStatus ? "open-service-delivery" : null
+      target: "fcvDataPage"
     },
-    { title: "Food Security Coverage", value: `${foodSecurityCoverage}/${countries.length}`, note: "IPC and/or FEWS coverage" },
     {
       title: "ICPAC Forecast Bulletins",
       value: (dashboardState.forecasts || []).length,
-      note: "Weekly, monthly, and seasonal products"
+      note: "Weekly, monthly and seasonal products for the IGAD region",
+      target: "forecastPage#icpacFeed"
     }
   ];
 
   els.metricGrid.innerHTML = cards
     .map(
       (c) => `
-      <article class="metric-card">
+      <article class="metric-card metric-card-link" data-strat-target="${c.target}" tabindex="0" role="link">
         <h3>${c.title}</h3>
         <div class="metric-value">${c.value}</div>
         <div class="metric-note">${c.note}</div>
-        ${c.actionLabel ? `<button class="metric-action-btn" type="button" data-action="${c.action}">${c.actionLabel}</button>` : ""}
+        <span class="strat-kpi-more"></span>
       </article>
     `
     )
     .join("");
+  if (window.StrategicDashboard?.decorate) window.StrategicDashboard.decorate();
 }
 
 function renderDataValidationPanel() {
@@ -5099,7 +5113,7 @@ function renderDtmDisplacementTable() {
   els.dtmDisplacementSummary.innerHTML = `
     <p><strong>Total IDPs tracked:</strong> ${totalIdps.toLocaleString()} across ${rows.length} countries (IOM DTM, as of ${savedAt}).</p>
     <p><strong>Highest displacement:</strong> ${topCountry.country} with ${(topCountry.idp_count || 0).toLocaleString()} IDPs (${topCountry.displacement_reason || "unspecified"}, reported ${topCountry.reporting_date || "unknown"}).</p>
-    <p><span class="tag warn">Note</span> IDP figures reflect DTM assessments at available reporting dates — recency varies by country. Some figures may predate the current humanitarian situation.</p>
+    <p><span class="tag warn">Note</span> IDP figures reflect DTM assessments at available reporting dates; recency varies by country. Some figures may predate the current humanitarian situation.</p>
   `;
 
   const reasonColor = (reason) => {
@@ -5124,7 +5138,7 @@ function renderDtmDisplacementTable() {
         ${(r.idp_count || 0).toLocaleString()}
       </td>
       <td><span style="color:${reasonColor(r.displacement_reason)};font-weight:600;">${r.displacement_reason || "Not specified"}</span></td>
-      <td style="color:#506579;">${r.reporting_date || "—"}</td>
+      <td style="color:#506579;">${r.reporting_date || "n/a"}</td>
     </tr>
   `).join("");
 }
@@ -5568,7 +5582,7 @@ function renderEmdatSection() {
       .slice(0, 10)
       .map((e) => `
         <div class="feed-item">
-          <strong>${e.label || e.type} — ${e.country} (${e.year})</strong>
+          <strong>${e.label || e.type}: ${e.country} (${e.year})</strong>
           <div class="feed-meta-row"><span>${fmtCount(e.affected)} affected | ${fmtCount(e.deaths)} deaths | ${e.subtype || e.type} | EM-DAT ${e.disno || ""}</span></div>
         </div>
       `)
@@ -5800,8 +5814,12 @@ function renderOperationalReportPage() {
   const issueCode = formatIssueCode(dashboardState.generated_at);
   const nextUpdate = humanAgeFromIso(dashboardState.generated_at) === "n/a"
     ? tr("next refresh cycle", "prochain cycle de rafraichissement")
-    : tr("next automated refresh cycle", "prochain cycle de rafraichissement automatique");
-  const annexCountries = [...countries]
+    : tr("automatic, at the next data refresh", "automatique, au prochain rafraichissement des donnees");
+  // Annex countries follow the DHM triage tier (Major, then Severe) when the
+  // strategic layer has loaded; otherwise the news-signal ranking is used.
+  const tierOrder = window.StrategicDashboard?.priorityIso3 ? window.StrategicDashboard.priorityIso3() : [];
+  const tierAnnex = tierOrder.map((iso) => countries.find((c) => c.iso3 === iso)).filter(Boolean).slice(0, 3);
+  const annexCountries = tierAnnex.length ? tierAnnex : [...countries]
     .sort((a, b) => {
       const scoreA = ((a.conflict_signal_count || 0) * 6) + ((a.displacement_signal_count || 0) * 6) + ((a.report_count_30d || 0) * 2) + (a.hazard_count || 0) + (a.drought_signal_count || 0) + ((a.risk_score || 0) / 10);
       const scoreB = ((b.conflict_signal_count || 0) * 6) + ((b.displacement_signal_count || 0) * 6) + ((b.report_count_30d || 0) * 2) + (b.hazard_count || 0) + (b.drought_signal_count || 0) + ((b.risk_score || 0) / 10);
@@ -5833,6 +5851,16 @@ function renderOperationalReportPage() {
   }
   if (unhcrFallbackOnly) {
     coverQualitySignals.push("UNHCR fallback-only");
+  }
+  // Core feeds that did not update in the last 48 hours lower the quality rating.
+  const coreFeeds = [["GDACS", "gdacs"], ["ReliefWeb", "reliefweb"], ["WHO DON", "who_don"], ["IPC/HDX", "ipc_hdx"], ["Cyclone sources", "cyclone_dedicated"]];
+  const sfMap = dashboardState.source_freshness || {};
+  const downFeeds = coreFeeds.filter(([, key]) => {
+    const t = sfMap[key] ? new Date(sfMap[key]).getTime() : NaN;
+    return !Number.isFinite(t) || Date.now() - t > 48 * 3600 * 1000;
+  }).map(([label]) => label);
+  if (downFeeds.length) {
+    coverQualitySignals.push(`Not updated in 48 hours: ${downFeeds.join(", ")}`);
   }
   const coverQualitySeverity = coverQualitySignals.length >= 2 ? "bad" : coverQualitySignals.length === 1 ? "warn" : "ok";
   const coverQualityLabel = coverQualitySeverity === "bad"
@@ -5965,7 +5993,7 @@ function renderOperationalReportPage() {
         <div>
           <p class="bulletin-cover-kicker">World Health Organization Regional Office for Africa</p>
           <h2 class="bulletin-cover-title">Humanitarian Operational Situation Bulletin</h2>
-          <p class="bulletin-cover-subtitle">Regional Africa decision brief synthesizing public hazard, forecast, nutrition, and food-security signals with FCV, AFRO, and other-Africa grouping.</p>
+          <p class="bulletin-cover-subtitle">Weekly regional brief on humanitarian health needs, hazards, food security and conflict, compiled from verified and public sources.</p>
         </div>
       </div>
       <div class="bulletin-cover-grid">
@@ -5977,7 +6005,7 @@ function renderOperationalReportPage() {
         </div>
         <div class="bulletin-cover-card">
           <span class="bulletin-meta-label">Reporting Basis</span>
-          <strong>Refresh-driven public-source synthesis</strong>
+          <strong>Compiled from public sources at each update</strong>
           <p>GDACS ${sourceSummaries.gdacs?.total_events ?? 0}, ReliefWeb ${sourceSummaries.reliefweb?.total_reports_30d ?? 0}, ICPAC ${forecasts.length}, cyclone checks ${cycloneSourceStatus.checked_count ?? 0}, Copernicus flood posture ${cemsFloodStatus.overall || "unknown"}.</p>
         </div>
         <div class="bulletin-cover-card bulletin-cover-quality-card bulletin-cover-quality-${coverQualitySeverity}" aria-describedby="bulletinCoverQualityNote bulletinCoverQualityInterpretation${ipcVeryStaleCountries.length ? ' bulletinCoverQualityLegend' : ''}">
@@ -5986,11 +6014,6 @@ function renderOperationalReportPage() {
           <p id="bulletinCoverQualityNote">${coverQualityNote}</p>
           <p id="bulletinCoverQualityInterpretation" class="bulletin-cover-quality-interpretation">${coverQualityInterpretation}</p>
           ${coverQualityLegendMarkup}
-        </div>
-        <div class="bulletin-cover-card bulletin-cover-quality-card bulletin-cover-quality-${filterIntegritySeverity}">
-          <span class="bulletin-meta-label">Filter Integrity</span>
-          <strong>${filterIntegrityLabel}</strong>
-          <p>${filterIntegrityDetail}</p>
         </div>
       </div>
       <div class="bulletin-cover-message-box">
@@ -6152,7 +6175,7 @@ function renderOperationalReportPage() {
   const iomStatusDetail = `status ${iomStatusLabel}; scanned ${iomDtmStatus.total_items_scanned ?? 0}; mapped 30d ${iomDtmStatus.fcv_items_30d ?? 0}; countries ${iomDtmStatus.mapped_countries ?? 0}`;
   const iomStatusError = iomDtmStatus.error ? ` (${iomDtmStatus.error})` : "";
   const acapsCoverageNote = acapsWarning
-    ? `cap pressure active — page cap reached in ${acapsCapStreak != null && acapsCapStreak > 0 ? `${acapsCapStreak} consecutive refresh${acapsCapStreak === 1 ? "" : "es"}` : "consecutive refreshes"}; some archive items may be missed.`
+    ? `cap pressure active: page cap reached in ${acapsCapStreak != null && acapsCapStreak > 0 ? `${acapsCapStreak} consecutive refresh${acapsCapStreak === 1 ? "" : "es"}` : "consecutive refreshes"}; some archive items may be missed.`
     : "no cap-pressure warning in this cycle.";
   els.operationalSourceDetail.innerHTML = `
     <p><strong>GDACS summary:</strong> ${(sourceSummaries.gdacs?.total_events ?? 0)} events (delta ${sourceSummaries.delta?.gdacs_total_events_delta ?? "n/a"}). Top countries: ${gdacsTopCountries}.</p>
@@ -6458,6 +6481,7 @@ function renderOperationalReportPage() {
       </article>
     `;
   }).join("");
+  if (window.StrategicDashboard?.renderCover) window.StrategicDashboard.renderCover();
 }
 
 function renderCyclonePage() {
@@ -7016,10 +7040,24 @@ function updateNavBadges() {
   });
 }
 
+// FCV countries first (Prioritized, then Accelerated), alphabetical within each group.
 function populateCountrySelect() {
-  els.countrySelect.innerHTML = (dashboardState.countries || [])
-    .map((c) => `<option value="${c.iso3}">${c.country}</option>`)
+  const previous = els.countrySelect.value;
+  const rank = (g) => (/prioriti/i.test(g || "") ? 0 : /accelerat/i.test(g || "") ? 1 : /fcv/i.test(g || "") ? 2 : /afro/i.test(g || "") ? 3 : 4);
+  const label = ["FCV Prioritized", "FCV Accelerated", "Other FCV", "WHO AFRO", "Context (outside WHO AFRO)"];
+  const sorted = [...(dashboardState.countries || [])].sort((a, b) => rank(a.fcv_track || a.group) - rank(b.fcv_track || b.group) || String(a.country).localeCompare(String(b.country)));
+  const groups = new Map();
+  sorted.forEach((c) => {
+    const key = rank(c.fcv_track || c.group);
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(c);
+  });
+  els.countrySelect.innerHTML = Array.from(groups.entries())
+    .map(([key, list]) => `<optgroup label="${label[key]}">${list.map((c) => `<option value="${c.iso3}">${c.country}</option>`).join("")}</optgroup>`)
     .join("");
+  if (previous && sorted.some((c) => c.iso3 === previous)) {
+    els.countrySelect.value = previous;
+  }
 }
 
 async function waitForExportChartsReady(timeoutMs = 15000) {
@@ -7667,8 +7705,9 @@ async function loadDashboard(options = {}) {
     renderStaleBanner();
     renderDataAgeStatus();
 
+    const keepCountry = els.countrySelect.value;
     populateCountrySelect();
-    const firstCountry = dashboardState.countries?.[0]?.iso3;
+    const firstCountry = (keepCountry && els.countrySelect.value === keepCountry) ? keepCountry : els.countrySelect.options[0]?.value;
     if (firstCountry) {
       els.countrySelect.value = firstCountry;
       renderTrend(firstCountry);

@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/styles.css?v=20261028b" />
   </head>
   <body>
     <div class="who-bg"></div>
@@ -55,11 +55,10 @@
           <label class="rotate-label">
             <span id="rotateEveryLabel">Rotate Every</span>
             <select id="rotateIntervalSelect">
-              <option value="12000">12 sec</option>
-              <option value="15000">15 sec</option>
-              <option value="20000" selected>20 sec</option>
-              <option value="25000">25 sec</option>
               <option value="30000">30 sec</option>
+              <option value="60000" selected>1 min</option>
+              <option value="120000">2 min</option>
+              <option value="300000">5 min</option>
             </select>
           </label>
           <p id="autoStatus" class="auto-status">Auto display is off.</p>
@@ -96,7 +95,7 @@
               <span id="languageLabel">Language</span>
               <select id="languageSelect">
                 <option value="en" selected>English</option>
-                <option value="fr">Francais</option>
+                <option value="fr">Français</option>
               </select>
             </label>
           </div>
@@ -186,7 +185,7 @@
               <div>
                 <div class="panel-header">
                   <h2>Health Needs Covered by the Plan</h2>
-                  <p>People targeted for health assistance as a share of people in need of health assistance, latest plan year. Health reach is not yet published in a verified source.</p>
+                  <p>People targeted for health assistance as a share of people in need of health assistance, latest plan year. 2026 Health Cluster reach is not yet published by OCHA; the latest full-year reach is on the Health reach card above.</p>
                 </div>
                 <div id="stratCoverageChart" class="chart strat-chart"></div>
               </div>
@@ -263,7 +262,7 @@
               <div class="overview-side-stack">
                 <div>
                   <div class="panel-header">
-                    <h2>Food Security And Event Pressure Snapshot</h2>
+                    <h2>Food Security and Event Pressure Snapshot</h2>
                     <p>Food insecurity and event pressure.</p>
                   </div>
                   <div id="overviewInsightBox" class="summary"></div>
@@ -342,7 +341,7 @@
                       <th data-sort-key="stunting" title="Sort by stunting percentage">Stunting %</th>
                       <th data-sort-key="hazards" title="Sort by hazard count">Hazards</th>
                       <th data-sort-key="cyclones" title="Sort by cyclone count">Cyclones</th>
-                      <th data-sort-key="reports_30d" title="Sort by 30-day report count">Rep30d</th>
+                      <th data-sort-key="reports_30d" title="Sort by 30-day report count">Reports (30 days)</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -527,7 +526,7 @@
                 <div>
                   <div class="panel-header">
                     <h2>H3 Package Implementation</h2>
-                    <p>Proposed thresholds (tune via <code>FCV_THRESHOLDS.h3</code>): good &ge;80%, warn 50&ndash;79%, critical &lt;50%.</p>
+                    <p>Good: 80% or more. Warning: 50 to 79%. Critical: under 50%.</p>
                   </div>
                   <div id="fcvRegH3Chart" class="chart"></div>
                 </div>
@@ -675,7 +674,7 @@
           <section id="nutritionPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>Nutrition Context (Supporting Layer)</h2>
+                <h2>Nutrition Context</h2>
                 <p>Supporting context.</p>
               </div>
               <div id="nutritionSummary" class="summary"></div>
@@ -683,7 +682,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Current Indicator Table</h2>
+                <h2>Wasting and Stunting by Country (latest survey)</h2>
                 <p id="nutritionCurrentStamp">Current values only. Stale values are excluded.</p>
               </div>
               <div class="table-wrap">
@@ -897,7 +896,7 @@
             <section class="panel" id="stratDisplacementPanel"></section>
             <section class="panel">
               <div class="panel-header">
-                <h2>Conflict And Displacement Pressure</h2>
+                <h2>Conflict and Displacement Pressure</h2>
                 <p>Conflict and displacement signals.</p>
               </div>
               <div id="conflictsDisplacementSummary" class="summary"></div>
@@ -907,7 +906,7 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Conflict And Displacement Prioritization</h2>
+                  <h2>Conflict and Displacement Prioritization</h2>
                   <p>Countries with strongest overlap.</p>
                 </div>
                 <div class="table-wrap">
@@ -915,10 +914,10 @@
                     <thead>
                       <tr>
                         <th>Country</th>
-                        <th>Risk</th>
-                        <th title="Conflict signal count">Conf Sig</th>
-                        <th title="Displacement signal count">Disp Sig</th>
-                        <th title="Reports in the last 30 days">Rep30d</th>
+                        <th title="Composite news-signal score, 0 to 100 (relative, not a verified measure)">Signal score</th>
+                        <th title="News reports mentioning conflict">Conflict reports</th>
+                        <th title="News reports mentioning displacement">Displacement reports</th>
+                        <th title="Reports in the last 30 days">Reports (30 days)</th>
                         <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
                         <th>Signal Level</th>
                       </tr>
@@ -988,9 +987,9 @@
                       <tr>
                         <th>Country</th>
                         <th title="Attack-on-healthcare signal count">Signals</th>
-                        <th title="Reports in the last 30 days">Rep30d</th>
+                        <th title="Reports in the last 30 days">Reports (30 days)</th>
                         <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
-                        <th title="Composite risk score">Risk</th>
+                        <th title="Composite news-signal score, 0 to 100 (relative, not a verified measure)">Signal score</th>
                         <th>Signal Level</th>
                       </tr>
                     </thead>
@@ -1009,7 +1008,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>WHO SSA Source And Evidence Feed</h2>
+                <h2>WHO SSA Source and Evidence Feed</h2>
                 <p>Primary source: WHO Surveillance System for Attacks on Health Care (SSA), plus linked verified reporting.</p>
               </div>
               <div id="attacksHealthSourceStatus" class="summary"></div>
@@ -1041,7 +1040,7 @@
                         <th>Country</th>
                         <th title="Cyclone signal count">Cyclone Sig</th>
                         <th title="Hazard event count">Hazards</th>
-                        <th title="Composite risk score">Risk</th>
+                        <th title="Composite news-signal score, 0 to 100 (relative, not a verified measure)">Signal score</th>
                         <th title="Current IPC Phase 3+ percentage">IPC3+ %</th>
                       </tr>
                     </thead>
@@ -1060,7 +1059,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Cyclone Projections And Advisories</h2>
+                <h2>Cyclone Projections and Advisories</h2>
                 <p>Cyclone projections and advisories.</p>
               </div>
               <div id="cycloneProjectionFeed" class="feed"></div>
@@ -1106,7 +1105,7 @@
             <section class="panel bulletin-hero-panel">
               <div class="panel-header">
                 <h2>Part B: Event and Source Detail</h2>
-                <p>Hazard, forecast and source-signal detail that supports the weekly update above.</p>
+                <p>Hazard, forecast and source detail behind the update above. Detail sections open with "Show detail".</p>
               </div>
               <div id="operationalReportHeader" class="summary"></div>
             </section>
@@ -1155,7 +1154,7 @@
                         <th>Conflict</th>
                         <th>Displacement</th>
                         <th>Cyclones</th>
-                        <th title="Reports in the last 30 days">Rep30d</th>
+                        <th title="Reports in the last 30 days">Reports (30 days)</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -1224,7 +1223,7 @@
         </footer>
       </section>
     </div>
-    <script src="/app.js"></script>
-    <script src="/strategic.js"></script>
+    <script src="/app.js?v=20261028b"></script>
+    <script src="/strategic.js?v=20261028b"></script>
   </body>
 </html>

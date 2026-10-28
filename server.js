@@ -4464,7 +4464,14 @@ async function fetchHdxAcuteMalnutritionFallback(countryMap, freshnessMode = "st
 }
 
 function countCountryMentions(text, country) {
-  const base = normalizeForMentionMatch(text || "");
+  let base = normalizeForMentionMatch(text || "");
+  // "Democratic Republic of the Congo" contains "Republic of the Congo"; remove it
+  // before matching the Republic of the Congo (COG) so DRC news is not counted twice.
+  if (country.iso3 === "COG") {
+    base = base
+      .replace(/\bdemocratic\s+republic\s+of\s+(the\s+)?congo\b/gi, " ")
+      .replace(/\bdr\s*congo\b|\bd\s*r\s*c\b|\bcongo\s+kinshasa\b/gi, " ");
+  }
   return country.aliases.some((alias) => {
     const escaped = normalizeForMentionMatch(alias).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     // Prevent "Niger Delta" / "Niger River" (Nigeria regions) from matching Niger (NER)

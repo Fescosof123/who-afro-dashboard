@@ -714,10 +714,11 @@
       (LEVEL_ORDER[b.classification.level] - LEVEL_ORDER[a.classification.level])
       || (b.classification.score - a.classification.score)
       || ((b.health_in_need?.value || 0) - (a.health_in_need?.value || 0)));
+    const anyGrades = rows.some((r) => (r.who_grades || []).length);
     const head = `
       <thead><tr>
-        <th>Country</th><th>Group</th><th title="DHM triage tier, not a WHO grade">DHM tier</th><th>WHO grade</th>
-        <th title="People in need of health assistance (OCHA plans)">Health PiN</th><th title="Health cluster funding received (OCHA FTS)">Funded</th><th title="Unfunded health requirement, US$">Gap</th>
+        <th>Country</th><th>Group</th><th title="DHM triage tier, not a WHO grade">DHM tier</th>${anyGrades ? "<th>WHO grade</th>" : ""}
+        <th title="People in need of health assistance (OCHA plans)">Health PiN</th><th title="Health cluster funding received (OCHA FTS)">Funded</th><th title="Unfunded health requirement">Gap (US$)</th>
         <th title="Internally displaced people">IDPs</th><th title="Refugees and asylum seekers hosted (UNHCR)">Refugees</th><th title="IPC/CH Phase 3+, share of the population analysed">IPC/CH 3+</th><th title="Attacks on health care this year (WHO SSA)">Attacks</th><th title="INFORM Risk index (EC JRC), 0 to 10">INFORM</th>
       </tr></thead>`;
     const body = rows.map((r) => {
@@ -743,7 +744,7 @@
         <td><button type="button" class="strat-link" data-strat-country="${r.iso3}">${esc(r.country)}</button></td>
         <td>${esc(GROUP_LABEL[r.group] || r.group)}</td>
         <td>${rowTag(r)} <small>${r.classification.score}/${r.classification.max_score}</small></td>
-        <td>${grade}</td>
+        ${anyGrades ? `<td>${grade}</td>` : ""}
         <td class="num">${hp}</td>
         <td class="num">${fund}</td>
         <td class="num">${gap}</td>
@@ -866,33 +867,51 @@
 
     const table = el("gradingTable");
     if (table) {
-      const sorted = rows.slice().sort((a, b) =>
-        (LEVEL_ORDER[b.classification.level] - LEVEL_ORDER[a.classification.level]) || (b.classification.score - a.classification.score));
-      table.innerHTML = `
-        <thead><tr><th>Country</th><th>Group</th><th>DHM triage tier</th><th>${baseSnapshot() ? `Tier in ${esc(monthLabel(baseSnapshot().month))}` : "Change"}</th><th>Points</th><th>Criteria met</th><th>Core indicators current</th><th>WHO grade</th></tr></thead>
-        <tbody>${sorted.map((r) => `
+      const base = baseSnapshot();
+      const anyGrades = rows.some((r) => (r.who_grades || []).length);
+      const order = (a, b) => (LEVEL_ORDER[b.classification.level] - LEVEL_ORDER[a.classification.level]) || (b.classification.score - a.classification.score);
+      const core = rows.filter((r) => r.group === "fcv_prioritized" || r.group === "fcv_accelerated").sort(order);
+      const others = rows.filter((r) => !core.includes(r)).sort(order);
+      const cols = 6 + (base ? 1 : 0) + (anyGrades ? 1 : 0);
+      // Short chip labels; the full rule is in the tooltip.
+      const chipLabel = (p) => {
+        const c = p.criterion;
+        if (/INFORM/.test(c)) return "INFORM very high";
+        if (/health assistance/.test(c)) return `Health need ${fmtCompact(p.value)}${/last plan/.test(c) ? " (last plan)" : ""}`;
+        if (/IPC/.test(c)) return `IPC 3+ ${fmtPct(p.value)}`;
+        if (/IDPs/.test(c)) return `Displaced ${fmtCompact(p.value)}`;
+        if (/SSA/.test(c)) return "Attacks on health care";
+        return c;
+      };
+      const changeCell = (r) => {
+        const prev = base?.countries?.[r.iso3];
+        if (!prev?.level) return '<span class="muted">n/a</span>';
+        if (prev.level === r.classification.level) return '<span class="muted">no change</span>';
+        if (prev.level === "Insufficient data" || r.classification.level === "Insufficient data") {
+          return `<span class="strat-trend strat-trend-flat">&#9632; was ${esc(prev.level)}</span>`;
+        }
+        const worse = (LEVEL_ORDER[r.classification.level] || 0) > (LEVEL_ORDER[prev.level] || 0);
+        return `<span class="strat-trend ${worse ? "strat-trend-bad" : "strat-trend-good"}">${worse ? "&#9650;" : "&#9660;"} was ${esc(prev.level)}</span>`;
+      };
+      const rowHtml = (r) => `
           <tr>
-            <td><button type="button" class="strat-link" data-strat-country="${r.iso3}">${esc(r.country)}</button></td>
-            <td>${esc(GROUP_LABEL[r.group] || r.group)}</td>
+            <td><button type="button" class="strat-link" data-strat-country="${r.iso3}">${esc(r.country)}</button><br><small class="muted">${esc(GROUP_LABEL[r.group] || r.group)}</small></td>
             <td>${rowTag(r)}</td>
-            <td>${(() => {
-              const prev = baseSnapshot()?.countries?.[r.iso3];
-              if (!baseSnapshot()) return '<span class="muted">from next month</span>';
-              if (!prev?.level) return '<span class="muted">n/a</span>';
-              if (prev.level === r.classification.level) return '<span class="muted">no change</span>';
-              if (prev.level === "Insufficient data" || r.classification.level === "Insufficient data") {
-                return `<span class="strat-trend strat-trend-flat">&#9632; was ${esc(prev.level)}</span>`;
-              }
-              const worse = (LEVEL_ORDER[r.classification.level] || 0) > (LEVEL_ORDER[prev.level] || 0);
-              return `<span class="strat-trend ${worse ? "strat-trend-bad" : "strat-trend-good"}">${worse ? "&#9650;" : "&#9660;"} was ${esc(prev.level)}</span>`;
-            })()}</td>
+            ${base ? `<td>${changeCell(r)}</td>` : ""}
             <td class="num">${r.classification.score}/${r.classification.max_score}</td>
             <td>${r.classification.points.length
-              ? `<ul class="strat-points">${r.classification.points.map((p) => `<li>${esc(p.criterion)} <small>(+${p.score})</small></li>`).join("")}</ul>`
+              ? `<div class="strat-chips">${r.classification.points.map((p) => `<span class="strat-chip" title="${esc(p.criterion)}">${esc(chipLabel(p))} <b>+${p.score}</b></span>`).join("")}</div>`
               : '<span class="muted">none</span>'}</td>
-            <td class="num">${r.classification.indicators_available ?? "n/a"} of 4${r.classification.level === "Insufficient data" && (r.classification.missing || []).length ? `<br><small class="muted">${esc(r.classification.missing.join("; "))}</small>` : ""}</td>
-            <td>${(r.who_grades || []).map((g) => `${esc(g.grade)}: ${esc(g.event)} <small>(${esc(g.date_graded)})</small>`).join("<br>") || '<span class="muted">none recorded</span>'}</td>
-          </tr>`).join("")}</tbody>`;
+            <td class="num">${r.classification.indicators_available ?? "n/a"}/4</td>
+            <td>${(r.classification.missing || []).length ? `<small class="muted">${esc(r.classification.missing.join("; "))}</small>` : '<small class="muted">all current</small>'}</td>
+            ${anyGrades ? `<td>${(r.who_grades || []).map((g) => `${esc(g.grade)}: ${esc(g.event)} <small>(${esc(g.date_graded)})</small>`).join("<br>") || '<span class="muted">none</span>'}</td>` : ""}
+          </tr>`;
+      table.classList.add("strat-grading-table");
+      table.innerHTML = `
+        <thead><tr><th>Country</th><th>DHM triage tier</th>${base ? `<th>Tier in ${esc(monthLabel(base.month))}</th>` : ""}<th>Points</th><th>Criteria met (points)</th><th title="Core indicators with a current figure: INFORM Risk, health people in need, IPC/CH, displacement">Data</th><th>Missing or outdated</th>${anyGrades ? "<th>WHO grade</th>" : ""}</tr></thead>
+        <tbody>${core.map(rowHtml).join("")}
+          ${others.length ? `<tr class="strat-group-row"><td colspan="${cols}">Other FCV-classified and cross-border context countries (not counted in the 13-country totals)</td></tr>${others.map(rowHtml).join("")}` : ""}
+        </tbody>`;
     }
 
     const reg = el("gradingRegister");
@@ -1014,6 +1033,7 @@
             <td class="num">${r.attacks.prev_ytd ? fmtFull(r.attacks.prev_ytd.attacks) : "n/a"}</td><td class="num">${annualCell(r, year - 1)}</td><td class="num">${annualCell(r, year - 2)}</td></tr>`).join("")}</tbody></table></div>
         <div id="stratSsaChart" class="chart strat-chart"></div>
       </div>
+      <p class="muted">Regional totals on the Overview count the 13 FCV countries only; Sudan and Somalia are listed here for context and are not in those totals.</p>
       <p class="muted">Not covered by the WHO attacks surveillance system: ${esc(notMonitored.join(", ") || "none")}. For these countries use Health Cluster and Insecurity Insight reporting. <a href="https://extranet.who.int/ssa/Index.aspx" target="_blank" rel="noopener">Open the SSA portal</a>.</p>
       <p class="muted">The news items further down this page are keyword matches from public reporting. They are context only and are not verified incidents.</p>`;
     renderSsaChart(rows);
@@ -1070,7 +1090,7 @@
           ${line(s.hapi.name, s.hapi, "Refreshes every 12 hours; country rows fall back to the last good value.")}
           ${line(s.fts.name, s.fts, `Plan year ${esc(s.fts.year || "n/a")}.`)}
           ${s.hpc ? line(s.hpc.name, s.hpc, "Health Cluster people in need, targeted and reached, per plan. Reach appears once OCHA generates the plan's monitoring.") : ""}
-          ${line("Monthly KPI snapshots", { updated_at: state.payload.history?.latest_taken_at || null }, `${(state.payload.history?.months || []).length} months held (${esc((state.payload.history?.months || []).map(monthLabel).join(", ") || "none yet")}). Stored in <code>data/strategic-history.json</code>.`)}
+          ${line("Monthly KPI snapshots", { updated_at: state.payload.history?.latest_taken_at || null }, `${(state.payload.history?.months || []).length} ${(state.payload.history?.months || []).length === 1 ? "month" : "months"} held (${esc((state.payload.history?.months || []).map(monthLabel).join(", ") || "none yet")}). Used for the "since last month" arrows.`)}
           ${line(s.ssa.name, s.ssa, "Countries with an SSA deployment only.")}
           ${line(s.grading.name, { updated_at: s.grading.updated_at }, `Grading register maintained by DHM (<code>${esc(s.grading.file)}</code> in GitHub).`)}
           ${line(s.profile.name, { loaded_at: s.profile.loaded_at }, "Fallback for plan figures not yet in HDX HAPI.")}
@@ -1223,10 +1243,13 @@
     const q = latestServiceQuarter();
     const rows = fcvRows().map((r) => q[r.iso3]).filter(Boolean);
     const screened = rows.filter((x) => isNum(x.children_screened_malnutrition));
-    const samManaged = rows.map((x) => x.sam_complications_managed_pct).filter(isNum);
+    const samRows = fcvRows().map((r) => ({ r, q: q[r.iso3] })).filter((x) => x.q && isNum(x.q.sam_complications_managed_pct))
+      .sort((a, b) => a.q.sam_complications_managed_pct - b.q.sam_complications_managed_pct);
+    const quarters = [...new Set(rows.map((x) => x.quarter_label).filter(Boolean))].sort();
+    const qLabel = quarters.length > 1 ? `${quarters[0]} to ${quarters[quarters.length - 1]}` : quarters[0] || "latest quarter";
     renderStrip("nutritionPage", "Nutrition: Key Figures", "Latest reported quarter per country from the FCV service database. Survey-based acute malnutrition (GAM, SAM) should come from SMART surveys or IPC Acute Malnutrition analyses.", [
-      { id: "nuScreened", title: "Children screened for malnutrition", value: fmtCompact(sum(screened, (x) => x.children_screened_malnutrition)), sub: `${screened.length} countries reporting.`, source: "FCV service database", target: "fcvDataPage" },
-      { id: "nuSam", title: "Share of complicated SAM cases managed", value: samManaged.length ? `${median(samManaged).toFixed(0)}%` : "n/a", sub: `Median across ${samManaged.length} countries reporting.`, source: "FCV service database", target: "fcvDataPage" },
+      { id: "nuScreened", title: "Children screened for malnutrition (latest quarter)", value: fmtCompact(sum(screened, (x) => x.children_screened_malnutrition)), sub: `${screened.length} countries, each country's latest reported quarter (${esc(qLabel)}). The FCV Response page also shows the total across all quarters.`, source: "FCV service database", target: "fcvDataPage" },
+      { id: "nuSam", title: "Complicated SAM cases managed: lowest country", value: samRows.length ? fmtPct(samRows[0].q.sam_complications_managed_pct / 100) : "n/a", sub: samRows.length ? `${esc(shortName(samRows[0].r.country))} (${esc(samRows[0].q.quarter_label || "")}). Range across ${samRows.length} countries: ${fmtPct(samRows[0].q.sam_complications_managed_pct / 100)} to ${fmtPct(samRows[samRows.length - 1].q.sam_complications_managed_pct / 100)}.` : "No country reported this indicator.", source: "FCV service database", target: "fcvDataPage" },
       { id: "nuAmn", title: "Acute malnutrition analyses", value: "Open maps", sub: "Open the IPC Acute Malnutrition maps for the latest survey-based figures by country.", source: "IPC", target: "https://www.ipcinfo.org/ipc-country-analysis/en/" }
     ], ["fcvdb", "ipc"]);
   }
@@ -1354,7 +1377,17 @@
   const TABLE_ATTR = 'border="1" cellpadding="5" cellspacing="0" style="border-collapse:collapse;width:100%;font-size:10pt;"';
   const TH = 'style="background:#0b4ea2;color:#ffffff;text-align:left;padding:5px 7px;"';
 
+  // The bulletin cover leads with the same messages as the Overview, so the cover
+  // and Part A never disagree.
+  function renderCoverMessages() {
+    const list = document.querySelector("#operationalBulletinCover .bulletin-cover-messages");
+    if (!list || !state.payload) return;
+    const msgs = buildMessages(rowsInScope("fcv13"));
+    if (msgs.length) list.innerHTML = msgs.map((m) => `<li>${m}</li>`).join("");
+  }
+
   function renderBulletinWeekly() {
+    setTimeout(renderCoverMessages, 0);
     const node = el("bulletinWeekly");
     if (!node || !state.payload) return;
     const rows = rowsInScope("fcv13");
@@ -1462,7 +1495,7 @@
     return panelTitle && !panelTitle.startsWith(pageName) ? `${pageName}: ${panelTitle}` : pageName;
   }
   function decorateCardDestinations() {
-    document.querySelectorAll(".strat-kpi[data-strat-target]").forEach((card) => {
+    document.querySelectorAll(".strat-kpi[data-strat-target], .metric-card[data-strat-target]").forEach((card) => {
       const target = card.dataset.stratTarget;
       if (!target) return;
       let more = card.querySelector(".strat-kpi-more");
@@ -1552,7 +1585,7 @@
     const v = mapValue(r, layer);
     if (v == null) return "";
     switch (layer) {
-      case "classification": return r.classification.level === "Insufficient data" ? "no data" : r.classification.level;
+      case "classification": return r.classification.level;
       case "funding_pct":
       case "ipc": return `${Math.round(v)}%`;
       case "attacks": return String(v);
@@ -1560,7 +1593,7 @@
     }
   }
   const LAYER_NOTE = {
-    classification: "Colour shows the DHM triage tier: a rule-based score (0 to 8) from INFORM Risk, people in need of health assistance, IPC/CH Phase 3+ share, displacement and attacks on health care. Major is 6 to 8 points, Severe 3 to 5, Moderate 0 to 2; countries with fewer than 3 current core indicators show as no data. It is not a WHO grade.",
+    classification: "Colour shows the DHM triage tier: a rule-based score (0 to 8) from INFORM Risk, people in need of health assistance, IPC/CH Phase 3+ share, displacement and attacks on health care. Major is 6 to 8 points, Severe 3 to 5, Moderate 0 to 2; countries with fewer than 3 current core indicators show as Insufficient data. It is not a WHO grade.",
     health_pin: "People in need of health assistance in the latest humanitarian plan (OCHA, through HDX HAPI).",
     funding_pct: "Share of the Health Cluster requirement received in 2026 plans (OCHA FTS). Red marks the least-funded countries.",
     displaced: "Internally displaced people (IOM DTM, current figures only) plus refugees and asylum seekers hosted (UNHCR).",
@@ -1741,6 +1774,7 @@
       .then((payload) => {
         state.payload = payload;
         renderAll();
+        if (window.__dashboardRerenderBulletin) window.__dashboardRerenderBulletin();
       })
       .catch((err) => {
         const grid = el("stratKpiGrid");
@@ -1750,6 +1784,93 @@
         state.loading = null;
       });
     return state.loading;
+  }
+
+
+  // ---------- Page layout: shorter pages ----------
+  // Detail panels start closed so each page leads with its key information.
+  // Matched on the English panel title; a click on the title bar opens them.
+  const COLLAPSED_PANELS = {
+    overviewPage: ["Sources and Links"],
+    gradingPage: ["Classification Rules"],
+    fcvDataPage: ["Completeness by Indicator", "PENTA − Measles Gap", "Coverage Map", "SAM Case Severity", "Screening Volume vs. Severity", "GBV & MHPSS Cases Managed"],
+    countryPage: ["Country Comparison Table", "FCV Country Profile Data"],
+    conflictsDisplacementPage: ["Conflict and Displacement Pressure", "Conflict and Displacement Prioritization", "Evidence Feed"],
+    attacksHealthPage: ["Public Reporting Signals (context only)", "Country Prioritization", "WHO SSA Source and Evidence Feed"],
+    foodSecurityPage: ["Recent Food Security Reporting"],
+    nutritionPage: ["Recent Nutrition Reporting"],
+    hazardPage: ["Source Intelligence Summary", "GDACS Hazard Events", "ReliefWeb RSS Situation Reports", "WHO Disease Outbreak News (DON)", "Disease Outbreak Evidence Feed", "Historical Disaster Impact (EM-DAT)", "Largest Disasters by People Affected", "Most Affected Countries (EM-DAT)"],
+    cyclonePage: ["Cyclone Source Diagnostics", "Cyclone Projections and Advisories"],
+    forecastPage: ["Forecast Outlook", "Forecast Source Summary", "ICPAC Source Summary"],
+    operationalReportPage: ["Source Intelligence Detail", "Conflict and Displacement Insert", "Priority Country Annexes", "Forecast and Projection Summary", "Conflicts and Displacements Summary"],
+    signalsPage: ["Food Security and Event Pressure Snapshot"],
+    dataHealthPage: ["Data Validation Ledger"]
+  };
+  // Panels that repeat older calculations and contradict the verified figures.
+  const HIDDEN_PANELS = {
+    countryPage: ["Country Profile Trend", "Country Operational Brief"],
+    conflictsDisplacementPage: ["Population Movement: IDP Estimates (IOM DTM)"]
+  };
+
+  function panelTitle(panel) {
+    const h = panel.querySelector(".panel-header h2, h2");
+    return h ? (h.dataset.i18nBaseText || h.textContent || "").trim() : "";
+  }
+  function panelsOf(pageId) {
+    const page = el(pageId);
+    return page ? Array.from(page.querySelectorAll(":scope > .panel, :scope > section > .panel, :scope > div > .panel")) : [];
+  }
+  function setCollapsed(panel, collapsed) {
+    panel.classList.toggle("is-collapsed", collapsed);
+    const btn = panel.querySelector(".panel-toggle");
+    if (btn) {
+      const fr = document.documentElement.lang === "fr";
+      btn.textContent = collapsed ? (fr ? "Afficher le détail ▾" : "Show detail ▾") : (fr ? "Masquer le détail ▴" : "Hide detail ▴");
+      btn.setAttribute("aria-expanded", String(!collapsed));
+    }
+    if (!collapsed && typeof Plotly !== "undefined") {
+      panel.querySelectorAll(".js-plotly-plot").forEach((node) => { try { Plotly.Plots.resize(node); } catch (e) { /* hidden chart */ } });
+    }
+  }
+  function applyPageLayout() {
+    Object.entries(HIDDEN_PANELS).forEach(([pageId, titles]) => {
+      panelsOf(pageId).forEach((panel) => {
+        if (titles.includes(panelTitle(panel))) panel.classList.add("is-retired");
+      });
+    });
+    Object.entries(COLLAPSED_PANELS).forEach(([pageId, titles]) => {
+      panelsOf(pageId).forEach((panel) => {
+        if (!titles.includes(panelTitle(panel)) || panel.dataset.collapsible) return;
+        panel.dataset.collapsible = "1";
+        const header = panel.querySelector(".panel-header");
+        if (!header) return;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "panel-toggle";
+        btn.addEventListener("click", (ev) => {
+          ev.stopPropagation();
+          setCollapsed(panel, !panel.classList.contains("is-collapsed"));
+        });
+        header.appendChild(btn);
+        setCollapsed(panel, true);
+      });
+    });
+  }
+
+  // A "Back to top" button on every page.
+  function ensureBackToTop() {
+    if (el("backToTopBtn")) return;
+    const btn = document.createElement("button");
+    btn.id = "backToTopBtn";
+    btn.type = "button";
+    btn.className = "back-to-top";
+    btn.textContent = "▲ Top";
+    btn.title = "Back to the top of the page";
+    btn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+    document.body.appendChild(btn);
+    const update = () => btn.classList.toggle("is-visible", window.scrollY > 500);
+    window.addEventListener("scroll", update, { passive: true });
+    update();
   }
 
   function goToPage(target) {
@@ -1762,6 +1883,8 @@
     if (btn && !btn.classList.contains("active")) btn.click();
     const focus = anchor ? el(anchor) : el(pageId);
     if (focus) {
+      const owner = focus.closest(".panel");
+      if (owner && owner.classList.contains("is-collapsed")) setCollapsed(owner, false);
       setTimeout(() => {
         const panel = focus.closest(".panel") || focus;
         panel.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -1818,6 +1941,13 @@
     });
     const select = el("countrySelect");
     if (select) select.addEventListener("change", renderCountryCard);
+    // On a phone the menu sits above the content: jump to the page after choosing it.
+    document.querySelectorAll(".nav-btn[data-page]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        if (window.innerWidth > 900) return;
+        setTimeout(() => el(btn.dataset.page)?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
+      });
+    });
   }
 
   window.StrategicDashboard = {
@@ -1850,13 +1980,24 @@
       if (pageId === "countryPage") renderCountryCard();
       setTimeout(() => resizeVisible(pageId), 60);
     },
-    reload: load
+    reload: load,
+    decorate: decorateCardDestinations,
+    renderCover: renderCoverMessages,
+    // Major then Severe FCV countries, highest score first (used by the bulletin annexes).
+    priorityIso3() {
+      if (!state.payload) return [];
+      return rowsInScope("fcv13")
+        .filter((r) => ["Major", "Severe"].includes(r.classification.level))
+        .sort((a, b) => (LEVEL_ORDER[b.classification.level] - LEVEL_ORDER[a.classification.level]) || (b.classification.score - a.classification.score) || ((b.health_in_need?.value || 0) - (a.health_in_need?.value || 0)))
+        .map((r) => r.iso3);
+    },
+    goToPage
   };
 
+  const start = () => { applyPageLayout(); ensureBackToTop(); bind(); load(); };
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", () => { bind(); load(); });
+    document.addEventListener("DOMContentLoaded", start);
   } else {
-    bind();
-    load();
+    start();
   }
 })();
