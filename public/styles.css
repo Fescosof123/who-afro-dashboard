@@ -3772,3 +3772,19 @@ body.printing-bulletin .panel.two-col.is-collapsed > div:not(:first-child) { dis
 body.printing-bulletin .panel-toggle { display: none !important; }
 
 .strat-subhead { margin: 14px 0 6px; font-size: 1rem; }
+
+/* FCV Response filters: the open list must sit above the panels below it.
+   Panels use backdrop-filter, which creates a stacking context per panel. */
+.panel:has(#fcvFilterBar) { position: relative; z-index: 40; }
+.panel:has(.fcv-dropdown-trigger.is-open) { z-index: 60; }
+.fcv-dropdown-panel { box-shadow: 0 12px 28px rgba(13, 31, 51, 0.22); background: #ffffff; }
+#fcvFilterResetBtn {
+  border: 1px solid #0b4ea2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0b4ea2;
+  font-weight: 700;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+#fcvFilterResetBtn:hover { background: #eef4fb; }

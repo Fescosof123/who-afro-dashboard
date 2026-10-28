@@ -4338,6 +4338,9 @@ function renderConfidenceLegend() {
 }
 
 function renderBriefingStrip() {
+  if (!dashboardState) {
+    return;
+  }
   const pageId = activePageId();
   const countries = dashboardState.countries || [];
   const ensoAdvisory = dashboardState.enso_advisory || null;
