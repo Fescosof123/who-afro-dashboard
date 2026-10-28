@@ -3637,3 +3637,26 @@ button.strat-kpi {
     gap: 18px;
   }
 }
+
+/* Trend arrows on key-figure cards (month on month and year on year). */
+.strat-kpi-trends {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.strat-trend {
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+.strat-trend-bad { color: #b3261e; }
+.strat-trend-good { color: #1e7a4f; }
+.strat-trend-flat { color: #51657a; }
+.strat-trend-note {
+  margin: 8px 2px 0;
+  font-size: 0.8rem;
+}
+.strat-level-provisional {
+  outline: 2px dashed rgba(13, 31, 51, 0.45);
+  outline-offset: 1px;
+}

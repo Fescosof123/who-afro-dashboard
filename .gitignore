@@ -9,3 +9,7 @@ shiny-app/
 publish-check.ps1
 CLARITY_IMPROVEMENTS.md
 
+
+# Server-side monthly snapshots (the committed copy is data/strategic-history.json)
+data/strategic-history.local.json
+data/*.tmp

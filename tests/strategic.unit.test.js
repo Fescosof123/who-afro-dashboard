@@ -52,6 +52,119 @@ function run() {
     }
   });
 
+  // No current plan: the last plan's figure counts toward the tier only while it is recent.
+  const lastPlanRecent = strategic.classifyCountry({
+    inform_risk: { risk_class: 5, overall: 7 },
+    health_in_need: null,
+    health_outdated: { value: 3000000, year: "2024", counts_for_tier: true },
+    ipc: null,
+    idps: null,
+    refugees: { value: 1200000 },
+    attacks: null
+  });
+  assert.equal(lastPlanRecent.level, "Severe");
+  assert.ok(lastPlanRecent.points.some((p) => /last plan, 2024/.test(p.criterion)));
+  assert.equal(lastPlanRecent.uses_last_plan, true);
+  const lastPlanOld = strategic.classifyCountry({
+    inform_risk: { risk_class: 5, overall: 7 },
+    health_in_need: null,
+    health_outdated: { value: 3000000, year: "2022", counts_for_tier: false },
+    ipc: null,
+    idps: null,
+    refugees: { value: 1200000 },
+    attacks: null
+  });
+  assert.equal(lastPlanOld.level, "Insufficient data");
+  assert.ok(lastPlanOld.missing.includes("no humanitarian plan since 2022"));
+
+  // HPC plan parsing: Health cluster by name (French), latest monitoring period, numeric strings.
+  const plan = {
+    monitoringPeriods: [
+      { id: 1, startDate: "2025-01-01", endDate: "2025-03-31", measurementsGenerated: true },
+      { id: 2, startDate: "2025-04-01", endDate: "2025-06-30", measurementsGenerated: true }
+    ],
+    attachments: [{ type: "caseLoad", attachmentVersion: { value: { metrics: { values: { totals: [{ type: "inNeed", value: 900 }, { type: "target", value: 500 }] } } } } }],
+    governingEntities: [
+      { governingEntityVersion: { name: "Nutrition" }, attachments: [{ type: "caseLoad", attachmentVersion: { value: { metrics: { values: { totals: [{ type: "inNeed", value: 50 }] } } } } }] },
+      {
+        governingEntityVersion: { name: "Santé" },
+        attachments: [{
+          type: "caseLoad",
+          attachmentVersion: { value: { metrics: { values: { totals: [{ type: "inNeed", value: "400" }, { type: "target", value: 200 }] } } } },
+          measurements: [
+            { planReportingPeriodId: 1, measurementVersion: { value: { metrics: { values: { totals: [{ type: "cumulativeReach", value: "60" }] } } } } },
+            { planReportingPeriodId: 2, measurementVersion: { value: { metrics: { values: { totals: [{ type: "cumulativeReach", value: "120.5" }] } } } } }
+          ]
+        }]
+      }
+    ]
+  };
+  const health = strategic.extractHealthFromPlan(plan);
+  assert.equal(health.in_need, 400);
+  assert.equal(health.targeted, 200);
+  assert.equal(health.reach.reached, 120.5);
+  assert.equal(health.reach.period_end, "2025-06-30");
+
+  // Country rows: the current HPC plan wins over HDX HAPI; an ended plan is never a current figure;
+  // implausible reach is excluded; a full-year reach is flagged as such.
+  const reference = { groups: { fcv_prioritized: [{ iso3: "AAA", name: "Alpha" }, { iso3: "BBB", name: "Beta" }] } };
+  const now = new Date("2026-10-28T00:00:00Z");
+  const cache = {
+    hapi: {
+      AAA: { health_history: { 2026: { year: "2026", in_need: 700, targeted: 300 }, 2025: { year: "2025", in_need: 800, targeted: 400 } } },
+      BBB: {}
+    },
+    hpc: {
+      plans: {
+        1: { iso3: "AAA", year: "2026", code: "HAAA26", end: "2026-12-31", health: { in_need: 1000, targeted: 500, reach: null }, plan_totals: { in_need: 2000 } },
+        2: { iso3: "AAA", year: "2025", code: "HAAA25", end: "2025-12-31", health: { in_need: 900, targeted: 450, reach: { reached: 300, period_start: "2025-10-01", period_end: "2025-12-31" } } },
+        3: { iso3: "BBB", year: "2025", code: "FBBB25", name: "Beta Flash Appeal 2025", end: "2025-06-01", health: { in_need: 3000000, targeted: 2000, reach: { reached: 5, period_start: "2025-01-01", period_end: "2025-06-01" } } }
+      }
+    },
+    fts: [],
+    ssa: {}
+  };
+  const rows = strategic.buildCountryRows(cache, reference, null, { rows: [] }, now);
+  const a = rows.find((r) => r.iso3 === "AAA");
+  const bRow = rows.find((r) => r.iso3 === "BBB");
+  assert.equal(a.health_in_need.value, 1000);
+  assert.equal(a.health_targeted.value, 500);
+  assert.equal(a.people_in_need.value, 2000);
+  assert.equal(a.health_in_need_previous.value, 900);
+  assert.equal(a.health_reach_latest.full_year, true);
+  assert.equal(a.health_reach_latest.reached, 300);
+  assert.equal(bRow.health_in_need, null);
+  assert.equal(bRow.health_outdated.value, 3000000);
+  // A flash appeal that has ended does not count toward the tier.
+  assert.equal(bRow.health_outdated.counts_for_tier, false);
+  assert.equal(bRow.health_reach_latest, null);
+  assert.equal(bRow.health_reach_excluded.plan_code, "FBBB25");
+
+  // Annual plan ended 22 months ago counts toward the tier; last year's annual plan
+  // carries over in January until the new plan appears.
+  const cache2 = { hapi: {}, fts: [], ssa: {}, hpc: { plans: {
+    7: { iso3: "AAA", year: "2024", code: "HAAA24", name: "Alpha HRP 2024", end: "2024-12-31", health: { in_need: 3000000, targeted: 1, reach: null } },
+    8: { iso3: "BBB", year: "2026", code: "HBBB26", end: "2026-12-31", health: { in_need: 5000, targeted: 2500, reach: null }, plan_totals: { in_need: 4000 } }
+  } } };
+  const oct = strategic.buildCountryRows(cache2, reference, null, { rows: [] }, now);
+  assert.equal(oct.find((r) => r.iso3 === "AAA").health_outdated.counts_for_tier, true);
+  // A plan total smaller than the health figure is not used.
+  assert.equal(oct.find((r) => r.iso3 === "BBB").people_in_need, null);
+  const jan = strategic.buildCountryRows(cache2, reference, null, { rows: [] }, new Date("2027-01-10T00:00:00Z"));
+  assert.equal(jan.find((r) => r.iso3 === "BBB").health_in_need.value, 5000);
+  assert.equal(jan.find((r) => r.iso3 === "BBB").health_in_need.year, "2026");
+
+  // Monthly snapshots: the latest snapshot in a month wins; the base is the latest earlier month.
+  const snapA = strategic.snapshotFromRows(rows, new Date("2026-09-10T00:00:00Z"));
+  const snapB = strategic.snapshotFromRows(rows, new Date("2026-09-30T00:00:00Z"));
+  const snapC = strategic.snapshotFromRows(rows, new Date("2026-10-28T00:00:00Z"));
+  const merged = strategic.mergeHistory({ snapshots: [snapB, snapC] }, { snapshots: [snapA] });
+  assert.deepEqual(merged.snapshots.map((x) => x.month), ["2026-09", "2026-10"]);
+  assert.equal(merged.snapshots[0].taken_at, snapB.taken_at);
+  const hist = strategic.historyForPayload(merged, new Date("2026-10-28T00:00:00Z"));
+  assert.equal(hist.base.month, "2026-09");
+  assert.equal(strategic.historyForPayload(merged, new Date("2026-09-15T00:00:00Z")).base, null);
+
   console.log("strategic unit test passed");
 }
 

@@ -111,10 +111,22 @@
   function el(id) {
     return document.getElementById(id);
   }
-  function levelTag(level) {
+  function levelTag(level, provisional = false) {
     const color = LEVEL_COLOR[level] || "#b9c4cf";
     const ink = level === "Moderate" || level === "Insufficient data" ? "#0d1f33" : "#fff";
-    return `<span class="strat-level" style="background:${color};color:${ink}">${esc(level)}</span>`;
+    const title = provisional ? ' title="Provisional: uses the last humanitarian plan\'s figure because the country has no current plan"' : "";
+    return `<span class="strat-level${provisional ? " strat-level-provisional" : ""}" style="background:${color};color:${ink}"${title}>${esc(level)}${provisional ? " (provisional)" : ""}</span>`;
+  }
+  function rowTag(r) {
+    return levelTag(r.classification.level, Boolean(r.classification.uses_last_plan));
+  }
+  // Plain-language name for a source string.
+  function plainSource(src) {
+    if (!src) return "";
+    if (/HPC/.test(src)) return "OCHA Humanitarian Action";
+    if (/HAPI/.test(src)) return "OCHA via HDX";
+    if (/profile/i.test(src)) return "FCV country profile (DHM)";
+    return src;
   }
   function sourceLine(text) {
     return `<div class="strat-source">${text}</div>`;
@@ -153,6 +165,97 @@
     return v.length % 2 ? v[mid] : (v[mid - 1] + v[mid]) / 2;
   }
 
+  // ---------- Trends ----------
+  // The comparison base is the last monthly snapshot from an earlier month
+  // (served by /api/strategic as history.base).
+  function baseSnapshot() {
+    return state.payload?.history?.base || null;
+  }
+  function monthLabel(key) {
+    if (!key) return "";
+    const [y, m] = String(key).split("-").map(Number);
+    return new Date(Date.UTC(y, (m || 1) - 1, 1)).toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+  }
+  function nextMonthLabel(key) {
+    if (!key) return "";
+    const [y, m] = String(key).split("-").map(Number);
+    return monthLabel(`${m === 12 ? y + 1 : y}-${String(m === 12 ? 1 : m + 1).padStart(2, "0")}`);
+  }
+  // kind: "pct" (relative change), "pp" (percentage points), "count" (absolute).
+  function trendHtml({ cur, prev, kind = "pct", worseWhen = "up", label, unit, prefix }) {
+    if (!isNum(cur) || !isNum(prev)) return "";
+    let delta;
+    let text;
+    if (kind === "pp") {
+      delta = (cur - prev) * 100;
+      text = `${Math.abs(delta).toFixed(1)} points`;
+    } else if (kind === "count") {
+      delta = cur - prev;
+      text = fmtFull(Math.abs(delta));
+    } else {
+      if (!prev) return "";
+      delta = ((cur - prev) / prev) * 100;
+      text = `${Math.abs(delta).toFixed(Math.abs(delta) < 10 ? 1 : 0)}%`;
+    }
+    const flat = kind === "count" ? delta === 0 : Math.abs(delta) < 0.5;
+    if (flat) return `<span class="strat-trend strat-trend-flat">&#9632; ${esc(prefix || "")}${prefix ? " " : ""}no change ${esc(label)}</span>`;
+    const up = delta > 0;
+    const bad = worseWhen === "none" ? null : (up === (worseWhen === "up"));
+    const cls = bad == null ? "strat-trend-flat" : bad ? "strat-trend-bad" : "strat-trend-good";
+    const body = kind === "count" && unit
+      ? `${text} ${up ? "more" : "fewer"} ${Math.abs(delta) === 1 ? unit[0] : unit[1]}`
+      : `${esc(prefix || "")}${prefix ? " " : ""}${up ? "up" : "down"} ${text}`;
+    return `<span class="strat-trend ${cls}">${up ? "&#9650;" : "&#9660;"} ${body} ${esc(label)}</span>`;
+  }
+  // Current and previous totals over the same countries only (those with a value
+  // in both months), so a country entering or leaving the data does not move the arrow.
+  function pairedSums(rows, field, currentGetter, sameSource = false) {
+    const base = baseSnapshot();
+    if (!base) return null;
+    let cur = 0;
+    let prev = 0;
+    let n = 0;
+    rows.forEach((r) => {
+      const b = base.countries?.[r.iso3];
+      const c = currentGetter(r);
+      if (!b || !isNum(b[field]) || !isNum(c)) return;
+      if (sameSource && b.health_in_need_source && b.health_in_need_source !== (r.health_in_need?.plan_code || r.health_in_need?.source)) return;
+      cur += Number(c);
+      prev += Number(b[field]);
+      n += 1;
+    });
+    return n ? { cur, prev, n } : null;
+  }
+  function baseSameYear() {
+    const base = baseSnapshot();
+    return Boolean(base) && String(base.month).slice(0, 4) === String(new Date().getFullYear());
+  }
+  function sinceLabel() {
+    const base = baseSnapshot();
+    return base ? `since ${monthLabel(base.month)}` : "";
+  }
+
+  // Latest published Health Cluster reach (OCHA Response Monitoring), grouped
+  // by plan year. Past years count only when reporting reached the end of the plan.
+  function latestReach(rows) {
+    const thisYear = String(new Date().getFullYear());
+    const usable = rows.filter((r) => r.health_reach_latest && isNum(r.health_reach_latest.reached)
+      && (r.health_reach_latest.full_year || r.health_reach_latest.year === thisYear));
+    const partial = rows.filter((r) => r.health_reach_latest && !usable.includes(r));
+    const years = [...new Set(usable.map((r) => r.health_reach_latest.year))].sort().reverse();
+    if (!years.length) return { year: null, rows: [], partial };
+    const year = years[0];
+    const inYear = usable.filter((r) => r.health_reach_latest.year === year && isNum(r.health_reach_latest.targeted) && r.health_reach_latest.targeted > 0);
+    return {
+      year,
+      rows: inYear,
+      partial,
+      reached: sum(inYear, (r) => r.health_reach_latest.reached),
+      targeted: sum(inYear, (r) => r.health_reach_latest.targeted),
+      lastPeriod: inYear.map((r) => r.health_reach_latest.period_end).sort().pop()
+    };
+  }
+
   function computeKpis(rows) {
     const funded = rows.filter((r) => r.health_funding && isNum(r.health_funding.requirements_usd));
     const req = sum(funded, (r) => r.health_funding.requirements_usd);
@@ -172,8 +275,11 @@
       graded: rows.reduce((total, r) => total + (r.who_grades || []).length, 0),
       healthPin: sum(rows, (r) => r.health_in_need?.value),
       healthPinCountries: count(rows, (r) => r.health_in_need?.value),
-      healthPinPrevYear: rows.filter((r) => r.health_in_need && r.people_in_need && String(r.health_in_need.year) !== String(r.people_in_need.year)),
+      healthPinPrevYear: rows.filter((r) => r.health_in_need && String(r.health_in_need.year) !== String(new Date().getFullYear())),
       noHealthPlan: rows.filter((r) => !r.health_in_need),
+      lastPlanInTier: rows.filter((r) => r.classification?.uses_last_plan),
+      yoyRows: rows.filter((r) => isNum(r.health_in_need?.value) && isNum(r.health_in_need_previous?.value)),
+      reachLatest: latestReach(rows),
       pin: sum(rows, (r) => r.people_in_need?.value),
       healthTargeted: sum(rows, (r) => r.health_targeted?.value),
       healthReached: sum(reachRows, (r) => r.health_reached.value),
@@ -210,11 +316,13 @@
   }
 
   // ---------- Overview ----------
-  function kpiCard({ id, title, value, sub, source, target, tone }) {
+  function kpiCard({ id, title, value, sub, source, target, tone, trend }) {
+    const trends = (Array.isArray(trend) ? trend : [trend]).filter(Boolean);
     return `
       <button type="button" class="strat-kpi ${tone ? `strat-kpi-${tone}` : ""}" data-strat-target="${esc(target || "")}" id="${id}">
         <span class="strat-kpi-title">${title}</span>
         <span class="strat-kpi-value">${value}</span>
+        ${trends.length ? `<span class="strat-kpi-trends">${trends.join("")}</span>` : ""}
         <span class="strat-kpi-sub">${sub}</span>
         ${sourceLine(source)}
       </button>`;
@@ -229,44 +337,108 @@
     const ftsDate = fmtDate(src.fts.fetched_at);
     const hapiDate = fmtDate(src.hapi.fetched_at);
     const ssaDate = fmtDate(src.ssa.fetched_at);
+    const hpcDate = src.hpc?.fetched_at ? fmtDate(src.hpc.fetched_at) : null;
 
-    const reachValue = k.healthReachedCountries
-      ? fmtPct(k.healthReached / Math.max(1, k.healthReachTargeted))
-      : "Awaiting data";
-    const reachSub = k.healthReachedCountries
-      ? `${fmtCompact(k.healthReached)} reached of ${fmtCompact(k.healthReachTargeted)} targeted in ${k.healthReachedCountries} countries.`
-      : `Plans target ${fmtCompact(k.healthTargeted)} people (${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} of need). Proxy from the FCV service database: ${fmtCompact(k.svcReached)} people reached in ${k.svcCountries} countries (${k.svcQuarter || "latest quarter"}).`;
-    const prevYearNote = k.healthPinPrevYear.length
-      ? ` Uses the 2025 plan figure for ${k.healthPinPrevYear.map((r) => esc(shortName(r.country))).join(", ")}.`
+    const thisYear = String(new Date().getFullYear());
+    const rl = k.reachLatest;
+    const plansWithTarget = rows.filter((r) => isNum(r.health_targeted?.value)).length;
+    let reachValue;
+    let reachSub;
+    let reachSource;
+    let reachTone = "warn";
+    if (k.healthReachedCountries) {
+      reachValue = fmtPct(k.healthReached / Math.max(1, k.healthReachTargeted));
+      reachSub = `${fmtCompact(k.healthReached)} reached of ${fmtCompact(k.healthReachTargeted)} targeted in ${k.healthReachedCountries} countries so far in ${thisYear}.`;
+      reachSource = `OCHA Humanitarian Action (response monitoring), ${hpcDate || "n/a"}`;
+      reachTone = "";
+    } else if (rl.year) {
+      const rates = rl.rows.map((r) => ({ r, v: r.health_reach_latest.reached / r.health_reach_latest.targeted })).sort((x, y) => x.v - y.v);
+      const range = rates.length > 1
+        ? ` Range ${fmtPct(rates[0].v)} (${esc(shortName(rates[0].r.country))}) to ${fmtPct(rates[rates.length - 1].v)} (${esc(shortName(rates[rates.length - 1].r.country))}).`
+        : "";
+      reachValue = `${fmtPct(rl.reached / Math.max(1, rl.targeted))}<small> in ${esc(rl.year)}, ${rl.rows.length} countries</small>`;
+      reachSub = `No ${thisYear} figures published yet. Final ${esc(rl.year)} results exist for ${rl.rows.length} of ${plansWithTarget} countries with a plan: ${fmtCompact(rl.reached)} reached of ${fmtCompact(rl.targeted)} targeted.${range}${rl.partial.length ? ` No year-end figure published for ${rl.partial.map((r) => esc(shortName(r.country))).join(", ")}.` : ""}`;
+      reachSource = `OCHA Humanitarian Action (response monitoring), ${hpcDate || "n/a"}`;
+    } else {
+      reachValue = "Awaiting data";
+      reachSub = `Plans target ${fmtCompact(k.healthTargeted)} people (${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} of need). Country office reports in the FCV service database: ${fmtCompact(k.svcReached)} service contacts in ${k.svcCountries} countries.`;
+      reachSource = "No Health Cluster reach published yet by OCHA";
+    }
+
+    // Trends: month on month from the stored snapshots, and year on year where the source carries it.
+    const since = sinceLabel();
+    const base = baseSnapshot();
+    // Compare only countries with a tier in both months: a move to or from
+    // "Insufficient data" is a data change, not a change on the ground.
+    const tiered = (lvl) => lvl && lvl !== "Insufficient data";
+    const bothTiered = base ? rows.filter((r) => tiered(base.countries?.[r.iso3]?.level) && tiered(r.classification.level)) : [];
+    const crisesNowPaired = bothTiered.filter((r) => ["Major", "Severe"].includes(r.classification.level)).length;
+    const crisesPrev = base ? bothTiered.filter((r) => ["Major", "Severe"].includes(base.countries[r.iso3].level)).length : null;
+    const tierMoves = base ? rows.filter((r) => base.countries?.[r.iso3]?.level && base.countries[r.iso3].level !== r.classification.level) : [];
+    const moveNote = tierMoves.length
+      ? `<br>Changed tier ${esc(since)}: ${tierMoves.map((r) => `${esc(shortName(r.country))} (${esc(base.countries[r.iso3].level)} to ${esc(r.classification.level)})`).join(", ")}.`
       : "";
-    const noPlanNote = k.noHealthPlan.length ? ` No current figure: ${k.noHealthPlan.map((r) => esc(shortName(r.country))).join(", ")}.` : "";
+    const yoyCur = sum(k.yoyRows, (r) => r.health_in_need.value);
+    const yoyPrev = sum(k.yoyRows, (r) => r.health_in_need_previous.value);
+    const yoyTrend = k.yoyRows.length
+      ? trendHtml({ cur: yoyCur, prev: yoyPrev, worseWhen: "none", label: `vs ${Number(thisYear) - 1} plans (same ${k.yoyRows.length} countries)` })
+      : "";
+    // Funding and need are compared month on month only within the same plan year.
+    const fundReq = baseSameYear() ? pairedSums(rows, "health_requirements_usd", (r) => r.health_funding?.requirements_usd) : null;
+    const fundGot = baseSameYear() ? pairedSums(rows, "health_funding_usd", (r) => (r.health_funding ? r.health_funding.funding_usd : null)) : null;
+    const fundTrend = fundReq && fundGot && fundReq.prev > 0 && fundReq.cur > 0
+      ? trendHtml({ cur: fundGot.cur / fundReq.cur, prev: fundGot.prev / fundReq.prev, kind: "pp", worseWhen: "down", prefix: "funding", label: since })
+      : "";
+    const pinPair = baseSameYear() ? pairedSums(rows, "health_in_need", (r) => r.health_in_need?.value, true) : null;
+    const dispPair = pairedSums(rows, "displaced", (r) => ((r.idps && !r.idps.stale ? r.idps.value : 0) + (r.refugees?.value || 0)) || null);
+    const attacksBaseSameYear = base && String(base.month).slice(0, 4) === thisYear;
+    const ssaRows = rows.filter((r) => r.attacks?.prev_ytd);
+    const attacksYoy = ssaRows.length
+      ? trendHtml({ cur: sum(ssaRows, (r) => r.attacks.ytd.attacks), prev: sum(ssaRows, (r) => r.attacks.prev_ytd.attacks), label: "vs same period last year" })
+      : "";
+    const attPair = attacksBaseSameYear ? pairedSums(rows, "attacks_ytd", (r) => r.attacks?.ytd?.attacks) : null;
+    const attacksSince = attPair
+      ? `<span class="strat-trend strat-trend-flat">${attPair.cur > attPair.prev ? `${fmtFull(attPair.cur - attPair.prev)} new attacks recorded` : "no new attacks recorded"} ${esc(since)}</span>`
+      : "";
+
+    const prevYearNote = k.healthPinPrevYear.length
+      ? ` Uses the ${Number(thisYear) - 1} plan figure for ${k.healthPinPrevYear.map((r) => esc(shortName(r.country))).join(", ")}.`
+      : "";
+    const noPlan = k.noHealthPlan.map((r) => `${esc(shortName(r.country))}${r.health_outdated ? ` (last plan ${esc(r.health_outdated.year)})` : ""}`);
+    const noPlanNote = noPlan.length ? ` No current plan: ${noPlan.join(", ")}; not in the total.` : "";
+    const revised = rows.filter((r) => r.health_in_need?.alt);
+    const revisedNote = revised.length ? ` Revised plan figures used for ${revised.map((r) => `${esc(shortName(r.country))} (${fmtCompact(r.health_in_need.value)}; earlier version ${fmtCompact(r.health_in_need.alt.value)})`).join(", ")}.` : "";
+    const pinSources = [...new Set(rows.map((r) => r.health_in_need?.source).filter(Boolean)
+      .map(plainSource))];
 
     grid.innerHTML = [
       kpiCard({
         id: "kpiCrises",
         title: "Countries in major or severe crisis",
         value: `${k.major.length + k.severe.length}<small> of ${rows.length}</small>`,
-        sub: `Major: ${k.major.map((r) => esc(shortName(r.country))).join(", ") || "none"}. Severe: ${k.severe.length}. Insufficient data: ${k.insufficient.map((r) => esc(shortName(r.country))).join(", ") || "none"}.<br>WHO grades: ${k.graded ? `${k.graded} recorded` : "none recorded yet"}.`,
+        sub: `Major: ${k.major.map((r) => esc(shortName(r.country))).join(", ") || "none"}. Severe: ${k.severe.length}. Insufficient data: ${k.insufficient.map((r) => esc(shortName(r.country))).join(", ") || "none"}.${k.lastPlanInTier.length ? ` Tier uses the last plan figure for ${k.lastPlanInTier.map((r) => esc(shortName(r.country))).join(", ")}.` : ""}${moveNote}<br>WHO grades: ${k.graded ? `${k.graded} recorded` : "none recorded yet"}.`,
         source: "DHM triage tier from verified indicators; not a WHO grade",
         target: "gradingPage",
-        tone: k.major.length ? "bad" : ""
+        tone: k.major.length ? "bad" : "",
+        trend: base ? trendHtml({ cur: crisesNowPaired, prev: crisesPrev, kind: "count", unit: ["country", "countries"], label: since }) : ""
       }),
       kpiCard({
         id: "kpiHealthPin",
         title: "People in need of health assistance",
         value: fmtCompact(k.healthPin),
-        sub: `${k.healthPinCountries} countries. All sectors: ${fmtCompact(k.pin)} people in need.${prevYearNote}${noPlanNote}`,
-        source: `OCHA humanitarian plans via HDX HAPI, ${hapiDate}`,
-        target: "overviewPage#stratTable"
+        sub: `${k.healthPinCountries} countries. All sectors: ${fmtCompact(k.pin)} people in need.${revisedNote}${prevYearNote}${noPlanNote}`,
+        source: `Humanitarian plans: ${pinSources.join(", ") || "OCHA via HDX"}, ${hpcDate || hapiDate}`,
+        target: "overviewPage#stratTable",
+        trend: [pinPair ? trendHtml({ cur: pinPair.cur, prev: pinPair.prev, label: since }) : "", yoyTrend]
       }),
       kpiCard({
         id: "kpiReach",
         title: "Health reach against target",
         value: reachValue,
         sub: reachSub,
-        source: k.healthReachedCountries ? `OCHA plan monitoring via HDX HAPI, ${hapiDate}` : "Health Cluster reach is not yet in a verified public source",
+        source: reachSource,
         target: "overviewPage#stratCoverageChart",
-        tone: k.healthReachedCountries ? "" : "warn"
+        tone: reachTone
       }),
       kpiCard({
         id: "kpiFunding",
@@ -275,7 +447,8 @@
         sub: `${fmtPct(k.pct)} of ${fmtUsd(k.req)} received across ${k.fundedPlans} plans; median country ${fmtPct(k.medianPct)}. Excludes refugee response plans and funding not assigned to a cluster.`,
         source: `OCHA FTS, health cluster requirements and reported funding, ${ftsDate}`,
         target: "overviewPage#stratFundingChart",
-        tone: k.medianPct != null && k.medianPct < 0.5 ? "bad" : "warn"
+        tone: k.medianPct != null && k.medianPct < 0.5 ? "bad" : "warn",
+        trend: fundTrend
       }),
       kpiCard({
         id: "kpiDisplaced",
@@ -283,7 +456,8 @@
         value: fmtCompact(k.idps + k.refugees),
         sub: `${fmtCompact(k.idps)} internally displaced and ${fmtCompact(k.refugees)} refugees and asylum seekers hosted.${k.idpsFromPlan ? ` ${k.idpsFromPlan} countries use the 2026 plan figure where IOM DTM is outdated or partial.` : ""}`,
         source: `IOM DTM and UNHCR via HDX HAPI, ${hapiDate}`,
-        target: "conflictsDisplacementPage"
+        target: "conflictsDisplacementPage",
+        trend: dispPair ? trendHtml({ cur: dispPair.cur, prev: dispPair.prev, label: since }) : ""
       }),
       kpiCard({
         id: "kpiAttacks",
@@ -292,7 +466,8 @@
         sub: `${fmtFull(k.deaths)} health workers and patients killed, ${fmtFull(k.injuries)} injured, in ${k.ssaCountries} countries with WHO surveillance.${k.notInSsa.length ? ` Not covered: ${k.notInSsa.map((r) => esc(shortName(r.country))).join(", ")}.` : ""}`,
         source: `WHO Surveillance System for Attacks on Health Care (SSA), ${ssaDate}`,
         target: "attacksHealthPage",
-        tone: k.deaths > 0 ? "bad" : ""
+        tone: k.deaths > 0 ? "bad" : "",
+        trend: [attacksYoy, attacksSince]
       }),
       kpiCard({
         id: "kpiMhpss",
@@ -314,6 +489,18 @@
         target: "dataHealthPage#dataHealthSources"
       })
     ].join("");
+
+    let note = el("stratTrendNote");
+    if (!note) {
+      note = document.createElement("p");
+      note.id = "stratTrendNote";
+      note.className = "strat-trend-note muted";
+      grid.insertAdjacentElement("afterend", note);
+    }
+    const hist = state.payload.history || {};
+    note.innerHTML = base
+      ? `Arrows compare with the last snapshot of ${esc(monthLabel(base.month))} (taken ${esc(fmtDate(base.taken_at))}), using only countries with figures in both months. Year-on-year arrows compare with the previous plan or the same period last year. Red means worse, green better, grey shows the change without judging it (plan methods change between years).`
+      : `Month-on-month arrows start in ${esc(nextMonthLabel(hist.first_month || new Date().toISOString().slice(0, 7)))}, once a full month of snapshots exists. Year-on-year arrows already compare with the previous plan or the same period last year. Red means worse, green better, grey shows the change without judging it (plan methods change between years).`;
   }
 
   function renderMessages() {
@@ -536,9 +723,10 @@
     const body = rows.map((r) => {
       const grade = (r.who_grades || []).map((g) => `${esc(g.grade)}: ${esc(g.event)}`).join("<br>") || '<span class="muted">none</span>';
       const hp = r.health_in_need
-        ? `<span title="${esc(`${r.health_in_need.source}, ${r.health_in_need.year}`)}">${fmtCompact(r.health_in_need.value)}</span>${String(r.health_in_need.year) !== String(new Date().getFullYear()) ? ` <small>${esc(r.health_in_need.year)}</small>` : ""}`
+        ? `<span title="${esc(`${r.health_in_need.source}, ${r.health_in_need.year}${r.health_in_need.alt ? `. Revised plan; HDX HAPI holds ${fmtCompact(r.health_in_need.alt.value)} (earlier version)` : ""}`)}">${fmtCompact(r.health_in_need.value)}</span>${String(r.health_in_need.year) !== String(new Date().getFullYear()) ? ` <small>${esc(r.health_in_need.year)}</small>` : ""}`
         : r.health_outdated
-          ? cellStale(`${fmtCompact(r.health_outdated.value)} <small>(${esc(r.health_outdated.year)})</small>`, true, "No current humanitarian plan figure; last plan shown for reference")
+          ? cellStale(`${fmtCompact(r.health_outdated.value)} <small>(${esc(r.health_outdated.year)})</small>`, true,
+            `No current humanitarian plan. Last plan: ${r.health_outdated.plan_name || r.health_outdated.year}, ended ${fmtMonth(r.health_outdated.plan_end)}. ${r.health_outdated.counts_for_tier ? "Counts toward the triage tier, which is shown as provisional; not added to totals." : `Not used: ${r.health_outdated.rule || "too old"}.`}`)
           : '<span class="muted">no plan</span>';
       const fund = r.health_funding ? `${fmtPct(r.health_funding.pct)}` : '<span class="muted">no plan</span>';
       const gap = r.health_funding ? fmtUsd(r.health_funding.gap_usd).replace("US$", "") : "";
@@ -554,7 +742,7 @@
       return `<tr>
         <td><button type="button" class="strat-link" data-strat-country="${r.iso3}">${esc(r.country)}</button></td>
         <td>${esc(GROUP_LABEL[r.group] || r.group)}</td>
-        <td>${levelTag(r.classification.level)} <small>${r.classification.score}/${r.classification.max_score}</small></td>
+        <td>${rowTag(r)} <small>${r.classification.score}/${r.classification.max_score}</small></td>
         <td>${grade}</td>
         <td class="num">${hp}</td>
         <td class="num">${fund}</td>
@@ -641,6 +829,7 @@
     const links = [
       ["OCHA HDX HAPI (needs, IDPs, refugees, IPC, INFORM Risk)", s.hapi.url, s.hapi.fetched_at],
       ["OCHA Financial Tracking Service (health cluster funding)", "https://fts.unocha.org", s.fts.fetched_at],
+      ["OCHA Humanitarian Action: plans and response monitoring (health caseloads and reach)", "https://humanitarianaction.info", s.hpc?.fetched_at],
       ["WHO Surveillance System for Attacks on Health Care", s.ssa.url, s.ssa.fetched_at],
       ["IOM Displacement Tracking Matrix", "https://dtm.iom.int", null],
       ["IPC Integrated Food Security Phase Classification", "https://www.ipcinfo.org", null],
@@ -665,7 +854,7 @@
         ["Major", counts(fcv, "Major"), "of 13 FCV countries"],
         ["Severe", counts(fcv, "Severe"), "of 13 FCV countries"],
         ["Moderate", counts(fcv, "Moderate"), "of 13 FCV countries"],
-        ["Insufficient data", counts(fcv, "Insufficient data"), "fewer than 3 core indicators current"],
+        ["Insufficient data", counts(fcv, "Insufficient data"), `fewer than 3 of 4 core indicators current${counts(fcv, "Insufficient data") ? `: ${fcv.filter((r) => r.classification.level === "Insufficient data").map((r) => esc(shortName(r.country))).join(", ")}` : ""}`],
         ["WHO-graded events", gradeCount, gradeCount ? `register updated ${fmtDate(state.payload.grading.updated_at)}` : "register not yet filled by DHM"]
       ].map(([title, value, sub]) => `
         <div class="strat-kpi strat-kpi-static">
@@ -680,17 +869,28 @@
       const sorted = rows.slice().sort((a, b) =>
         (LEVEL_ORDER[b.classification.level] - LEVEL_ORDER[a.classification.level]) || (b.classification.score - a.classification.score));
       table.innerHTML = `
-        <thead><tr><th>Country</th><th>Group</th><th>DHM triage tier</th><th>Points</th><th>Criteria met</th><th>Core indicators current</th><th>WHO grade</th></tr></thead>
+        <thead><tr><th>Country</th><th>Group</th><th>DHM triage tier</th><th>${baseSnapshot() ? `Tier in ${esc(monthLabel(baseSnapshot().month))}` : "Change"}</th><th>Points</th><th>Criteria met</th><th>Core indicators current</th><th>WHO grade</th></tr></thead>
         <tbody>${sorted.map((r) => `
           <tr>
             <td><button type="button" class="strat-link" data-strat-country="${r.iso3}">${esc(r.country)}</button></td>
             <td>${esc(GROUP_LABEL[r.group] || r.group)}</td>
-            <td>${levelTag(r.classification.level)}</td>
+            <td>${rowTag(r)}</td>
+            <td>${(() => {
+              const prev = baseSnapshot()?.countries?.[r.iso3];
+              if (!baseSnapshot()) return '<span class="muted">from next month</span>';
+              if (!prev?.level) return '<span class="muted">n/a</span>';
+              if (prev.level === r.classification.level) return '<span class="muted">no change</span>';
+              if (prev.level === "Insufficient data" || r.classification.level === "Insufficient data") {
+                return `<span class="strat-trend strat-trend-flat">&#9632; was ${esc(prev.level)}</span>`;
+              }
+              const worse = (LEVEL_ORDER[r.classification.level] || 0) > (LEVEL_ORDER[prev.level] || 0);
+              return `<span class="strat-trend ${worse ? "strat-trend-bad" : "strat-trend-good"}">${worse ? "&#9650;" : "&#9660;"} was ${esc(prev.level)}</span>`;
+            })()}</td>
             <td class="num">${r.classification.score}/${r.classification.max_score}</td>
             <td>${r.classification.points.length
               ? `<ul class="strat-points">${r.classification.points.map((p) => `<li>${esc(p.criterion)} <small>(+${p.score})</small></li>`).join("")}</ul>`
               : '<span class="muted">none</span>'}</td>
-            <td class="num">${r.classification.indicators_available ?? "n/a"} of 4</td>
+            <td class="num">${r.classification.indicators_available ?? "n/a"} of 4${r.classification.level === "Insufficient data" && (r.classification.missing || []).length ? `<br><small class="muted">${esc(r.classification.missing.join("; "))}</small>` : ""}</td>
             <td>${(r.who_grades || []).map((g) => `${esc(g.grade)}: ${esc(g.event)} <small>(${esc(g.date_graded)})</small>`).join("<br>") || '<span class="muted">none recorded</span>'}</td>
           </tr>`).join("")}</tbody>`;
     }
@@ -725,12 +925,36 @@
     }
     const f = r.health_funding;
     const items = [
-      ["DHM triage tier", `${levelTag(r.classification.level)} ${r.classification.score}/${r.classification.max_score}`, "Rule-based, not a WHO grade"],
+      ["DHM triage tier", `${rowTag(r)} ${r.classification.score}/${r.classification.max_score}`, r.classification.uses_last_plan ? "Rule-based, not a WHO grade. Provisional: uses the last plan's figure" : r.classification.level === "Insufficient data" ? `Rule-based, not a WHO grade. Missing: ${esc((r.classification.missing || []).join("; "))}` : "Rule-based, not a WHO grade"],
       ["WHO grade", (r.who_grades || []).map((g) => esc(g.grade)).join(", ") || "none recorded", "WHO grading register"],
-      ["Humanitarian plan", r.plan ? esc(r.plan.name || r.plan.code) : "no current plan", f ? "OCHA FTS" : "HDX HAPI"],
+      ["Humanitarian plan", r.plan && !r.health_outdated && !/^non[ -]?plan$/i.test(r.plan.name || "") ? esc(r.plan.name || r.plan.code) : "no current plan",
+        f ? "OCHA FTS" : r.health_outdated ? `Last plan: ${esc(r.health_outdated.plan_name || r.health_outdated.year)}` : r.plan ? "FCV country profile (DHM)" : "HDX HAPI"],
       ["People in need (all sectors)", fmtCompact(r.people_in_need?.value), r.people_in_need ? `${esc(r.people_in_need.source)}, ${esc(r.people_in_need.year)}` : ""],
-      ["People in need of health assistance", r.health_in_need ? fmtCompact(r.health_in_need.value) : r.health_outdated ? `${fmtCompact(r.health_outdated.value)} (${esc(r.health_outdated.year)}, outdated)` : "n/a", r.health_in_need ? `${esc(r.health_in_need.source)}, ${esc(r.health_in_need.year)}` : ""],
+      ["People in need of health assistance", r.health_in_need
+        ? `${fmtCompact(r.health_in_need.value)}${r.health_in_need_previous ? ` <small>(${esc(r.health_in_need_previous.year)}: ${fmtCompact(r.health_in_need_previous.value)})</small>` : ""}`
+        : r.health_outdated ? `${fmtCompact(r.health_outdated.value)} (last plan, ${esc(r.health_outdated.year)})` : "n/a",
+        r.health_in_need ? `${esc(plainSource(r.health_in_need.source))}, ${esc(r.health_in_need.plan_code || r.health_in_need.year)}${r.health_in_need.alt ? `. Revised plan; earlier version on HDX: ${fmtCompact(r.health_in_need.alt.value)}` : ""}`
+          : r.health_outdated ? `${esc(r.health_outdated.plan_name || r.health_outdated.source)}, ended ${esc(fmtMonth(r.health_outdated.plan_end))}. ${r.health_outdated.counts_for_tier ? "Used for the triage tier only, which is shown as provisional" : `Not used: ${esc((r.health_outdated.rule || "too old").toLowerCase())}`}` : "No humanitarian plan"],
       ["Health targeted", fmtCompact(r.health_targeted?.value), r.health_targeted ? `${esc(r.health_targeted.source)}, ${esc(r.health_targeted.year)}` : ""],
+      ["Health Cluster reach", r.health_reached
+        ? `${fmtCompact(r.health_reached.value)} reached${isNum(r.health_targeted?.value) ? ` of ${fmtCompact(r.health_targeted.value)} targeted` : ""}`
+        : r.health_reach_latest
+          ? `${fmtCompact(r.health_reach_latest.reached)} of ${fmtCompact(r.health_reach_latest.targeted)} targeted (${fmtPct(r.health_reach_latest.reached / Math.max(1, r.health_reach_latest.targeted))}) in ${esc(r.health_reach_latest.year)}${r.health_reach_latest.full_year || r.health_reach_latest.year === String(new Date().getFullYear()) ? "" : `, reported to ${esc(fmtMonth(r.health_reach_latest.period_end))} only`}`
+          : r.health_reach_excluded
+            ? `not usable: ${fmtFull(r.health_reach_excluded.reached)} reported against ${fmtCompact(r.health_reach_excluded.targeted)} targeted in the ${esc(r.health_reach_excluded.plan_name || r.health_reach_excluded.year)}, likely a reporting error`
+            : r.health_in_need ? "not yet published" : "no humanitarian plan",
+        r.health_reached ? esc(r.health_reached.source)
+          : r.health_reach_latest ? `OCHA Humanitarian Action, ${esc(r.health_reach_latest.plan_name || r.health_reach_latest.plan_code || "")}, to ${esc(fmtMonth(r.health_reach_latest.period_end))}` : "OCHA Humanitarian Action (response monitoring)"],
+      ["Change since last month", (() => {
+        const prev = baseSnapshot()?.countries?.[r.iso3];
+        if (!prev) return baseSnapshot() ? "n/a" : `from ${esc(nextMonthLabel(state.payload.history?.first_month || new Date().toISOString().slice(0, 7)))}`;
+        const bits = [];
+        if (prev.level && prev.level !== r.classification.level) bits.push(`tier ${esc(prev.level)} to ${esc(r.classification.level)}`);
+        if (baseSameYear() && isNum(prev.health_requirements_usd) && prev.health_requirements_usd > 0 && f && Math.abs(prev.health_funding_usd / prev.health_requirements_usd - f.pct) >= 0.005) bits.push(`funded ${fmtPct(prev.health_funding_usd / prev.health_requirements_usd)} to ${fmtPct(f.pct)}`);
+        if (isNum(prev.idps) && r.idps && !r.idps.stale && prev.idps !== r.idps.value) bits.push(`IDPs ${fmtCompact(prev.idps)} to ${fmtCompact(r.idps.value)}`);
+        if (isNum(prev.attacks_ytd) && r.attacks && baseSameYear() && r.attacks.ytd.attacks > prev.attacks_ytd) bits.push(`${fmtFull(r.attacks.ytd.attacks - prev.attacks_ytd)} new attacks recorded`);
+        return bits.length ? bits.join("; ") : "no change";
+      })(), baseSnapshot() ? `Compared with the ${esc(monthLabel(baseSnapshot().month))} snapshot` : "Monthly snapshots"],
       ["Health funding", f ? `${fmtUsd(f.funding_usd)} of ${fmtUsd(f.requirements_usd)} (${fmtPct(f.pct)})` : "n/a", f ? "OCHA FTS" : ""],
       ["IDPs", r.idps ? `${fmtCompact(r.idps.value)}${r.idps.stale ? " (outdated)" : ""}` : "n/a", r.idps ? `${esc(r.idps.source)}, ${esc(fmtMonth(r.idps.date))}` : ""],
       ["Refugees and asylum seekers hosted", fmtCompact(r.refugees?.value), r.refugees ? `${esc(r.refugees.source)}, ${esc(r.refugees.year)}` : ""],
@@ -741,7 +965,7 @@
     node.innerHTML = `
       <div class="panel-header"><h2>Strategic Country Card: ${esc(r.country)}</h2><p>${esc(GROUP_LABEL[r.group] || "")} country. Verified sources only; each line shows its source and date.</p></div>
       <div class="strat-card-grid">${items.map(([k, v, s]) => `<div class="strat-card-item"><span class="strat-card-label">${k}</span><span class="strat-card-value">${v}</span>${s ? `<span class="strat-source">${s}</span>` : ""}</div>`).join("")}</div>
-      ${sourcesBar(["hapi", "fts", "dtm", "unhcr", "ipc", "ssa", "inform", "grading"])}`;
+      ${sourcesBar(["hpc", "hapi", "fts", "dtm", "unhcr", "ipc", "ssa", "inform", "grading"])}`;
   }
 
   // ---------- Conflict & displacement panel ----------
@@ -845,6 +1069,8 @@
         <tbody>
           ${line(s.hapi.name, s.hapi, "Refreshes every 12 hours; country rows fall back to the last good value.")}
           ${line(s.fts.name, s.fts, `Plan year ${esc(s.fts.year || "n/a")}.`)}
+          ${s.hpc ? line(s.hpc.name, s.hpc, "Health Cluster people in need, targeted and reached, per plan. Reach appears once OCHA generates the plan's monitoring.") : ""}
+          ${line("Monthly KPI snapshots", { updated_at: state.payload.history?.latest_taken_at || null }, `${(state.payload.history?.months || []).length} months held (${esc((state.payload.history?.months || []).map(monthLabel).join(", ") || "none yet")}). Stored in <code>data/strategic-history.json</code>.`)}
           ${line(s.ssa.name, s.ssa, "Countries with an SSA deployment only.")}
           ${line(s.grading.name, { updated_at: s.grading.updated_at }, `Grading register maintained by DHM (<code>${esc(s.grading.file)}</code> in GitHub).`)}
           ${line(s.profile.name, { loaded_at: s.profile.loaded_at }, "Fallback for plan figures not yet in HDX HAPI.")}
@@ -887,6 +1113,7 @@
   // ---------- Key-figure cards on every page ----------
   const LINKS = {
     hapi: ["OCHA HDX HAPI", "https://hapi.humdata.org"],
+    hpc: ["OCHA Humanitarian Action (plans and response monitoring)", "https://humanitarianaction.info"],
     fts: ["OCHA Financial Tracking Service", "https://fts.unocha.org"],
     dtm: ["IOM Displacement Tracking Matrix", "https://dtm.iom.int"],
     unhcr: ["UNHCR Refugee Data Finder", "https://www.unhcr.org/refugee-statistics"],
@@ -1154,7 +1381,7 @@
     const kpiRows = [
       ["Countries in major or severe crisis (DHM triage tier)", `${k.major.length + k.severe.length} of ${rows.length} (major: ${names(k.major, 5) || "none"})`, "DHM internal triage from the indicators below"],
       ["WHO-graded emergencies", k.graded ? String(k.graded) : "None recorded in the DHM grading register", "WHO grading register (DHM)"],
-      ["People in need of health assistance", fmtCompact(k.healthPin), `OCHA plans via HDX HAPI, refreshed ${fmtDate(src.hapi.fetched_at)}`],
+      ["People in need of health assistance", fmtCompact(k.healthPin), `Humanitarian plans (OCHA Humanitarian Action; OCHA via HDX where needed), refreshed ${fmtDate(src.hpc?.fetched_at || src.hapi.fetched_at)}`],
       ["Health funding: share received and gap (2026 plans)", `${fmtPct(k.pct)} received; gap ${fmtUsd(k.gap)}`, `OCHA FTS, refreshed ${fmtDate(src.fts.fetched_at)}`],
       ["Internally displaced; refugees and asylum seekers hosted", `${fmtCompact(k.idps)}; ${fmtCompact(k.refugees)}`, `IOM DTM (latest round per country) and UNHCR (end of ${esc(rows.find((r) => r.refugees)?.refugees.year || "n/a")}) via HDX HAPI`],
       ["Attacks on health care this year", `${fmtFull(k.attacks)} attacks, ${fmtFull(k.deaths)} people killed, ${fmtFull(k.injuries)} injured`, `WHO SSA, refreshed ${fmtDate(src.ssa.fetched_at)}`],
@@ -1200,12 +1427,16 @@
       <h3 class="bulletin-h3">4. Gaps</h3>
       <ul class="bulletin-list">
         <li>Health funding gap: <strong>${fmtUsd(k.gap)}</strong>; lowest coverage in ${lowFunded.map((r) => `${esc(shortName(r.country))} (${fmtPct(r.health_funding.pct)})`).join(", ") || "n/a"}.</li>
-        <li>No verified source yet reports health reach against target; plans target ${fmtCompact(k.healthTargeted)} of ${fmtCompact(k.healthPin)} people in need (${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))}).</li>
+        <li>Health reach: ${k.healthReachedCountries
+          ? `${fmtCompact(k.healthReached)} reached of ${fmtCompact(k.healthReachTargeted)} targeted (${fmtPct(k.healthReached / Math.max(1, k.healthReachTargeted))}) in ${k.healthReachedCountries} countries so far this year`
+          : k.reachLatest.year
+            ? `OCHA has not yet published ${new Date().getFullYear()} figures; the latest full-year result (${esc(k.reachLatest.year)}) is ${fmtCompact(k.reachLatest.reached)} reached of ${fmtCompact(k.reachLatest.targeted)} targeted (${fmtPct(k.reachLatest.reached / Math.max(1, k.reachLatest.targeted))}) in ${k.reachLatest.rows.length} countries`
+            : "not yet published by OCHA"}. Plans target ${fmtCompact(k.healthTargeted)} of ${fmtCompact(k.healthPin)} people in need (${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))}).</li>
         <li>MHPSS: median ${k.mhpssMedian != null ? k.mhpssMedian.toFixed(0) : "n/a"} people reached per 10,000 in need; no regional MHPSS target is published.</li>
-        <li>Surveillance and data gaps: WHO attack surveillance does not cover ${names(k.notInSsa, 6) || "none"}; no current plan figure for ${names(k.noHealthPlan, 6) || "none"}.</li>
+        <li>Surveillance and data gaps: WHO attack surveillance does not cover ${names(k.notInSsa, 6) || "none"}; no current humanitarian plan for ${names(k.noHealthPlan, 6) || "none"}.</li>
       </ul>
       ${noteBox("gaps", "Optional note: decisions needed from management", "Gaps that need a decision: funding, staff, supplies, access.")}
-      ${sourcesBar(["hapi", "fts", "dtm", "unhcr", "ipc", "ssa", "fcvdb"])}`;
+      ${sourcesBar(["hpc", "hapi", "fts", "dtm", "unhcr", "ipc", "ssa", "fcvdb"])}`;
 
     node.querySelectorAll("[data-note-key]").forEach((box) => {
       box.addEventListener("input", () => {
@@ -1281,10 +1512,10 @@
       { q: "Where is the health burden concentrated?", kpi: `${k.major.length} countries in the major tier; ${fmtCompact(k.healthPin)} people in need of health assistance`, trigger: "Country in the major tier of the DHM triage", flagged: k.major, status: k.major.length ? "Act now" : "On track", decision: "Prioritise staff surge and regional support", link: "gradingPage#gradingTable" },
       { q: "How deep is the food crisis?", kpi: `${ipcHigh.length} countries with 20% or more of the analysed population in IPC/CH Phase 3+`, trigger: "Phase 3+ share of 20% or more (analysis under 18 months old)", flagged: ipcHigh, status: ipcHigh.length ? "Act now" : "On track", decision: "Integrate nutrition and disease surveillance in food-insecure areas", link: "foodSecurityPage#foodSecurityTable" },
       { q: "Is the health response funded?", kpi: `${fmtPct(k.pct)} received across plans; median per country ${fmtPct(k.medianPct)}`, trigger: "Under 20% funded, or under half the FCV average", flagged: lowFunded, status: lowFunded.length ? "Act now" : funded.length ? "On track" : "No data", decision: "Donor briefing; pooled-fund and CERF discussions", link: "overviewPage#stratFundingChart" },
-      { q: "Are plans covering health needs?", kpi: `Plans target ${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} of people in need; reach is not yet reported`, trigger: "Plan targets under 40% of health need. Once reach is reported: under 50% reached by mid-year", flagged: lowCoverage, status: lowCoverage.length ? "Attention" : hasCoverageData ? "On track" : "No data", decision: "Review prioritisation, partners and access", link: "overviewPage#stratCoverageChart" },
+      { q: "Are plans covering health needs?", kpi: `Plans target ${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} of people in need; ${k.healthReachedCountries ? `${fmtPct(k.healthReached / Math.max(1, k.healthReachTargeted))} of target reached so far` : k.reachLatest.year ? `${new Date().getFullYear()} reach not yet published (${esc(k.reachLatest.year)}: ${fmtPct(k.reachLatest.reached / Math.max(1, k.reachLatest.targeted))} of target reached in the ${k.reachLatest.rows.length} countries with final figures)` : "reach is not yet published"}`, trigger: "Plan targets under 40% of health need. Once reach is reported: under 50% reached by mid-year", flagged: lowCoverage, status: lowCoverage.length ? "Attention" : hasCoverageData ? "On track" : "No data", decision: "Review prioritisation, partners and access", link: "overviewPage#stratCoverageChart" },
       { q: "Is health care under attack?", kpi: `${fmtFull(k.attacks)} attacks and ${fmtFull(k.deaths)} people killed this year`, trigger: "10 or more attacks and 25% above the same period last year; or any deaths", flagged: [...new Map([...rising, ...deaths].map((r) => [r.iso3, r])).values()], status: rising.length ? "Act now" : deaths.length ? "Attention" : "On track", decision: "Protection advocacy; continuity and security review", link: "attacksHealthPage#stratSsaPanel" },
       { q: "Are psychosocial needs being met?", kpi: k.mhpssMedian != null ? `Median ${k.mhpssMedian.toFixed(0)} people reached with MHPSS per 10,000 in need` : "No MHPSS data", trigger: "Fewer than 10 per 10,000 in need (provisional until a target is set)", flagged: lowMhpss, status: !k.mhpss.length ? "No data" : lowMhpss.length ? "Attention" : "On track", decision: "Fund MHPSS partners; integrate MHPSS into primary care", link: "overviewPage#stratMhpssChart" },
-      { q: "How large is displacement?", kpi: `${fmtCompact(k.idps)} internally displaced; ${fmtCompact(k.refugees)} refugees hosted`, trigger: "1 million or more displaced or hosted (trend needs monthly snapshots)", flagged: bigDisp, status: bigDisp.length ? "Attention" : "On track", decision: "Plan services in camps and host areas; review surge", link: "conflictsDisplacementPage#stratDisplacementPanel" },
+      { q: "How large is displacement?", kpi: `${fmtCompact(k.idps)} internally displaced; ${fmtCompact(k.refugees)} refugees hosted`, trigger: "1 million or more displaced or hosted", flagged: bigDisp, status: bigDisp.length ? "Attention" : "On track", decision: "Plan services in camps and host areas; review surge", link: "conflictsDisplacementPage#stratDisplacementPanel" },
       { q: "Can we trust the numbers?", kpi: `${notReporting.length} FCV countries not reporting service data in the last two quarters; ${outdated.length} with outdated or missing plan, displacement or IPC figures`, trigger: "No service report for two quarters, or a figure older than its update deadline", flagged: [...new Map([...notReporting, ...outdated].map((r) => [r.iso3, r])).values()], status: maxQ == null && !outdated.length ? "No data" : notReporting.length || outdated.length ? "Attention" : "On track", decision: "Follow up with country offices before the figures are used", link: "dataHealthPage#dataHealthValidation" }
     ];
     table.innerHTML = `<thead><tr><th>Management question</th><th>Where we are</th><th>Trigger</th><th>Status</th><th>Countries meeting the trigger</th><th>Decision it informs</th><th></th></tr></thead>

@@ -6545,6 +6545,8 @@ app.post("/api/strategic/refresh", async (req, res) => {
   }
   try {
     await strategic.refreshStrategicCache();
+    await strategic.syncRemoteHistory();
+    strategic.recordSnapshot(fcvCountryProfileSnapshot);
     res.json({ ok: true, payload: strategic.buildStrategicPayload(fcvCountryProfileSnapshot).sources });
   } catch (err) {
     res.status(500).json({ error: "refresh_failed", detail: err.message });
@@ -6555,8 +6557,15 @@ function scheduleStrategicRefresh() {
   if (String(process.env.STRATEGIC_REFRESH_ENABLED || "on").toLowerCase() === "off") {
     return;
   }
-  const run = () => strategic.refreshStrategicCache().catch((err) => console.error("[strategic] refresh failed:", err.message));
-  const ageHours = strategic.cacheAgeHours(strategic.readCache());
+  const snapshot = () => strategic.syncRemoteHistory()
+    .then(() => strategic.recordSnapshot(fcvCountryProfileSnapshot))
+    .catch((err) => console.error("[strategic] snapshot failed:", err.message));
+  const run = () => strategic.refreshStrategicCache()
+    .catch((err) => console.error("[strategic] refresh failed:", err.message))
+    .then(snapshot);
+  const ageHours = strategic.hoursSinceAttempt(strategic.readCache());
+  // Keep this month's snapshot even when the cache is still fresh at start-up.
+  setTimeout(snapshot, 20000);
   setTimeout(run, ageHours >= strategic.REFRESH_HOURS ? 15000 : 60 * 60 * 1000);
   setInterval(run, strategic.REFRESH_HOURS * 60 * 60 * 1000).unref?.();
 }
@@ -7173,6 +7182,7 @@ if (require.main === module) {
 
 module.exports = {
   app,
+  loadFcvCountryProfileData,
   classifyEnsoRisk,
   extractEnsoAdvisoryFromHtml,
   detectCsvDelimiter,

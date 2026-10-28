@@ -124,13 +124,22 @@ Outputs and data: Operational Bulletin, Event Signals (the former overview of pu
 
 | File / endpoint | Source | Maintained by |
 | --- | --- | --- |
-| `data/strategic-cache.json` | OCHA HDX HAPI (needs, appeals, IOM DTM IDPs, UNHCR refugees, IPC, INFORM Risk), OCHA FTS (health cluster funding), WHO SSA | Server, refreshed every 12 hours; seeded snapshot committed |
+| `data/strategic-cache.json` | OCHA HDX HAPI (needs, appeals, IOM DTM IDPs, UNHCR refugees, IPC, INFORM Risk), OCHA FTS (health cluster funding), OCHA Response Monitoring/HPC (Health Cluster people in need, targeted and reached per plan), WHO SSA | Server every 12 hours, and the GitHub refresh job (`scripts/refresh-strategic.js`) |
+| `data/strategic-history.json` | Monthly KPI snapshots (one per month) used for the "since last month" arrows | Server and the GitHub refresh job; do not edit by hand |
 | `data/who-grading.csv` | WHO grading decisions | DHM (one row per graded event) |
 | `data/fcv-reference.json` | FCV country list and tracks | DHM |
 | `FCV-Services-Deliveries-Database.csv` | FCV service database | FCV data focal point |
 | `GET /api/strategic` | Strategic payload used by the Overview | Server |
 | `POST /api/strategic/refresh` | Forces a refresh (header `x-refresh-token`) | Admin |
 
-Strategic environment variables: `HDX_HAPI_APP_IDENTIFIER` (base64 of `app-name:contact-email`, set this on Render), `STRATEGIC_REFRESH_HOURS` (default 12), `STRATEGIC_REFRESH_ENABLED` (`on`/`off`), `STRATEGIC_REFRESH_TOKEN`, `HDX_WASTING_PROXY_AS_LATEST` (default `off`).
+Rules worth knowing:
+
+- Health people in need for the current year comes from the current OCHA plan in HPC (it reflects mid-year revisions), then HDX HAPI, then the FCV profile workbook.
+- A country with no current plan keeps its last annual plan's health figure for the triage tier for up to 24 months after the plan ended (a flash appeal's figure stops counting when the appeal ends). The tier is shown as provisional and the figure is never added to regional totals.
+- Last year's annual plan carries over until this year's plan is published, from either OCHA source. Where HDX HAPI holds a different figure for a revised plan, it is kept for reference in the tooltip.
+- Health reach uses OCHA Response Monitoring. Until the current year is published, the card shows the latest full-year result and lists plans whose reporting stopped early. A reach below 1% or above 150% of the target is treated as a reporting error.
+- Month-on-month arrows compare with the last snapshot of the previous month. Year-on-year arrows compare with the previous plan (health need) or the same period last year (attacks).
+
+Strategic environment variables: `HDX_HAPI_APP_IDENTIFIER` (base64 of `app-name:contact-email`, set this on Render), `STRATEGIC_REFRESH_HOURS` (default 12), `STRATEGIC_REFRESH_ENABLED` (`on`/`off`), `STRATEGIC_REFRESH_TOKEN`, `STRATEGIC_HISTORY_URL` (where the server pulls committed snapshots from; `off` to disable), `HDX_WASTING_PROXY_AS_LATEST` (default `off`). For the GitHub refresh job, add the same `HDX_HAPI_APP_IDENTIFIER` as a repository secret.
 
 The pre-overhaul version is kept as git tag `v1.0-pre-overhaul` and branch `backup/v1-2026-10-27`.
