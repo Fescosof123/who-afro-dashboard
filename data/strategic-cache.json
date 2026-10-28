@@ -1,1788 +1,2861 @@
 {
- "note": "Seed snapshot pulled 27 Oct 2026 from HDX HAPI, OCHA FTS and WHO SSA. The server refreshes it automatically.",
- "hapi": {
-  "BFA": {
-   "errors": [],
-   "health": {
-    "year": "2025",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 2031499,
-    "targeted": 1341425
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 4400000,
-    "targeted": 3100000
-   },
-   "appeals": [
-    {
-     "code": "HBFA26",
-     "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 658486359,
-     "funding_usd": 159253843,
-     "funding_pct": 24
-    }
-   ],
-   "idps": {
-    "total": 10293,
-    "date": "2019-08-30",
-    "operation": "Burkina Faso Crisis",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 42953,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7.5,
-    "risk_class": 5,
-    "global_rank": 11,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 1749437,
-    "fraction": 0.07,
-    "period_start": "2024-03-01",
-    "period_end": "2024-05-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 2734196,
-    "fraction": 0.12,
-    "type": "first projection",
-    "period_start": "2024-06-01",
-    "period_end": "2024-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "CAF": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 955008,
-    "targeted": 516609
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 2286959,
-    "targeted": 1265483
-   },
-   "appeals": [
-    {
-     "code": "HCAF26",
-     "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 264097388,
-     "funding_usd": 148276183,
-     "funding_pct": 56
-    }
-   ],
-   "idps": {
-    "total": 416247,
-    "date": "2025-11-30",
-    "operation": "Central African Republic conflict",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 63761,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 8.1,
-    "risk_class": 5,
-    "global_rank": 4,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 1928733,
-    "fraction": 0.29,
-    "period_start": "2025-09-01",
-    "period_end": "2026-03-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 2010162,
-    "fraction": 0.31,
-    "type": "first projection",
-    "period_start": "2026-04-01",
-    "period_end": "2026-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "TCD": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 1706766,
-    "targeted": 1203856
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 4509014,
-    "targeted": 3352810
-   },
-   "appeals": [
-    {
-     "code": "HTCD26",
-     "name": "Tchad Besoins Humanitaires et Plan de Réponse 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 986069627,
-     "funding_usd": 444045005,
-     "funding_pct": 45
-    }
-   ],
-   "idps": {
-    "total": 219595,
-    "date": "2025-10-30",
-    "operation": "Lake Chad Basin Crisis",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 1511634,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 8,
-    "risk_class": 5,
-    "global_rank": 6,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 2098953,
-    "fraction": 0.12,
-    "period_start": "2026-03-01",
-    "period_end": "2026-05-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 3176887,
-    "fraction": 0.17,
-    "type": "first projection",
-    "period_start": "2026-06-01",
-    "period_end": "2026-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "COD": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 7544115,
-    "targeted": 2512134
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 14940727,
-    "targeted": 7313763
-   },
-   "appeals": [
-    {
-     "code": "HCOD26",
-     "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 2132641156,
-     "funding_usd": 1142091102,
-     "funding_pct": 54
-    }
-   ],
-   "idps": {
-    "total": 5325646,
-    "date": "2026-02-28",
-    "operation": "Countrywide monitoring",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 603844,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 8.1,
-    "risk_class": 5,
-    "global_rank": 4,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 24812776,
-    "fraction": 0.21,
-    "period_start": "2025-09-01",
-    "period_end": "2025-12-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 26501320,
-    "fraction": 0.23,
-    "type": "first projection",
-    "period_start": "2026-01-01",
-    "period_end": "2026-06-30",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "ETH": {
-   "errors": [],
-   "health": {
-    "year": "2024",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 16444109,
-    "targeted": 6660285
-   },
-   "intersectoral": {
-    "year": "2024",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 21360484,
-    "targeted": 15467955,
-    "reached": 12800000
-   },
-   "appeals": [
-    {
-     "code": "RREG26c",
-     "name": "Regional Migrant Response Plan for Horn of Africa to Yemen and Southern Africa 2026",
-     "type": "Regional response plan",
-     "year": "2026",
-     "requirements_usd": null,
-     "funding_usd": 6005618,
-     "funding_pct": null
-    },
-    {
-     "code": "RREG26d",
-     "name": "Sudan Emergency: Regional Refugee Response Plan 2026",
-     "type": "Regional response plan",
-     "year": "2026",
-     "requirements_usd": null,
-     "funding_usd": 265382349,
-     "funding_pct": null
-    }
-   ],
-   "idps": {
-    "total": 1919993,
-    "date": "2024-08-31",
-    "operation": "Countrywide monitoring",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 1123453,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7.1,
-    "risk_class": 5,
-    "global_rank": 13,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 16756345,
-    "fraction": 0.3,
-    "period_start": "2021-05-01",
-    "period_end": "2021-06-30",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 7386290,
-    "fraction": 0.37,
-    "type": "first projection",
-    "period_start": "2021-07-01",
-    "period_end": "2021-09-30",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "MLI": {
-   "errors": [],
-   "health": {
-    "year": "2025",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 3742972,
-    "targeted": 2459208
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 5100000,
-    "targeted": 3800000
-   },
-   "appeals": [
-    {
-     "code": "HMLI26",
-     "name": "Mali Besoins Humanitaires et Plan de Réponse 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 577866412,
-     "funding_usd": 158827767,
-     "funding_pct": 27
-    }
-   ],
-   "idps": {
-    "total": 375539,
-    "date": "2023-04-30",
-    "operation": "Mali Conflict",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 287037,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7.1,
-    "risk_class": 5,
-    "global_rank": 13,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 855640,
-    "fraction": 0.03,
-    "period_start": "2025-10-01",
-    "period_end": "2025-12-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 1560189,
-    "fraction": 0.06,
-    "type": "first projection",
-    "period_start": "2026-06-01",
-    "period_end": "2026-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "MOZ": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 1216660,
-    "targeted": 948693
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 2356162,
-    "targeted": 1745582
-   },
-   "appeals": [
-    {
-     "code": "HMOZ26",
-     "name": "Mozambique Humanitarian Needs and Response Plan 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 534342584,
-     "funding_usd": 226178620,
-     "funding_pct": 42
-    }
-   ],
-   "idps": {
-    "total": 663769,
-    "date": "2026-06-30",
-    "operation": "Cabo Delgado Conflict",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 24077,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7.1,
-    "risk_class": 5,
-    "global_rank": 13,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 1185926,
-    "fraction": 0.14,
-    "period_start": "2026-07-01",
-    "period_end": "2026-09-30",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 1837005,
-    "fraction": 0.22,
-    "type": "first projection",
-    "period_start": "2026-10-01",
-    "period_end": "2027-03-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "NER": {
-   "errors": [],
-   "health": {
-    "year": "2025",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 1035711,
-    "targeted": 881486
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 2600000,
-    "targeted": 1600000
-   },
-   "appeals": [
-    {
-     "code": "HNER26",
-     "name": "Niger Besoins Humanitaires et Plan de Réponse 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 675619589,
-     "funding_usd": 132727885,
-     "funding_pct": 20
-    }
-   ],
-   "idps": {
-    "total": 403643,
-    "date": "2025-09-30",
-    "operation": "Displacement in Tahoua and Tillaberi",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 435990,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7.8,
-    "risk_class": 5,
-    "global_rank": 7,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 1855774,
-    "fraction": 0.07,
-    "period_start": "2025-10-01",
-    "period_end": "2025-12-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 2420879,
-    "fraction": 0.09,
-    "type": "first projection",
-    "period_start": "2026-06-01",
-    "period_end": "2026-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "SSD": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 6269692,
-    "targeted": 2884600
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 9913863,
-    "targeted": 4343435
-   },
-   "appeals": [
-    {
-     "code": "HSSD26",
-     "name": "South Sudan Humanitarian Needs and Response Plan 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 1463046056,
-     "funding_usd": 580391409,
-     "funding_pct": 40
-    }
-   ],
-   "idps": {
-    "total": 1992513,
-    "date": "2025-02-28",
-    "operation": "Mobility Tracking",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 605064,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 8.5,
-    "risk_class": 5,
-    "global_rank": 1,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 5972144,
-    "fraction": 0.42,
-    "period_start": "2025-09-01",
-    "period_end": "2025-11-30",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 7834758,
-    "fraction": 0.55,
-    "type": "second projection",
-    "period_start": "2026-04-01",
-    "period_end": "2026-07-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "CMR": {
-   "errors": [],
-   "health": {
-    "year": "2025",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 1511471,
-    "targeted": 1090263
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 2900000,
-    "targeted": 1800000
-   },
-   "appeals": [
-    {
-     "code": "HCMR26",
-     "name": "Cameroon Humanitarian Needs and Response Plan 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 318976221,
-     "funding_usd": 101125523,
-     "funding_pct": 32
-    }
-   ],
-   "idps": {
-    "total": 510855,
-    "date": "2025-06-30",
-    "operation": "Lake Chad Basin Crisis",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 427166,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 6.8,
-    "risk_class": 4,
-    "global_rank": 18,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 3120294,
-    "fraction": 0.11,
-    "period_start": "2025-10-01",
-    "period_end": "2025-12-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 2856753,
-    "fraction": 0.1,
-    "type": "first projection",
-    "period_start": "2026-06-01",
-    "period_end": "2026-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "ERI": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [],
-   "idps": null,
-   "refugees": {
-    "total": 119,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 4.8,
-    "risk_class": 3,
-    "global_rank": 56,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": null,
-   "ipc_projection": null
-  },
-  "NGA": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 3957689,
-    "targeted": 1488054
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 5900000,
-    "targeted": 2500000
-   },
-   "appeals": [
-    {
-     "code": "HNGA26",
-     "name": "Nigeria Humanitarian Needs and Response Plan 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 516399423,
-     "funding_usd": 363508685,
-     "funding_pct": 70
-    }
-   ],
-   "idps": {
-    "total": 3711314,
-    "date": "2025-10-31",
-    "operation": "North Central and North West; Lake Chad Basin Crisis",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 142040,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7,
-    "risk_class": 5,
-    "global_rank": 16,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 27212933,
-    "fraction": 0.12,
-    "period_start": "2025-10-01",
-    "period_end": "2025-12-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 36927543,
-    "fraction": 0.17,
-    "type": "first projection",
-    "period_start": "2026-06-01",
-    "period_end": "2026-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "ZWE": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [
-    {
-     "code": "FZWE25",
-     "name": "Zimbabwe Drought Flash Appeal 2025",
-     "type": "Flash appeal",
-     "year": "2025",
-     "requirements_usd": 143095554,
-     "funding_usd": 21628942,
-     "funding_pct": 15
-    }
-   ],
-   "idps": {
-    "total": 45799,
-    "date": "2024-12-31",
-    "operation": "Drought Response in Southern Africa",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 18065,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 5,
-    "risk_class": 3,
-    "global_rank": 44,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": null,
-   "ipc_projection": null
-  },
-  "SDN": {
-   "errors": [],
-   "health": {
-    "year": "2025",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 20270923,
-    "targeted": 9399993
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 33699770,
-    "targeted": 20419163
-   },
-   "appeals": [
-    {
-     "code": "HSDN26",
-     "name": "Sudan Humanitarian Needs and Response Plan 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 2866228593,
-     "funding_usd": 1316208920,
-     "funding_pct": 46
-    }
-   ],
-   "idps": {
-    "total": 8583274,
-    "date": "2026-08-31",
-    "operation": "Armed Clashes in Sudan (Overview)",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 859963,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 7.8,
-    "risk_class": 5,
-    "global_rank": 7,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 19466533,
-    "fraction": 0.41,
-    "period_start": "2026-02-01",
-    "period_end": "2026-05-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 4898632,
-    "fraction": 0.59,
-    "type": "second projection",
-    "period_start": "2026-10-01",
-    "period_end": "2027-01-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "SOM": {
-   "errors": [],
-   "health": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 4989936,
-    "targeted": 2426481
-   },
-   "intersectoral": {
-    "year": "2026",
-    "source": "OCHA HNRP via HDX HAPI",
-    "in_need": 4796040,
-    "targeted": 2430751
-   },
-   "appeals": [
-    {
-     "code": "HSOM26",
-     "name": "Somalia Humanitarian Needs and Response Plan 2026",
-     "type": "Humanitarian needs and response plan",
-     "year": "2026",
-     "requirements_usd": 852000000,
-     "funding_usd": 290221856,
-     "funding_pct": 34
-    }
-   ],
-   "idps": {
-    "total": 3262080,
-    "date": "2024-09-30",
-    "operation": "Somalia - Countrywide Monitoring",
-    "source": "IOM DTM via HDX HAPI"
-   },
-   "refugees": {
-    "total": 46669,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 8.4,
-    "risk_class": 5,
-    "global_rank": 2,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 5095741,
-    "fraction": 0.26,
-    "period_start": "2026-07-01",
-    "period_end": "2026-09-30",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 5417532,
-    "fraction": 0.28,
-    "type": "first projection",
-    "period_start": "2026-10-01",
-    "period_end": "2026-12-31",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "BDI": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [
-    {
-     "code": "RDRC_RRP25",
-     "name": "Democratic Republic of the Congo Regional Refugee Response Plan 2025",
-     "type": "Regional response plan",
-     "year": "2025",
-     "requirements_usd": 132607381,
-     "funding_usd": 44686485,
-     "funding_pct": 34
-    }
-   ],
-   "idps": null,
-   "refugees": {
-    "total": 112266,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 5.9,
-    "risk_class": 4,
-    "global_rank": 26,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 1765517,
-    "fraction": 0.14,
-    "period_start": "2026-04-01",
-    "period_end": "2026-05-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 1018142,
-    "fraction": 0.08,
-    "type": "first projection",
-    "period_start": "2026-06-01",
-    "period_end": "2026-09-30",
-    "source": "IPC via HDX HAPI"
-   }
-  },
-  "COM": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [],
-   "idps": null,
-   "refugees": {
-    "total": 19,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 3.3,
-    "risk_class": 3,
-    "global_rank": 103,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": null,
-   "ipc_projection": null
-  },
-  "COG": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [
-    {
-     "code": "RDRC_RRP25",
-     "name": "Democratic Republic of the Congo Regional Refugee Response Plan 2025",
-     "type": "Regional response plan",
-     "year": "2025",
-     "requirements_usd": 22496182,
-     "funding_usd": 31046905,
-     "funding_pct": 138
-    }
-   ],
-   "idps": null,
-   "refugees": {
-    "total": 70609,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 5,
-    "risk_class": 3,
-    "global_rank": 44,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": null,
-   "ipc_projection": null
-  },
-  "STP": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [],
-   "idps": null,
-   "refugees": null,
-   "inform_risk": {
-    "overall": 2.4,
-    "risk_class": 2,
-    "global_rank": 155,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": null,
-   "ipc_projection": null
-  },
-  "GNB": {
-   "errors": [],
-   "health": null,
-   "intersectoral": null,
-   "appeals": [],
-   "idps": null,
-   "refugees": {
-    "total": 54,
-    "year": "2025",
-    "source": "UNHCR via HDX HAPI"
-   },
-   "inform_risk": {
-    "overall": 4.3,
-    "risk_class": 3,
-    "global_rank": 68,
-    "year": "2025",
-    "source": "INFORM Risk (EC JRC) via HDX HAPI"
-   },
-   "ipc_current": {
-    "population": 121695,
-    "fraction": 0.07,
-    "period_start": "2025-03-01",
-    "period_end": "2025-05-31",
-    "source": "IPC via HDX HAPI"
-   },
-   "ipc_projection": {
-    "population": 146034,
-    "fraction": 0.08,
-    "type": "first projection",
-    "period_start": "2025-06-01",
-    "period_end": "2025-08-31",
-    "source": "IPC via HDX HAPI"
-   }
-  }
- },
- "fts": [
-  {
-   "iso3": "CMR",
-   "plan_id": 1498,
-   "code": "HCMR26",
-   "name": "Cameroon Humanitarian Needs and Response Plan 2026",
-   "health_cluster": "Health",
-   "health_requirements_usd": 25308896,
-   "health_funding_usd": 6185756,
-   "plan_requirements_usd": 318976221,
-   "plan_funding_usd": 100510301,
-   "unspecified_funding_usd": 7896237,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "BFA",
-   "plan_id": 1499,
-   "code": "HBFA26",
-   "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 53970921,
-   "health_funding_usd": 14666746,
-   "plan_requirements_usd": 658486359,
-   "plan_funding_usd": 153159301,
-   "unspecified_funding_usd": 25863640,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "TCD",
-   "plan_id": 1501,
-   "code": "HTCD26",
-   "name": "Tchad Besoins Humanitaires et Plan de Réponse 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 45505747,
-   "health_funding_usd": 27793019,
-   "plan_requirements_usd": 986069627,
-   "plan_funding_usd": 443159785,
-   "unspecified_funding_usd": 76050507,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "MOZ",
-   "plan_id": 1506,
-   "code": "HMOZ26",
-   "name": "Mozambique Humanitarian Needs and Response Plan 2026",
-   "health_cluster": "Health",
-   "health_requirements_usd": 37906706,
-   "health_funding_usd": 9949664,
-   "plan_requirements_usd": 534342584,
-   "plan_funding_usd": 224565119,
-   "unspecified_funding_usd": 81242426,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "NGA",
-   "plan_id": 1508,
-   "code": "HNGA26",
-   "name": "Nigeria Humanitarian Needs and Response Plan 2026",
-   "health_cluster": "Health",
-   "health_requirements_usd": 33715660,
-   "health_funding_usd": 19772700,
-   "plan_requirements_usd": 516399423,
-   "plan_funding_usd": 359130648,
-   "unspecified_funding_usd": 135152241,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "CAF",
-   "plan_id": 1507,
-   "code": "HCAF26",
-   "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 13522336,
-   "health_funding_usd": 11543234,
-   "plan_requirements_usd": 264097388,
-   "plan_funding_usd": 139659161,
-   "unspecified_funding_usd": 57333387,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "COD",
-   "plan_id": 1509,
-   "code": "HCOD26",
-   "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 236507341,
-   "health_funding_usd": 217182578,
-   "plan_requirements_usd": 2132641156,
-   "plan_funding_usd": 1140618612,
-   "unspecified_funding_usd": 99312725,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "MLI",
-   "plan_id": 1511,
-   "code": "HMLI26",
-   "name": "Mali Besoins Humanitaires et Plan de Réponse 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 30489234,
-   "health_funding_usd": 12997469,
-   "plan_requirements_usd": 577866412,
-   "plan_funding_usd": 148550481,
-   "unspecified_funding_usd": 15541896,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "SSD",
-   "plan_id": 1512,
-   "code": "HSSD26",
-   "name": "South Sudan Humanitarian Needs and Response Plan 2026",
-   "health_cluster": "Health",
-   "health_requirements_usd": 113653248,
-   "health_funding_usd": 61183180,
-   "plan_requirements_usd": 1463046056,
-   "plan_funding_usd": 567303544,
-   "unspecified_funding_usd": 66852574,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "NER",
-   "plan_id": 1513,
-   "code": "HNER26",
-   "name": "Niger Besoins Humanitaires et Plan de Réponse 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 36319651,
-   "health_funding_usd": 9427487,
-   "plan_requirements_usd": 675619589,
-   "plan_funding_usd": 130430645,
-   "unspecified_funding_usd": 10890105,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "SDN",
-   "plan_id": 1514,
-   "code": "HSDN26",
-   "name": "Sudan Humanitarian Needs and Response Plan 2026",
-   "health_cluster": "Health",
-   "health_requirements_usd": 325279943,
-   "health_funding_usd": 154113488,
-   "plan_requirements_usd": 2866228593,
-   "plan_funding_usd": 1310725919,
-   "unspecified_funding_usd": 142317227,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "SOM",
-   "plan_id": 1516,
-   "code": "HSOM26",
-   "name": "Somalia Humanitarian Needs and Response Plan 2026",
-   "health_cluster": "Health",
-   "health_requirements_usd": 80000000,
-   "health_funding_usd": 23810644,
-   "plan_requirements_usd": 852000000,
-   "plan_funding_usd": 294277786,
-   "unspecified_funding_usd": 43072587,
-   "source": "OCHA FTS"
-  },
-  {
-   "iso3": "MDG",
-   "plan_id": 1567,
-   "code": "FMDG26",
-   "name": "Madagascar Appel Éclair Cyclones Fytia et Gezani 2026",
-   "health_cluster": "Santé",
-   "health_requirements_usd": 8297000,
-   "health_funding_usd": 4439134,
-   "plan_requirements_usd": 67953475,
-   "plan_funding_usd": 63713335,
-   "unspecified_funding_usd": 4379031,
-   "source": "OCHA FTS"
-  }
- ],
- "fts_year": 2026,
- "ssa": {
-  "BFA": {
-   "ssa_id": 24,
-   "ytd": {
-    "attacks": 1,
-    "deaths": 0,
-    "injuries": 0
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 1,
-     "deaths": 0,
-     "injuries": 0
-    },
-    {
-     "year": 2025,
-     "attacks": 9,
-     "deaths": 4,
-     "injuries": 5
-    },
-    {
-     "year": 2024,
-     "attacks": 13,
-     "deaths": 3,
-     "injuries": 0
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2026,
-     "month": "Feb",
-     "attacks": 1
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 9,
-    "deaths": 4,
-    "injuries": 5,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "CMR": {
-   "ssa_id": 38,
-   "ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0
-   },
-   "annual": [
-    {
-     "year": 2025,
-     "attacks": 20,
-     "deaths": 0,
-     "injuries": 6
-    },
-    {
-     "year": 2021,
-     "attacks": 1,
-     "deaths": 0,
-     "injuries": 0
-    },
-    {
-     "year": 2019,
-     "attacks": 1,
-     "deaths": 0,
-     "injuries": 0
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2025,
-     "month": "Nov",
-     "attacks": 1
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 19,
-    "deaths": 0,
-    "injuries": 6,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "CAF": {
-   "ssa_id": 39,
-   "ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0
-   },
-   "annual": [
-    {
-     "year": 2024,
-     "attacks": 8,
-     "deaths": 9,
-     "injuries": 2
-    },
-    {
-     "year": 2023,
-     "attacks": 30,
-     "deaths": 2,
-     "injuries": 10
-    },
-    {
-     "year": 2022,
-     "attacks": 26,
-     "deaths": 3,
-     "injuries": 9
-    }
-   ],
-   "monthly": [],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "COD": {
-   "ssa_id": 49,
-   "ytd": {
-    "attacks": 85,
-    "deaths": 9,
-    "injuries": 34
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 85,
-     "deaths": 9,
-     "injuries": 34
-    },
-    {
-     "year": 2025,
-     "attacks": 54,
-     "deaths": 1,
-     "injuries": 11
-    },
-    {
-     "year": 2024,
-     "attacks": 33,
-     "deaths": 27,
-     "injuries": 9
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2025,
-     "month": "Dec",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Jan",
-     "attacks": 4
-    },
-    {
-     "year": 2026,
-     "month": "Apr",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "May",
-     "attacks": 8
-    },
-    {
-     "year": 2026,
-     "month": "Jun",
-     "attacks": 24
-    },
-    {
-     "year": 2026,
-     "month": "Jul",
-     "attacks": 16
-    },
-    {
-     "year": 2026,
-     "month": "Aug",
-     "attacks": 14
-    },
-    {
-     "year": 2026,
-     "month": "Sep",
-     "attacks": 13
-    },
-    {
-     "year": 2026,
-     "month": "Oct",
-     "attacks": 5
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 53,
-    "deaths": 1,
-    "injuries": 11,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "MLI": {
-   "ssa_id": 134,
-   "ytd": {
-    "attacks": 10,
-    "deaths": 6,
-    "injuries": 3
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 10,
-     "deaths": 6,
-     "injuries": 3
-    },
-    {
-     "year": 2025,
-     "attacks": 21,
-     "deaths": 1,
-     "injuries": 2
-    },
-    {
-     "year": 2024,
-     "attacks": 5,
-     "deaths": 21,
-     "injuries": 3
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2025,
-     "month": "Nov",
-     "attacks": 1
-    },
-    {
-     "year": 2025,
-     "month": "Dec",
-     "attacks": 4
-    },
-    {
-     "year": 2026,
-     "month": "Feb",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Apr",
-     "attacks": 2
-    },
-    {
-     "year": 2026,
-     "month": "May",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Jul",
-     "attacks": 4
-    },
-    {
-     "year": 2026,
-     "month": "Aug",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Sep",
-     "attacks": 1
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 16,
-    "deaths": 1,
-    "injuries": 0,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "NER": {
-   "ssa_id": 163,
-   "ytd": {
-    "attacks": 3,
-    "deaths": 11,
-    "injuries": 3
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 3,
-     "deaths": 11,
-     "injuries": 3
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2026,
-     "month": "Jan",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Apr",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Sep",
-     "attacks": 1
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "NGA": {
-   "ssa_id": 162,
-   "ytd": {
-    "attacks": 5,
-    "deaths": 26,
-    "injuries": 110
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 5,
-     "deaths": 26,
-     "injuries": 110
-    },
-    {
-     "year": 2024,
-     "attacks": 7,
-     "deaths": 0,
-     "injuries": 0
-    },
-    {
-     "year": 2023,
-     "attacks": 8,
-     "deaths": 1,
-     "injuries": 3
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2026,
-     "month": "Feb",
-     "attacks": 4
-    },
-    {
-     "year": 2026,
-     "month": "Mar",
-     "attacks": 1
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "SSD": {
-   "ssa_id": 247,
-   "ytd": {
-    "attacks": 26,
-    "deaths": 28,
-    "injuries": 10
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 26,
-     "deaths": 28,
-     "injuries": 10
-    },
-    {
-     "year": 2025,
-     "attacks": 9,
-     "deaths": 16,
-     "injuries": 44
-    },
-    {
-     "year": 2023,
-     "attacks": 2,
-     "deaths": 0,
-     "injuries": 8
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2026,
-     "month": "Jan",
-     "attacks": 8
-    },
-    {
-     "year": 2026,
-     "month": "Feb",
-     "attacks": 6
-    },
-    {
-     "year": 2026,
-     "month": "Mar",
-     "attacks": 7
-    },
-    {
-     "year": 2026,
-     "month": "Apr",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Jun",
-     "attacks": 2
-    },
-    {
-     "year": 2026,
-     "month": "Jul",
-     "attacks": 2
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 9,
-    "deaths": 16,
-    "injuries": 44,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "SDN": {
-   "ssa_id": 205,
-   "ytd": {
-    "attacks": 33,
-    "deaths": 198,
-    "injuries": 330
-   },
-   "annual": [
-    {
-     "year": 2026,
-     "attacks": 33,
-     "deaths": 198,
-     "injuries": 330
-    },
-    {
-     "year": 2025,
-     "attacks": 65,
-     "deaths": 1620,
-     "injuries": 276
-    },
-    {
-     "year": 2024,
-     "attacks": 72,
-     "deaths": 200,
-     "injuries": 169
-    }
-   ],
-   "monthly": [
-    {
-     "year": 2025,
-     "month": "Nov",
-     "attacks": 6
-    },
-    {
-     "year": 2025,
-     "month": "Dec",
-     "attacks": 3
-    },
-    {
-     "year": 2026,
-     "month": "Jan",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Feb",
-     "attacks": 6
-    },
-    {
-     "year": 2026,
-     "month": "Mar",
-     "attacks": 6
-    },
-    {
-     "year": 2026,
-     "month": "Apr",
-     "attacks": 5
-    },
-    {
-     "year": 2026,
-     "month": "May",
-     "attacks": 2
-    },
-    {
-     "year": 2026,
-     "month": "Jun",
-     "attacks": 1
-    },
-    {
-     "year": 2026,
-     "month": "Jul",
-     "attacks": 3
-    },
-    {
-     "year": 2026,
-     "month": "Aug",
-     "attacks": 3
-    },
-    {
-     "year": 2026,
-     "month": "Sep",
-     "attacks": 2
-    },
-    {
-     "year": 2026,
-     "month": "Oct",
-     "attacks": 4
-    }
-   ],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 51,
-    "deaths": 968,
-    "injuries": 205,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  },
-  "SOM": {
-   "ssa_id": 201,
-   "ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0
-   },
-   "annual": [
-    {
-     "year": 2024,
-     "attacks": 3,
-     "deaths": 1,
-     "injuries": 14
-    },
-    {
-     "year": 2023,
-     "attacks": 7,
-     "deaths": 4,
-     "injuries": 11
-    },
-    {
-     "year": 2022,
-     "attacks": 3,
-     "deaths": 49,
-     "injuries": 8
-    }
-   ],
-   "monthly": [],
-   "period": {
-    "start": "2026-01-01",
-    "end": "2026-10-27"
-   },
-   "prev_ytd": {
-    "attacks": 0,
-    "deaths": 0,
-    "injuries": 0,
-    "start": "2025-01-01",
-    "end": "2025-10-27"
-   }
-  }
- },
- "fetched_at": {
-  "hapi": "2026-10-27T13:45:00.000Z",
-  "fts": "2026-10-27T13:45:00.000Z",
-  "ssa": "2026-10-27T13:45:00.000Z"
- },
- "status": {
+  "note": "Seed snapshot pulled 27 Oct 2026 from HDX HAPI, OCHA FTS and WHO SSA. The server refreshes it automatically.",
   "hapi": {
-   "ok": 20,
-   "total": 20,
-   "checked_at": "2026-10-27T13:45:00.000Z"
+    "BFA": {
+      "errors": [],
+      "health": {
+        "year": "2025",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 2031499,
+        "targeted": 1341425
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 3503438,
+          "targeted": 1610842
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 2031499,
+          "targeted": 1341425
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 4400000,
+        "targeted": 3100000
+      },
+      "appeals": [
+        {
+          "code": "HBFA26",
+          "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 658486359,
+          "funding_usd": 160360510,
+          "funding_pct": 24
+        }
+      ],
+      "idps": {
+        "total": 10293,
+        "date": "2019-08-30",
+        "operation": "Burkina Faso Crisis",
+        "operations": [
+          {
+            "operation": "Burkina Faso Crisis",
+            "population": 10293,
+            "date": "2019-08-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 42953,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7.5,
+        "risk_class": 5,
+        "global_rank": 11,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 1749437,
+        "fraction": 0.07,
+        "period_start": "2024-03-01",
+        "period_end": "2024-05-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 2734196,
+        "fraction": 0.12,
+        "type": "first projection",
+        "period_start": "2024-06-01",
+        "period_end": "2024-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "CAF": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 955008,
+        "targeted": 516609
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 1930775,
+          "targeted": 768092
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 1529765,
+          "targeted": 666297
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 955008,
+          "targeted": 516609
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 2286959,
+        "targeted": 1265483
+      },
+      "appeals": [
+        {
+          "code": "HCAF26",
+          "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 264097388,
+          "funding_usd": 148276183,
+          "funding_pct": 56
+        }
+      ],
+      "idps": {
+        "total": 416247,
+        "date": "2025-11-30",
+        "operation": "Central African Republic conflict",
+        "operations": [
+          {
+            "operation": "Central African Republic conflict",
+            "population": 416247,
+            "date": "2025-11-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 63761,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 8.1,
+        "risk_class": 5,
+        "global_rank": 4,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 1928733,
+        "fraction": 0.29,
+        "period_start": "2025-09-01",
+        "period_end": "2026-03-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 2010162,
+        "fraction": 0.31,
+        "type": "first projection",
+        "period_start": "2026-04-01",
+        "period_end": "2026-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "TCD": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 1706766,
+        "targeted": 1203856
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 2114384,
+          "targeted": 1054835
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 3560753,
+          "targeted": 1129807
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 1706766,
+          "targeted": 1203856
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 4509014,
+        "targeted": 3352810
+      },
+      "appeals": [
+        {
+          "code": "HTCD26",
+          "name": "Tchad Besoins Humanitaires et Plan de Réponse 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 986069627,
+          "funding_usd": 444476577,
+          "funding_pct": 45
+        }
+      ],
+      "idps": {
+        "total": 219595,
+        "date": "2025-10-30",
+        "operation": "Lake Chad Basin Crisis",
+        "operations": [
+          {
+            "operation": "Lake Chad Basin Crisis",
+            "population": 219595,
+            "date": "2025-10-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 1511634,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 8,
+        "risk_class": 5,
+        "global_rank": 6,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 2098953,
+        "fraction": 0.12,
+        "period_start": "2026-03-01",
+        "period_end": "2026-05-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 3176887,
+        "fraction": 0.17,
+        "type": "first projection",
+        "period_start": "2026-06-01",
+        "period_end": "2026-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "COD": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 7544115,
+        "targeted": 2512134
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 19616927,
+          "targeted": 8702185
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 12935678,
+          "targeted": 6000803
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 7544115,
+          "targeted": 2512134
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 14940727,
+        "targeted": 7313763
+      },
+      "appeals": [
+        {
+          "code": "HCOD26",
+          "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 2132641156,
+          "funding_usd": 1142091102,
+          "funding_pct": 54
+        }
+      ],
+      "idps": {
+        "total": 5325646,
+        "date": "2026-02-28",
+        "operation": "Countrywide monitoring",
+        "operations": [
+          {
+            "operation": "Countrywide monitoring",
+            "population": 5325646,
+            "date": "2026-02-28"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 603844,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 8.1,
+        "risk_class": 5,
+        "global_rank": 4,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 24812776,
+        "fraction": 0.21,
+        "period_start": "2025-09-01",
+        "period_end": "2025-12-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 26501320,
+        "fraction": 0.23,
+        "type": "first projection",
+        "period_start": "2026-01-01",
+        "period_end": "2026-06-30",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "ETH": {
+      "errors": [],
+      "health": {
+        "year": "2024",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 16444109,
+        "targeted": 6660285
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 16444109,
+          "targeted": 6660285
+        }
+      },
+      "intersectoral": {
+        "year": "2024",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 21360484,
+        "targeted": 15467955,
+        "reached": 12800000
+      },
+      "appeals": [
+        {
+          "code": "RREG26c",
+          "name": "Regional Migrant Response Plan for Horn of Africa to Yemen and Southern Africa 2026",
+          "type": "Regional response plan",
+          "year": "2026",
+          "requirements_usd": null,
+          "funding_usd": 6005618,
+          "funding_pct": null
+        },
+        {
+          "code": "RREG26d",
+          "name": "Sudan Emergency: Regional Refugee Response Plan 2026",
+          "type": "Regional response plan",
+          "year": "2026",
+          "requirements_usd": null,
+          "funding_usd": 265070625,
+          "funding_pct": null
+        }
+      ],
+      "idps": {
+        "total": 1919993,
+        "date": "2024-08-31",
+        "operation": "Countrywide monitoring",
+        "operations": [
+          {
+            "operation": "Countrywide monitoring",
+            "population": 1919993,
+            "date": "2024-08-31"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 1123453,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7.1,
+        "risk_class": 5,
+        "global_rank": 13,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 16756345,
+        "fraction": 0.3,
+        "period_start": "2021-05-01",
+        "period_end": "2021-06-30",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 7386290,
+        "fraction": 0.37,
+        "type": "first projection",
+        "period_start": "2021-07-01",
+        "period_end": "2021-09-30",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "MLI": {
+      "errors": [],
+      "health": {
+        "year": "2025",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 3742972,
+        "targeted": 2459208
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 3519098,
+          "targeted": 2111459
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 3742972,
+          "targeted": 2459208
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 5100000,
+        "targeted": 3800000
+      },
+      "appeals": [
+        {
+          "code": "HMLI26",
+          "name": "Mali Besoins Humanitaires et Plan de Réponse 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 577866412,
+          "funding_usd": 159945416,
+          "funding_pct": 28
+        }
+      ],
+      "idps": {
+        "total": 375539,
+        "date": "2023-04-30",
+        "operation": "Mali Conflict",
+        "operations": [
+          {
+            "operation": "Mali Conflict",
+            "population": 375539,
+            "date": "2023-04-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 287037,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7.1,
+        "risk_class": 5,
+        "global_rank": 13,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 855640,
+        "fraction": 0.03,
+        "period_start": "2025-10-01",
+        "period_end": "2025-12-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 1560189,
+        "fraction": 0.06,
+        "type": "first projection",
+        "period_start": "2026-06-01",
+        "period_end": "2026-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "MOZ": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 1216660,
+        "targeted": 948693
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 282490,
+          "targeted": 135595
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 350000,
+          "targeted": 35000
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 1216660,
+          "targeted": 948693
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 2356162,
+        "targeted": 1745582
+      },
+      "appeals": [
+        {
+          "code": "HMOZ26",
+          "name": "Mozambique Humanitarian Needs and Response Plan 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 534342584,
+          "funding_usd": 226178621,
+          "funding_pct": 42
+        }
+      ],
+      "idps": {
+        "total": 663769,
+        "date": "2026-06-30",
+        "operation": "Cabo Delgado Conflict",
+        "operations": [
+          {
+            "operation": "Cabo Delgado Conflict",
+            "population": 663769,
+            "date": "2026-06-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 24077,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7.1,
+        "risk_class": 5,
+        "global_rank": 13,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 1185926,
+        "fraction": 0.14,
+        "period_start": "2026-07-01",
+        "period_end": "2026-09-30",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 1837005,
+        "fraction": 0.22,
+        "type": "first projection",
+        "period_start": "2026-10-01",
+        "period_end": "2027-03-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "NER": {
+      "errors": [],
+      "health": {
+        "year": "2025",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 1035711,
+        "targeted": 881486
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 1668946,
+          "targeted": 1335157
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 1035711,
+          "targeted": 881486
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 2600000,
+        "targeted": 1600000
+      },
+      "appeals": [
+        {
+          "code": "HNER26",
+          "name": "Niger Besoins Humanitaires et Plan de Réponse 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 675619589,
+          "funding_usd": 133893142,
+          "funding_pct": 20
+        }
+      ],
+      "idps": {
+        "total": 403643,
+        "date": "2025-09-30",
+        "operation": "Displacement in Tahoua and Tillaberi",
+        "operations": [
+          {
+            "operation": "Displacement in Tahoua and Tillaberi",
+            "population": 403643,
+            "date": "2025-09-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 435990,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7.8,
+        "risk_class": 5,
+        "global_rank": 7,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 1855774,
+        "fraction": 0.07,
+        "period_start": "2025-10-01",
+        "period_end": "2025-12-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 2420879,
+        "fraction": 0.09,
+        "type": "first projection",
+        "period_start": "2026-06-01",
+        "period_end": "2026-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "SSD": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 6269692,
+        "targeted": 2884600
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 6324453,
+          "targeted": 3234718
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 5657327,
+          "targeted": 3089736
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 6269692,
+          "targeted": 2884600
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 9913863,
+        "targeted": 4343435
+      },
+      "appeals": [
+        {
+          "code": "HSSD26",
+          "name": "South Sudan Humanitarian Needs and Response Plan 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 1463046056,
+          "funding_usd": 581791595,
+          "funding_pct": 40
+        }
+      ],
+      "idps": {
+        "total": 1992513,
+        "date": "2025-02-28",
+        "operation": "Mobility Tracking",
+        "operations": [
+          {
+            "operation": "Mobility Tracking",
+            "population": 1992513,
+            "date": "2025-02-28"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 605064,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 8.5,
+        "risk_class": 5,
+        "global_rank": 1,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 5972144,
+        "fraction": 0.42,
+        "period_start": "2025-09-01",
+        "period_end": "2025-11-30",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 7834758,
+        "fraction": 0.55,
+        "type": "second projection",
+        "period_start": "2026-04-01",
+        "period_end": "2026-07-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "CMR": {
+      "errors": [],
+      "health": {
+        "year": "2025",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 1511471,
+        "targeted": 1090263
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 1657393,
+          "targeted": 1113929
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 1511471,
+          "targeted": 1090263
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 2900000,
+        "targeted": 1800000
+      },
+      "appeals": [
+        {
+          "code": "HCMR26",
+          "name": "Cameroon Humanitarian Needs and Response Plan 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 318976221,
+          "funding_usd": 101125523,
+          "funding_pct": 32
+        }
+      ],
+      "idps": {
+        "total": 510855,
+        "date": "2025-06-30",
+        "operation": "Lake Chad Basin Crisis",
+        "operations": [
+          {
+            "operation": "Lake Chad Basin Crisis",
+            "population": 510855,
+            "date": "2025-06-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 427166,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 6.8,
+        "risk_class": 4,
+        "global_rank": 18,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 3120294,
+        "fraction": 0.11,
+        "period_start": "2025-10-01",
+        "period_end": "2025-12-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 2856753,
+        "fraction": 0.1,
+        "type": "first projection",
+        "period_start": "2026-06-01",
+        "period_end": "2026-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "ERI": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [],
+      "idps": null,
+      "refugees": {
+        "total": 119,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 4.8,
+        "risk_class": 3,
+        "global_rank": 56,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": null,
+      "ipc_projection": null
+    },
+    "NGA": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 3957689,
+        "targeted": 1488054
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 5342897,
+          "targeted": 155701
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 4930892,
+          "targeted": 3158720
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 3957689,
+          "targeted": 1488054
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 5900000,
+        "targeted": 2500000
+      },
+      "appeals": [
+        {
+          "code": "HNGA26",
+          "name": "Nigeria Humanitarian Needs and Response Plan 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 516399423,
+          "funding_usd": 364134362,
+          "funding_pct": 71
+        }
+      ],
+      "idps": {
+        "total": 3711314,
+        "date": "2025-10-31",
+        "operation": "Lake Chad Basin Crisis; North Central and North West",
+        "operations": [
+          {
+            "operation": "Lake Chad Basin Crisis",
+            "population": 2333190,
+            "date": "2025-10-31"
+          },
+          {
+            "operation": "North Central and North West",
+            "population": 1378124,
+            "date": "2025-10-31"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 142040,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7,
+        "risk_class": 5,
+        "global_rank": 16,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 27212933,
+        "fraction": 0.12,
+        "period_start": "2025-10-01",
+        "period_end": "2025-12-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 36927543,
+        "fraction": 0.17,
+        "type": "first projection",
+        "period_start": "2026-06-01",
+        "period_end": "2026-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "ZWE": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [
+        {
+          "code": "FZWE25",
+          "name": "Zimbabwe Drought Flash Appeal 2025",
+          "type": "Flash appeal",
+          "year": "2025",
+          "requirements_usd": 143095554,
+          "funding_usd": 21628942,
+          "funding_pct": 15
+        }
+      ],
+      "idps": {
+        "total": 45799,
+        "date": "2024-12-31",
+        "operation": "Drought Response in Southern Africa",
+        "operations": [
+          {
+            "operation": "Drought Response in Southern Africa",
+            "population": 45799,
+            "date": "2024-12-31"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 18065,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 5,
+        "risk_class": 3,
+        "global_rank": 44,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": null,
+      "ipc_projection": null
+    },
+    "SDN": {
+      "errors": [],
+      "health": {
+        "year": "2025",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 20270923,
+        "targeted": 9399993
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 14735162,
+          "targeted": 4919462
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 20270923,
+          "targeted": 9399993
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 33699770,
+        "targeted": 20419163
+      },
+      "appeals": [
+        {
+          "code": "HSDN26",
+          "name": "Sudan Humanitarian Needs and Response Plan 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 2866228593,
+          "funding_usd": 1325444959,
+          "funding_pct": 46
+        }
+      ],
+      "idps": {
+        "total": 8583274,
+        "date": "2026-08-31",
+        "operation": "Armed Clashes in Sudan (Overview)",
+        "operations": [
+          {
+            "operation": "Armed Clashes in Sudan (Overview)",
+            "population": 8583274,
+            "date": "2026-08-31"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 859963,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 7.8,
+        "risk_class": 5,
+        "global_rank": 7,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 19466533,
+        "fraction": 0.41,
+        "period_start": "2026-02-01",
+        "period_end": "2026-05-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 4898632,
+        "fraction": 0.59,
+        "type": "second projection",
+        "period_start": "2026-10-01",
+        "period_end": "2027-01-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "SOM": {
+      "errors": [],
+      "health": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 4989936,
+        "targeted": 2426481
+      },
+      "health_history": {
+        "2024": {
+          "year": "2024",
+          "period_end": "2024-12-31",
+          "in_need": 6598667,
+          "targeted": 3765975
+        },
+        "2025": {
+          "year": "2025",
+          "period_end": "2025-12-08",
+          "in_need": 5400043,
+          "targeted": 3785402
+        },
+        "2026": {
+          "year": "2026",
+          "period_end": "2026-12-31",
+          "in_need": 4989936,
+          "targeted": 2426481
+        }
+      },
+      "intersectoral": {
+        "year": "2026",
+        "source": "OCHA HNRP via HDX HAPI",
+        "in_need": 4796040,
+        "targeted": 2430751
+      },
+      "appeals": [
+        {
+          "code": "HSOM26",
+          "name": "Somalia Humanitarian Needs and Response Plan 2026",
+          "type": "Humanitarian needs and response plan",
+          "year": "2026",
+          "requirements_usd": 852000000,
+          "funding_usd": 298443934,
+          "funding_pct": 35
+        }
+      ],
+      "idps": {
+        "total": 3262080,
+        "date": "2024-09-30",
+        "operation": "Somalia - Countrywide Monitoring",
+        "operations": [
+          {
+            "operation": "Somalia - Countrywide Monitoring",
+            "population": 3262080,
+            "date": "2024-09-30"
+          }
+        ],
+        "source": "IOM DTM via HDX HAPI"
+      },
+      "refugees": {
+        "total": 46669,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 8.4,
+        "risk_class": 5,
+        "global_rank": 2,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 5095741,
+        "fraction": 0.26,
+        "period_start": "2026-07-01",
+        "period_end": "2026-09-30",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 5417532,
+        "fraction": 0.28,
+        "type": "first projection",
+        "period_start": "2026-10-01",
+        "period_end": "2026-12-31",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "BDI": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [
+        {
+          "code": "RDRC_RRP25",
+          "name": "Democratic Republic of the Congo Regional Refugee Response Plan 2025",
+          "type": "Regional response plan",
+          "year": "2025",
+          "requirements_usd": 132607381,
+          "funding_usd": 44686485,
+          "funding_pct": 34
+        }
+      ],
+      "idps": null,
+      "refugees": {
+        "total": 112266,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 5.9,
+        "risk_class": 4,
+        "global_rank": 26,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 1765517,
+        "fraction": 0.14,
+        "period_start": "2026-04-01",
+        "period_end": "2026-05-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 1018142,
+        "fraction": 0.08,
+        "type": "first projection",
+        "period_start": "2026-06-01",
+        "period_end": "2026-09-30",
+        "source": "IPC via HDX HAPI"
+      }
+    },
+    "COM": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [],
+      "idps": null,
+      "refugees": {
+        "total": 19,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 3.3,
+        "risk_class": 3,
+        "global_rank": 103,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": null,
+      "ipc_projection": null
+    },
+    "COG": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [
+        {
+          "code": "RDRC_RRP25",
+          "name": "Democratic Republic of the Congo Regional Refugee Response Plan 2025",
+          "type": "Regional response plan",
+          "year": "2025",
+          "requirements_usd": 22496182,
+          "funding_usd": 31046905,
+          "funding_pct": 138
+        }
+      ],
+      "idps": null,
+      "refugees": {
+        "total": 70609,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 5,
+        "risk_class": 3,
+        "global_rank": 44,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": null,
+      "ipc_projection": null
+    },
+    "STP": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [],
+      "idps": null,
+      "refugees": null,
+      "inform_risk": {
+        "overall": 2.4,
+        "risk_class": 2,
+        "global_rank": 155,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": null,
+      "ipc_projection": null
+    },
+    "GNB": {
+      "errors": [],
+      "health": null,
+      "health_history": {},
+      "intersectoral": null,
+      "appeals": [],
+      "idps": null,
+      "refugees": {
+        "total": 54,
+        "year": "2025",
+        "source": "UNHCR via HDX HAPI"
+      },
+      "inform_risk": {
+        "overall": 4.3,
+        "risk_class": 3,
+        "global_rank": 68,
+        "year": "2025",
+        "source": "INFORM Risk (EC JRC) via HDX HAPI"
+      },
+      "ipc_current": {
+        "population": 121695,
+        "fraction": 0.07,
+        "period_start": "2025-03-01",
+        "period_end": "2025-05-31",
+        "source": "IPC via HDX HAPI"
+      },
+      "ipc_projection": {
+        "population": 146034,
+        "fraction": 0.08,
+        "type": "first projection",
+        "period_start": "2025-06-01",
+        "period_end": "2025-08-31",
+        "source": "IPC via HDX HAPI"
+      }
+    }
   },
-  "fts": {
-   "ok": 13,
-   "total": 13,
-   "checked_at": "2026-10-27T13:45:00.000Z"
-  },
+  "fts": [
+    {
+      "iso3": "CMR",
+      "plan_id": 1498,
+      "code": "HCMR26",
+      "name": "Cameroon Humanitarian Needs and Response Plan 2026",
+      "health_cluster": "Health",
+      "health_requirements_usd": 25308896,
+      "health_funding_usd": 6185756,
+      "plan_requirements_usd": 318976221,
+      "plan_funding_usd": 100510301,
+      "unspecified_funding_usd": 7896237,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "BFA",
+      "plan_id": 1499,
+      "code": "HBFA26",
+      "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 53970921,
+      "health_funding_usd": 14666746,
+      "plan_requirements_usd": 658486359,
+      "plan_funding_usd": 153159301,
+      "unspecified_funding_usd": 25863640,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "TCD",
+      "plan_id": 1501,
+      "code": "HTCD26",
+      "name": "Tchad Besoins Humanitaires et Plan de Réponse 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 45505747,
+      "health_funding_usd": 27793019,
+      "plan_requirements_usd": 986069627,
+      "plan_funding_usd": 443159785,
+      "unspecified_funding_usd": 76050507,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "MOZ",
+      "plan_id": 1506,
+      "code": "HMOZ26",
+      "name": "Mozambique Humanitarian Needs and Response Plan 2026",
+      "health_cluster": "Health",
+      "health_requirements_usd": 37906706,
+      "health_funding_usd": 9949664,
+      "plan_requirements_usd": 534342584,
+      "plan_funding_usd": 224565119,
+      "unspecified_funding_usd": 81242426,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "NGA",
+      "plan_id": 1508,
+      "code": "HNGA26",
+      "name": "Nigeria Humanitarian Needs and Response Plan 2026",
+      "health_cluster": "Health",
+      "health_requirements_usd": 33715660,
+      "health_funding_usd": 19772700,
+      "plan_requirements_usd": 516399423,
+      "plan_funding_usd": 359130648,
+      "unspecified_funding_usd": 135152241,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "CAF",
+      "plan_id": 1507,
+      "code": "HCAF26",
+      "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 13522336,
+      "health_funding_usd": 11543234,
+      "plan_requirements_usd": 264097388,
+      "plan_funding_usd": 139659161,
+      "unspecified_funding_usd": 57333387,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "COD",
+      "plan_id": 1509,
+      "code": "HCOD26",
+      "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 236507341,
+      "health_funding_usd": 217182578,
+      "plan_requirements_usd": 2132641156,
+      "plan_funding_usd": 1140618612,
+      "unspecified_funding_usd": 99312725,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "MLI",
+      "plan_id": 1511,
+      "code": "HMLI26",
+      "name": "Mali Besoins Humanitaires et Plan de Réponse 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 30489234,
+      "health_funding_usd": 12997469,
+      "plan_requirements_usd": 577866412,
+      "plan_funding_usd": 148550481,
+      "unspecified_funding_usd": 15541896,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "SSD",
+      "plan_id": 1512,
+      "code": "HSSD26",
+      "name": "South Sudan Humanitarian Needs and Response Plan 2026",
+      "health_cluster": "Health",
+      "health_requirements_usd": 113653248,
+      "health_funding_usd": 61183180,
+      "plan_requirements_usd": 1463046056,
+      "plan_funding_usd": 567303544,
+      "unspecified_funding_usd": 66852574,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "NER",
+      "plan_id": 1513,
+      "code": "HNER26",
+      "name": "Niger Besoins Humanitaires et Plan de Réponse 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 36319651,
+      "health_funding_usd": 9427487,
+      "plan_requirements_usd": 675619589,
+      "plan_funding_usd": 130430645,
+      "unspecified_funding_usd": 10890105,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "SDN",
+      "plan_id": 1514,
+      "code": "HSDN26",
+      "name": "Sudan Humanitarian Needs and Response Plan 2026",
+      "health_cluster": "Health",
+      "health_requirements_usd": 325279943,
+      "health_funding_usd": 154113488,
+      "plan_requirements_usd": 2866228593,
+      "plan_funding_usd": 1310725919,
+      "unspecified_funding_usd": 142317227,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "SOM",
+      "plan_id": 1516,
+      "code": "HSOM26",
+      "name": "Somalia Humanitarian Needs and Response Plan 2026",
+      "health_cluster": "Health",
+      "health_requirements_usd": 80000000,
+      "health_funding_usd": 23810644,
+      "plan_requirements_usd": 852000000,
+      "plan_funding_usd": 294555546,
+      "unspecified_funding_usd": 43072587,
+      "source": "OCHA FTS"
+    },
+    {
+      "iso3": "MDG",
+      "plan_id": 1567,
+      "code": "FMDG26",
+      "name": "Madagascar Appel Éclair Cyclones Fytia et Gezani 2026",
+      "health_cluster": "Santé",
+      "health_requirements_usd": 8297000,
+      "health_funding_usd": 4439134,
+      "plan_requirements_usd": 67953475,
+      "plan_funding_usd": 63713335,
+      "unspecified_funding_usd": 4379031,
+      "source": "OCHA FTS"
+    }
+  ],
+  "fts_year": 2026,
   "ssa": {
-   "ok": 10,
-   "total": 10,
-   "checked_at": "2026-10-27T13:45:00.000Z"
+    "BFA": {
+      "ssa_id": 24,
+      "ytd": {
+        "attacks": 1,
+        "deaths": 0,
+        "injuries": 0
+      },
+      "prev_ytd": {
+        "attacks": 9,
+        "deaths": 4,
+        "injuries": 5,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 1,
+          "deaths": 0,
+          "injuries": 0
+        },
+        {
+          "year": 2025,
+          "attacks": 9,
+          "deaths": 4,
+          "injuries": 5
+        },
+        {
+          "year": 2024,
+          "attacks": 13,
+          "deaths": 3,
+          "injuries": 0
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2026,
+          "month": "Feb",
+          "attacks": 1
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "CMR": {
+      "ssa_id": 38,
+      "ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0
+      },
+      "prev_ytd": {
+        "attacks": 19,
+        "deaths": 0,
+        "injuries": 6,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2025,
+          "attacks": 20,
+          "deaths": 0,
+          "injuries": 6
+        },
+        {
+          "year": 2021,
+          "attacks": 1,
+          "deaths": 0,
+          "injuries": 0
+        },
+        {
+          "year": 2019,
+          "attacks": 1,
+          "deaths": 0,
+          "injuries": 0
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2025,
+          "month": "Nov",
+          "attacks": 1
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "CAF": {
+      "ssa_id": 39,
+      "ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0
+      },
+      "prev_ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2024,
+          "attacks": 8,
+          "deaths": 9,
+          "injuries": 2
+        },
+        {
+          "year": 2023,
+          "attacks": 30,
+          "deaths": 2,
+          "injuries": 10
+        },
+        {
+          "year": 2022,
+          "attacks": 26,
+          "deaths": 3,
+          "injuries": 9
+        }
+      ],
+      "monthly": [],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "COD": {
+      "ssa_id": 49,
+      "ytd": {
+        "attacks": 85,
+        "deaths": 9,
+        "injuries": 34
+      },
+      "prev_ytd": {
+        "attacks": 53,
+        "deaths": 1,
+        "injuries": 11,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 85,
+          "deaths": 9,
+          "injuries": 34
+        },
+        {
+          "year": 2025,
+          "attacks": 54,
+          "deaths": 1,
+          "injuries": 11
+        },
+        {
+          "year": 2024,
+          "attacks": 33,
+          "deaths": 27,
+          "injuries": 9
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2025,
+          "month": "Dec",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Jan",
+          "attacks": 4
+        },
+        {
+          "year": 2026,
+          "month": "Apr",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "May",
+          "attacks": 8
+        },
+        {
+          "year": 2026,
+          "month": "Jun",
+          "attacks": 24
+        },
+        {
+          "year": 2026,
+          "month": "Jul",
+          "attacks": 16
+        },
+        {
+          "year": 2026,
+          "month": "Aug",
+          "attacks": 14
+        },
+        {
+          "year": 2026,
+          "month": "Sep",
+          "attacks": 13
+        },
+        {
+          "year": 2026,
+          "month": "Oct",
+          "attacks": 5
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "MLI": {
+      "ssa_id": 134,
+      "ytd": {
+        "attacks": 10,
+        "deaths": 6,
+        "injuries": 3
+      },
+      "prev_ytd": {
+        "attacks": 16,
+        "deaths": 1,
+        "injuries": 0,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 10,
+          "deaths": 6,
+          "injuries": 3
+        },
+        {
+          "year": 2025,
+          "attacks": 21,
+          "deaths": 1,
+          "injuries": 2
+        },
+        {
+          "year": 2024,
+          "attacks": 5,
+          "deaths": 21,
+          "injuries": 3
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2025,
+          "month": "Nov",
+          "attacks": 1
+        },
+        {
+          "year": 2025,
+          "month": "Dec",
+          "attacks": 4
+        },
+        {
+          "year": 2026,
+          "month": "Feb",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Apr",
+          "attacks": 2
+        },
+        {
+          "year": 2026,
+          "month": "May",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Jul",
+          "attacks": 4
+        },
+        {
+          "year": 2026,
+          "month": "Aug",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Sep",
+          "attacks": 1
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "NER": {
+      "ssa_id": 163,
+      "ytd": {
+        "attacks": 3,
+        "deaths": 11,
+        "injuries": 3
+      },
+      "prev_ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 3,
+          "deaths": 11,
+          "injuries": 3
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2026,
+          "month": "Jan",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Apr",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Sep",
+          "attacks": 1
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "NGA": {
+      "ssa_id": 162,
+      "ytd": {
+        "attacks": 5,
+        "deaths": 26,
+        "injuries": 110
+      },
+      "prev_ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 5,
+          "deaths": 26,
+          "injuries": 110
+        },
+        {
+          "year": 2024,
+          "attacks": 7,
+          "deaths": 0,
+          "injuries": 0
+        },
+        {
+          "year": 2023,
+          "attacks": 8,
+          "deaths": 1,
+          "injuries": 3
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2026,
+          "month": "Feb",
+          "attacks": 4
+        },
+        {
+          "year": 2026,
+          "month": "Mar",
+          "attacks": 1
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "SSD": {
+      "ssa_id": 247,
+      "ytd": {
+        "attacks": 26,
+        "deaths": 28,
+        "injuries": 10
+      },
+      "prev_ytd": {
+        "attacks": 9,
+        "deaths": 16,
+        "injuries": 44,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 26,
+          "deaths": 28,
+          "injuries": 10
+        },
+        {
+          "year": 2025,
+          "attacks": 9,
+          "deaths": 16,
+          "injuries": 44
+        },
+        {
+          "year": 2023,
+          "attacks": 2,
+          "deaths": 0,
+          "injuries": 8
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2026,
+          "month": "Jan",
+          "attacks": 8
+        },
+        {
+          "year": 2026,
+          "month": "Feb",
+          "attacks": 6
+        },
+        {
+          "year": 2026,
+          "month": "Mar",
+          "attacks": 7
+        },
+        {
+          "year": 2026,
+          "month": "Apr",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Jun",
+          "attacks": 2
+        },
+        {
+          "year": 2026,
+          "month": "Jul",
+          "attacks": 2
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "SDN": {
+      "ssa_id": 205,
+      "ytd": {
+        "attacks": 33,
+        "deaths": 198,
+        "injuries": 330
+      },
+      "prev_ytd": {
+        "attacks": 56,
+        "deaths": 1434,
+        "injuries": 205,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2026,
+          "attacks": 33,
+          "deaths": 198,
+          "injuries": 330
+        },
+        {
+          "year": 2025,
+          "attacks": 65,
+          "deaths": 1620,
+          "injuries": 276
+        },
+        {
+          "year": 2024,
+          "attacks": 72,
+          "deaths": 200,
+          "injuries": 169
+        }
+      ],
+      "monthly": [
+        {
+          "year": 2025,
+          "month": "Oct",
+          "attacks": 5
+        },
+        {
+          "year": 2025,
+          "month": "Nov",
+          "attacks": 6
+        },
+        {
+          "year": 2025,
+          "month": "Dec",
+          "attacks": 3
+        },
+        {
+          "year": 2026,
+          "month": "Jan",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Feb",
+          "attacks": 6
+        },
+        {
+          "year": 2026,
+          "month": "Mar",
+          "attacks": 6
+        },
+        {
+          "year": 2026,
+          "month": "Apr",
+          "attacks": 5
+        },
+        {
+          "year": 2026,
+          "month": "May",
+          "attacks": 2
+        },
+        {
+          "year": 2026,
+          "month": "Jun",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
+          "month": "Jul",
+          "attacks": 3
+        },
+        {
+          "year": 2026,
+          "month": "Aug",
+          "attacks": 3
+        },
+        {
+          "year": 2026,
+          "month": "Sep",
+          "attacks": 2
+        },
+        {
+          "year": 2026,
+          "month": "Oct",
+          "attacks": 4
+        }
+      ],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    },
+    "SOM": {
+      "ssa_id": 201,
+      "ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0
+      },
+      "prev_ytd": {
+        "attacks": 0,
+        "deaths": 0,
+        "injuries": 0,
+        "start": "2025-01-01",
+        "end": "2025-10-28"
+      },
+      "annual": [
+        {
+          "year": 2024,
+          "attacks": 3,
+          "deaths": 1,
+          "injuries": 14
+        },
+        {
+          "year": 2023,
+          "attacks": 7,
+          "deaths": 4,
+          "injuries": 11
+        },
+        {
+          "year": 2022,
+          "attacks": 3,
+          "deaths": 49,
+          "injuries": 8
+        }
+      ],
+      "monthly": [],
+      "period": {
+        "start": "2026-01-01",
+        "end": "2026-10-28"
+      }
+    }
+  },
+  "fetched_at": {
+    "hapi": "2026-10-28T16:38:51.290Z",
+    "fts": "2026-10-28T16:38:51.290Z",
+    "ssa": "2026-10-28T16:38:51.290Z",
+    "hpc": "2026-10-28T16:38:51.290Z"
+  },
+  "status": {
+    "hapi": {
+      "ok": 20,
+      "total": 20,
+      "checked_at": "2026-10-28T16:38:51.290Z"
+    },
+    "fts": {
+      "ok": 12,
+      "total": 12,
+      "checked_at": "2026-10-28T16:38:51.290Z"
+    },
+    "ssa": {
+      "ok": 10,
+      "total": 10,
+      "checked_at": "2026-10-28T16:38:51.290Z"
+    },
+    "hpc": {
+      "ok": 29,
+      "errors": 0,
+      "checked_at": "2026-10-28T16:38:51.290Z"
+    }
+  },
+  "last_attempt_at": "2026-10-28T16:38:51.290Z",
+  "hpc": {
+    "plans": {
+      "1195": {
+        "plan_id": 1195,
+        "iso3": "ETH",
+        "code": "HETH24",
+        "name": "Ethiopia Humanitarian Response Plan 2024",
+        "year": "2024",
+        "start": "2024-01-01",
+        "end": "2024-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2025-09-09T12:09:26.429Z",
+        "downloaded_at": "2026-10-28T16:41:22.582Z",
+        "health": {
+          "in_need": 16444109,
+          "targeted": 6660285,
+          "reach": {
+            "reached": 7267601,
+            "period_start": "2024-12-01",
+            "period_end": "2024-12-31",
+            "periods_reported": 12,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 21360484,
+          "targeted": 15467955
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1200": {
+        "plan_id": 1200,
+        "iso3": "BDI",
+        "code": "OBDI24",
+        "name": "Burundi Plan de Réponse Inondations et Montée du Lac Tanganyika (Effets El-Niño) 2024",
+        "year": "2024",
+        "start": "2024-03-01",
+        "end": "2024-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2025-03-24T13:59:23.298Z",
+        "downloaded_at": "2026-10-28T16:41:23.250Z",
+        "health": {
+          "in_need": 545000,
+          "targeted": 306000,
+          "reach": {
+            "reached": 42868,
+            "period_start": "2024-03-01",
+            "period_end": "2024-12-31",
+            "periods_reported": 1,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 614874,
+          "targeted": 306000
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1220": {
+        "plan_id": 1220,
+        "iso3": "SDN",
+        "code": "HSDN25",
+        "name": "Sudan Humanitarian Needs and Response Plan 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-03-26T10:31:09.834Z",
+        "downloaded_at": "2026-10-28T16:40:45.940Z",
+        "health": {
+          "in_need": 20270923,
+          "targeted": 9399993,
+          "reach": {
+            "reached": 6300901,
+            "period_start": "2025-12-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 12,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 30440770,
+          "targeted": 20934770
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1221": {
+        "plan_id": 1221,
+        "iso3": "SOM",
+        "code": "HSOM25",
+        "name": "Somalia Humanitarian Needs and Response Plan 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-03-12T13:27:53.831Z",
+        "downloaded_at": "2026-10-28T16:40:47.395Z",
+        "health": {
+          "in_need": 5400043,
+          "targeted": 3785402,
+          "reach": {
+            "reached": 3790000,
+            "period_start": "2025-08-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 2,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 5979741,
+          "targeted": 4571657
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1222": {
+        "plan_id": 1222,
+        "iso3": "MLI",
+        "code": "HMLI25",
+        "name": "Mali Besoins Humanitaires et Plan de Réponse 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-06-16T14:08:22.906Z",
+        "downloaded_at": "2026-10-28T16:40:54.832Z",
+        "health": {
+          "in_need": 3742972,
+          "targeted": 2459208,
+          "reach": {
+            "reached": 1367807,
+            "period_start": "2025-10-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 4,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 6431534,
+          "targeted": 4709012
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1223": {
+        "plan_id": 1223,
+        "iso3": "SSD",
+        "code": "HSSD25",
+        "name": "South Sudan Humanitarian Needs and Response Plan 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-02-17T07:09:59.981Z",
+        "downloaded_at": "2026-10-28T16:40:56.218Z",
+        "health": {
+          "in_need": 5657327,
+          "targeted": 3089736,
+          "reach": {
+            "reached": 1995400,
+            "period_start": "2025-01-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 1,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 9290088,
+          "targeted": 5386982
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1256": {
+        "plan_id": 1256,
+        "iso3": "CAF",
+        "code": "HCAF25",
+        "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2025-11-24T08:32:22.729Z",
+        "downloaded_at": "2026-10-28T16:40:57.925Z",
+        "health": {
+          "in_need": 1529765,
+          "targeted": 666297,
+          "reach": {
+            "reached": 90161,
+            "period_start": "2025-01-01",
+            "period_end": "2025-03-31",
+            "periods_reported": 1,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 2440338,
+          "targeted": 1772631
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1259": {
+        "plan_id": 1259,
+        "iso3": "BFA",
+        "code": "HBFA25",
+        "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-01-16T11:55:50.290Z",
+        "downloaded_at": "2026-10-28T16:41:01.041Z",
+        "health": {
+          "in_need": 2031499,
+          "targeted": 1341425,
+          "reach": {
+            "reached": 735779,
+            "period_start": "2025-07-01",
+            "period_end": "2025-09-30",
+            "periods_reported": 3,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 5915136,
+          "targeted": 3672506
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1260": {
+        "plan_id": 1260,
+        "iso3": "TCD",
+        "code": "HTCD25",
+        "name": "Tchad Besoins Humanitaires et Plan de Réponse 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-03-12T12:21:44.201Z",
+        "downloaded_at": "2026-10-28T16:41:02.943Z",
+        "health": {
+          "in_need": 3560753,
+          "targeted": 1129807,
+          "reach": {
+            "reached": 246878,
+            "period_start": "2025-10-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 4,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 7049226,
+          "targeted": 5475571
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1261": {
+        "plan_id": 1261,
+        "iso3": "COD",
+        "code": "HCOD25",
+        "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-01-27T15:37:58.308Z",
+        "downloaded_at": "2026-10-28T16:41:05.637Z",
+        "health": {
+          "in_need": 12935678,
+          "targeted": 6000803,
+          "reach": {
+            "reached": 1034267.3808,
+            "period_start": "2025-03-01",
+            "period_end": "2025-03-31",
+            "periods_reported": 3,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 21241767,
+          "targeted": 10988449
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1264": {
+        "plan_id": 1264,
+        "iso3": "NER",
+        "code": "HNER25",
+        "name": "Niger Besoins Humanitaires et Plan de Réponse 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-06-02T05:03:36.018Z",
+        "downloaded_at": "2026-10-28T16:41:08.020Z",
+        "health": {
+          "in_need": 1035711,
+          "targeted": 881486,
+          "reach": {
+            "reached": 476549,
+            "period_start": "2025-10-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 2,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 2580329,
+          "targeted": 2132111
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1266": {
+        "plan_id": 1266,
+        "iso3": "CMR",
+        "code": "HCMR25",
+        "name": "Cameroon Humanitarian Response Plan 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2026-01-06T13:57:08.304Z",
+        "downloaded_at": "2026-10-28T16:41:09.606Z",
+        "health": {
+          "in_need": 1511471,
+          "targeted": 1090263,
+          "reach": {
+            "reached": 309214,
+            "period_start": "2025-07-01",
+            "period_end": "2025-09-30",
+            "periods_reported": 3,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 3322058,
+          "targeted": 2100146
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1267": {
+        "plan_id": 1267,
+        "iso3": "MOZ",
+        "code": "HMOZ25",
+        "name": "Mozambique Humanitarian Needs and Response Plan 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2025-11-25T12:35:12.138Z",
+        "downloaded_at": "2026-10-28T16:41:11.314Z",
+        "health": {
+          "in_need": 460850,
+          "targeted": 433813,
+          "reach": {
+            "reached": 58596,
+            "period_start": "2025-04-01",
+            "period_end": "2025-04-30",
+            "periods_reported": 3,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 1305029,
+          "targeted": 1097096
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1274": {
+        "plan_id": 1274,
+        "iso3": "NGA",
+        "code": "HNGA25",
+        "name": "Nigeria Humanitarian Needs and Response Plan 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-12-31",
+        "monitoring_generated": true,
+        "fingerprint": "2025-11-25T12:42:22.431Z",
+        "downloaded_at": "2026-10-28T16:41:15.425Z",
+        "health": {
+          "in_need": 4930892,
+          "targeted": 3158720,
+          "reach": {
+            "reached": 795515,
+            "period_start": "2025-05-01",
+            "period_end": "2025-05-31",
+            "periods_reported": 2,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 7847048,
+          "targeted": 3584107
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1280": {
+        "plan_id": 1280,
+        "iso3": "ZWE",
+        "code": "FZWE25",
+        "name": "Zimbabwe Drought Flash Appeal 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-06-01",
+        "monitoring_generated": true,
+        "fingerprint": "2025-11-26T10:12:08.036Z",
+        "downloaded_at": "2026-10-28T16:41:16.166Z",
+        "health": {
+          "in_need": 4147461,
+          "targeted": 2081748,
+          "reach": {
+            "reached": 255,
+            "period_start": "2025-01-01",
+            "period_end": "2025-06-01",
+            "periods_reported": 1,
+            "decreased": false
+          }
+        },
+        "plan_totals": {
+          "in_need": 7611301,
+          "targeted": 3063939
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1285": {
+        "plan_id": 1285,
+        "iso3": "MOZ",
+        "code": "FMOZ25",
+        "name": "Mozambique Drought Flash Appeal 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-07-31",
+        "monitoring_generated": true,
+        "fingerprint": "2025-11-25T12:37:31.908Z",
+        "downloaded_at": "2026-10-28T16:41:16.805Z",
+        "health": null,
+        "plan_totals": {
+          "in_need": 2986602,
+          "targeted": 1361982
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1364": {
+        "plan_id": 1364,
+        "iso3": "MOZ",
+        "code": "FMOZ25a",
+        "name": "Mozambique Tropical Cyclones Flash Appeal 2025",
+        "year": "2025",
+        "start": "2025-01-01",
+        "end": "2025-06-30",
+        "monitoring_generated": true,
+        "fingerprint": "2025-11-26T11:36:18.773Z",
+        "downloaded_at": "2026-10-28T16:41:17.723Z",
+        "health": {
+          "in_need": 731562,
+          "targeted": 581146,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 995639,
+          "targeted": 695859
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1498": {
+        "plan_id": 1498,
+        "iso3": "CMR",
+        "code": "HCMR26",
+        "name": "Cameroon Humanitarian Needs and Response Plan 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-04-17T15:21:26.260Z",
+        "downloaded_at": "2026-10-28T16:40:27.888Z",
+        "health": {
+          "in_need": 1393638,
+          "targeted": 1004188,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 2875515,
+          "targeted": 1880879
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1499": {
+        "plan_id": 1499,
+        "iso3": "BFA",
+        "code": "HBFA26",
+        "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-09-11T12:50:29.299Z",
+        "downloaded_at": "2026-10-28T16:40:28.566Z",
+        "health": {
+          "in_need": 2173703,
+          "targeted": 1349273,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 4474321,
+          "targeted": 2651923
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1501": {
+        "plan_id": 1501,
+        "iso3": "TCD",
+        "code": "HTCD26",
+        "name": "Tchad Besoins Humanitaires et Plan de Réponse 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-02-25T08:27:57.583Z",
+        "downloaded_at": "2026-10-28T16:40:29.224Z",
+        "health": {
+          "in_need": 1706766,
+          "targeted": 1203856,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 4509014,
+          "targeted": 3352810
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1506": {
+        "plan_id": 1506,
+        "iso3": "MOZ",
+        "code": "HMOZ26",
+        "name": "Mozambique Humanitarian Needs and Response Plan 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-02-25T08:34:26.108Z",
+        "downloaded_at": "2026-10-28T16:40:29.873Z",
+        "health": {
+          "in_need": 1216660,
+          "targeted": 948693,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 2356162,
+          "targeted": 1745582
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1507": {
+        "plan_id": 1507,
+        "iso3": "CAF",
+        "code": "HCAF26",
+        "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-07-29T11:25:20.641Z",
+        "downloaded_at": "2026-10-28T16:40:30.502Z",
+        "health": {
+          "in_need": 955008,
+          "targeted": 516609,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 2286959,
+          "targeted": 1265483
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1508": {
+        "plan_id": 1508,
+        "iso3": "NGA",
+        "code": "HNGA26",
+        "name": "Nigeria Humanitarian Needs and Response Plan 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-03-19T14:20:21.189Z",
+        "downloaded_at": "2026-10-28T16:40:31.148Z",
+        "health": {
+          "in_need": 3957689,
+          "targeted": 1488054,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 5929291,
+          "targeted": 2527178
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1509": {
+        "plan_id": 1509,
+        "iso3": "COD",
+        "code": "HCOD26",
+        "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-07-22T13:25:40.241Z",
+        "downloaded_at": "2026-10-28T16:40:32.380Z",
+        "health": {
+          "in_need": 12561241,
+          "targeted": 5401155,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 18488689,
+          "targeted": 10735805
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1511": {
+        "plan_id": 1511,
+        "iso3": "MLI",
+        "code": "HMLI26",
+        "name": "Mali Besoins Humanitaires et Plan de Réponse 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-08-04T07:34:54.246Z",
+        "downloaded_at": "2026-10-28T16:40:32.984Z",
+        "health": {
+          "in_need": 1942136,
+          "targeted": 1589944,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 5083155,
+          "targeted": 3808385
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1512": {
+        "plan_id": 1512,
+        "iso3": "SSD",
+        "code": "HSSD26",
+        "name": "South Sudan Humanitarian Needs and Response Plan 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-07-29T11:25:59.598Z",
+        "downloaded_at": "2026-10-28T16:40:31.762Z",
+        "health": {
+          "in_need": 6269692,
+          "targeted": 2884600,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 9913863,
+          "targeted": 4343435
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1513": {
+        "plan_id": 1513,
+        "iso3": "NER",
+        "code": "HNER26",
+        "name": "Niger Besoins Humanitaires et Plan de Réponse 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-06-24T07:01:40.625Z",
+        "downloaded_at": "2026-10-28T16:40:33.601Z",
+        "health": {
+          "in_need": 884290,
+          "targeted": 800647,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 3081200,
+          "targeted": 1983640
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1514": {
+        "plan_id": 1514,
+        "iso3": "SDN",
+        "code": "HSDN26",
+        "name": "Sudan Humanitarian Needs and Response Plan 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-05-26T12:36:06.659Z",
+        "downloaded_at": "2026-10-28T16:40:34.204Z",
+        "health": {
+          "in_need": 20986071,
+          "targeted": 6622688,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 33699770,
+          "targeted": 20419163
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      },
+      "1516": {
+        "plan_id": 1516,
+        "iso3": "SOM",
+        "code": "HSOM26",
+        "name": "Somalia Humanitarian Needs and Response Plan 2026",
+        "year": "2026",
+        "start": "2026-01-01",
+        "end": "2026-12-31",
+        "monitoring_generated": false,
+        "fingerprint": "2026-05-05T21:57:18.417Z",
+        "downloaded_at": "2026-10-28T16:40:34.810Z",
+        "health": {
+          "in_need": 4989936,
+          "targeted": 2426481,
+          "reach": null
+        },
+        "plan_totals": {
+          "in_need": 4796040,
+          "targeted": 2430751
+        },
+        "source": "OCHA Response Monitoring (HPC)"
+      }
+    },
+    "years": [
+      2026,
+      2025,
+      2024
+    ]
   }
- }
 }
