@@ -179,6 +179,15 @@ const UI_COPY = {
 };
 
 const PHRASE_FR = {
+  "Current Highest Risk": "Risque actuel le plus élevé",
+  "IPC Crisis Countries": "Pays en crise IPC",
+  "Top Alerts Active": "Principales alertes actives",
+  "Data Quality": "Qualité des données",
+  "Last Refresh": "Dernière actualisation",
+  "ACAPS Crawl Mode": "Mode de collecte ACAPS",
+  "ACAPS Crawl Status": "État de la collecte ACAPS",
+  "⛶ Expand": "⛶ Agrandir",
+  "Expand map to full screen": "Agrandir la carte en plein écran",
   "Primary Priorities": "Priorités principales",
   "Overview": "Vue d'ensemble",
   "Food Security Priority": "Priorité sécurité alimentaire",

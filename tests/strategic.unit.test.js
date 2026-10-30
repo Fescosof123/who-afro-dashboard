@@ -184,6 +184,34 @@ function run() {
   assert.equal(hw.week_base.week, "2026-W43");
   assert.equal(hw.week_base.taken_at, w2.taken_at);
 
+  // ACMAD bulletin parser.
+  const acmad = require("../lib/acmad");
+  const sample = [
+    "                             Issued on: October 29th, 2026",
+    "                    VIGILANCE MAP AND POLICY BRIEF FOR MENINGITIS OUBREAK",
+    "                                                           Valid From October 30 to November 5, 2026",
+    "HIGHLIGHT: Emergence of Meningitis cases is very likely and epidemics status possible in Mali, Niger, and Chad.",
+    "Emergence of Meningitis cases is likely in Burkina Faso, Nigeria, Cameroon, and Sudan.",
+    "                                                                                                 Phenomenon                   Hazard",
+    "                    VIGILANCE MAP AND POLICY BRIEF FOR HEAVY RAINFALL AND STRONG WINDS",
+    "                                                               Valid From October 30 to November 3, 2026",
+    "HIGHLIGHT: Heavy rainfall is expected in Cameroon, Gabon, Congo, Angola, and D.R.C."
+  ].join("\n");
+  const parsed = acmad.parseBulletinText(sample);
+  assert.equal(parsed.issued_on, "2026-10-29");
+  assert.equal(parsed.sections.length, 2);
+  const men = parsed.sections[0];
+  assert.equal(men.hazard, "meningitis");
+  assert.equal(men.valid_from, "2026-10-30");
+  assert.equal(men.valid_to, "2026-11-05");
+  assert.deepEqual(men.sentences[0].countries.sort(), ["MLI", "NER", "TCD"]);
+  assert.equal(men.sentences[0].level, "high");
+  assert.equal(men.sentences[1].level, "watch");
+  assert.ok(men.sentences[1].countries.includes("SDN") && !men.sentences[1].countries.includes("SSD"));
+  assert.ok(!men.sentences[0].countries.includes("NGA"));
+  const rain = parsed.sections[1];
+  assert.ok(rain.sentences[0].countries.includes("COD") && rain.sentences[0].countries.includes("COG"));
+
   console.log("strategic unit test passed");
 }
 

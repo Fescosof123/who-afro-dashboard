@@ -1,0 +1,82 @@
+{
+  "source": "ACMAD Continental Multi-Hazard & Advisory Bulletin (WMO Regional Climate Centre for Africa)",
+  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-10-29/",
+  "pdf_url": "https://www.acmad.org/documents/1682/Continental_Hazard_Outlook_20261029.pdf",
+  "issued_on": "2026-10-29",
+  "sections": [
+    {
+      "hazard": "heavy_rain",
+      "title": "Heavy rainfall and strong winds",
+      "valid_from": "2026-10-30",
+      "valid_to": "2026-11-03",
+      "highlight": "Heavy rainfall is expected in Cameroon, Gabon, Congo, Angola, and D.R.C.",
+      "sentences": [
+        {
+          "text": "Heavy rainfall is expected in Cameroon, Gabon, Congo, Angola, and D.R.C.",
+          "level": "watch",
+          "countries": [
+            "CMR",
+            "GAB",
+            "COG",
+            "AGO",
+            "COD"
+          ]
+        }
+      ]
+    },
+    {
+      "hazard": "heat_wave",
+      "title": "Heat wave",
+      "valid_from": "2026-10-30",
+      "valid_to": "2026-11-03",
+      "highlight": "Moderate heat wave is expected in Burkina Faso, Ghana, Togo, Nigeria, and South Sudan",
+      "sentences": [
+        {
+          "text": "Moderate heat wave is expected in Burkina Faso, Ghana, Togo, Nigeria, and South Sudan",
+          "level": "watch",
+          "countries": [
+            "BFA",
+            "GHA",
+            "TGO",
+            "NGA",
+            "SSD"
+          ]
+        }
+      ]
+    },
+    {
+      "hazard": "meningitis",
+      "title": "Meningitis outbreak",
+      "valid_from": "2026-10-30",
+      "valid_to": "2026-11-05",
+      "highlight": "Emergence of Meningitis cases is very likely and epidemics status possible in Mali, Niger, and Chad. Emergence of Meningitis cases is likely in Western Sahara, Mauritania, Senegal, Algeria, Burkina Faso, Benin, Nigeria, Cameroon, and Sudan.",
+      "sentences": [
+        {
+          "text": "Emergence of Meningitis cases is very likely and epidemics status possible in Mali, Niger, and Chad.",
+          "level": "high",
+          "countries": [
+            "MLI",
+            "NER",
+            "TCD"
+          ]
+        },
+        {
+          "text": "Emergence of Meningitis cases is likely in Western Sahara, Mauritania, Senegal, Algeria, Burkina Faso, Benin, Nigeria, Cameroon, and Sudan.",
+          "level": "watch",
+          "countries": [
+            "ESH",
+            "MRT",
+            "SEN",
+            "DZA",
+            "BFA",
+            "BEN",
+            "NGA",
+            "CMR",
+            "SDN"
+          ]
+        }
+      ]
+    }
+  ],
+  "fetched_at": "2026-10-30T10:00:00.000Z"
+}

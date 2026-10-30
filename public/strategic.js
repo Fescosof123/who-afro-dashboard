@@ -284,7 +284,9 @@
     if (!iso) return na();
     const d = new Date(iso);
     if (Number.isNaN(d.getTime())) return String(iso);
-    return d.toLocaleDateString(locale(), { day: "numeric", month: isFr() ? "long" : "short", year: "numeric" });
+    // A date without a time is a calendar date: show it as written, whatever the viewer's time zone.
+    const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(String(iso));
+    return d.toLocaleDateString(locale(), { day: "numeric", month: isFr() ? "long" : "short", year: "numeric", ...(dateOnly ? { timeZone: "UTC" } : {}) });
   }
   function fmtMonth(iso) {
     if (!iso) return na();
@@ -817,6 +819,18 @@
         `<strong>Funding point for management.</strong> Health funding coverage is lowest in ${lowText}; the median per country is ${fmtPct(k.medianPct)}. The largest unfunded health requirement is ${esc(shortName(biggestGap.country))} (${fmtUsd(biggestGap.health_funding.gap_usd)}). Possible action: raise these in donor briefings and pooled-fund discussions.`,
         `<strong>Point de financement pour la direction.</strong> La couverture du financement de la santé est la plus faible pour ${frList(low, (r) => fmtPct(r.health_funding.pct))} ; la médiane par pays est de ${fmtPct(k.medianPct)}. Le besoin sanitaire non financé le plus important concerne ${esc(frArt(biggestGap.country))} (${fmtUsd(biggestGap.health_funding.gap_usd)}). Action possible : soulever ces points lors des réunions d'information des bailleurs et des discussions sur les fonds communs.`
       ));
+    }
+    // Short-term hazard alert from ACMAD, only while a country is at higher vigilance.
+    const acmad = state.payload?.acmad;
+    if (acmad && !acmad.expired) {
+      const inScope = new Set(rows.map((r) => r.iso3));
+      const highs = (acmad.sections || []).filter((sec) => !sec.expired).map((sec) => ({
+        sec, isos: [...new Set(sec.sentences.filter((x) => x.level === "high").flatMap((x) => x.countries).filter((iso) => inScope.has(iso)))]
+      })).filter((x) => x.isos.length);
+      highs.forEach(({ sec, isos }) => messages.push(L(
+        `<strong>Next days.</strong> ${esc(acmadHazardName(sec.hazard))}: higher vigilance in ${esc(isos.map(isoName).join(", "))} until ${esc(fmtDate(sec.valid_to))} (ACMAD bulletin of ${esc(fmtDate(acmad.issued_on))}). Environmental risk, not cases; confirm with surveillance.`,
+        `<strong>Prochains jours.</strong> ${esc(acmadHazardName(sec.hazard))}\u00a0: vigilance élevée pour ${esc(isos.map(isoName).join(", "))} jusqu'au ${esc(fmtDate(sec.valid_to))} (bulletin de l'ACMAD du ${esc(fmtDate(acmad.issued_on))}). Risque environnemental, pas des cas\u00a0; à confirmer par la surveillance.`
+      )));
     }
     return messages;
   }
@@ -1548,6 +1562,7 @@
     reliefweb: ["ReliefWeb", "https://reliefweb.int"],
     meteo: ["Météo-France La Réunion (RSMC cyclones)", "https://www.meteofrance.re/fr/cyclone"],
     wmo: ["WMO Severe Weather Information Centre", "https://severeweather.wmo.int"],
+    acmad: ["ACMAD Continental Multi-Hazard Bulletin", "https://www.acmad.org/products/weather-watch-and-prediction-products/"],
     cpc: ["NOAA CPC ENSO advisory", "https://www.cpc.ncep.noaa.gov/products/analysis_monitoring/enso_advisory/ensodisc.shtml"],
     icpac: ["ICPAC climate forecasts", "https://www.icpac.net"],
     grading: ["WHO emergency grading", "https://www.who.int/emergencies/grading"],
@@ -1707,15 +1722,130 @@
     ], ["meteo", "wmo", "gdacs"]);
   }
 
+  // ---------- ACMAD continental hazard outlook ----------
+  // Published highlights of the ACMAD bulletin (WMO Regional Climate Centre for
+  // Africa): 5-day vigilance for heavy rainfall, heat waves and meningitis.
+  const ACMAD_HAZARD = {
+    heavy_rain: ["Heavy rainfall", "Fortes pluies"],
+    heat_wave: ["Heat wave", "Vague de chaleur"],
+    meningitis: ["Meningitis", "Méningite"],
+    dust: ["Dust", "Poussière"],
+    other: ["Other hazard", "Autre aléa"]
+  };
+  function acmadHazardName(key) {
+    const h = ACMAD_HAZARD[key] || ACMAD_HAZARD.other;
+    return L(h[0], h[1]);
+  }
+  function isoName(iso) {
+    const c = (state.payload?.countries || []).find((x) => x.iso3 === iso) || (state.dash?.countries || []).find((x) => x.iso3 === iso);
+    if (iso === "ESH") return L("Western Sahara", "Sahara occidental");
+    const name = c?.country || ({ ESH: "Western Sahara", DZA: "Algeria", EGY: "Egypt", LBY: "Libya", MAR: "Morocco", TUN: "Tunisia", SOM: "Somalia", SDN: "Sudan" })[iso] || iso;
+    if (!isFr()) return shortName(name);
+    const fr = cname(name);
+    return ({ "République démocratique du Congo": "RD Congo", "République centrafricaine": "RCA", "République du Congo": "Congo" })[fr] || fr;
+  }
+  function acmadFcvSet() {
+    return new Set(rowsInScope("fcv13").map((r) => r.iso3));
+  }
+  // FCV countries under each hazard, high level first.
+  function acmadFcvSummary(a) {
+    const fcv = acmadFcvSet();
+    return (a?.sections || []).filter((sec) => !sec.expired).map((sec) => {
+      const high = [...new Set(sec.sentences.filter((x) => x.level === "high").flatMap((x) => x.countries).filter((iso) => fcv.has(iso)))];
+      const watch = [...new Set(sec.sentences.filter((x) => x.level !== "high").flatMap((x) => x.countries).filter((iso) => fcv.has(iso) && !high.includes(iso)))];
+      return { sec, high, watch };
+    }).filter((x) => x.high.length || x.watch.length);
+  }
+  // Overall window of the hazards still valid, e.g. "30 Oct to 5 Nov".
+  function acmadWindow(a) {
+    const live = (a?.sections || []).filter((x) => !x.expired);
+    const from = live.map((x) => x.valid_from).filter(Boolean).sort()[0];
+    const to = live.map((x) => x.valid_to).filter(Boolean).sort().pop();
+    if (!from || !to) return "";
+    const short = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale(), { day: "numeric", month: isFr() ? "long" : "short", timeZone: "UTC" });
+    return L(`${short(from)} to ${short(to)}`, `du ${short(from)} au ${short(to)}`);
+  }
+  // What a manager should check, per hazard, for the FCV countries flagged.
+  function acmadActions(a) {
+    const list = (isos) => isos.map(isoName).join(", ");
+    return acmadFcvSummary(a).map(({ sec, high, watch }) => {
+      const all = [...high, ...watch];
+      if (sec.hazard === "meningitis" && high.length) return L(`${list(high)}: check meningitis preparedness (weekly surveillance, laboratory confirmation, vaccine and ceftriaxone stocks)${watch.length ? `; keep surveillance alert in ${list(watch)}` : ""}.`, `${list(high)}\u00a0: vérifier la préparation contre la méningite (surveillance hebdomadaire, confirmation au laboratoire, stocks de vaccins et de ceftriaxone)${watch.length ? `\u00a0; maintenir la surveillance en alerte dans les pays suivants\u00a0: ${list(watch)}` : ""}.`);
+      if (sec.hazard === "meningitis") return L(`${list(all)}: keep meningitis surveillance alert.`, `${list(all)}\u00a0: maintenir la surveillance de la méningite en alerte.`);
+      if (sec.hazard === "heavy_rain") return L(`${list(all)}: review flood and cholera readiness in exposed areas and camps.`, `${list(all)}\u00a0: revoir la préparation aux inondations et au choléra dans les zones exposées et les camps.`);
+      if (sec.hazard === "heat_wave") return L(`${list(all)}: heat advice for older people, infants and people with chronic illness, especially in camps.`, `${list(all)}\u00a0: conseils sur la chaleur pour les personnes âgées, les nourrissons et les malades chroniques, en particulier dans les camps.`);
+      return "";
+    }).filter(Boolean);
+  }
+  function acmadValidity(sec) {
+    if (!sec.valid_from || !sec.valid_to) return "";
+    return L(`${fmtDate(sec.valid_from)} to ${fmtDate(sec.valid_to)}`, `du ${fmtDate(sec.valid_from)} au ${fmtDate(sec.valid_to)}`);
+  }
+  function renderAcmadPanel() {
+    const node = el("stratAcmadPanel");
+    if (!node) return;
+    const a = state.payload?.acmad;
+    if (!a || !(a.sections || []).length) {
+      node.innerHTML = `<div class="panel-header"><h2>${L("ACMAD 5-Day Hazard Outlook", "Perspectives des aléas à 5 jours (ACMAD)")}</h2><p>${L("The latest ACMAD bulletin has not been loaded yet.", "Le dernier bulletin de l'ACMAD n'a pas encore été chargé.")}</p></div>`;
+      return;
+    }
+    const fcv = acmadFcvSet();
+    const names = (list) => list.map((iso) => (fcv.has(iso) ? `<strong>${esc(isoName(iso))}</strong>` : esc(isoName(iso)))).join(", ");
+    node.innerHTML = `
+      <div class="panel-header">
+        <h2>${L("ACMAD 5-Day Hazard Outlook", "Perspectives des aléas à 5 jours (ACMAD)")}</h2>
+        <p>${L(`Continental Multi-Hazard & Advisory Bulletin issued on ${esc(fmtDate(a.issued_on))} by ACMAD, the WMO Regional Climate Centre for Africa. FCV countries are in bold.`, `Bulletin continental multi-aléas publié le ${esc(fmtDate(a.issued_on))} par l'ACMAD, Centre climatique régional de l'OMM pour l'Afrique. Les pays FCV sont en gras.`)}</p>
+      </div>
+      ${a.expired ? `<p class="strat-note-warn">${L("This bulletin's validity period has ended. ACMAD usually issues the next one within three or four days; it will appear here automatically.", "La période de validité de ce bulletin est terminée. L'ACMAD publie généralement le suivant sous trois ou quatre jours ; il s'affichera ici automatiquement.")}</p>` : ""}
+      <div class="table-wrap"><table class="strat-table">
+        <thead><tr><th>${L("Hazard", "Aléa")}</th><th>${L("Valid", "Validité")}</th><th>${L("Higher vigilance", "Vigilance élevée")}</th><th>${L("Vigilance", "Vigilance")}</th><th>${L("Bulletin text", "Texte du bulletin")}</th></tr></thead>
+        <tbody>${a.sections.filter((sec) => !sec.expired || a.expired).map((sec) => {
+          const high = [...new Set(sec.sentences.filter((x) => x.level === "high").flatMap((x) => x.countries))];
+          const watch = [...new Set(sec.sentences.filter((x) => x.level !== "high").flatMap((x) => x.countries).filter((iso) => !high.includes(iso)))];
+          return `<tr><td><strong>${esc(acmadHazardName(sec.hazard))}</strong></td><td>${esc(acmadValidity(sec))}</td>
+            <td>${high.length ? names(high) : `<span class="muted">${L("none", "aucun")}</span>`}</td><td>${watch.length ? names(watch) : `<span class="muted">${L("none", "aucun")}</span>`}</td>
+            <td class="strat-acmad-text">${esc(sec.highlight)}</td></tr>`;
+        }).join("")}</tbody></table></div>
+      ${!a.expired && acmadActions(a).length ? `<h3 class="strat-subhead">${L("What to check in FCV countries", "Points à vérifier dans les pays FCV")}</h3><ul class="bulletin-list">${acmadActions(a).map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : ""}
+      <p class="muted">${L("Health relevance: heavy rainfall raises the risk of flooding, displacement and waterborne disease; moderate heat waves are a health concern for older people, infants and people with chronic illness; dry, dusty conditions favour meningitis epidemics in the meningitis belt. ACMAD forecasts environmental risk (rain, temperature, dust, humidity), not cases; confirm with surveillance data. \"Higher vigilance\" is used only where the bulletin says \"very likely\", an epidemic is possible or conditions are severe. The bulletin text is shown as published (English).", "Pertinence sanitaire\u00a0: les fortes pluies augmentent le risque d'inondation, de déplacement et de maladies d'origine hydrique\u00a0; les vagues de chaleur modérées sont préoccupantes pour les personnes âgées, les nourrissons et les malades chroniques\u00a0; les conditions sèches et poussiéreuses favorisent les épidémies de méningite dans la ceinture de la méningite. L'ACMAD prévoit un risque environnemental (pluie, température, poussière, humidité), pas des cas\u00a0; à confirmer par les données de surveillance. La «\u00a0vigilance élevée\u00a0» n'est retenue que lorsque le bulletin indique «\u00a0très probable\u00a0», une épidémie possible ou des conditions sévères. Le texte du bulletin est reproduit tel que publié (en anglais).")}
+        <a href="${esc(a.pdf_url || LINKS.acmad[1])}" target="_blank" rel="noopener">${L("Open the bulletin (PDF)", "Ouvrir le bulletin (PDF)")}</a></p>`;
+  }
+  // One line for the bulletin and the forecast strip: FCV countries per hazard.
+  function acmadFcvLine(a) {
+    const parts = acmadFcvSummary(a).map(({ sec, high, watch }) => {
+      const list = [
+        high.length ? L(`${high.map(isoName).join(", ")} (higher vigilance)`, `${high.map(isoName).join(", ")} (vigilance élevée)`) : "",
+        watch.length ? watch.map(isoName).join(", ") : ""
+      ].filter(Boolean).join(L("; ", "\u00a0; "));
+      return `${acmadHazardName(sec.hazard)}${L(": ", "\u00a0: ")}${list}`;
+    });
+    return parts.join(". ");
+  }
+
   function renderForecastStrip() {
     const enso = state.dash?.enso_advisory;
     const fc = state.dash?.forecasts || [];
     const elevated = fc.filter((f) => f.risk_level && !/watch|low|normal/i.test(f.risk_level));
     renderStrip("forecastPage", L("Climate Forecasts: Key Figures", "Prévisions climatiques : chiffres clés"), L("Seasonal climate outlooks that can change health risk (floods, drought, disease).", "Perspectives climatiques saisonnières susceptibles de modifier le risque sanitaire (inondations, sécheresse, maladies)."), [
+      (() => {
+        const a = state.payload?.acmad;
+        const summary = acmadFcvSummary(a);
+        const flagged = new Set(summary.flatMap((x) => [...x.high, ...x.watch]));
+        const anyHigh = summary.some((x) => x.high.length);
+        return {
+          id: "fcAcmad",
+          title: a && !a.expired && acmadWindow(a) ? L(`FCV countries under ACMAD vigilance, ${acmadWindow(a)}`, `Pays FCV sous vigilance de l'ACMAD, ${acmadWindow(a)}`) : L("FCV countries under ACMAD vigilance", "Pays FCV sous vigilance de l'ACMAD"),
+          value: a && !a.expired ? `${flagged.size}<small>${L(" of 13", " sur 13")}</small>` : na(),
+          sub: a ? (a.expired ? L("The latest bulletin has expired; the next one will appear automatically.", "Le dernier bulletin a expiré\u00a0; le suivant s'affichera automatiquement.") : (acmadFcvSummary(a).map(({ sec, high, watch }) => `${esc(acmadHazardName(sec.hazard))}${L(": ", "\u00a0: ")}${esc([...high.map((iso) => `${isoName(iso)}${L(" (higher)", " (élevée)")}`), ...watch.map(isoName)].join(", "))}`).join("<br>") || L("No FCV country flagged in this bulletin.", "Aucun pays FCV signalé dans ce bulletin."))) : L("Bulletin not loaded yet.", "Bulletin pas encore chargé."),
+          source: a ? L(`ACMAD, issued ${esc(fmtDate(a.issued_on))}`, `ACMAD, publié le ${esc(fmtDate(a.issued_on))}`) : "ACMAD",
+          target: "forecastPage#stratAcmadPanel",
+          tone: a?.expired ? "" : anyHigh ? "bad" : flagged.size ? "warn" : ""
+        };
+      })(),
       { id: "fcEnso", title: L("ENSO status", "État de l'ENSO"), value: enso?.alert_status ? esc(enso.alert_status) : na(), sub: enso?.synopsis ? esc(enso.synopsis) : "", source: `NOAA CPC${enso?.issued_on ? `, ${esc(enso.issued_on)}` : ""}`, target: enso?.url || LINKS.cpc[1], tone: /el ni|la ni/i.test(enso?.alert_status || "") ? "warn" : "" },
       { id: "fcIcpac", title: L("ICPAC forecast bulletins", "Bulletins de prévision de l'ICPAC"), value: String(fc.length), sub: L("Weekly, monthly and seasonal products for the Greater Horn of Africa.", "Produits hebdomadaires, mensuels et saisonniers pour la Grande Corne de l'Afrique."), source: "ICPAC", target: "forecastPage#icpacFeed" },
       { id: "fcElevated", title: L("Bulletins above watch level", "Bulletins au-dessus du niveau de veille"), value: String(elevated.length), sub: elevated.length ? elevated.slice(0, 2).map((f) => esc(f.title)).join("; ") : L("None above watch level.", "Aucun au-dessus du niveau de veille."), source: "ICPAC", target: "forecastPage#forecastTable" }
-    ], ["cpc", "icpac", "fews"]);
+    ], ["acmad", "cpc", "icpac", "fews"]);
   }
 
   function renderFcvStrip() {
@@ -1964,6 +2094,7 @@
       <ul class="bulletin-list">
         <li>Aléas naturels : ${(state.dash?.hazards || []).length ? `${fmtFull(hz.length)} alertes GDACS dans les pays FCV (${fmtFull(hzRedOrange.length)} orange ou rouge)` : "le flux GDACS n'a renvoyé aucune donnée lors de cette actualisation"} ; ${floods.length ? `${fmtFull(floods.length)} informations sur les inondations dans la région` : "aucune information sur les inondations dans le flux"} ; ${!cyc.active_cyclone_count ? "aucun cyclone nommé" : cyc.active_cyclone_count === 1 ? "1 cyclone nommé" : `${fmtFull(cyc.active_cyclone_count)} cyclones nommés`} au cours des ${cyc.active_window_days || 21} derniers jours.</li>
         <li>Perspectives climatiques : ${enso?.alert_status ? `${esc(enso.alert_status)} (NOAA CPC${enso.issued_on ? `, ${esc(enso.issued_on)}` : ""})` : "état de l'ENSO non disponible lors de cette actualisation"}.</li>
+        ${state.payload?.acmad && !state.payload.acmad.expired && acmadFcvLine(state.payload.acmad) ? `<li>Vigilance de l'ACMAD dans les pays FCV, ${esc(acmadWindow(state.payload.acmad))} (bulletin du ${esc(fmtDate(state.payload.acmad.issued_on))})\u00a0: ${esc(acmadFcvLine(state.payload.acmad))}.${acmadActions(state.payload.acmad).length ? ` À vérifier\u00a0: ${esc(acmadActions(state.payload.acmad).join(" "))}` : ""}</li>` : ""}
         <li>Flambées : ${outbreaks.length ? `Bulletins d'information sur les flambées épidémiques de l'OMS, 30 derniers jours : ${outbreaks.map((o) => esc(o.title || o.summary || "")).filter(Boolean).slice(0, 3).join(" ; ")}` : "aucun bulletin d'information sur les flambées épidémiques de l'OMS pour ces pays au cours des 30 derniers jours"}. Les flambées classées apparaissent dans le registre des grades de l'OMS dès que la DHM les saisit ; le bulletin hebdomadaire de l'OMS AFRO sur les flambées donne la liste complète.</li>
       </ul>
       ${noteBox("risk", "Note facultative : principal risque sanitaire de la semaine", "Principale menace sanitaire de la semaine et où (flambée, vague de déplacements, inondation).")}
@@ -2014,6 +2145,7 @@
       <ul class="bulletin-list">
         <li>Natural hazards: ${(state.dash?.hazards || []).length ? `${fmtFull(hz.length)} GDACS alerts in FCV countries (${fmtFull(hzRedOrange.length)} orange or red)` : "GDACS feed returned no data in this refresh"}; ${floods.length ? `${fmtFull(floods.length)} flood updates in the region` : "no flood updates in the feed"}; ${fmtFull(cyc.active_cyclone_count || 0)} named cyclones in the last ${cyc.active_window_days || 21} days.</li>
         <li>Climate outlook: ${enso?.alert_status ? `${esc(enso.alert_status)} (NOAA CPC${enso.issued_on ? `, ${esc(enso.issued_on)}` : ""})` : "ENSO status not available in this refresh"}.</li>
+        ${state.payload?.acmad && !state.payload.acmad.expired && acmadFcvLine(state.payload.acmad) ? `<li>ACMAD vigilance in FCV countries, ${esc(acmadWindow(state.payload.acmad))} (bulletin of ${esc(fmtDate(state.payload.acmad.issued_on))}): ${esc(acmadFcvLine(state.payload.acmad))}.${acmadActions(state.payload.acmad).length ? ` Check: ${esc(acmadActions(state.payload.acmad).join(" "))}` : ""}</li>` : ""}
         <li>Outbreaks: ${outbreaks.length ? `WHO Disease Outbreak News, last 30 days: ${outbreaks.map((o) => esc(o.title || o.summary || "")).filter(Boolean).slice(0, 3).join("; ")}` : "no WHO Disease Outbreak News items for these countries in the last 30 days"}. Graded outbreaks appear in the WHO grading register once DHM enters them; the WHO AFRO weekly bulletin on outbreaks has the full list.</li>
       </ul>
       ${noteBox("risk", "Optional note: major health risk this week", "Main health threat this week and where (outbreak, displacement wave, flood).")}
@@ -2428,6 +2560,7 @@
     renderStatusTable();
     renderSignalsExplain();
     renderForecastBriefing();
+    renderAcmadPanel();
     decorateCardDestinations();
   }
 
@@ -2657,6 +2790,7 @@
         renderStatusTable();
         renderSignalsExplain();
         renderForecastBriefing();
+    renderAcmadPanel();
         decorateCardDestinations();
       } else {
         load();
