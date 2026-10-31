@@ -2092,34 +2092,34 @@
     }
   },
   "fetched_at": {
-    "hapi": "2026-10-31T05:45:41.057Z",
-    "fts": "2026-10-31T05:45:41.057Z",
-    "ssa": "2026-10-31T05:45:41.057Z",
-    "hpc": "2026-10-31T05:45:41.057Z"
+    "hapi": "2026-10-31T17:45:51.499Z",
+    "fts": "2026-10-31T17:45:51.499Z",
+    "ssa": "2026-10-31T17:45:51.499Z",
+    "hpc": "2026-10-31T17:45:51.499Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-10-31T05:45:41.057Z"
+      "checked_at": "2026-10-31T17:45:51.499Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-10-31T05:45:41.057Z"
+      "checked_at": "2026-10-31T17:45:51.499Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-10-31T05:45:41.057Z"
+      "checked_at": "2026-10-31T17:45:51.499Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-10-31T05:45:41.057Z"
+      "checked_at": "2026-10-31T17:45:51.499Z"
     }
   },
-  "last_attempt_at": "2026-10-31T05:45:41.057Z",
+  "last_attempt_at": "2026-10-31T17:45:51.499Z",
   "hpc": {
     "plans": {
       "1195": {
@@ -2132,7 +2132,7 @@
         "end": "2024-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-09-09T12:09:26.429Z",
-        "downloaded_at": "2026-10-28T16:41:22.582Z",
+        "downloaded_at": "2026-10-31T17:48:22.233Z",
         "health": {
           "in_need": 16444109,
           "targeted": 6660285,
@@ -2160,7 +2160,7 @@
         "end": "2024-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-03-24T13:59:23.298Z",
-        "downloaded_at": "2026-10-28T16:41:23.250Z",
+        "downloaded_at": "2026-10-31T17:48:23.004Z",
         "health": {
           "in_need": 545000,
           "targeted": 306000,
@@ -2188,7 +2188,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-03-26T10:31:09.834Z",
-        "downloaded_at": "2026-10-28T16:40:45.940Z",
+        "downloaded_at": "2026-10-31T17:47:46.124Z",
         "health": {
           "in_need": 20270923,
           "targeted": 9399993,
@@ -2216,7 +2216,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-03-12T13:27:53.831Z",
-        "downloaded_at": "2026-10-28T16:40:47.395Z",
+        "downloaded_at": "2026-10-31T17:47:47.610Z",
         "health": {
           "in_need": 5400043,
           "targeted": 3785402,
@@ -2244,7 +2244,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-06-16T14:08:22.906Z",
-        "downloaded_at": "2026-10-28T16:40:54.832Z",
+        "downloaded_at": "2026-10-31T17:47:53.483Z",
         "health": {
           "in_need": 3742972,
           "targeted": 2459208,
@@ -2272,7 +2272,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-02-17T07:09:59.981Z",
-        "downloaded_at": "2026-10-28T16:40:56.218Z",
+        "downloaded_at": "2026-10-31T17:47:55.645Z",
         "health": {
           "in_need": 5657327,
           "targeted": 3089736,
@@ -2300,7 +2300,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-24T08:32:22.729Z",
-        "downloaded_at": "2026-10-28T16:40:57.925Z",
+        "downloaded_at": "2026-10-31T17:47:57.539Z",
         "health": {
           "in_need": 1529765,
           "targeted": 666297,
@@ -2328,7 +2328,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-01-16T11:55:50.290Z",
-        "downloaded_at": "2026-10-28T16:41:01.041Z",
+        "downloaded_at": "2026-10-31T17:47:59.709Z",
         "health": {
           "in_need": 2031499,
           "targeted": 1341425,
@@ -2356,7 +2356,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-03-12T12:21:44.201Z",
-        "downloaded_at": "2026-10-28T16:41:02.943Z",
+        "downloaded_at": "2026-10-31T17:48:01.796Z",
         "health": {
           "in_need": 3560753,
           "targeted": 1129807,
@@ -2384,7 +2384,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-01-27T15:37:58.308Z",
-        "downloaded_at": "2026-10-28T16:41:05.637Z",
+        "downloaded_at": "2026-10-31T17:48:04.358Z",
         "health": {
           "in_need": 12935678,
           "targeted": 6000803,
@@ -2412,7 +2412,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-06-02T05:03:36.018Z",
-        "downloaded_at": "2026-10-28T16:41:08.020Z",
+        "downloaded_at": "2026-10-31T17:48:06.480Z",
         "health": {
           "in_need": 1035711,
           "targeted": 881486,
@@ -2440,7 +2440,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-01-06T13:57:08.304Z",
-        "downloaded_at": "2026-10-28T16:41:09.606Z",
+        "downloaded_at": "2026-10-31T17:48:07.736Z",
         "health": {
           "in_need": 1511471,
           "targeted": 1090263,
@@ -2468,7 +2468,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-25T12:35:12.138Z",
-        "downloaded_at": "2026-10-28T16:41:11.314Z",
+        "downloaded_at": "2026-10-31T17:48:11.335Z",
         "health": {
           "in_need": 460850,
           "targeted": 433813,
@@ -2496,7 +2496,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-25T12:42:22.431Z",
-        "downloaded_at": "2026-10-28T16:41:15.425Z",
+        "downloaded_at": "2026-10-31T17:48:13.980Z",
         "health": {
           "in_need": 4930892,
           "targeted": 3158720,
@@ -2524,7 +2524,7 @@
         "end": "2025-06-01",
         "monitoring_generated": true,
         "fingerprint": "2025-11-26T10:12:08.036Z",
-        "downloaded_at": "2026-10-28T16:41:16.166Z",
+        "downloaded_at": "2026-10-31T17:48:14.851Z",
         "health": {
           "in_need": 4147461,
           "targeted": 2081748,
@@ -2552,7 +2552,7 @@
         "end": "2025-07-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-25T12:37:31.908Z",
-        "downloaded_at": "2026-10-28T16:41:16.805Z",
+        "downloaded_at": "2026-10-31T17:48:15.566Z",
         "health": null,
         "plan_totals": {
           "in_need": 2986602,
@@ -2570,7 +2570,7 @@
         "end": "2025-06-30",
         "monitoring_generated": true,
         "fingerprint": "2025-11-26T11:36:18.773Z",
-        "downloaded_at": "2026-10-28T16:41:17.723Z",
+        "downloaded_at": "2026-10-31T17:48:16.532Z",
         "health": {
           "in_need": 731562,
           "targeted": 581146,
@@ -2592,7 +2592,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-04-17T15:21:26.260Z",
-        "downloaded_at": "2026-10-28T16:40:27.888Z",
+        "downloaded_at": "2026-10-31T17:47:27.030Z",
         "health": {
           "in_need": 1393638,
           "targeted": 1004188,
@@ -2614,7 +2614,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-09-11T12:50:29.299Z",
-        "downloaded_at": "2026-10-28T16:40:28.566Z",
+        "downloaded_at": "2026-10-31T17:47:27.762Z",
         "health": {
           "in_need": 2173703,
           "targeted": 1349273,
@@ -2636,7 +2636,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-02-25T08:27:57.583Z",
-        "downloaded_at": "2026-10-28T16:40:29.224Z",
+        "downloaded_at": "2026-10-31T17:47:28.485Z",
         "health": {
           "in_need": 1706766,
           "targeted": 1203856,
@@ -2658,7 +2658,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-02-25T08:34:26.108Z",
-        "downloaded_at": "2026-10-28T16:40:29.873Z",
+        "downloaded_at": "2026-10-31T17:47:29.208Z",
         "health": {
           "in_need": 1216660,
           "targeted": 948693,
@@ -2680,7 +2680,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-07-29T11:25:20.641Z",
-        "downloaded_at": "2026-10-28T16:40:30.502Z",
+        "downloaded_at": "2026-10-31T17:47:29.931Z",
         "health": {
           "in_need": 955008,
           "targeted": 516609,
@@ -2702,7 +2702,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-03-19T14:20:21.189Z",
-        "downloaded_at": "2026-10-28T16:40:31.148Z",
+        "downloaded_at": "2026-10-31T17:47:30.644Z",
         "health": {
           "in_need": 3957689,
           "targeted": 1488054,
@@ -2724,7 +2724,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-07-22T13:25:40.241Z",
-        "downloaded_at": "2026-10-28T16:40:32.380Z",
+        "downloaded_at": "2026-10-31T17:47:31.374Z",
         "health": {
           "in_need": 12561241,
           "targeted": 5401155,
@@ -2746,7 +2746,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-08-04T07:34:54.246Z",
-        "downloaded_at": "2026-10-28T16:40:32.984Z",
+        "downloaded_at": "2026-10-31T17:47:32.086Z",
         "health": {
           "in_need": 1942136,
           "targeted": 1589944,
@@ -2768,7 +2768,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-07-29T11:25:59.598Z",
-        "downloaded_at": "2026-10-28T16:40:31.762Z",
+        "downloaded_at": "2026-10-31T17:47:32.800Z",
         "health": {
           "in_need": 6269692,
           "targeted": 2884600,
@@ -2790,7 +2790,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-06-24T07:01:40.625Z",
-        "downloaded_at": "2026-10-28T16:40:33.601Z",
+        "downloaded_at": "2026-10-31T17:47:33.509Z",
         "health": {
           "in_need": 884290,
           "targeted": 800647,
@@ -2812,7 +2812,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-05-26T12:36:06.659Z",
-        "downloaded_at": "2026-10-28T16:40:34.204Z",
+        "downloaded_at": "2026-10-31T17:47:34.215Z",
         "health": {
           "in_need": 20986071,
           "targeted": 6622688,
@@ -2834,7 +2834,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-05-05T21:57:18.417Z",
-        "downloaded_at": "2026-10-28T16:40:34.810Z",
+        "downloaded_at": "2026-10-31T17:47:34.918Z",
         "health": {
           "in_need": 4989936,
           "targeted": 2426481,
