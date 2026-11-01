@@ -1425,7 +1425,7 @@
       "health_requirements_usd": 113653248,
       "health_funding_usd": 61876680,
       "plan_requirements_usd": 1463046056,
-      "plan_funding_usd": 568193575,
+      "plan_funding_usd": 570202350,
       "unspecified_funding_usd": 62652269,
       "source": "OCHA FTS"
     },
@@ -2092,34 +2092,34 @@
     }
   },
   "fetched_at": {
-    "hapi": "2026-11-01T07:37:09.474Z",
-    "fts": "2026-11-01T07:37:09.474Z",
-    "ssa": "2026-11-01T07:37:09.474Z",
-    "hpc": "2026-11-01T07:37:09.474Z"
+    "hapi": "2026-11-01T19:44:36.908Z",
+    "fts": "2026-11-01T19:44:36.908Z",
+    "ssa": "2026-11-01T19:44:36.908Z",
+    "hpc": "2026-11-01T19:44:36.908Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-01T07:37:09.474Z"
+      "checked_at": "2026-11-01T19:44:36.908Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-11-01T07:37:09.474Z"
+      "checked_at": "2026-11-01T19:44:36.908Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-11-01T07:37:09.474Z"
+      "checked_at": "2026-11-01T19:44:36.908Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-11-01T07:37:09.474Z"
+      "checked_at": "2026-11-01T19:44:36.908Z"
     }
   },
-  "last_attempt_at": "2026-11-01T07:37:09.474Z",
+  "last_attempt_at": "2026-11-01T19:44:36.908Z",
   "hpc": {
     "plans": {
       "1195": {
