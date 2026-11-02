@@ -1332,10 +1332,10 @@
       "name": "Burkina Faso Besoins Humanitaires et Plan de Réponse 2026",
       "health_cluster": "Santé",
       "health_requirements_usd": 53970921,
-      "health_funding_usd": 14666746,
+      "health_funding_usd": 14882056,
       "plan_requirements_usd": 658486359,
-      "plan_funding_usd": 154809399,
-      "unspecified_funding_usd": 26733710,
+      "plan_funding_usd": 155080312,
+      "unspecified_funding_usd": 26735066,
       "source": "OCHA FTS"
     },
     {
@@ -1345,10 +1345,10 @@
       "name": "Tchad Besoins Humanitaires et Plan de Réponse 2026",
       "health_cluster": "Santé",
       "health_requirements_usd": 45505747,
-      "health_funding_usd": 27793019,
+      "health_funding_usd": 28052882,
       "plan_requirements_usd": 986069627,
-      "plan_funding_usd": 444629877,
-      "unspecified_funding_usd": 75670577,
+      "plan_funding_usd": 445198452,
+      "unspecified_funding_usd": 75931618,
       "source": "OCHA FTS"
     },
     {
@@ -1373,7 +1373,7 @@
       "health_requirements_usd": 33715660,
       "health_funding_usd": 19762913,
       "plan_requirements_usd": 516399423,
-      "plan_funding_usd": 359836279,
+      "plan_funding_usd": 360789916,
       "unspecified_funding_usd": 135153311,
       "source": "OCHA FTS"
     },
@@ -1399,7 +1399,7 @@
       "health_requirements_usd": 236507341,
       "health_funding_usd": 217182578,
       "plan_requirements_usd": 2132641156,
-      "plan_funding_usd": 1142093566,
+      "plan_funding_usd": 1130090749,
       "unspecified_funding_usd": 99312725,
       "source": "OCHA FTS"
     },
@@ -1410,9 +1410,9 @@
       "name": "Mali Besoins Humanitaires et Plan de Réponse 2026",
       "health_cluster": "Santé",
       "health_requirements_usd": 30489234,
-      "health_funding_usd": 13017194,
+      "health_funding_usd": 8869550,
       "plan_requirements_usd": 577866412,
-      "plan_funding_usd": 150076511,
+      "plan_funding_usd": 149201492,
       "unspecified_funding_usd": 16411966,
       "source": "OCHA FTS"
     },
@@ -1451,7 +1451,7 @@
       "health_requirements_usd": 325279943,
       "health_funding_usd": 154125186,
       "plan_requirements_usd": 2866228593,
-      "plan_funding_usd": 1311486761,
+      "plan_funding_usd": 1317615418,
       "unspecified_funding_usd": 142317227,
       "source": "OCHA FTS"
     },
@@ -1462,10 +1462,10 @@
       "name": "Somalia Humanitarian Needs and Response Plan 2026",
       "health_cluster": "Health",
       "health_requirements_usd": 80000000,
-      "health_funding_usd": 23783920,
+      "health_funding_usd": 24971523,
       "plan_requirements_usd": 852000000,
-      "plan_funding_usd": 295155574,
-      "unspecified_funding_usd": 43072587,
+      "plan_funding_usd": 297314753,
+      "unspecified_funding_usd": 43719560,
       "source": "OCHA FTS"
     },
     {
@@ -1496,7 +1496,7 @@
         "deaths": 4,
         "injuries": 5,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1527,7 +1527,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "CMR": {
@@ -1542,7 +1542,7 @@
         "deaths": 0,
         "injuries": 6,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1573,7 +1573,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "CAF": {
@@ -1588,7 +1588,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1613,13 +1613,13 @@
       "monthly": [],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "COD": {
       "ssa_id": 49,
       "ytd": {
-        "attacks": 85,
+        "attacks": 87,
         "deaths": 9,
         "injuries": 34
       },
@@ -1628,12 +1628,12 @@
         "deaths": 1,
         "injuries": 11,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
           "year": 2026,
-          "attacks": 85,
+          "attacks": 87,
           "deaths": 9,
           "injuries": 34
         },
@@ -1694,12 +1694,12 @@
         {
           "year": 2026,
           "month": "Oct",
-          "attacks": 5
+          "attacks": 7
         }
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "MLI": {
@@ -1714,7 +1714,7 @@
         "deaths": 1,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1780,7 +1780,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "NER": {
@@ -1795,7 +1795,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1824,7 +1824,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "NGA": {
@@ -1839,7 +1839,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1875,7 +1875,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "SSD": {
@@ -1890,7 +1890,7 @@
         "deaths": 16,
         "injuries": 44,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1946,7 +1946,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "SDN": {
@@ -1961,7 +1961,7 @@
         "deaths": 1486,
         "injuries": 205,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -1987,7 +1987,7 @@
         {
           "year": 2025,
           "month": "Nov",
-          "attacks": 6
+          "attacks": 5
         },
         {
           "year": 2025,
@@ -2047,7 +2047,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     },
     "SOM": {
@@ -2062,7 +2062,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-01"
+        "end": "2025-11-02"
       },
       "annual": [
         {
@@ -2087,39 +2087,39 @@
       "monthly": [],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-01"
+        "end": "2026-11-02"
       }
     }
   },
   "fetched_at": {
-    "hapi": "2026-11-01T19:44:36.908Z",
-    "fts": "2026-11-01T19:44:36.908Z",
-    "ssa": "2026-11-01T19:44:36.908Z",
-    "hpc": "2026-11-01T19:44:36.908Z"
+    "hapi": "2026-11-02T15:58:40.494Z",
+    "fts": "2026-11-02T15:58:40.494Z",
+    "ssa": "2026-11-02T15:58:40.494Z",
+    "hpc": "2026-11-02T15:58:40.494Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-01T19:44:36.908Z"
+      "checked_at": "2026-11-02T15:58:40.494Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-11-01T19:44:36.908Z"
+      "checked_at": "2026-11-02T15:58:40.494Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-11-01T19:44:36.908Z"
+      "checked_at": "2026-11-02T15:58:40.494Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-11-01T19:44:36.908Z"
+      "checked_at": "2026-11-02T15:58:40.494Z"
     }
   },
-  "last_attempt_at": "2026-11-01T19:44:36.908Z",
+  "last_attempt_at": "2026-11-02T15:58:40.494Z",
   "hpc": {
     "plans": {
       "1195": {
