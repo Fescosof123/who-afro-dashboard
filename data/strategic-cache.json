@@ -1339,7 +1339,7 @@
       "health_requirements_usd": 53970921,
       "health_funding_usd": 14882056,
       "plan_requirements_usd": 658486359,
-      "plan_funding_usd": 152827282,
+      "plan_funding_usd": 153623540,
       "unspecified_funding_usd": 26715336,
       "source": "OCHA FTS"
     },
@@ -1352,7 +1352,7 @@
       "health_requirements_usd": 45505747,
       "health_funding_usd": 28052882,
       "plan_requirements_usd": 986069627,
-      "plan_funding_usd": 441328966,
+      "plan_funding_usd": 443226153,
       "unspecified_funding_usd": 75911888,
       "source": "OCHA FTS"
     },
@@ -1365,8 +1365,8 @@
       "health_requirements_usd": 37906706,
       "health_funding_usd": 9700908,
       "plan_requirements_usd": 534342584,
-      "plan_funding_usd": 225344329,
-      "unspecified_funding_usd": 81758528,
+      "plan_funding_usd": 225487660,
+      "unspecified_funding_usd": 81179493,
       "source": "OCHA FTS"
     },
     {
@@ -1402,9 +1402,9 @@
       "name": "République Démocratique du Congo Besoins Humanitaires et Plan de Réponse 2026",
       "health_cluster": "Santé",
       "health_requirements_usd": 236507341,
-      "health_funding_usd": 213042886,
+      "health_funding_usd": 212838568,
       "plan_requirements_usd": 2132641156,
-      "plan_funding_usd": 1124721529,
+      "plan_funding_usd": 1125015790,
       "unspecified_funding_usd": 99312725,
       "source": "OCHA FTS"
     },
@@ -1417,7 +1417,7 @@
       "health_requirements_usd": 30489234,
       "health_funding_usd": 9616010,
       "plan_requirements_usd": 577866412,
-      "plan_funding_usd": 146000615,
+      "plan_funding_usd": 146038614,
       "unspecified_funding_usd": 16204830,
       "source": "OCHA FTS"
     },
@@ -1454,9 +1454,9 @@
       "name": "Sudan Humanitarian Needs and Response Plan 2026",
       "health_cluster": "Health",
       "health_requirements_usd": 325279943,
-      "health_funding_usd": 154125186,
+      "health_funding_usd": 155365390,
       "plan_requirements_usd": 2866228593,
-      "plan_funding_usd": 1321526787,
+      "plan_funding_usd": 1373613723,
       "unspecified_funding_usd": 142317227,
       "source": "OCHA FTS"
     },
@@ -1538,7 +1538,7 @@
     "CMR": {
       "ssa_id": 38,
       "ytd": {
-        "attacks": 0,
+        "attacks": 1,
         "deaths": 0,
         "injuries": 0
       },
@@ -1551,6 +1551,12 @@
       },
       "annual": [
         {
+          "year": 2026,
+          "attacks": 1,
+          "deaths": 0,
+          "injuries": 0
+        },
+        {
           "year": 2025,
           "attacks": 20,
           "deaths": 0,
@@ -1561,17 +1567,16 @@
           "attacks": 1,
           "deaths": 0,
           "injuries": 0
-        },
-        {
-          "year": 2019,
-          "attacks": 1,
-          "deaths": 0,
-          "injuries": 0
         }
       ],
       "monthly": [
         {
           "year": 2025,
+          "month": "Nov",
+          "attacks": 1
+        },
+        {
+          "year": 2026,
           "month": "Nov",
           "attacks": 1
         }
@@ -2097,34 +2102,34 @@
     }
   },
   "fetched_at": {
-    "hapi": "2026-11-06T10:56:24.229Z",
-    "fts": "2026-11-06T10:56:24.229Z",
-    "ssa": "2026-11-06T10:56:24.229Z",
-    "hpc": "2026-11-06T10:56:24.229Z"
+    "hapi": "2026-11-06T23:11:09.620Z",
+    "fts": "2026-11-06T23:11:09.620Z",
+    "ssa": "2026-11-06T23:11:09.620Z",
+    "hpc": "2026-11-06T23:11:09.620Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-06T10:56:24.229Z"
+      "checked_at": "2026-11-06T23:11:09.620Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-11-06T10:56:24.229Z"
+      "checked_at": "2026-11-06T23:11:09.620Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-11-06T10:56:24.229Z"
+      "checked_at": "2026-11-06T23:11:09.620Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-11-06T10:56:24.229Z"
+      "checked_at": "2026-11-06T23:11:09.620Z"
     }
   },
-  "last_attempt_at": "2026-11-06T10:56:24.229Z",
+  "last_attempt_at": "2026-11-06T23:11:09.620Z",
   "hpc": {
     "plans": {
       "1195": {
@@ -2137,7 +2142,7 @@
         "end": "2024-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-09-09T12:09:26.429Z",
-        "downloaded_at": "2026-11-03T21:04:19.303Z",
+        "downloaded_at": "2026-11-06T23:13:44.391Z",
         "health": {
           "in_need": 16444109,
           "targeted": 6660285,
@@ -2165,7 +2170,7 @@
         "end": "2024-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-03-24T13:59:23.298Z",
-        "downloaded_at": "2026-11-03T21:04:20.162Z",
+        "downloaded_at": "2026-11-06T23:13:45.095Z",
         "health": {
           "in_need": 545000,
           "targeted": 306000,
@@ -2193,7 +2198,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-03-26T10:31:09.834Z",
-        "downloaded_at": "2026-11-03T21:03:30.321Z",
+        "downloaded_at": "2026-11-06T23:13:04.728Z",
         "health": {
           "in_need": 20270923,
           "targeted": 9399993,
@@ -2221,7 +2226,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-03-12T13:27:53.831Z",
-        "downloaded_at": "2026-11-03T21:03:31.949Z",
+        "downloaded_at": "2026-11-06T23:13:08.706Z",
         "health": {
           "in_need": 5400043,
           "targeted": 3785402,
@@ -2249,7 +2254,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-06-16T14:08:22.906Z",
-        "downloaded_at": "2026-11-03T21:03:39.107Z",
+        "downloaded_at": "2026-11-06T23:13:13.282Z",
         "health": {
           "in_need": 3742972,
           "targeted": 2459208,
@@ -2277,7 +2282,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-02-17T07:09:59.981Z",
-        "downloaded_at": "2026-11-03T21:03:41.357Z",
+        "downloaded_at": "2026-11-06T23:13:14.822Z",
         "health": {
           "in_need": 5657327,
           "targeted": 3089736,
@@ -2305,7 +2310,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-24T08:32:22.729Z",
-        "downloaded_at": "2026-11-03T21:03:43.682Z",
+        "downloaded_at": "2026-11-06T23:13:17.371Z",
         "health": {
           "in_need": 1529765,
           "targeted": 666297,
@@ -2333,7 +2338,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-01-16T11:55:50.290Z",
-        "downloaded_at": "2026-11-03T21:04:00.101Z",
+        "downloaded_at": "2026-11-06T23:13:19.614Z",
         "health": {
           "in_need": 2031499,
           "targeted": 1341425,
@@ -2361,7 +2366,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-03-12T12:21:44.201Z",
-        "downloaded_at": "2026-11-03T21:03:54.976Z",
+        "downloaded_at": "2026-11-06T23:13:21.719Z",
         "health": {
           "in_need": 3560753,
           "targeted": 1129807,
@@ -2389,7 +2394,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-01-27T15:37:58.308Z",
-        "downloaded_at": "2026-11-03T21:04:12.497Z",
+        "downloaded_at": "2026-11-06T23:13:24.682Z",
         "health": {
           "in_need": 12935678,
           "targeted": 6000803,
@@ -2417,7 +2422,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-06-02T05:03:36.018Z",
-        "downloaded_at": "2026-11-03T21:03:47.685Z",
+        "downloaded_at": "2026-11-06T23:13:28.113Z",
         "health": {
           "in_need": 1035711,
           "targeted": 881486,
@@ -2445,7 +2450,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2026-01-06T13:57:08.304Z",
-        "downloaded_at": "2026-11-03T21:03:57.278Z",
+        "downloaded_at": "2026-11-06T23:13:30.762Z",
         "health": {
           "in_need": 1511471,
           "targeted": 1090263,
@@ -2473,7 +2478,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-25T12:35:12.138Z",
-        "downloaded_at": "2026-11-03T21:03:50.490Z",
+        "downloaded_at": "2026-11-06T23:13:33.024Z",
         "health": {
           "in_need": 460850,
           "targeted": 433813,
@@ -2501,7 +2506,7 @@
         "end": "2025-12-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-25T12:42:22.431Z",
-        "downloaded_at": "2026-11-03T21:04:09.210Z",
+        "downloaded_at": "2026-11-06T23:13:36.439Z",
         "health": {
           "in_need": 4930892,
           "targeted": 3158720,
@@ -2529,7 +2534,7 @@
         "end": "2025-06-01",
         "monitoring_generated": true,
         "fingerprint": "2025-11-26T10:12:08.036Z",
-        "downloaded_at": "2026-11-03T21:04:13.305Z",
+        "downloaded_at": "2026-11-06T23:13:37.128Z",
         "health": {
           "in_need": 4147461,
           "targeted": 2081748,
@@ -2557,7 +2562,7 @@
         "end": "2025-07-31",
         "monitoring_generated": true,
         "fingerprint": "2025-11-25T12:37:31.908Z",
-        "downloaded_at": "2026-11-03T21:03:51.259Z",
+        "downloaded_at": "2026-11-06T23:13:37.724Z",
         "health": null,
         "plan_totals": {
           "in_need": 2986602,
@@ -2575,7 +2580,7 @@
         "end": "2025-06-30",
         "monitoring_generated": true,
         "fingerprint": "2025-11-26T11:36:18.773Z",
-        "downloaded_at": "2026-11-03T21:03:52.341Z",
+        "downloaded_at": "2026-11-06T23:13:38.544Z",
         "health": {
           "in_need": 731562,
           "targeted": 581146,
@@ -2597,7 +2602,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-04-17T15:21:26.260Z",
-        "downloaded_at": "2026-11-03T21:03:10.515Z",
+        "downloaded_at": "2026-11-06T23:12:46.743Z",
         "health": {
           "in_need": 1393638,
           "targeted": 1004188,
@@ -2619,7 +2624,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-09-11T12:50:29.299Z",
-        "downloaded_at": "2026-11-03T21:03:09.686Z",
+        "downloaded_at": "2026-11-06T23:12:47.380Z",
         "health": {
           "in_need": 2173703,
           "targeted": 1349273,
@@ -2641,7 +2646,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-02-25T08:27:57.583Z",
-        "downloaded_at": "2026-11-03T21:03:11.260Z",
+        "downloaded_at": "2026-11-06T23:12:48.001Z",
         "health": {
           "in_need": 1706766,
           "targeted": 1203856,
@@ -2663,7 +2668,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-02-25T08:34:26.108Z",
-        "downloaded_at": "2026-11-03T21:03:12.033Z",
+        "downloaded_at": "2026-11-06T23:12:48.618Z",
         "health": {
           "in_need": 1216660,
           "targeted": 948693,
@@ -2685,7 +2690,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-07-29T11:25:20.641Z",
-        "downloaded_at": "2026-11-03T21:03:12.794Z",
+        "downloaded_at": "2026-11-06T23:12:49.224Z",
         "health": {
           "in_need": 955008,
           "targeted": 516609,
@@ -2707,7 +2712,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-03-19T14:20:21.189Z",
-        "downloaded_at": "2026-11-03T21:03:14.343Z",
+        "downloaded_at": "2026-11-06T23:12:49.813Z",
         "health": {
           "in_need": 3957689,
           "targeted": 1488054,
@@ -2729,7 +2734,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-07-22T13:25:40.241Z",
-        "downloaded_at": "2026-11-03T21:03:13.594Z",
+        "downloaded_at": "2026-11-06T23:12:51.024Z",
         "health": {
           "in_need": 12561241,
           "targeted": 5401155,
@@ -2751,7 +2756,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-08-04T07:34:54.246Z",
-        "downloaded_at": "2026-11-03T21:03:15.805Z",
+        "downloaded_at": "2026-11-06T23:12:52.848Z",
         "health": {
           "in_need": 1942136,
           "targeted": 1589944,
@@ -2773,7 +2778,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-07-29T11:25:59.598Z",
-        "downloaded_at": "2026-11-03T21:03:15.073Z",
+        "downloaded_at": "2026-11-06T23:12:51.628Z",
         "health": {
           "in_need": 6269692,
           "targeted": 2884600,
@@ -2795,7 +2800,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-06-24T07:01:40.625Z",
-        "downloaded_at": "2026-11-03T21:03:16.540Z",
+        "downloaded_at": "2026-11-06T23:12:50.416Z",
         "health": {
           "in_need": 884290,
           "targeted": 800647,
@@ -2817,7 +2822,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-05-26T12:36:06.659Z",
-        "downloaded_at": "2026-11-03T21:03:17.249Z",
+        "downloaded_at": "2026-11-06T23:12:52.242Z",
         "health": {
           "in_need": 20986071,
           "targeted": 6622688,
@@ -2839,7 +2844,7 @@
         "end": "2026-12-31",
         "monitoring_generated": false,
         "fingerprint": "2026-05-05T21:57:18.417Z",
-        "downloaded_at": "2026-11-03T21:03:17.994Z",
+        "downloaded_at": "2026-11-06T23:12:53.428Z",
         "health": {
           "in_need": 4989936,
           "targeted": 2426481,
