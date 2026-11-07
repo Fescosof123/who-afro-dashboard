@@ -36,7 +36,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 658486359,
-          "funding_usd": 160046726,
+          "funding_usd": 159528104,
           "funding_pct": 24
         }
       ],
@@ -208,7 +208,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 986069627,
-          "funding_usd": 444111909,
+          "funding_usd": 442045736,
           "funding_pct": 45
         }
       ],
@@ -463,7 +463,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 577866412,
-          "funding_usd": 160635346,
+          "funding_usd": 160635344,
           "funding_pct": 28
         }
       ],
@@ -629,7 +629,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 675619589,
-          "funding_usd": 135793792,
+          "funding_usd": 133905663,
           "funding_pct": 20
         }
       ],
@@ -795,7 +795,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 318976221,
-          "funding_usd": 125772557,
+          "funding_usd": 125772559,
           "funding_pct": 39
         }
       ],
@@ -1032,7 +1032,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 2866228593,
-          "funding_usd": 1335698916,
+          "funding_usd": 1335643439,
           "funding_pct": 47
         }
       ],
@@ -1118,7 +1118,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 852000000,
-          "funding_usd": 300880876,
+          "funding_usd": 301880876,
           "funding_pct": 35
         }
       ],
@@ -1378,7 +1378,7 @@
       "health_requirements_usd": 33715660,
       "health_funding_usd": 19762913,
       "plan_requirements_usd": 516399423,
-      "plan_funding_usd": 361822121,
+      "plan_funding_usd": 361684621,
       "unspecified_funding_usd": 136185516,
       "source": "OCHA FTS"
     },
@@ -1501,7 +1501,7 @@
         "deaths": 4,
         "injuries": 5,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1532,7 +1532,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "CMR": {
@@ -1547,7 +1547,7 @@
         "deaths": 0,
         "injuries": 6,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1571,11 +1571,6 @@
       ],
       "monthly": [
         {
-          "year": 2025,
-          "month": "Nov",
-          "attacks": 1
-        },
-        {
           "year": 2026,
           "month": "Nov",
           "attacks": 1
@@ -1583,7 +1578,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "CAF": {
@@ -1598,7 +1593,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1623,7 +1618,7 @@
       "monthly": [],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "COD": {
@@ -1638,7 +1633,7 @@
         "deaths": 1,
         "injuries": 11,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1709,7 +1704,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "MLI": {
@@ -1724,7 +1719,7 @@
         "deaths": 1,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1790,7 +1785,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "NER": {
@@ -1805,7 +1800,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1834,7 +1829,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "NGA": {
@@ -1849,7 +1844,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1885,7 +1880,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "SSD": {
@@ -1900,7 +1895,7 @@
         "deaths": 16,
         "injuries": 44,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1956,7 +1951,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "SDN": {
@@ -1971,7 +1966,7 @@
         "deaths": 1496,
         "injuries": 220,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -1997,7 +1992,7 @@
         {
           "year": 2025,
           "month": "Nov",
-          "attacks": 4
+          "attacks": 3
         },
         {
           "year": 2025,
@@ -2057,7 +2052,7 @@
       ],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     },
     "SOM": {
@@ -2072,7 +2067,7 @@
         "deaths": 0,
         "injuries": 0,
         "start": "2025-01-01",
-        "end": "2025-11-06"
+        "end": "2025-11-07"
       },
       "annual": [
         {
@@ -2097,39 +2092,39 @@
       "monthly": [],
       "period": {
         "start": "2026-01-01",
-        "end": "2026-11-06"
+        "end": "2026-11-07"
       }
     }
   },
   "fetched_at": {
-    "hapi": "2026-11-06T23:11:09.620Z",
-    "fts": "2026-11-06T23:11:09.620Z",
-    "ssa": "2026-11-06T23:11:09.620Z",
-    "hpc": "2026-11-06T23:11:09.620Z"
+    "hapi": "2026-11-07T16:31:19.413Z",
+    "fts": "2026-11-07T16:31:19.413Z",
+    "ssa": "2026-11-07T16:31:19.413Z",
+    "hpc": "2026-11-07T16:31:19.413Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-06T23:11:09.620Z"
+      "checked_at": "2026-11-07T16:31:19.413Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-11-06T23:11:09.620Z"
+      "checked_at": "2026-11-07T16:31:19.413Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-11-06T23:11:09.620Z"
+      "checked_at": "2026-11-07T16:31:19.413Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-11-06T23:11:09.620Z"
+      "checked_at": "2026-11-07T16:31:19.413Z"
     }
   },
-  "last_attempt_at": "2026-11-06T23:11:09.620Z",
+  "last_attempt_at": "2026-11-07T16:31:19.413Z",
   "hpc": {
     "plans": {
       "1195": {
