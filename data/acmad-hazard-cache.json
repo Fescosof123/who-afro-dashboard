@@ -1,28 +1,33 @@
 {
   "source": "ACMAD Continental Multi-Hazard & Advisory Bulletin (WMO Regional Climate Centre for Africa)",
-  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-11-05/",
-  "pdf_url": "https://www.acmad.org/documents/1692/Continental_Hazard_Outlook_20261105.pdf",
-  "issued_on": "2026-10-05",
+  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-11-09/",
+  "pdf_url": "https://www.acmad.org/documents/1705/Continental_Hazard_Outlook_20261109.pdf",
+  "issued_on": "2026-11-09",
   "sections": [
     {
       "hazard": "heavy_rain",
       "title": "Heavy rainfall and strong winds",
       "valid_from": null,
       "valid_to": null,
-      "highlight": "Heavy rainfall is expected in Cameroon, Equatorial Guinea, Gabon, Congo, DRC, Angola, Uganda, and Tanzania.",
+      "highlight": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., Rwanda, Burundi, Uganda, Ethiopia, Kenya, Tanzania, Somalia, and Madagascar.",
       "sentences": [
         {
-          "text": "Heavy rainfall is expected in Cameroon, Equatorial Guinea, Gabon, Congo, DRC, Angola, Uganda, and Tanzania.",
+          "text": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., Rwanda, Burundi, Uganda, Ethiopia, Kenya, Tanzania, Somalia, and Madagascar.",
           "level": "watch",
           "countries": [
-            "CMR",
             "GNQ",
             "GAB",
             "COG",
-            "COD",
             "AGO",
+            "COD",
+            "RWA",
+            "BDI",
             "UGA",
-            "TZA"
+            "ETH",
+            "KEN",
+            "TZA",
+            "SOM",
+            "MDG"
           ]
         }
       ]
@@ -32,28 +37,19 @@
       "title": "Heat wave",
       "valid_from": null,
       "valid_to": null,
-      "highlight": "Moderate heat wave is expected in Burkina Faso, Ghana, Togo, Nigeria, Chad, C.A.R. and South Sudan.",
+      "highlight": "Moderate heat wave is expected in Burkina Faso, Ghana, and Togo.",
       "sentences": [
         {
-          "text": "Moderate heat wave is expected in Burkina Faso, Ghana, Togo, Nigeria, Chad, C.A.R.",
+          "text": "Moderate heat wave is expected in Burkina Faso, Ghana, and Togo.",
           "level": "watch",
           "countries": [
             "BFA",
             "GHA",
-            "TGO",
-            "NGA",
-            "TCD"
-          ]
-        },
-        {
-          "text": "and South Sudan.",
-          "level": "watch",
-          "countries": [
-            "SSD"
+            "TGO"
           ]
         }
       ]
     }
   ],
-  "fetched_at": "2026-11-05T22:00:22.166Z"
+  "fetched_at": "2026-11-10T01:34:07.590Z"
 }
