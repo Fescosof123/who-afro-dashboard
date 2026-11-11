@@ -266,6 +266,7 @@ const PHRASE_FR = {
   "Strategic View": "Vue stratégique",
   "Crisis Classification": "Classification des crises",
   "FCV Response": "Réponse FCV",
+  "WHO Humanitarian Response": "Réponse humanitaire de l'OMS",
   "Risk Monitoring": "Suivi des risques",
   "Conflict & Displacement": "Conflits et déplacements",
   "Attacks on Health Care": "Attaques contre les soins de santé",

@@ -6562,6 +6562,24 @@ function attacksHealthResponseFromCache(query = {}) {
 }
 
 // Strategic humanitarian KPIs (HDX HAPI, OCHA FTS, WHO SSA, WHO grading register).
+// Optional Microsoft Copilot Studio agent, shown in a side panel when its web
+// channel embed link is set (COPILOT_EMBED_URL). Only https links on Microsoft hosts.
+function copilotEmbedUrl() {
+  const raw = String(process.env.COPILOT_EMBED_URL || "").trim();
+  if (!raw) return null;
+  try {
+    const u = new URL(raw);
+    const okHost = /(^|\.)(microsoft\.com|powerva\.microsoft\.com|botframework\.com|powerplatform\.com|cloud\.microsoft)$/i.test(u.hostname);
+    return u.protocol === "https:" && okHost ? u.href : null;
+  } catch (err) {
+    return null;
+  }
+}
+
+app.get("/api/ui-config", (req, res) => {
+  res.json({ copilot_url: copilotEmbedUrl(), copilot_name: String(process.env.COPILOT_NAME || "Copilot").slice(0, 40) });
+});
+
 app.get("/api/strategic", (req, res) => {
   try {
     res.json(strategic.buildStrategicPayload(fcvCountryProfileSnapshot));

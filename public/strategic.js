@@ -1550,6 +1550,7 @@
     hapi: ["OCHA HDX HAPI", "https://hapi.humdata.org"],
     hpc: ["OCHA Humanitarian Action (plans and response monitoring)", "https://humanitarianaction.info"],
     fts: ["OCHA Financial Tracking Service", "https://fts.unocha.org"],
+    cerf: ["UN Central Emergency Response Fund (CERF)", "https://cerf.un.org"],
     dtm: ["IOM Displacement Tracking Matrix", "https://dtm.iom.int"],
     unhcr: ["UNHCR Refugee Data Finder", "https://www.unhcr.org/refugee-statistics"],
     acled: ["ACLED Conflict Index", "https://acleddata.com/conflict-index/"],
@@ -1574,6 +1575,7 @@
   const LINKS_FR = {
     hpc: "OCHA Humanitarian Action (plans et suivi de la réponse)",
     fts: "Service de suivi financier (FTS) d'OCHA",
+    cerf: "Fonds central d'intervention pour les urgences humanitaires (CERF)",
     dtm: "Matrice de suivi des déplacements (DTM) de l'OIM",
     unhcr: "Refugee Data Finder du HCR",
     acled: "Indice des conflits ACLED",
@@ -2190,14 +2192,14 @@
 
   // ---------- Destination labels for clickable cards ----------
   const PAGE_LABEL = {
-    overviewPage: "Overview", gradingPage: "Crisis Classification", fcvDataPage: "FCV Response", countryPage: "Country Profiles",
+    overviewPage: "Overview", gradingPage: "Crisis Classification", fcvDataPage: "FCV Response", whoResponsePage: "WHO Humanitarian Response", countryPage: "Country Profiles",
     conflictsDisplacementPage: "Conflict & Displacement", attacksHealthPage: "Attacks on Health Care", foodSecurityPage: "Food Security",
     nutritionPage: "Nutrition", hazardPage: "Hazards & Floods", cyclonePage: "Cyclone Watch", forecastPage: "Climate Forecasts",
     operationalReportPage: "Operational Bulletin", signalsPage: "Event Signals", dataHealthPage: "Data Health"
   };
   // French page names, the same as the French navigation menu (PHRASE_FR in app.js).
   const PAGE_LABEL_FR = {
-    overviewPage: "Vue d'ensemble", gradingPage: "Classification des crises", fcvDataPage: "Réponse FCV", countryPage: "Profils pays",
+    overviewPage: "Vue d'ensemble", gradingPage: "Classification des crises", fcvDataPage: "Réponse FCV", whoResponsePage: "Réponse humanitaire de l'OMS", countryPage: "Profils pays",
     conflictsDisplacementPage: "Conflits et déplacements", attacksHealthPage: "Attaques contre les soins de santé", foodSecurityPage: "Sécurité alimentaire",
     nutritionPage: "Nutrition", hazardPage: "Aléas et inondations", cyclonePage: "Vigie cyclonique", forecastPage: "Prévisions climatiques",
     operationalReportPage: "Bulletin opérationnel", signalsPage: "Signaux d'événements", dataHealthPage: "Qualité des données"
@@ -2209,7 +2211,7 @@
     const node = anchor ? el(anchor) : null;
     const panelTitle = node ? (node.closest(".panel")?.querySelector("h2")?.textContent || "").trim() : "";
     const pageName = isFr() ? (PAGE_LABEL_FR[page] || PAGE_LABEL[page] || page) : (PAGE_LABEL[page] || page);
-    return panelTitle && !panelTitle.startsWith(pageName) ? L(`${pageName}: ${panelTitle}`, `${pageName} \u2013 ${panelTitle}`) : pageName;
+    return panelTitle && !panelTitle.startsWith(pageName) ? L(`${pageName}: ${panelTitle}`, `${pageName} \u203a ${panelTitle}`) : pageName;
   }
   // French typography on rendered text (spaces before : ; ! ? %, guillemets).
   const TYPO_IDS = ["stratKpiGrid", "stratTrendNote", "stratStatusTable", "stratMessages", "stratMapNote", "stratTable", "stratSources",
@@ -2540,6 +2542,415 @@
   }
 
   // ---------- orchestration ----------
+  // ---------- WHO Humanitarian Response page ----------
+  // Funding received by WHO (OCHA FTS, organisation 4398), CERF grants to WHO,
+  // and the operational picture WHO leads (Health Cluster funding and reach, WHO grades).
+  const whoState = { scope: "fcv13", country: "", window: "" };
+  const WHO_FILTER_DEFAULTS = { scope: "fcv13", country: "", window: "" };
+
+  function cerfWindowName(w) {
+    if (w === "Rapid Response") return L("Rapid Response", "Réponse rapide");
+    if (w === "Underfunded Emergencies") return L("Underfunded Emergencies", "Urgences sous-financées");
+    return L("Other", "Autre");
+  }
+  function emergencyName(e) {
+    if (!e) return na();
+    if (!isFr()) return e;
+    const map = [
+      [/Ebola/i, "Épidémie : Ebola"], [/Cholera/i, "Épidémie : choléra"], [/Disease Outbreak/i, "Épidémie"],
+      [/Refugees/i, "Conflit : réfugiés"], [/Displacement/i, "Conflit : déplacement"], [/Violence|clashes/i, "Conflit : violences"],
+      [/Drought/i, "Catastrophe naturelle : sécheresse"], [/Flood/i, "Catastrophe naturelle : inondations"]
+    ];
+    const hit = map.find(([rx]) => rx.test(e));
+    return hit ? hit[1] : e;
+  }
+  function donorName(n) {
+    if (!isFr()) {
+      const en = {
+        "Central Emergency Response Fund": "CERF",
+        "European Commission's Humanitarian Aid and Civil Protection Department": "European Commission (ECHO)"
+      };
+      return en[n] || (n === "Not specified" ? "Donor not reported" : n);
+    }
+    const map = {
+      "Central Emergency Response Fund": "CERF",
+      "European Commission's Humanitarian Aid and Civil Protection Department": "Commission européenne (ECHO)",
+      "United Kingdom, Government of": "Royaume-Uni, gouvernement", "Germany, Government of": "Allemagne, gouvernement",
+      "Japan, Government of": "Japon, gouvernement", "Switzerland, Government of": "Suisse, gouvernement",
+      "Not specified": "Donateur non déclaré"
+    };
+    return map[n] || n;
+  }
+  function whoRows() {
+    const who = state.payload?.who_response;
+    if (!who) return [];
+    return rowsInScope(whoState.scope)
+      .filter((r) => !whoState.country || r.iso3 === whoState.country)
+      .map((r) => ({ row: r, w: who.countries?.[r.iso3] || null }));
+  }
+  function whoTotal(w) {
+    return w ? (isNum(w.fts_total_usd) ? w.fts_total_usd : w.total_usd) : null;
+  }
+  function whoHcShare(r, w) {
+    const hc = r.health_funding;
+    if (!w || !hc || !isNum(hc.funding_usd) || hc.funding_usd <= 0 || !isNum(w.health_cluster_usd)) return null;
+    // Not capped: above 100% means the two FTS figures disagree and should be checked.
+    return w.health_cluster_usd / hc.funding_usd;
+  }
+
+  function renderWhoFilters() {
+    const box = el("whoRespFilters");
+    if (!box) return;
+    const all = rowsInScope(whoState.scope).slice().sort((a, b) => cname(a.country).localeCompare(cname(b.country), locale()));
+    if (whoState.country && !all.some((r) => r.iso3 === whoState.country)) whoState.country = "";
+    const opt = (v, t, cur) => `<option value="${esc(v)}"${v === cur ? " selected" : ""}>${esc(t)}</option>`;
+    box.innerHTML = `
+      <label>${L("Country group", "Groupe de pays")}
+        <select id="whoRespScope">
+          ${opt("fcv13", L("13 FCV countries", "13 pays FCV"), whoState.scope)}
+          ${opt("fcvall", L("All 18 FCV countries", "Les 18 pays FCV"), whoState.scope)}
+          ${opt("withcontext", L("FCV + cross-border context", "FCV + contexte transfrontalier"), whoState.scope)}
+        </select></label>
+      <label>${L("Country", "Pays")}
+        <select id="whoRespCountry">
+          ${opt("", L("All countries", "Tous les pays"), whoState.country)}
+          ${all.map((r) => opt(r.iso3, cname(r.country), whoState.country)).join("")}
+        </select></label>
+      <label>${L("CERF window", "Guichet du CERF")}
+        <select id="whoRespWindow">
+          ${opt("", L("Both windows", "Les deux guichets"), whoState.window)}
+          ${opt("Rapid Response", cerfWindowName("Rapid Response"), whoState.window)}
+          ${opt("Underfunded Emergencies", cerfWindowName("Underfunded Emergencies"), whoState.window)}
+        </select></label>`;
+  }
+
+  function renderWhoResponsePage() {
+    if (!el("whoResponsePage")) return;
+    const who = state.payload?.who_response;
+    const year = who?.year || new Date().getFullYear();
+    const setText = (id, text) => { const n = el(id); if (n) n.textContent = text; };
+    setText("whoRespTitle", L("WHO Humanitarian Response", "Réponse humanitaire de l'OMS"));
+    setText("whoRespChartTitle", L("Funding Received by WHO, by Country", "Financements reçus par l'OMS, par pays"));
+    setText("whoRespTableTitle", L("WHO Response by Country", "Réponse de l'OMS par pays"));
+    setText("whoRespCerfTitle", L("CERF Allocations to WHO", "Allocations du CERF à l'OMS"));
+    setText("whoRespDonorsTitle", L("Main Donors to WHO", "Principaux donateurs de l'OMS"));
+    setText("whoRespNotesTitle", L("How to Read This Page", "Comment lire cette page"));
+    const intro = el("whoRespIntro");
+    if (intro) {
+      intro.textContent = L(
+        `Humanitarian funding received by WHO in ${year}, CERF grants to WHO, and the response WHO leads as Health Cluster lead agency. Funding as reported to OCHA FTS${who?.fetched_at ? `, updated ${fmtDate(who.fetched_at)}` : ""}.`,
+        `Financements humanitaires reçus par l'OMS en ${year}, subventions du CERF à l'OMS et réponse que l'OMS dirige en tant que chef de file du Cluster Santé. Financements déclarés au FTS d'OCHA${who?.fetched_at ? `, mis à jour le ${fmtDate(who.fetched_at)}` : ""}.`);
+    }
+    renderWhoFilters();
+    const kpis = el("whoRespKpis");
+    if (!who) {
+      if (kpis) kpis.innerHTML = `<p class="muted">${L("Funding received by WHO will appear after the next data update (OCHA FTS).", "Les financements reçus par l'OMS apparaîtront après la prochaine mise à jour des données (FTS d'OCHA).")}</p>`;
+      ["whoRespTable", "whoRespCerfTable"].forEach((id) => { const n = el(id); if (n) n.innerHTML = ""; });
+      const chart = el("whoRespChart");
+      if (chart) emptyNote(chart, L("No data yet.", "Pas encore de données."));
+      return;
+    }
+    const list = whoRows();
+    const withData = list.filter((x) => x.w);
+    const total = sum(withData, (x) => whoTotal(x.w));
+    const prevTotal = sum(withData, (x) => x.w.previous_year_total_usd);
+    const cerf = sum(withData, (x) => x.w.cerf_usd);
+    const pooled = sum(withData, (x) => x.w.cbpf_usd);
+    const grants = withData.flatMap((x) => (x.w.cerf_grants || []).map((g) => ({ ...g, row: x.row })))
+      .filter((g) => !whoState.window || g.window === whoState.window)
+      .sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const cerfShown = grants.reduce((a, g) => a + (g.usd || 0), 0);
+    const grantCount = withData.reduce((a, x) => a + (x.w.cerf_grants || []).length, 0);
+    const hcRows = withData.filter((x) => whoHcShare(x.row, x.w) != null);
+    const hcWho = sum(hcRows, (x) => x.w.health_cluster_usd);
+    const hcAll = sum(hcRows, (x) => x.row.health_funding.funding_usd);
+    const hcFundRows = list.filter((x) => x.row.health_funding && isNum(x.row.health_funding.requirements_usd) && x.row.health_funding.requirements_usd > 0);
+    const hcReq = sum(hcFundRows, (x) => x.row.health_funding.requirements_usd);
+    const hcFunded = sum(hcFundRows, (x) => x.row.health_funding.funding_usd);
+    const reach = latestReach(list.map((x) => x.row));
+    // One entry per graded event, even when the event covers several countries.
+    const grades = Array.from(new Map(list.flatMap((x) => x.row.who_grades || []).map((g) => [`${g.event}|${g.grade}`, g])).values());
+    const scopeName = whoState.country
+      ? cname(list[0]?.row.country || "")
+      : { fcv13: L("13 FCV countries", "13 pays FCV"), fcvall: L("18 FCV countries", "18 pays FCV"), withcontext: L("FCV and context countries", "pays FCV et du contexte") }[whoState.scope];
+    const toDate = Number(year) === new Date().getUTCFullYear();
+    if (kpis) {
+      const cards = [
+        { id: "whoKpiTotal", title: toDate ? L(`Funding received by WHO, ${year} to date`, `Financements reçus par l'OMS en ${year}, à ce jour`) : L(`Funding received by WHO, ${year}`, `Financements reçus par l'OMS, ${year}`), value: fmtUsd(total),
+          sub: L(`${scopeName}. ${year - 1} (full year): ${fmtUsd(prevTotal)}.`, `${scopeName}. ${year - 1} (année entière) : ${fmtUsd(prevTotal)}.`),
+          source: L("OCHA FTS", "FTS d'OCHA"), target: "whoResponsePage#whoRespTablePanel" },
+        { id: "whoKpiCerf", title: L("Of which from CERF", "Dont CERF"), value: fmtUsd(cerf),
+          sub: total ? L(`${fmtPct(cerf / total)} of WHO funding; ${grantCount} grant${grantCount === 1 ? "" : "s"} in total`, `${fmtPct(cerf / total)} des financements de l'OMS ; ${grantCount} subvention${grantCount > 1 ? "s" : ""} au total`) : na(),
+          source: L("OCHA FTS (CERF flows)", "FTS d'OCHA (flux du CERF)"), target: "whoResponsePage#whoRespCerfPanel" },
+        { id: "whoKpiPooled", title: L("Of which from OCHA-managed pooled funds", "Dont fonds communs gérés par OCHA"), value: fmtUsd(pooled),
+          sub: total ? L(`${fmtPct(pooled / total)} of WHO funding`, `${fmtPct(pooled / total)} des financements de l'OMS`) : na(),
+          source: L("OCHA FTS", "FTS d'OCHA"), target: "whoResponsePage#whoRespTablePanel" },
+        { id: "whoKpiHcShare", title: L("WHO share of Health Cluster funding", "Part de l'OMS dans les financements du Cluster Santé"), value: hcAll ? fmtPct(hcWho / hcAll) : na(),
+          sub: hcAll ? L(`${fmtUsd(hcWho)} of ${fmtUsd(hcAll)} received by the Health Cluster in ${hcRows.length} plan${hcRows.length === 1 ? "" : "s"}`, `${fmtUsd(hcWho)} sur ${fmtUsd(hcAll)} reçus par le Cluster Santé dans ${hcRows.length} plan${hcRows.length > 1 ? "s" : ""}`) : L("No Health Cluster funding reported", "Aucun financement du Cluster Santé déclaré"),
+          source: L("OCHA FTS", "FTS d'OCHA"), target: "whoResponsePage#whoRespTablePanel" },
+        { id: "whoKpiHcFunded", title: L("Health Cluster funded", "Taux de financement du Cluster Santé"), value: hcReq ? fmtPct(hcFunded / hcReq) : na(),
+          sub: hcReq ? L(`${fmtUsd(hcFunded)} of ${fmtUsd(hcReq)} required; gap ${fmtUsd(Math.max(0, hcReq - hcFunded))}`, `${fmtUsd(hcFunded)} sur ${fmtUsd(hcReq)} requis ; déficit de ${fmtUsd(Math.max(0, hcReq - hcFunded))}`) : na(),
+          source: L("OCHA FTS", "FTS d'OCHA"), target: "overviewPage#stratFundingChart", tone: hcReq && hcFunded / hcReq < 0.3 ? "bad" : "" },
+        { id: "whoKpiReach", title: L("People reached by Health Cluster partners", "Personnes atteintes par les partenaires du Cluster Santé"), value: reach.year ? fmtCompact(reach.reached) : na(),
+          sub: reach.year ? L(`${fmtPct(reach.reached / reach.targeted)} of ${fmtCompact(reach.targeted)} targeted, ${reach.rows.length} countr${reach.rows.length === 1 ? "y" : "ies"} (${reach.year})`, `${fmtPct(reach.reached / reach.targeted)} des ${fmtCompact(reach.targeted)} ciblées, ${reach.rows.length} pays (${reach.year})`) : L("No reach figure published yet", "Aucun chiffre de couverture publié"),
+          source: L("OCHA response monitoring", "Suivi de la réponse d'OCHA"), target: "countryPage" },
+        { id: "whoKpiGrades", title: L("WHO-graded emergencies", "Urgences classées par l'OMS"), value: String(grades.length),
+          sub: grades.length ? grades.slice(0, 3).map((g) => `${esc(g.grade)}${colon()}${esc(g.event)}`).join(L("; ", " ; ")) : L("Grading register not yet filled by DHM", "Registre des grades pas encore renseigné par la DHM"),
+          source: L("WHO grading register (DHM)", "Registre des grades de l'OMS (DHM)"), target: "gradingPage" }
+      ];
+      kpis.innerHTML = cards.map(kpiCard).join("") + sourcesBar(["fts", "cerf", "hpc", "grading"]);
+    }
+
+    // Chart: funding received by WHO per country, split by source.
+    const chart = el("whoRespChart");
+    if (chart && typeof Plotly !== "undefined") {
+      const ordered = withData.filter((x) => whoTotal(x.w) > 0).sort((a, b) => whoTotal(a.w) - whoTotal(b.w));
+      const chartNote = el("whoRespChartNote");
+      if (chartNote) chartNote.textContent = L(`US$, ${year} to date. The diamond marks the ${year - 1} full-year total. Countries with no recorded funding are listed in the table.`, `$ US, ${year} à ce jour. Le losange indique le total de l'année ${year - 1} entière. Les pays sans financement enregistré figurent dans le tableau.`);
+      if (!ordered.length) {
+        emptyNote(chart, L("No funding to WHO recorded for this selection.", "Aucun financement à l'OMS enregistré pour cette sélection."));
+      } else {
+        const y = ordered.map((x) => shortName(x.row.country));
+        const other = (x) => Math.max(0, whoTotal(x.w) - (x.w.cerf_usd || 0) - (x.w.cbpf_usd || 0));
+        const hover = (label) => `%{y}<br>${label}: %{x:$,.0f}<extra></extra>`;
+        plot(chart, [
+          { type: "bar", orientation: "h", name: "CERF", y, x: ordered.map((x) => x.w.cerf_usd || 0), marker: { color: "#0b4ea2" }, hovertemplate: hover("CERF") },
+          { type: "bar", orientation: "h", name: L("Pooled funds", "Fonds communs"), y, x: ordered.map((x) => x.w.cbpf_usd || 0), marker: { color: "#5aa0e0" }, hovertemplate: hover(L("Pooled funds", "Fonds communs")) },
+          { type: "bar", orientation: "h", name: L("Other donors", "Autres donateurs"), y, x: ordered.map(other), marker: { color: "#9fb8cf" }, hovertemplate: hover(L("Other donors", "Autres donateurs")) },
+          { type: "scatter", mode: "markers", name: L(`${year - 1} full year`, `${year - 1}, année entière`), y, x: ordered.map((x) => x.w.previous_year_total_usd || 0), marker: { symbol: "diamond", size: 10, color: "#d9662b" }, hovertemplate: hover(String(year - 1)) }
+        ], {
+          barmode: "stack", font: FONT, height: Math.max(260, 34 * ordered.length + 90), margin: { l: 140, r: 20, t: 10, b: 50 },
+          xaxis: (() => {
+            // Explicit ticks so French reads "10 M $" and English "$10M".
+            const max = Math.max(...ordered.map((x) => Math.max(whoTotal(x.w) || 0, x.w.previous_year_total_usd || 0)), 1);
+            const raw = max / 5;
+            const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+            const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((v) => v >= raw) || raw;
+            const vals = [];
+            for (let v = 0; v <= max + step * 0.01; v += step) vals.push(v);
+            return { tickvals: vals, ticktext: vals.map((v) => (v === 0 ? "0" : isFr() ? `${fmtCompact(v)}${NBSP}$` : `$${fmtCompact(v)}`)), gridcolor: "#e6ebf1", range: [0, vals[vals.length - 1] * 1.02] };
+          })(),
+          legend: { orientation: "h", y: -0.12 }, paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)", ...plotLang()
+        });
+      }
+    }
+
+    // Table per country.
+    const table = el("whoRespTable");
+    if (table) {
+      const note = el("whoRespTableNote");
+      if (note) note.textContent = L("Sorted by funding received by WHO. Health Cluster figures cover all cluster partners, not WHO alone.", "Trié par financement reçu par l'OMS. Les chiffres du Cluster Santé portent sur tous les partenaires du cluster, pas sur l'OMS seule.");
+      const sorted = list.slice().sort((a, b) => (whoTotal(b.w) || 0) - (whoTotal(a.w) || 0));
+      const reachCell = (r) => {
+        const x = r.health_reach_latest;
+        if (!x || !isNum(x.reached)) return `<span class="muted">${na()}</span>`;
+        return `${fmtCompact(x.reached)}${isNum(x.targeted) && x.targeted > 0 ? ` <small class="muted">(${fmtPct(x.reached / x.targeted)}, ${esc(String(x.year))})</small>` : ""}`;
+      };
+      const change = (w) => {
+        if (!w || !isNum(w.previous_year_total_usd) || !w.previous_year_total_usd) return "";
+        return `<br><small class="muted">${L(`${year - 1}: ${fmtUsd(w.previous_year_total_usd)}`, `${year - 1} : ${fmtUsd(w.previous_year_total_usd)}`)}</small>`;
+      };
+      const splitCell = (w) => {
+        if (!w) return `<span class="muted">${na()}</span>`;
+        const parts = [];
+        if (w.cerf_usd) parts.push(`CERF ${fmtUsd(w.cerf_usd)}`);
+        if (w.cbpf_usd) parts.push(L(`Pooled fund ${fmtUsd(w.cbpf_usd)}`, `Fonds commun ${fmtUsd(w.cbpf_usd)}`));
+        return parts.length ? parts.join("<br>") : `<span class="muted">${L("none", "aucun")}</span>`;
+      };
+      table.innerHTML = `<thead><tr>${L(
+        `<th>Country</th><th>DHM tier</th><th>Received by WHO, ${year}</th><th>Of which CERF and pooled funds</th><th title="WHO funding inside the Health Cluster of the country plan, as a share of all Health Cluster funding">WHO share of Health Cluster funding</th><th>Health Cluster funded</th><th>People reached (Health Cluster)</th><th>Main donors to WHO</th>`,
+        `<th>Pays</th><th>Niveau DHM</th><th>Reçu par l'OMS, ${year}</th><th>Dont CERF et fonds communs</th><th title="Financements de l'OMS dans le Cluster Santé du plan pays, en part de l'ensemble des financements du Cluster Santé">Part de l'OMS dans le Cluster Santé</th><th>Taux de financement du Cluster Santé</th><th>Personnes atteintes (Cluster Santé)</th><th>Principaux donateurs de l'OMS</th>`)}</tr></thead>
+        <tbody>${sorted.map(({ row: r, w }) => `<tr>
+          <td><button type="button" class="strat-link" data-strat-country="${r.iso3}">${esc(cname(r.country))}</button><br><small class="muted">${esc(groupName(r.group))}</small>${(r.who_grades || []).length ? `<br><small><strong>${L("WHO grade:", "Grade OMS :")}</strong> ${r.who_grades.map((g) => esc(g.grade)).join(", ")}</small>` : ""}</td>
+          <td>${rowTag(r)}</td>
+          <td class="num">${w ? fmtUsd(whoTotal(w)) : na()}${change(w)}</td>
+          <td class="num"><small>${splitCell(w)}</small></td>
+          <td class="num">${whoHcShare(r, w) != null
+            ? (whoHcShare(r, w) > 1 ? `<span class="strat-trend-bad" title="${esc(L("WHO funding is above the Health Cluster total reported by FTS: check the data", "Les financements de l'OMS dépassent le total du Cluster Santé déclaré au FTS : vérifier les données"))}">&gt;100%</span>` : fmtPct(whoHcShare(r, w)))
+            : `<span class="muted" title="${esc(L("FTS has no Health Cluster funding figure for this country's current plan", "Le FTS n'a pas de chiffre de financement du Cluster Santé pour le plan en cours de ce pays"))}">${na()}</span>`}</td>
+          <td class="num">${r.health_funding && isNum(r.health_funding.pct) ? fmtPct(r.health_funding.pct) : `<span class="muted">${na()}</span>`}</td>
+          <td class="num">${reachCell(r)}</td>
+          <td class="who-donors"><small>${w && w.donors?.length ? w.donors.slice(0, 2).map((d) => `${esc(donorName(d.name))} (${fmtUsd(d.usd)})`).join("<br>") : `<span class="muted">${L("none recorded", "aucun enregistré")}</span>`}</small></td>
+        </tr>`).join("")}</tbody>`;
+    }
+
+    // CERF grants.
+    const cerfTable = el("whoRespCerfTable");
+    if (cerfTable) {
+      const note = el("whoRespCerfNote");
+      if (note) {
+        note.textContent = grants.length
+          ? L(`${grants.length} grant${grants.length === 1 ? "" : "s"}, ${fmtUsd(cerfShown)}, recorded in ${year}. A grant split across clusters (health, nutrition, WASH) is shown once with its full amount to WHO.`,
+            `${grants.length} subvention${grants.length > 1 ? "s" : ""}, ${fmtUsd(cerfShown)}, enregistrée${grants.length > 1 ? "s" : ""} en ${year}. Une subvention répartie entre plusieurs clusters (santé, nutrition, EAH) apparaît une seule fois avec son montant total pour l'OMS.`)
+          : "";
+      }
+      cerfTable.innerHTML = grants.length
+        ? `<thead><tr>${L("<th>Date</th><th>Country</th><th>Window</th><th>Emergency</th><th>Project</th><th>Amount</th>", "<th>Date</th><th>Pays</th><th>Guichet</th><th>Urgence</th><th>Projet</th><th>Montant</th>")}</tr></thead>
+          <tbody>${grants.map((g) => `<tr>
+            <td>${esc(fmtDate(g.date))}</td>
+            <td>${esc(cname(g.row.country))}</td>
+            <td>${esc(cerfWindowName(g.window))}</td>
+            <td>${esc(emergencyName(g.emergency))}</td>
+            <td><small>${esc(g.title || g.allocation || "")}</small><br><small class="muted">${esc(g.code)}</small></td>
+            <td class="num">${fmtUsd(g.usd)}</td>
+          </tr>`).join("")}</tbody>`
+        : `<tbody><tr><td class="muted">${L("No CERF grant to WHO recorded for this selection.", "Aucune subvention du CERF à l'OMS enregistrée pour cette sélection.")}</td></tr></tbody>`;
+    }
+
+    // Main donors, summed over the selection.
+    const donorsBox = el("whoRespDonors");
+    if (donorsBox) {
+      const agg = new Map();
+      withData.forEach((x) => (x.w.donors || []).forEach((d) => agg.set(d.name, (agg.get(d.name) || 0) + d.usd)));
+      const top = Array.from(agg.entries()).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      donorsBox.innerHTML = top.length
+        ? `<div class="table-wrap"><table class="strat-table"><thead><tr>${L("<th>Donor</th><th>Amount</th><th>Share</th>", "<th>Donateur</th><th>Montant</th><th>Part</th>")}</tr></thead><tbody>${top.map(([n, v]) => `<tr><td>${esc(donorName(n))}</td><td class="num">${fmtUsd(v)}</td><td class="num">${total ? fmtPct(v / total) : na()}</td></tr>`).join("")}</tbody></table></div>
+          <p class="muted"><small>${L("Each country lists up to 8 donors, so smaller donors may be left out of this regional list.", "Chaque pays liste jusqu'à 8 donateurs ; les plus petits peuvent donc manquer dans cette liste régionale.")}</small></p>`
+        : `<p class="muted">${L("No donor recorded for this selection.", "Aucun donateur enregistré pour cette sélection.")}</p>`;
+    }
+
+    const notes = el("whoRespNotes");
+    if (notes) {
+      notes.innerHTML = L(`<ul>
+          <li><strong>Funding received by WHO</strong> is money reported to OCHA FTS with WHO as recipient in each country (paid and committed, not pledges), for ${year}. The total is FTS's own figure for the country. Funding WHO passes on to partners is not counted again.</li>
+          <li><strong>CERF and pooled-fund amounts</strong> are added up from individual FTS flows, so they can differ slightly from the FTS total. Pooled funds are recognised by the fund's name.</li>
+          <li><strong>Not included:</strong> WHO internal funds such as the Contingency Fund for Emergencies (CFE), regional or multi-country grants, flows shared across years, and funding not reported to FTS. Totals are therefore a floor, not WHO's full budget.</li>
+          <li><strong>No "% funded" for WHO:</strong> this page does not show WHO's own requirements. Use the Health Cluster requirement for the funding gap.</li>
+          <li><strong>WHO share of Health Cluster funding</strong> is the share of Health Cluster funding in the country plan that went to WHO, as reported to FTS. A flow tagged to Health and another cluster is counted in full.</li>
+          <li><strong>People reached</strong> is the Health Cluster result for all partners (OCHA response monitoring or the DHM reach register).</li>
+          <li><strong>WHO grades</strong> come only from the WHO grading process, entered by DHM.</li>
+        </ul>`, `<ul>
+          <li><strong>Les financements reçus par l'OMS</strong> sont les fonds déclarés au FTS d'OCHA avec l'OMS comme bénéficiaire dans chaque pays (versés et engagés, hors annonces), pour ${year}. Le total est le chiffre du FTS pour le pays. Les fonds que l'OMS reverse à des partenaires ne sont pas comptés deux fois.</li>
+          <li><strong>Les montants du CERF et des fonds communs</strong> sont additionnés à partir des flux du FTS ; ils peuvent donc différer légèrement du total du FTS. Les fonds communs sont reconnus par le nom du fonds.</li>
+          <li><strong>Non inclus :</strong> les fonds internes de l'OMS tels que le Fonds de réserve pour les situations d'urgence (CFE), les subventions régionales ou multipays, les flux répartis sur plusieurs années et les fonds non déclarés au FTS. Les totaux sont donc un minimum, pas le budget complet de l'OMS.</li>
+          <li><strong>Pas de « % financé » pour l'OMS :</strong> cette page n'indique pas les besoins propres de l'OMS. Utiliser les besoins du Cluster Santé pour le déficit de financement.</li>
+          <li><strong>La part de l'OMS dans les financements du Cluster Santé</strong> est la part des financements du Cluster Santé du plan pays reçue par l'OMS, d'après le FTS. Un flux attribué à la santé et à un autre cluster est compté en entier.</li>
+          <li><strong>Les personnes atteintes</strong> correspondent au résultat du Cluster Santé pour tous les partenaires (suivi de la réponse d'OCHA ou registre de couverture de la DHM).</li>
+          <li><strong>Les grades OMS</strong> proviennent uniquement du processus de classement de l'OMS et sont saisis par la DHM.</li>
+        </ul>`);
+    }
+  }
+
+  // ---------- Clear filters bar ----------
+  // Each page with filters shows the filters in use as chips (x removes one) and a
+  // "Clear filters" button that returns the page to its default view.
+  function colon() {
+    return isFr() ? `${NBSP}: ` : ": ";
+  }
+  function selectFilter(id, label, defaultValue) {
+    const node = el(id);
+    if (!node || !node.options || !node.options.length) return null;
+    const def = typeof defaultValue === "function" ? defaultValue(node) : defaultValue;
+    const text = node.options[node.selectedIndex]?.text || node.value;
+    return {
+      active: node.value !== def,
+      text: `${label}${colon()}${text}`,
+      clear: () => {
+        // Look the select up again: a re-render may have replaced it.
+        const live = el(id);
+        if (!live) return;
+        live.value = def;
+        live.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    };
+  }
+  function fcvFilters() {
+    // fcvFilterState and its helpers belong to app.js.
+    if (typeof fcvFilterState === "undefined") return [];
+    const parts = [
+      ["countries", L("Countries", "Pays"), "fcvCountryPanel"],
+      ["admin1s", L("Admin1 / Region", "Admin1 / Région"), "fcvAdmin1Panel"],
+      ["quarters", L("Quarters", "Trimestres"), "fcvQuarterPanel"]
+    ];
+    return parts.map(([key, label, panelId]) => {
+      const values = fcvFilterState[key] || [];
+      const panel = el(panelId);
+      const nameOf = (v) => {
+        const input = panel ? Array.from(panel.querySelectorAll("input[type=checkbox]")).find((i) => i.value === v) : null;
+        return (input?.closest("label")?.textContent || v).trim();
+      };
+      const shown = values.slice(0, 3).map(nameOf).join(", ") + (values.length > 3 ? L(` +${values.length - 3} more`, ` +${values.length - 3} autres`) : "");
+      return {
+        active: values.length > 0,
+        text: `${label}${colon()}${shown}`,
+        clear: () => {
+          fcvFilterState[key] = [];
+          if (typeof populateFcvFilterOptions === "function") populateFcvFilterOptions();
+          if (typeof renderAllFcvCharts === "function") renderAllFcvCharts();
+        }
+      };
+    });
+  }
+  const FILTER_PAGES = {
+    overviewPage: {
+      host: () => el("stratScopeSelect")?.closest(".strategic-head-row"),
+      items: () => [selectFilter("stratScopeSelect", L("Scope", "Champ"), "fcv13")]
+    },
+    whoResponsePage: {
+      host: () => el("whoRespFilters"),
+      items: () => [
+        selectFilter("whoRespScope", L("Country group", "Groupe de pays"), "fcv13"),
+        selectFilter("whoRespCountry", L("Country", "Pays"), ""),
+        selectFilter("whoRespWindow", L("CERF window", "Guichet du CERF"), "")
+      ],
+      clearAll: () => {
+        Object.assign(whoState, WHO_FILTER_DEFAULTS);
+        renderWhoResponsePage();
+        decorateCardDestinations();
+      }
+    },
+    fcvDataPage: {
+      host: () => el("fcvFilterBar"),
+      items: () => fcvFilters(),
+      clearAll: () => el("fcvFilterResetBtn")?.click()
+    }
+    // Country Profiles and Climate Forecasts always show one country (Country Focus):
+    // that is a required choice, not a filter, so those pages have no bar.
+  };
+
+  function renderFilterBars() {
+    Object.entries(FILTER_PAGES).forEach(([pageId, def]) => {
+      const page = el(pageId);
+      if (!page) return;
+      let bar = el(`filterbar-${pageId}`);
+      if (!bar) {
+        bar = document.createElement("div");
+        bar.id = `filterbar-${pageId}`;
+        bar.className = "filter-summary";
+        bar.setAttribute("role", "region");
+        bar.addEventListener("click", (ev) => {
+          const chip = ev.target.closest("[data-filter-clear]");
+          const all = ev.target.closest("[data-filter-clear-all]");
+          if (!chip && !all) return;
+          const items = (FILTER_PAGES[pageId].items() || []).filter((x) => x && x.active);
+          if (chip) {
+            items[Number(chip.dataset.filterClear)]?.clear();
+          } else if (FILTER_PAGES[pageId].clearAll) {
+            FILTER_PAGES[pageId].clearAll();
+          } else {
+            items.forEach((x) => x.clear());
+          }
+          setTimeout(renderFilterBars, 30);
+        });
+      }
+      // Under the page's own filters, or at the top of the page for the global country focus.
+      const host = def.host ? def.host() : null;
+      if (host) {
+        if (bar.previousElementSibling !== host) host.insertAdjacentElement("afterend", bar);
+      } else if (page.firstElementChild !== bar) {
+        page.insertBefore(bar, page.firstChild);
+      }
+      bar.setAttribute("aria-label", L("Filters in use", "Filtres appliqués"));
+      const active = (def.items() || []).filter((x) => x && x.active);
+      bar.innerHTML = `
+        <span class="filter-summary-label">${L("Filters:", "Filtres :")}</span>
+        ${active.length
+          ? active.map((x, i) => `<span class="filter-chip">${esc(x.text)}<button type="button" data-filter-clear="${i}" aria-label="${esc(L(`Remove ${x.text}`, `Retirer ${x.text}`))}" title="${esc(L("Remove this filter", "Retirer ce filtre"))}">&times;</button></span>`).join("")
+          : `<span class="filter-summary-none">${L("none, default view", "aucun, vue par défaut")}</span>`}
+        <button type="button" class="filter-clear-btn" data-filter-clear-all ${active.length ? "" : "disabled"}>${L("Clear filters", "Effacer les filtres")}</button>`;
+    });
+  }
+
   function renderAll() {
     if (!state.payload) return;
     renderKpis();
@@ -2561,6 +2972,8 @@
     renderSignalsExplain();
     renderForecastBriefing();
     renderAcmadPanel();
+    renderWhoResponsePage();
+    renderFilterBars();
     decorateCardDestinations();
   }
 
@@ -2568,7 +2981,8 @@
     if (typeof Plotly === "undefined") return;
     const ids = {
       overviewPage: ["stratMap", "stratFundingChart", "stratCoverageChart", "stratMhpssChart"],
-      attacksHealthPage: ["stratSsaChart"]
+      attacksHealthPage: ["stratSsaChart"],
+      whoResponsePage: ["whoRespChart"]
     }[pageId] || [];
     ids.forEach((id) => {
       const node = el(id);
@@ -2724,6 +3138,22 @@
         decorateCardDestinations();
       });
     }
+    // WHO Humanitarian Response page filters (rendered with the page).
+    document.addEventListener("change", (ev) => {
+      const id = ev.target && ev.target.id;
+      if (id === "whoRespScope") { whoState.scope = ev.target.value; whoState.country = ""; }
+      else if (id === "whoRespCountry") whoState.country = ev.target.value;
+      else if (id === "whoRespWindow") whoState.window = ev.target.value;
+      else return;
+      renderWhoResponsePage();
+      decorateCardDestinations();
+    });
+    // Keep the filter chips in step with every filter change on any page.
+    const refreshBars = () => setTimeout(renderFilterBars, 0);
+    document.addEventListener("change", refreshBars);
+    document.addEventListener("click", (ev) => {
+      if (ev.target.closest("#fcvFilterBar, .fcv-dropdown-panel, .nav-btn")) setTimeout(renderFilterBars, 40);
+    });
     const layer = el("stratMapLayer");
     if (layer) {
       layer.addEventListener("change", () => {
@@ -2761,6 +3191,7 @@
       lang.addEventListener("change", () => setTimeout(() => {
         renderAll();
         document.querySelectorAll(".panel[data-collapsible]").forEach((panel) => setCollapsed(panel, panel.classList.contains("is-collapsed")));
+        ensureSearchButtons();
         const top = el("backToTopBtn");
         if (top) {
           top.textContent = L("▲ Top", "▲ Haut");
@@ -2775,6 +3206,264 @@
         setTimeout(() => el(btn.dataset.page)?.scrollIntoView({ behavior: "smooth", block: "start" }), 120);
       });
     });
+  }
+
+  // ---------- Dashboard search (Ctrl+K) and optional Copilot panel ----------
+  // Searches what the dashboard shows: page names, panel titles and text, key
+  // figures and countries. Nothing is sent anywhere; the index is built from the page.
+  let searchIndex = null;
+  let uiConfig = null;
+
+  function pageNameOf(pageId) {
+    return isFr() ? (PAGE_LABEL_FR[pageId] || PAGE_LABEL[pageId] || pageId) : (PAGE_LABEL[pageId] || pageId);
+  }
+  function norm(text) {
+    return String(text || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+  }
+  // Text of a node with a space between elements, so table cells do not run together.
+  function spacedText(node) {
+    const out = [];
+    const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+    let t;
+    while ((t = walker.nextNode())) {
+      const v = t.nodeValue.trim();
+      if (v && !t.parentElement?.closest("script, style, select")) out.push(v);
+    }
+    return out.join(" ").replace(/\s+/g, " ");
+  }
+  function buildSearchIndex() {
+    const items = [];
+    let auto = 0;
+    document.querySelectorAll("main .page").forEach((page) => {
+      const pageId = page.id;
+      if (!pageId) return;
+      items.push({ kind: "page", title: pageNameOf(pageId), page: pageNameOf(pageId), text: "", target: pageId });
+      page.querySelectorAll(".panel").forEach((panel) => {
+        if (panel.classList.contains("is-retired") || panel.closest(".is-retired")) return;
+        const h = panel.querySelector("h2");
+        const title = (h?.textContent || "").trim();
+        if (!title) return;
+        if (!panel.id) { auto += 1; panel.id = `panel-auto-${auto}`; }
+        const text = spacedText(panel).slice(0, 4000);
+        items.push({ kind: "panel", title, page: pageNameOf(pageId), text, target: `${pageId}#${panel.id}` });
+        panel.querySelectorAll(".strat-kpi").forEach((card) => {
+          const t = (card.querySelector(".strat-kpi-title")?.textContent || "").trim();
+          const v = (card.querySelector(".strat-kpi-value")?.textContent || "").trim();
+          if (!t) return;
+          if (!card.id) { auto += 1; card.id = `kpi-auto-${auto}`; }
+          items.push({ kind: "figure", title: `${t}${colon()}${v}`, page: pageNameOf(pageId), text: (card.textContent || "").replace(/\s+/g, " "), target: card.dataset.stratTarget || `${pageId}#${card.id}` });
+        });
+      });
+    });
+    (state.payload?.countries || []).forEach((r) => {
+      items.push({ kind: "country", title: cname(r.country), page: pageNameOf("countryPage"), text: `${r.country} ${r.iso3} ${cname(r.country)}`, iso3: r.iso3, target: "countryPage" });
+    });
+    return items;
+  }
+  function snippet(text, q) {
+    const i = norm(text).indexOf(q);
+    if (i < 0) return "";
+    const start = Math.max(0, i - 60);
+    return `${start > 0 ? "… " : ""}${text.slice(start, i + q.length + 90)}${i + q.length + 90 < text.length ? " …" : ""}`;
+  }
+  function searchDashboard(query) {
+    const q = norm(query).trim();
+    if (q.length < 2) return [];
+    const words = q.split(/\s+/).filter(Boolean);
+    if (!searchIndex) searchIndex = buildSearchIndex();
+    const KIND = { country: 6, page: 5, figure: 3, panel: 2 };
+    return searchIndex.map((it) => {
+      const t = norm(it.title);
+      const body = norm(it.text);
+      if (!words.every((w) => t.includes(w) || body.includes(w) || norm(it.page).includes(w))) return null;
+      let score = KIND[it.kind] || 1;
+      if (t.includes(q)) score += 10;
+      if (t.startsWith(q)) score += 5;
+      words.forEach((w) => { if (t.includes(w)) score += 2; });
+      return { ...it, score, snip: t.includes(q) ? "" : snippet(it.text, words[0]) };
+    }).filter(Boolean).sort((a, b) => b.score - a.score).slice(0, 14);
+  }
+  function openResult(item) {
+    closeSearch(false);
+    if (item.kind === "country" && item.iso3) {
+      const select = el("countrySelect");
+      if (select && Array.from(select.options).some((o) => o.value === item.iso3)) {
+        select.value = item.iso3;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      }
+    }
+    goToPage(item.target);
+    // Move keyboard focus to what was opened.
+    setTimeout(() => {
+      const [pageId, anchor] = String(item.target).split("#");
+      const node = (anchor && el(anchor)) || el(pageId);
+      const focusNode = node?.closest(".panel") || node;
+      if (focusNode) {
+        if (!focusNode.hasAttribute("tabindex")) focusNode.setAttribute("tabindex", "-1");
+        focusNode.focus({ preventScroll: true });
+      }
+    }, 450);
+  }
+  function renderSearchResults(list, query) {
+    const box = el("dashSearchResults");
+    if (!box) return;
+    const countNode = el("dashSearchCount");
+    if (countNode) countNode.textContent = "";
+    if (!query || norm(query).trim().length < 2) {
+      box.innerHTML = `<p class="dash-search-hint">${L("Type at least two letters: a country, a topic (cholera, funding, CERF, IPC), or a figure.", "Saisir au moins deux lettres : un pays, un thème (choléra, financement, CERF, IPC) ou un chiffre.")}</p>`;
+      return;
+    }
+    if (!list.length) {
+      if (countNode) countNode.textContent = L("No results", "Aucun résultat");
+      box.innerHTML = `<p class="dash-search-hint">${L("Nothing found on the dashboard.", "Aucun résultat dans le tableau de bord.")}${uiConfig?.copilot_url ? ` ${L("Try asking Copilot.", "Essayez de demander à Copilot.")}` : ""}</p>`;
+      return;
+    }
+    const kindLabel = { page: L("Page", "Page"), panel: L("Section", "Section"), figure: L("Key figure", "Chiffre clé"), country: L("Country", "Pays") };
+    const count = el("dashSearchCount");
+    if (count) count.textContent = L(`${list.length} result${list.length === 1 ? "" : "s"}`, `${list.length} résultat${list.length > 1 ? "s" : ""}`);
+    box.innerHTML = list.map((it, i) => `
+      <button type="button" class="dash-search-item" data-search-index="${i}">
+        <span class="dash-search-kind">${esc(kindLabel[it.kind] || "")}</span>
+        <span class="dash-search-title">${esc(it.title)}</span>
+        <span class="dash-search-page">${esc(it.page)}</span>
+        ${it.snip ? `<span class="dash-search-snip">${esc(it.snip)}</span>` : ""}
+      </button>`).join("");
+    box._results = list;
+  }
+  let searchReturnFocus = null;
+  function closeSearch(restoreFocus = true) {
+    const modal = el("dashSearchModal");
+    if (!modal || modal.hidden) return;
+    modal.hidden = true;
+    if (restoreFocus && searchReturnFocus && document.contains(searchReturnFocus)) searchReturnFocus.focus();
+  }
+  function openSearch() {
+    let modal = el("dashSearchModal");
+    if (!modal) {
+      modal = document.createElement("div");
+      modal.id = "dashSearchModal";
+      modal.className = "dash-search-modal";
+      modal.setAttribute("role", "dialog");
+      modal.setAttribute("aria-modal", "true");
+      modal.innerHTML = `
+        <div class="dash-search-box">
+          <div class="dash-search-row">
+            <input id="dashSearchInput" type="search" autocomplete="off" />
+            <button type="button" id="dashSearchClose" class="dash-search-close" aria-label="Close">&times;</button>
+          </div>
+          <p id="dashSearchCount" class="visually-hidden" aria-live="polite"></p>
+          <div id="dashSearchResults" class="dash-search-results"></div>
+          <div class="dash-search-foot" id="dashSearchFoot"></div>
+        </div>`;
+      document.body.appendChild(modal);
+      modal.addEventListener("click", (ev) => {
+        if (ev.target === modal || ev.target.closest("#dashSearchClose")) { closeSearch(); return; }
+        const item = ev.target.closest("[data-search-index]");
+        if (item) openResult(el("dashSearchResults")._results[Number(item.dataset.searchIndex)]);
+        if (ev.target.closest("#dashSearchAskCopilot")) { closeSearch(); openCopilot(); }
+      });
+      const input = modal.querySelector("#dashSearchInput");
+      input.addEventListener("input", () => renderSearchResults(searchDashboard(input.value), input.value));
+      input.addEventListener("keydown", (ev) => {
+        const items = Array.from(modal.querySelectorAll(".dash-search-item"));
+        const cur = items.indexOf(document.activeElement);
+        if (ev.key === "ArrowDown" && items.length) { ev.preventDefault(); items[0].focus(); }
+        if (ev.key === "Enter" && items.length && cur < 0) { ev.preventDefault(); items[0].click(); }
+      });
+      modal.addEventListener("keydown", (ev) => {
+        if (ev.key === "Escape") { closeSearch(); return; }
+        if (ev.key === "Tab") {
+          // Keep keyboard focus inside the dialog.
+          const focusables = Array.from(modal.querySelectorAll("input, button")).filter((n) => !n.disabled && n.offsetParent !== null);
+          if (!focusables.length) return;
+          const first = focusables[0];
+          const last = focusables[focusables.length - 1];
+          if (ev.shiftKey && document.activeElement === first) { ev.preventDefault(); last.focus(); }
+          else if (!ev.shiftKey && document.activeElement === last) { ev.preventDefault(); first.focus(); }
+          return;
+        }
+        const items = Array.from(modal.querySelectorAll(".dash-search-item"));
+        const cur = items.indexOf(document.activeElement);
+        if (cur < 0) return;
+        if (ev.key === "ArrowDown") { ev.preventDefault(); (items[cur + 1] || items[cur]).focus(); }
+        if (ev.key === "ArrowUp") { ev.preventDefault(); (cur === 0 ? input : items[cur - 1]).focus(); }
+      });
+    }
+    // Rebuilt on each opening so it reflects the current language and data.
+    searchIndex = null;
+    if (modal.hidden !== false || !modal.contains(document.activeElement)) searchReturnFocus = document.activeElement;
+    const input = el("dashSearchInput");
+    input.placeholder = L("Search the dashboard: country, topic, figure…", "Rechercher dans le tableau de bord : pays, thème, chiffre…");
+    el("dashSearchClose").setAttribute("aria-label", L("Close search", "Fermer la recherche"));
+    modal.setAttribute("aria-label", L("Search the dashboard", "Rechercher dans le tableau de bord"));
+    el("dashSearchFoot").innerHTML = `${L("Enter opens the first result. Esc closes.", "Entrée ouvre le premier résultat. Échap ferme.")}${uiConfig?.copilot_url ? ` <button type="button" id="dashSearchAskCopilot" class="dash-copilot-link">${L(`Ask ${esc(uiConfig.copilot_name || "Copilot")} instead`, `Demander plutôt à ${esc(uiConfig.copilot_name || "Copilot")}`)}</button>` : ""}`;
+    modal.hidden = false;
+    renderSearchResults(searchDashboard(input.value), input.value);
+    input.focus();
+    input.select();
+  }
+
+  function openCopilot() {
+    if (!uiConfig?.copilot_url) return;
+    let drawer = el("copilotDrawer");
+    if (!drawer) {
+      drawer = document.createElement("aside");
+      drawer.id = "copilotDrawer";
+      drawer.className = "copilot-drawer";
+      drawer.innerHTML = `
+        <div class="copilot-drawer-head">
+          <strong id="copilotDrawerTitle"></strong>
+          <button type="button" class="dash-search-close" id="copilotDrawerClose">&times;</button>
+        </div>
+        <p class="copilot-drawer-note" id="copilotDrawerNote"></p>
+        <iframe id="copilotFrame" title="Copilot" referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+      document.body.appendChild(drawer);
+      el("copilotDrawerClose").addEventListener("click", () => drawer.classList.remove("is-open"));
+    }
+    el("copilotDrawerTitle").textContent = uiConfig.copilot_name || "Copilot";
+    el("copilotDrawerClose").setAttribute("aria-label", L("Close", "Fermer"));
+    el("copilotDrawerNote").textContent = L("AI answers can be wrong. Check figures against the dashboard and its sources.", "Les réponses de l'IA peuvent être erronées. Vérifier les chiffres dans le tableau de bord et ses sources.");
+    const frame = el("copilotFrame");
+    if (!frame.src) frame.src = uiConfig.copilot_url;
+    drawer.classList.add("is-open");
+  }
+
+  function ensureSearchButtons() {
+    const controls = document.querySelector(".topbar-controls");
+    if (!controls) return;
+    let btn = el("dashSearchBtn");
+    if (!btn) {
+      btn = document.createElement("button");
+      btn.id = "dashSearchBtn";
+      btn.type = "button";
+      btn.className = "dash-search-btn";
+      btn.addEventListener("click", openSearch);
+      controls.appendChild(btn);
+      document.addEventListener("keydown", (ev) => {
+        if ((ev.ctrlKey || ev.metaKey) && String(ev.key).toLowerCase() === "k") {
+          ev.preventDefault();
+          openSearch();
+        }
+      });
+    }
+    btn.innerHTML = `&#128269; ${L("Search", "Rechercher")} <kbd>Ctrl K</kbd>`;
+    btn.title = L("Search the dashboard (Ctrl+K)", "Rechercher dans le tableau de bord (Ctrl+K)");
+    let ask = el("copilotBtn");
+    if (uiConfig?.copilot_url && !ask) {
+      ask = document.createElement("button");
+      ask.id = "copilotBtn";
+      ask.type = "button";
+      ask.className = "dash-search-btn dash-copilot-btn";
+      ask.addEventListener("click", openCopilot);
+      btn.insertAdjacentElement("afterend", ask);
+    }
+    if (ask) ask.textContent = L(`Ask ${uiConfig.copilot_name || "Copilot"}`, `Demander à ${uiConfig.copilot_name || "Copilot"}`);
+  }
+  function loadUiConfig() {
+    fetch("/api/ui-config", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((cfg) => { uiConfig = cfg; ensureSearchButtons(); })
+      .catch(() => { /* search still works without it */ });
   }
 
   window.StrategicDashboard = {
@@ -2822,7 +3511,7 @@
     goToPage
   };
 
-  const start = () => { applyPageLayout(); ensureBackToTop(); bind(); load(); };
+  const start = () => { applyPageLayout(); ensureBackToTop(); ensureSearchButtons(); loadUiConfig(); bind(); load(); };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
   } else {

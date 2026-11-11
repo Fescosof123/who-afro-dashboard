@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-    <link rel="stylesheet" href="/styles.css?v=20261030a" />
+    <link rel="stylesheet" href="/styles.css?v=20261111a" />
   </head>
   <body>
     <div class="who-bg"></div>
@@ -29,6 +29,7 @@
             <button class="nav-btn active" data-page="overviewPage" type="button">Overview</button>
             <button class="nav-btn" data-page="gradingPage" type="button">Crisis Classification</button>
             <button class="nav-btn" data-page="fcvDataPage" type="button">FCV Response</button>
+            <button class="nav-btn" data-page="whoResponsePage" type="button">WHO Humanitarian Response</button>
             <button class="nav-btn" data-page="countryPage" type="button">Country Profiles</button>
           </div>
           <div class="nav-group">
@@ -299,6 +300,52 @@
                 <p>Audit trail for high-priority country metrics in the current refresh.</p>
               </div>
               <div id="dataValidationSummary" class="summary data-validation-summary"></div>
+            </section>
+          </section>
+
+          <section id="whoResponsePage" class="page">
+            <section class="panel" id="whoRespSummaryPanel">
+              <div class="panel-header">
+                <h2 id="whoRespTitle">WHO Humanitarian Response</h2>
+                <p id="whoRespIntro"></p>
+              </div>
+              <div class="who-resp-filters" id="whoRespFilters"></div>
+              <div id="whoRespKpis" class="strat-kpi-grid"></div>
+            </section>
+            <section class="panel" id="whoRespChartPanel">
+              <div class="panel-header">
+                <h2 id="whoRespChartTitle">Funding Received by WHO, by Country</h2>
+                <p id="whoRespChartNote"></p>
+              </div>
+              <div id="whoRespChart" class="chart"></div>
+            </section>
+            <section class="panel" id="whoRespTablePanel">
+              <div class="panel-header">
+                <h2 id="whoRespTableTitle">WHO Response by Country</h2>
+                <p id="whoRespTableNote"></p>
+              </div>
+              <div class="table-wrap"><table id="whoRespTable" class="strat-table"></table></div>
+            </section>
+            <section class="panel" id="whoRespCerfPanel">
+              <div class="panel-header">
+                <h2 id="whoRespCerfTitle">CERF Allocations to WHO</h2>
+                <p id="whoRespCerfNote"></p>
+              </div>
+              <div class="table-wrap"><table id="whoRespCerfTable" class="strat-table"></table></div>
+            </section>
+            <section class="panel two-col" id="whoRespBottomPanel">
+              <div>
+                <div class="panel-header">
+                  <h2 id="whoRespDonorsTitle">Main Donors to WHO</h2>
+                </div>
+                <div id="whoRespDonors"></div>
+              </div>
+              <div>
+                <div class="panel-header">
+                  <h2 id="whoRespNotesTitle">How to Read This Page</h2>
+                </div>
+                <div id="whoRespNotes" class="summary"></div>
+              </div>
             </section>
           </section>
 
@@ -1224,7 +1271,7 @@
         </footer>
       </section>
     </div>
-    <script src="/app.js?v=20261030a"></script>
-    <script src="/strategic.js?v=20261030a"></script>
+    <script src="/app.js?v=20261111a"></script>
+    <script src="/strategic.js?v=20261111a"></script>
   </body>
 </html>

@@ -3793,3 +3793,135 @@ body.printing-bulletin .panel-toggle { display: none !important; }
 
 .strat-acmad-text { font-size: 0.86rem; min-width: 260px; }
 #fcvVolumeIndicatorSelect, #stratScopeSelect { max-width: 100%; }
+
+/* Clear filters bar: active filters as chips, one button to return to the default view. */
+.filter-summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 14px;
+  padding: 8px 12px;
+  border: 1px solid #c9d8ea;
+  border-radius: 12px;
+  background: #f4f8fd;
+  font-size: 0.9rem;
+}
+.filter-summary-label { font-weight: 700; color: #0b4ea2; }
+.filter-summary-none { color: #5b6b7c; }
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 6px 4px 10px;
+  border-radius: 999px;
+  background: #0b4ea2;
+  color: #ffffff;
+  font-weight: 600;
+  max-width: 100%;
+}
+.filter-chip button {
+  border: 0;
+  background: rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.filter-chip button:hover, .filter-chip button:focus-visible { background: rgba(255, 255, 255, 0.45); }
+.filter-clear-btn {
+  margin-left: auto;
+  border: 1px solid #0b4ea2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #0b4ea2;
+  font-weight: 700;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.filter-clear-btn:hover:not(:disabled) { background: #eef4fb; }
+.filter-clear-btn:disabled { border-color: #c4cdd6; color: #8a97a5; cursor: default; }
+/* The page-level bar replaces the FCV page's own reset button. */
+#fcvFilterResetBtn { display: none; }
+@media print { .filter-summary { display: none; } }
+
+/* WHO Humanitarian Response page */
+.who-resp-filters { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; margin-top: 6px; }
+.who-resp-filters label { display: flex; flex-direction: column; gap: 4px; font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+.who-resp-filters select {
+  font: inherit; font-size: 0.9rem; padding: 6px 8px; border-radius: 10px;
+  border: 1px solid var(--line); background: #fff; color: var(--ink); min-width: 200px; max-width: 100%;
+}
+#whoRespTable td small, #whoRespCerfTable td small { line-height: 1.35; }
+#whoRespCerfTable td:nth-child(5) { min-width: 280px; }
+
+/* Dashboard search (Ctrl+K) and optional Copilot side panel */
+.dash-search-btn {
+  align-self: flex-end;
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid #0b4ea2; border-radius: 10px; background: #ffffff; color: #0b4ea2;
+  font: inherit; font-weight: 700; padding: 8px 12px; cursor: pointer; white-space: nowrap;
+}
+.dash-search-btn:hover { background: #eef4fb; }
+.dash-search-btn kbd { font: 600 0.72rem/1 Barlow, sans-serif; border: 1px solid #b9c9dc; border-radius: 5px; padding: 3px 5px; color: #4a5d72; background: #f4f8fd; }
+.dash-copilot-btn { background: #0b4ea2; color: #ffffff; }
+.dash-copilot-btn:hover { background: #083b7a; }
+.dash-search-modal {
+  position: fixed; inset: 0; z-index: 1000; background: rgba(13, 31, 51, 0.45);
+  display: flex; align-items: flex-start; justify-content: center; padding: 8vh 16px 16px;
+}
+.dash-search-modal[hidden] { display: none; }
+.dash-search-box {
+  width: min(720px, 100%); max-height: 80vh; display: flex; flex-direction: column;
+  background: #ffffff; border-radius: 16px; box-shadow: 0 24px 60px rgba(13, 31, 51, 0.35); overflow: hidden;
+}
+.dash-search-row { display: flex; gap: 8px; padding: 14px; border-bottom: 1px solid #e3e9f0; }
+.dash-search-row input { flex: 1; font: inherit; font-size: 1.05rem; padding: 10px 12px; border: 1px solid #b9c9dc; border-radius: 10px; color: var(--ink); background: #fff; }
+.dash-search-close { border: 0; background: transparent; font-size: 1.6rem; line-height: 1; cursor: pointer; color: #4a5d72; padding: 0 8px; }
+.dash-search-results { overflow-y: auto; padding: 6px; }
+.dash-search-hint { color: #5b6b7c; padding: 10px 12px; margin: 0; }
+.dash-search-item {
+  display: grid; grid-template-columns: 92px 1fr auto; gap: 2px 10px; width: 100%; text-align: left;
+  border: 0; border-radius: 10px; background: transparent; padding: 9px 10px; cursor: pointer; font: inherit; color: var(--ink);
+}
+.dash-search-item:hover, .dash-search-item:focus-visible { background: #eef4fb; outline: none; }
+.dash-search-kind { font-size: 0.75rem; font-weight: 700; color: #0b4ea2; text-transform: uppercase; letter-spacing: 0.03em; padding-top: 2px; }
+.dash-search-title { font-weight: 700; }
+.dash-search-page { font-size: 0.8rem; color: #5b6b7c; }
+.dash-search-snip { grid-column: 2 / 4; font-size: 0.82rem; color: #4a5d72; }
+.dash-search-foot { border-top: 1px solid #e3e9f0; padding: 8px 14px; font-size: 0.8rem; color: #5b6b7c; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.dash-copilot-link { border: 0; background: none; color: #0b4ea2; font: inherit; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0; }
+.copilot-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(440px, 100vw); z-index: 1001;
+  background: #ffffff; box-shadow: -12px 0 40px rgba(13, 31, 51, 0.25);
+  display: flex; flex-direction: column; transform: translateX(105%); transition: transform 0.2s ease;
+}
+.copilot-drawer.is-open { transform: translateX(0); }
+.copilot-drawer-head { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border-bottom: 1px solid #e3e9f0; }
+.copilot-drawer-note { margin: 0; padding: 8px 14px; font-size: 0.8rem; color: #6b4a00; background: #fff6e5; }
+.copilot-drawer iframe { flex: 1; border: 0; width: 100%; }
+@media (max-width: 700px) {
+  .dash-search-btn kbd { display: none; }
+  .dash-search-item { grid-template-columns: 1fr; }
+  .dash-search-snip { grid-column: 1; }
+}
+@media print { .dash-search-btn, .copilot-drawer, .dash-search-modal { display: none !important; } }
+#whoRespTable td.who-donors { min-width: 230px; }
+#whoRespTable td { vertical-align: top; }
+#whoRespTable th { white-space: normal; vertical-align: bottom; min-width: 84px; }
+#whoRespTable th:first-child { min-width: 120px; }
+
+.visually-hidden { position: absolute !important; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.strat-scope, .fcv-inline-select { min-width: 0; max-width: 100%; }
+.strat-scope select, .fcv-inline-select select { min-width: 0; max-width: 100%; }
+@media (max-width: 700px) {
+  .filter-clear-btn { width: 100%; margin-left: 0; }
+  .who-resp-filters label, .who-resp-filters select { width: 100%; min-width: 0; }
+  .fcv-inline-select { flex-wrap: wrap; }
+  .fcv-inline-select select { width: 100%; }
+  .strat-scope select { width: 100%; }
+  main { padding-bottom: 72px; }
+}

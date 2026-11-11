@@ -212,6 +212,40 @@ function run() {
   const rain = parsed.sections[1];
   assert.ok(rain.sentences[0].countries.includes("COD") && rain.sentences[0].countries.includes("COG"));
 
+
+  // Funding received by WHO: pledges and zero rows excluded, CERF grants grouped by project code.
+  {
+    const { summariseWhoFlows } = require("../lib/strategic");
+    const who = { type: "Organization", id: 4398, name: "World Health Organization" };
+    const plan = { type: "Plan", id: 1512, name: "SSD HNRP 2026" };
+    const hc = [{ type: "Cluster", name: "Santé" }, { type: "GlobalCluster", name: "Health" }];
+    const cerfDesc = "Allocation Type: Rapid Response - CERF Rapid Response: South Sudan 2026 (Ebola readiness)\nReadiness project\nProject Code: CERF-SSD-26-RR-WHO-1\nEmergency Type: Disease Outbreak - Ebola";
+    const s = summariseWhoFlows([
+      { id: 1, amountUSD: 1000, status: "paid", sourceObjects: [{ type: "Organization", name: "Central Emergency Response Fund" }], destinationObjects: [who, plan, ...hc], description: cerfDesc, date: "2026-08-28T00:00:00Z" },
+      { id: 2, amountUSD: 500, status: "paid", sourceObjects: [{ type: "Organization", name: "Central Emergency Response Fund" }], destinationObjects: [who, plan, { type: "Cluster", name: "Nutrition" }], description: cerfDesc, date: "2026-08-28T00:00:00Z" },
+      { id: 3, amountUSD: 0, status: "paid", sourceObjects: [{ type: "Organization", name: "Central Emergency Response Fund" }], destinationObjects: [], description: cerfDesc },
+      { id: 4, amountUSD: 2000, status: "commitment", sourceObjects: [{ type: "Organization", name: "UAE Aid" }], destinationObjects: [who, { type: "Location", name: "South Sudan" }] },
+      { id: 6, amountUSD: 7000, status: "paid", flowType: "Pass through", sourceObjects: [{ type: "Organization", name: "World Health Organization" }], destinationObjects: [{ type: "Organization", id: 4100, name: "IOM" }] },
+      { id: 7, amountUSD: 8000, status: "commitment", flowType: "Parked", onBoundary: "shared", sourceObjects: [{ type: "Organization", name: "ECHO" }], destinationObjects: [who] },
+      { id: 8, amountUSD: 600, status: "commitment", flowType: "Parked", childFlowIds: [9], sourceObjects: [{ type: "Organization", name: "ECHO" }], destinationObjects: [who] },
+      { id: 9, amountUSD: 0, status: "paid", sourceObjects: [{ type: "Organization", name: "ECHO" }], destinationObjects: [who] },
+      { id: 5, amountUSD: 9999, status: "pledge", sourceObjects: [{ type: "Organization", name: "Donor X" }], destinationObjects: [who, plan, ...hc] }
+    ], 1512);
+    // Flow 8 stays: its child (9) has no amount, so it is not counted.
+    assert.strictEqual(s.total_usd, 4100);
+    assert.strictEqual(s.paid_usd, 1500);
+    assert.strictEqual(s.commitment_usd, 2600);
+    assert.strictEqual(s.in_plan_usd, 1500);
+    assert.strictEqual(s.outside_plan_usd, 2600);
+    assert.strictEqual(s.health_cluster_usd, 1000);
+    assert.strictEqual(s.cerf_usd, 1500);
+    assert.strictEqual(s.cerf_grants.length, 1);
+    assert.strictEqual(s.cerf_grants[0].usd, 1500);
+    assert.strictEqual(s.cerf_grants[0].window, "Rapid Response");
+    assert.strictEqual(s.cerf_grants[0].emergency, "Disease Outbreak - Ebola");
+    assert.strictEqual(s.cerf_grants[0].title, "Readiness project");
+    assert.strictEqual(s.donors[0].name, "UAE Aid");
+  }
   console.log("strategic unit test passed");
 }
 
