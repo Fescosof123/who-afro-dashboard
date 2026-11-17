@@ -1389,10 +1389,10 @@
       "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
       "health_cluster": "Santé",
       "health_requirements_usd": 13522336,
-      "health_funding_usd": 11838120,
+      "health_funding_usd": 11955456,
       "plan_requirements_usd": 264097388,
       "plan_funding_usd": 145304369,
-      "unspecified_funding_usd": 52117337,
+      "unspecified_funding_usd": 47769601,
       "source": "OCHA FTS"
     },
     {
@@ -1404,7 +1404,7 @@
       "health_requirements_usd": 236507341,
       "health_funding_usd": 211812220,
       "plan_requirements_usd": 2132641156,
-      "plan_funding_usd": 1123358492,
+      "plan_funding_usd": 1121334742,
       "unspecified_funding_usd": 99312725,
       "source": "OCHA FTS"
     },
@@ -1430,8 +1430,8 @@
       "health_requirements_usd": 113653248,
       "health_funding_usd": 62744048,
       "plan_requirements_usd": 1463046056,
-      "plan_funding_usd": 576625736,
-      "unspecified_funding_usd": 56695388,
+      "plan_funding_usd": 573625736,
+      "unspecified_funding_usd": 53695388,
       "source": "OCHA FTS"
     },
     {
@@ -2097,40 +2097,40 @@
     }
   },
   "fetched_at": {
-    "hapi": "2026-11-17T04:30:13.727Z",
-    "fts": "2026-11-17T04:30:13.727Z",
-    "ssa": "2026-11-17T04:30:13.727Z",
-    "hpc": "2026-11-17T04:30:13.727Z",
-    "who_fts": "2026-11-17T04:30:13.727Z"
+    "hapi": "2026-11-17T22:54:15.209Z",
+    "fts": "2026-11-17T22:54:15.209Z",
+    "ssa": "2026-11-17T22:54:15.209Z",
+    "hpc": "2026-11-17T22:54:15.209Z",
+    "who_fts": "2026-11-17T22:54:15.209Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-17T04:30:13.727Z"
+      "checked_at": "2026-11-17T22:54:15.209Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-11-17T04:30:13.727Z"
+      "checked_at": "2026-11-17T22:54:15.209Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-11-17T04:30:13.727Z"
+      "checked_at": "2026-11-17T22:54:15.209Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-11-17T04:30:13.727Z"
+      "checked_at": "2026-11-17T22:54:15.209Z"
     },
     "who_fts": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-17T04:30:13.727Z"
+      "checked_at": "2026-11-17T22:54:15.209Z"
     }
   },
-  "last_attempt_at": "2026-11-17T04:30:13.727Z",
+  "last_attempt_at": "2026-11-17T22:54:15.209Z",
   "hpc": {
     "plans": {
       "1195": {
@@ -2310,16 +2310,16 @@
         "start": "2025-01-01",
         "end": "2025-12-31",
         "monitoring_generated": true,
-        "fingerprint": "2025-11-24T08:32:22.729Z",
-        "downloaded_at": "2026-11-17T04:32:12.436Z",
+        "fingerprint": "2026-11-17T12:34:53.786Z",
+        "downloaded_at": "2026-11-17T22:55:59.326Z",
         "health": {
           "in_need": 1529765,
           "targeted": 666297,
           "reach": {
-            "reached": 90161,
-            "period_start": "2025-01-01",
-            "period_end": "2025-03-31",
-            "periods_reported": 1,
+            "reached": 414036,
+            "period_start": "2025-10-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 2,
             "decreased": false
           }
         },
@@ -2338,16 +2338,16 @@
         "start": "2025-01-01",
         "end": "2025-12-31",
         "monitoring_generated": true,
-        "fingerprint": "2026-01-16T11:55:50.290Z",
-        "downloaded_at": "2026-11-17T04:32:15.102Z",
+        "fingerprint": "2026-11-17T10:58:57.892Z",
+        "downloaded_at": "2026-11-17T22:56:03.339Z",
         "health": {
           "in_need": 2031499,
           "targeted": 1341425,
           "reach": {
-            "reached": 735779,
-            "period_start": "2025-07-01",
-            "period_end": "2025-09-30",
-            "periods_reported": 3,
+            "reached": 905690,
+            "period_start": "2025-10-01",
+            "period_end": "2025-12-31",
+            "periods_reported": 4,
             "decreased": false
           }
         },
