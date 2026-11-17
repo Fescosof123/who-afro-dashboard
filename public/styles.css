@@ -3925,3 +3925,26 @@ body.printing-bulletin .panel-toggle { display: none !important; }
   .strat-scope select { width: 100%; }
   main { padding-bottom: 72px; }
 }
+
+/* "Reset view" button on charts and maps (public/chart-reset.js) */
+.js-plotly-plot.has-chart-reset { padding-top: 38px; }
+.chart-reset-btn {
+  position: absolute;
+  top: 2px;
+  right: 6px;
+  z-index: 20;
+  min-height: 32px;
+  border: 1px solid #0b4ea2;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #0b4ea2;
+  font: 700 0.82rem/1.2 Barlow, sans-serif;
+  padding: 5px 12px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(13, 31, 51, 0.18);
+}
+.chart-reset-btn:hover { background: #eef4fb; }
+.chart-reset-btn:focus-visible { background: #eef4fb; outline: 2px solid #0b4ea2; outline-offset: 2px; }
+.chart-reset-btn[hidden] { display: none; }
+@media (max-width: 600px) { .chart-reset-btn { min-height: 40px; } .js-plotly-plot.has-chart-reset { padding-top: 46px; } }
+@media print { .chart-reset-btn { display: none !important; } .js-plotly-plot.has-chart-reset { padding-top: 0; } }
