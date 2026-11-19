@@ -299,7 +299,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 2132641156,
-          "funding_usd": 1134707109,
+          "funding_usd": 1132683359,
           "funding_pct": 53
         }
       ],
@@ -383,7 +383,7 @@
           "type": "Regional response plan",
           "year": "2026",
           "requirements_usd": null,
-          "funding_usd": 126738920,
+          "funding_usd": 125838920,
           "funding_pct": null
         }
       ],
@@ -715,7 +715,7 @@
           "type": "Humanitarian needs and response plan",
           "year": "2026",
           "requirements_usd": 1463046056,
-          "funding_usd": 590413029,
+          "funding_usd": 587413029,
           "funding_pct": 40
         }
       ],
@@ -1389,10 +1389,10 @@
       "name": "République Centrafricaine Besoins Humanitaires et Plan de Réponse 2026",
       "health_cluster": "Santé",
       "health_requirements_usd": 13522336,
-      "health_funding_usd": 12125524,
+      "health_funding_usd": 12285986,
       "plan_requirements_usd": 264097388,
       "plan_funding_usd": 145474437,
-      "unspecified_funding_usd": 47769601,
+      "unspecified_funding_usd": 43758051,
       "source": "OCHA FTS"
     },
     {
@@ -1428,10 +1428,10 @@
       "name": "South Sudan Humanitarian Needs and Response Plan 2026",
       "health_cluster": "Health",
       "health_requirements_usd": 113653248,
-      "health_funding_usd": 62744048,
+      "health_funding_usd": 63644048,
       "plan_requirements_usd": 1463046056,
       "plan_funding_usd": 573625736,
-      "unspecified_funding_usd": 53695388,
+      "unspecified_funding_usd": 50695388,
       "source": "OCHA FTS"
     },
     {
@@ -1538,9 +1538,9 @@
     "CMR": {
       "ssa_id": 38,
       "ytd": {
-        "attacks": 1,
-        "deaths": 0,
-        "injuries": 0
+        "attacks": 2,
+        "deaths": 1,
+        "injuries": 1
       },
       "prev_ytd": {
         "attacks": 20,
@@ -1552,9 +1552,9 @@
       "annual": [
         {
           "year": 2026,
-          "attacks": 1,
-          "deaths": 0,
-          "injuries": 0
+          "attacks": 2,
+          "deaths": 1,
+          "injuries": 1
         },
         {
           "year": 2025,
@@ -1570,6 +1570,11 @@
         }
       ],
       "monthly": [
+        {
+          "year": 2026,
+          "month": "Mar",
+          "attacks": 1
+        },
         {
           "year": 2026,
           "month": "Nov",
@@ -2097,40 +2102,40 @@
     }
   },
   "fetched_at": {
-    "hapi": "2026-11-19T03:31:04.132Z",
-    "fts": "2026-11-19T03:31:04.132Z",
-    "ssa": "2026-11-19T03:31:04.132Z",
-    "hpc": "2026-11-19T03:31:04.132Z",
-    "who_fts": "2026-11-19T03:31:04.132Z"
+    "hapi": "2026-11-19T21:39:15.333Z",
+    "fts": "2026-11-19T21:39:15.333Z",
+    "ssa": "2026-11-19T21:39:15.333Z",
+    "hpc": "2026-11-19T21:39:15.333Z",
+    "who_fts": "2026-11-19T21:39:15.333Z"
   },
   "status": {
     "hapi": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-19T03:31:04.132Z"
+      "checked_at": "2026-11-19T21:39:15.333Z"
     },
     "fts": {
       "ok": 12,
       "total": 12,
-      "checked_at": "2026-11-19T03:31:04.132Z"
+      "checked_at": "2026-11-19T21:39:15.333Z"
     },
     "ssa": {
       "ok": 10,
       "total": 10,
-      "checked_at": "2026-11-19T03:31:04.132Z"
+      "checked_at": "2026-11-19T21:39:15.333Z"
     },
     "hpc": {
       "ok": 29,
       "errors": 0,
-      "checked_at": "2026-11-19T03:31:04.132Z"
+      "checked_at": "2026-11-19T21:39:15.333Z"
     },
     "who_fts": {
       "ok": 20,
       "total": 20,
-      "checked_at": "2026-11-19T03:31:04.132Z"
+      "checked_at": "2026-11-19T21:39:15.333Z"
     }
   },
-  "last_attempt_at": "2026-11-19T03:31:04.132Z",
+  "last_attempt_at": "2026-11-19T21:39:15.333Z",
   "hpc": {
     "plans": {
       "1195": {
