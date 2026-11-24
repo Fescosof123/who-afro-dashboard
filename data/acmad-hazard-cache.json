@@ -1,31 +1,80 @@
 {
   "source": "ACMAD Continental Multi-Hazard & Advisory Bulletin (WMO Regional Climate Centre for Africa)",
-  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-11-12/",
-  "pdf_url": "https://www.acmad.org/documents/1714/Continental_Hazard_Outlook_20261112.pdf",
-  "issued_on": "2026-11-12",
+  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-11-24/",
+  "pdf_url": "https://www.acmad.org/documents/1723/Continental_Hazard_Outlook_20261124.pdf",
+  "issued_on": "2026-11-24",
   "sections": [
     {
       "hazard": "heavy_rain",
       "title": "Heavy rainfall and strong winds",
       "valid_from": null,
       "valid_to": null,
-      "highlight": "Heavy rainfall is expected in Gabon, Angola, D.R.C., Uganda, Tanzania, Kenya and Madagascar.",
+      "highlight": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., Zambia, Zimbabwe, and Mozambique.",
       "sentences": [
         {
-          "text": "Heavy rainfall is expected in Gabon, Angola, D.R.C., Uganda, Tanzania, Kenya and Madagascar.",
+          "text": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., Zambia, Zimbabwe, and Mozambique.",
           "level": "watch",
           "countries": [
+            "GNQ",
             "GAB",
+            "COG",
             "AGO",
             "COD",
-            "UGA",
-            "TZA",
-            "KEN",
-            "MDG"
+            "ZMB",
+            "ZWE",
+            "MOZ"
+          ]
+        }
+      ]
+    },
+    {
+      "hazard": "heat_wave",
+      "title": "Heat wave",
+      "valid_from": null,
+      "valid_to": null,
+      "highlight": "Moderate heat wave is expected in Ghana, Togo, Benin, Nigeria, and Mozambique.",
+      "sentences": [
+        {
+          "text": "Moderate heat wave is expected in Ghana, Togo, Benin, Nigeria, and Mozambique.",
+          "level": "watch",
+          "countries": [
+            "GHA",
+            "TGO",
+            "BEN",
+            "NGA",
+            "MOZ"
+          ]
+        }
+      ]
+    },
+    {
+      "hazard": "meningitis",
+      "title": "Meningitis outbreak",
+      "valid_from": null,
+      "valid_to": null,
+      "highlight": "Emergence of Meningitis cases is very likely and epidemics status possible in Chad Emergence of Meningitis cases is likely in Mauritania, Senegal, Algeria, Mali, Burkina Faso, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, and Sudan.",
+      "sentences": [
+        {
+          "text": "Emergence of Meningitis cases is very likely and epidemics status possible in Chad Emergence of Meningitis cases is likely in Mauritania, Senegal, Algeria, Mali, Burkina Faso, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, and Sudan.",
+          "level": "high",
+          "countries": [
+            "TCD",
+            "MRT",
+            "SEN",
+            "DZA",
+            "MLI",
+            "BFA",
+            "GHA",
+            "TGO",
+            "BEN",
+            "NER",
+            "NGA",
+            "CMR",
+            "SDN"
           ]
         }
       ]
     }
   ],
-  "fetched_at": "2026-11-13T01:06:00.371Z"
+  "fetched_at": "2026-11-24T21:13:51.188Z"
 }
