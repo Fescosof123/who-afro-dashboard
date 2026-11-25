@@ -3948,3 +3948,9 @@ body.printing-bulletin .panel-toggle { display: none !important; }
 .chart-reset-btn[hidden] { display: none; }
 @media (max-width: 600px) { .chart-reset-btn { min-height: 40px; } .js-plotly-plot.has-chart-reset { padding-top: 46px; } }
 @media print { .chart-reset-btn { display: none !important; } .js-plotly-plot.has-chart-reset { padding-top: 0; } }
+
+/* Abbreviations list (Data health page) */
+.abbr-list { display: grid; grid-template-columns: max-content 1fr; gap: 6px 16px; margin: 0; }
+.abbr-list dt { font-weight: 700; color: #0b4ea2; }
+.abbr-list dd { margin: 0; }
+@media (max-width: 600px) { .abbr-list { grid-template-columns: 1fr; } .abbr-list dd { margin-bottom: 6px; } }

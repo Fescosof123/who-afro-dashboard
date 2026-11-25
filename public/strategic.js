@@ -66,6 +66,8 @@
   // space before ; ! ?, and inside guillemets. Only text between tags is changed.
   function frTypoText(t) {
     return t
+      // "59,0 millions personnes" -> "59,0 millions de personnes" (a noun follows the number).
+      .replace(/(\d[\u00a0 ](?:millions?|milliards?))[\u00a0 ](?=(?:personnes|déplacés|réfugiés|enfants|habitants|cas|dollars|contacts|consultations)(?![\wÀ-ÿ]))/g, "$1 de ")
       .replace(/ :/g, "\u00a0:")
       .replace(/ ([;!?])/g, "\u202f$1")
       .replace(/ %(?!\{)/g, "\u00a0%")
@@ -74,6 +76,8 @@
   }
   function frTypo(s) {
     if (typeof s !== "string") return s;
+    // "17,5 millions</strong> déplacés" -> "17,5 millions</strong> de déplacés", across a closing tag.
+    s = s.replace(/(\d[\u00a0 ](?:millions?|milliards?))((?:<\/[a-z]+>)?)[\u00a0 ](?=(?:personnes|déplacés|réfugiés|enfants|habitants|cas|dollars|contacts|consultations)(?![\wÀ-ÿ]))/g, "$1$2 de ");
     return s.replace(/(^|>)([^<]*)/g, (m, a, t) => a + frTypoText(t));
   }
   function L(en, fr) {
@@ -141,8 +145,15 @@
     Zambia: ["Zambie", "la"], Zimbabwe: ["Zimbabwe", "le"], "Canary Islands": ["Îles Canaries", "les"]
   };
   const COUNTRY_FR = Object.fromEntries(Object.entries(COUNTRY_INFO_FR).map(([k, v]) => [k, v[0]]));
+  // WHO official short names in English (WHO style guide): the Congo, not "Republic of the Congo".
+  const COUNTRY_WHO_EN = {
+    "Republic of the Congo": "Congo",
+    "São Tomé and Príncipe": "Sao Tome and Principe",
+    "Sao Tomé and Principe": "Sao Tome and Principe",
+    Tanzania: "United Republic of Tanzania"
+  };
   function cname(name) {
-    return L(name, COUNTRY_FR[name] || name);
+    return L(COUNTRY_WHO_EN[name] || name, COUNTRY_FR[name] || name);
   }
   // French country name with its article, using the short display name:
   // "le Tchad", "l'Éthiopie", "la RD Congo"; kind "de" gives "du Tchad", "de l'Éthiopie".
@@ -191,19 +202,19 @@
     "0 to 2 points": "0 à 2 points",
     "fewer than 3 of the 4 core indicators are current": "moins de 3 des 4 indicateurs de base sont à jour",
     "INFORM Risk class very high = 1 (EC JRC)": "Classe de risque INFORM très élevée = 1 (CCR de la CE)",
-    "People in need of health assistance: 2 million or more = 2, 500,000 or more = 1 (OCHA HNRP). Where a country has no current plan, the last annual plan's figure counts if that plan ended 24 months ago or less (a flash appeal's figure stops counting when the appeal ends); the tier is then marked provisional and the figure is never added to regional totals":
-      "Personnes ayant besoin d'une assistance sanitaire : 2 millions ou plus = 2, 500 000 ou plus = 1 (HNRP d'OCHA). Lorsqu'un pays n'a pas de plan en cours, le chiffre du dernier plan annuel est retenu si ce plan s'est terminé il y a 24 mois ou moins (le chiffre d'un appel éclair cesse de compter à la fin de l'appel) ; le niveau est alors marqué comme provisoire et le chiffre n'est jamais ajouté aux totaux régionaux",
+    "People in need of health assistance: 2 million or more = 2, 500 000 or more = 1 (OCHA HNRP). Where a country has no current plan, the last annual plan's figure counts if that plan ended 24 months ago or less (a flash appeal's figure stops counting when the appeal ends); the tier is then marked provisional and the figure is never added to regional totals":
+      "Personnes ayant besoin d'une assistance sanitaire : 2 millions ou plus = 2, 500 000 ou plus = 1 (HNRP d'OCHA). Lorsqu'un pays n'a pas de plan en cours, le chiffre du dernier plan annuel est retenu si ce plan s'est terminé il y a 24 mois ou moins (le chiffre d'un appel éclair cesse de compter à la fin de l'appel) ; le niveau est alors marqué comme provisoire et le chiffre n'est jamais ajouté aux totaux régionaux",
     "IPC/CH Phase 3+ share of the analysed population, analysis less than 18 months old: 20% or more = 2, 10% or more = 1":
       "Part de la population analysée en phase 3+ IPC/CH, analyse de moins de 18 mois : 20 % ou plus = 2, 10 % ou plus = 1",
-    "IDPs (current figure) + refugees hosted: 1 million or more = 2, 250,000 or more = 1 (IOM DTM, UNHCR)":
-      "Déplacés internes (chiffre à jour) + réfugiés accueillis : 1 million ou plus = 2, 250 000 ou plus = 1 (DTM de l'OIM, HCR)",
+    "IDPs (current figure) + refugees hosted: 1 million or more = 2, 250 000 or more = 1 (IOM DTM, UNHCR)":
+      "Déplacés internes (chiffre à jour) + réfugiés accueillis : 1 million ou plus = 2, 250 000 ou plus = 1 (DTM de l'OIM, HCR)",
     "WHO SSA: 10 or more attacks on health care this year, or any deaths = 1 (only where SSA is deployed)":
       "SSA de l'OMS : 10 attaques ou plus contre les soins de santé cette année, ou au moins un décès = 1 (uniquement là où le SSA est déployé)",
     "INFORM Risk class very high": "Classe de risque INFORM très élevée",
     "IPC/CH Phase 3+ 20% or more of the analysed population": "Phase 3+ IPC/CH : 20 % ou plus de la population analysée",
     "IPC/CH Phase 3+ 10% or more of the analysed population": "Phase 3+ IPC/CH : 10 % ou plus de la population analysée",
     "IDPs + refugees hosted 1 million or more": "Déplacés internes + réfugiés accueillis : 1 million ou plus",
-    "IDPs + refugees hosted 250,000 or more": "Déplacés internes + réfugiés accueillis : 250 000 ou plus",
+    "IDPs + refugees hosted 250 000 or more": "Déplacés internes + réfugiés accueillis : 250 000 ou plus",
     "WHO SSA: 10+ attacks on health care this year or any deaths": "SSA de l'OMS : 10 attaques ou plus contre les soins de santé cette année, ou au moins un décès",
     "no INFORM Risk score": "pas de score de risque INFORM",
     "no humanitarian plan": "pas de plan humanitaire",
@@ -231,7 +242,7 @@
   };
   const SERVER_FR_PATTERNS = [
     [/^People in need of health assistance 2 million or more(?: \(last plan, (\d{4})\))?$/, (m, y) => `Personnes ayant besoin d'une assistance sanitaire : 2 millions ou plus${y ? ` (dernier plan, ${y})` : ""}`],
-    [/^People in need of health assistance 500,000 or more(?: \(last plan, (\d{4})\))?$/, (m, y) => `Personnes ayant besoin d'une assistance sanitaire : 500 000 ou plus${y ? ` (dernier plan, ${y})` : ""}`],
+    [/^People in need of health assistance 500 000 or more(?: \(last plan, (\d{4})\))?$/, (m, y) => `Personnes ayant besoin d'une assistance sanitaire : 500 000 ou plus${y ? ` (dernier plan, ${y})` : ""}`],
     [/^no humanitarian plan since (\S+)$/, (m, y) => `pas de plan humanitaire depuis ${y}`],
     [/^Annual plan figures count toward the triage tier for up to (\d+) months after the plan ended$/, (m, n) => `Les chiffres d'un plan annuel comptent pour le niveau de triage jusqu'à ${n} mois après la fin du plan`],
     [/^Humanitarian plan (\d{4})$/, (m, y) => `Plan humanitaire ${y}`],
@@ -254,7 +265,30 @@
   function isNum(v) {
     return v != null && Number.isFinite(Number(v));
   }
+  // WHO style: a space separates thousands in numbers of four or more digits
+  // (3 204, 10 000, 736 000), never a comma. Integers only.
+  function grp(n) {
+    const s = String(Math.abs(Math.round(Number(n))));
+    return `${n < 0 ? minus() : ""}${s.length >= 4 ? s.replace(/\B(?=(\d{3})+(?!\d))/g, NBSP) : s}`;
+  }
+  // WHO style (WHO style guide, 2nd edition): "3.5 million", "736 000", "US$ 112.0 million".
   function fmtCompact(v) {
+    if (!isNum(v)) return na();
+    const n = Number(v);
+    const abs = Math.abs(n);
+    if (isFr()) {
+      if (abs >= 1e9) return `${dec(n / 1e9, 2)}${NBSP}milliard${abs >= 2e9 ? "s" : ""}`;
+      if (abs >= 1e6) return `${dec(n / 1e6, abs >= 1e7 ? 1 : 2)}${NBSP}million${abs >= 2e6 ? "s" : ""}`;
+      if (abs >= 1e4) return grp(Math.round(n / 1e3) * 1e3);
+      return grp(Math.round(n));
+    }
+    if (abs >= 1e9) return `${(n / 1e9).toFixed(2)} billion`;
+    if (abs >= 1e6) return `${(n / 1e6).toFixed(abs >= 1e7 ? 1 : 2)} million`;
+    if (abs >= 1e4) return grp(Math.round(n / 1e3) * 1e3);
+    return grp(Math.round(n));
+  }
+  // Short form for chart labels and axes only, where space is tight ("4.1M", "736K").
+  function fmtShort(v) {
     if (!isNum(v)) return na();
     const n = Number(v);
     const abs = Math.abs(n);
@@ -262,19 +296,19 @@
       if (abs >= 1e9) return `${dec(n / 1e9, 2)}${NBSP}Md`;
       if (abs >= 1e6) return `${dec(n / 1e6, abs >= 1e7 ? 1 : 2)}${NBSP}M`;
       if (abs >= 1e4) return `${Math.round(n / 1e3)}${NBSP}k`;
-      return Math.round(n).toLocaleString("fr-FR");
+      return grp(Math.round(n));
     }
     if (abs >= 1e9) return `${(n / 1e9).toFixed(2)}B`;
     if (abs >= 1e6) return `${(n / 1e6).toFixed(abs >= 1e7 ? 1 : 2)}M`;
     if (abs >= 1e4) return `${Math.round(n / 1e3)}K`;
-    return Math.round(n).toLocaleString("en-US");
+    return grp(Math.round(n));
   }
   function fmtFull(v) {
-    return isNum(v) ? Math.round(Number(v)).toLocaleString(isFr() ? "fr-FR" : "en-US") : na();
+    return isNum(v) ? grp(Math.round(Number(v))) : na();
   }
   function fmtUsd(v) {
     if (!isNum(v)) return na();
-    return isFr() ? `${fmtCompact(v)}${NBSP}$${NBSP}US` : `US$${fmtCompact(v)}`;
+    return `US$${NBSP}${fmtCompact(v)}`;
   }
   function fmtPct(v, digits = 0) {
     if (!isNum(v)) return na();
@@ -286,14 +320,14 @@
     if (Number.isNaN(d.getTime())) return String(iso);
     // A date without a time is a calendar date: show it as written, whatever the viewer's time zone.
     const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(String(iso));
-    return d.toLocaleDateString(locale(), { day: "numeric", month: isFr() ? "long" : "short", year: "numeric", ...(dateOnly ? { timeZone: "UTC" } : {}) });
+    return d.toLocaleDateString(locale(), { day: "numeric", month: "long", year: "numeric", ...(dateOnly ? { timeZone: "UTC" } : {}) });
   }
   function fmtMonth(iso) {
     if (!iso) return na();
     if (/^\d{4}$/.test(String(iso))) return L(`${iso} plan`, `plan ${iso}`);
     const d = new Date(iso);
     if (Number.isNaN(d.getTime())) return String(iso);
-    return d.toLocaleDateString(locale(), { month: isFr() ? "long" : "short", year: "numeric" });
+    return d.toLocaleDateString(locale(), { month: "long", year: "numeric" });
   }
   // French period "d'avril à juillet 2026" (year once when both ends share it).
   function periodFr(a, b) {
@@ -306,7 +340,7 @@
   }
   // Plotly number separators in French (decimal comma, thin space for thousands).
   function plotLang() {
-    return isFr() ? { separators: ", " } : {};
+    return { separators: isFr() ? ",\u00a0" : ".\u00a0" };
   }
   function esc(text) {
     return String(text == null ? "" : text)
@@ -317,10 +351,11 @@
   }
   function shortName(name) {
     const map = {
-      "Democratic Republic of the Congo": "DR Congo",
-      "Central African Republic": "CAR",
+      "Democratic Republic of the Congo": "DRC",
+      "Central African Republic": "Central African Republic",
       "Republic of the Congo": "Congo",
-      "São Tomé and Príncipe": "São Tomé & Príncipe"
+      "São Tomé and Príncipe": "Sao Tome and Principe",
+      Tanzania: "United Republic of Tanzania"
     };
     const mapFr = {
       "Democratic Republic of the Congo": "RD Congo",
@@ -399,7 +434,7 @@
   function monthLabel(key) {
     if (!key) return "";
     const [y, m] = String(key).split("-").map(Number);
-    return new Date(Date.UTC(y, (m || 1) - 1, 1)).toLocaleDateString(locale(), { month: isFr() ? "long" : "short", year: "numeric", timeZone: "UTC" });
+    return new Date(Date.UTC(y, (m || 1) - 1, 1)).toLocaleDateString(locale(), { month: "long", year: "numeric", timeZone: "UTC" });
   }
   function nextMonthLabel(key) {
     if (!key) return "";
@@ -628,7 +663,7 @@
     const yoyCur = sum(k.yoyRows, (r) => r.health_in_need.value);
     const yoyPrev = sum(k.yoyRows, (r) => r.health_in_need_previous.value);
     const yoyTrend = k.yoyRows.length
-      ? trendHtml({ cur: yoyCur, prev: yoyPrev, worseWhen: "none", label: L(`vs ${Number(thisYear) - 1} plans (same ${k.yoyRows.length} countries)`, `par rapport aux plans ${Number(thisYear) - 1} (mêmes ${k.yoyRows.length} pays)`) })
+      ? trendHtml({ cur: yoyCur, prev: yoyPrev, worseWhen: "none", label: L(`compared with ${Number(thisYear) - 1} plans (same ${k.yoyRows.length} countries)`, `par rapport aux plans ${Number(thisYear) - 1} (mêmes ${k.yoyRows.length} pays)`) })
       : "";
     // Funding and need are compared month on month only within the same plan year.
     const fundReq = baseSameYear() ? pairedSums(rows, "health_requirements_usd", (r) => r.health_funding?.requirements_usd) : null;
@@ -641,7 +676,7 @@
     const attacksBaseSameYear = base && String(base.month).slice(0, 4) === thisYear;
     const ssaRows = rows.filter((r) => r.attacks?.prev_ytd);
     const attacksYoy = ssaRows.length
-      ? trendHtml({ cur: sum(ssaRows, (r) => r.attacks.ytd.attacks), prev: sum(ssaRows, (r) => r.attacks.prev_ytd.attacks), label: L("vs same period last year", "par rapport à la même période l'an dernier") })
+      ? trendHtml({ cur: sum(ssaRows, (r) => r.attacks.ytd.attacks), prev: sum(ssaRows, (r) => r.attacks.prev_ytd.attacks), label: L("compared with the same period last year", "par rapport à la même période l'an dernier") })
       : "";
     const attPair = attacksBaseSameYear ? pairedSums(rows, "attacks_ytd", (r) => r.attacks?.ytd?.attacks) : null;
     const attacksSince = attPair
@@ -731,9 +766,9 @@
       kpiCard({
         id: "kpiMhpss",
         title: L("Mental health and psychosocial support", "Santé mentale et soutien psychosocial"),
-        value: k.mhpssMedian != null ? L(`${k.mhpssMedian.toFixed(0)}<small> per 10,000</small>`, `${k.mhpssMedian.toFixed(0)}<small> pour 10${NBSP}000</small>`) : na(),
+        value: k.mhpssMedian != null ? L(`${k.mhpssMedian.toFixed(0)}<small> per 10 000</small>`, `${k.mhpssMedian.toFixed(0)}<small> pour 10${NBSP}000</small>`) : na(),
         sub: k.mhpss.length
-          ? L(`Median people reached with MHPSS in the latest quarter per 10,000 people in need of health assistance (${k.mhpss.length} countries). No regional MHPSS target is published, so the gap cannot yet be sized.`,
+          ? L(`Median people reached with MHPSS in the latest quarter per 10 000 people in need of health assistance (${k.mhpss.length} countries). No regional MHPSS target is published, so the gap cannot yet be sized.`,
             `Nombre médian de personnes ayant bénéficié de services de SMSPS au dernier trimestre pour 10${NBSP}000 personnes ayant besoin d'une assistance sanitaire (${k.mhpss.length} pays). Aucune cible régionale de SMSPS n'est publiée ; l'écart ne peut donc pas encore être mesuré.`)
           : L("No MHPSS figures reported for this scope.", "Aucun chiffre de SMSPS déclaré pour ce périmètre."),
         source: L("FCV service database (WHO country offices); OCHA plans for the denominator", "Base de données des services FCV (bureaux de pays de l'OMS) ; plans d'OCHA pour le dénominateur"),
@@ -864,7 +899,7 @@
       : [
         `<b>${r.country}</b>`,
         `DHM tier: ${r.classification.level} (${r.classification.score}/${r.classification.max_score})`,
-        `Health PiN: ${fmtCompact(r.health_in_need?.value)}`,
+        `People in need (health): ${fmtCompact(r.health_in_need?.value)}`,
         `Health funded: ${r.health_funding ? fmtPct(r.health_funding.pct) : "no plan data"}`,
         `IDPs: ${fmtCompact(r.idps?.value)} | Refugees: ${fmtCompact(r.refugees?.value)}`,
         `IPC 3+: ${r.ipc && !r.ipc.stale ? fmtPct(r.ipc.fraction) : "no current analysis"}`,
@@ -1014,7 +1049,7 @@
     const head = L(`
       <thead><tr>
         <th>Country</th><th>Group</th><th title="DHM triage tier, not a WHO grade">DHM tier</th>${anyGrades ? "<th>WHO grade</th>" : ""}
-        <th title="People in need of health assistance (OCHA plans)">Health PiN</th><th title="Health cluster funding received (OCHA FTS)">Funded</th><th title="Unfunded health requirement">Gap (US$)</th>
+        <th title="People in need of health assistance (OCHA plans)">People in need (health)</th><th title="Health cluster funding received (OCHA FTS)">Funded</th><th title="Unfunded health requirement">Gap (US$)</th>
         <th title="Internally displaced people">IDPs</th><th title="Refugees and asylum seekers hosted (UNHCR)">Refugees</th><th title="IPC/CH Phase 3+, share of the population analysed">IPC/CH 3+</th><th title="Attacks on health care this year (WHO SSA)">Attacks</th><th title="INFORM Risk index (EC JRC), 0 to 10">INFORM</th>
       </tr></thead>`, `
       <thead><tr>
@@ -1032,7 +1067,7 @@
               `Pas de plan humanitaire en cours. Dernier plan : ${tr(r.health_outdated.plan_name) || r.health_outdated.year}, terminé en ${fmtMonth(r.health_outdated.plan_end)}. ${r.health_outdated.counts_for_tier ? "Compte pour le niveau de triage, affiché comme provisoire ; non ajouté aux totaux." : `Non utilisé : ${tr(r.health_outdated.rule) || "trop ancien"}.`}`))
           : `<span class="muted">${L("no plan", "pas de plan")}</span>`;
       const fund = r.health_funding ? `${fmtPct(r.health_funding.pct)}` : `<span class="muted">${L("no plan", "pas de plan")}</span>`;
-      const gap = r.health_funding ? fmtUsd(r.health_funding.gap_usd).replace("US$", "").replace(`${NBSP}$${NBSP}US`, "") : "";
+      const gap = r.health_funding ? fmtCompact(r.health_funding.gap_usd) : "";
       const idp = r.idps ? `<span title="${esc(`${tr(r.idps.source)}, ${fmtMonth(r.idps.date)}${r.idps.note ? `. ${tr(r.idps.note)}` : ""}`)}">${cellStale(fmtCompact(r.idps.value), r.idps.stale)}</span>` : `<span class="muted">${na()}</span>`;
       const ref = r.refugees ? `<span title="${esc(L(`${r.refugees.source}, end ${r.refugees.year}`, `${tr(r.refugees.source)}, fin ${r.refugees.year}`))}">${fmtCompact(r.refugees.value)}</span>` : `<span class="muted">${na()}</span>`;
       const ipc = r.ipc
@@ -1077,7 +1112,7 @@
       y: rows.map((x) => shortName(x.r.country)),
       x: rows.map((x) => x.share * 100),
       marker: { color: rows.map((x) => (x.share < 0.4 ? "#c44242" : x.share < 0.6 ? "#e8a33b" : "#2e8b6e")) },
-      text: rows.map((x) => L(`${fmtPct(x.share)} (${fmtCompact(x.r.health_targeted.value)} of ${fmtCompact(x.r.health_in_need.value)})`, `${fmtPct(x.share)} (${fmtCompact(x.r.health_targeted.value)} sur ${fmtCompact(x.r.health_in_need.value)})`)),
+      text: rows.map((x) => L(`${fmtPct(x.share)} (${fmtShort(x.r.health_targeted.value)} of ${fmtShort(x.r.health_in_need.value)})`, `${fmtPct(x.share)} (${fmtShort(x.r.health_targeted.value)} sur ${fmtShort(x.r.health_in_need.value)})`)),
       textposition: "outside",
       cliponaxis: false,
       hovertemplate: L("%{y}: %{x:.0f}% of health need targeted<extra></extra>", "%{y} : %{x:.0f} % des besoins en santé ciblés<extra></extra>")
@@ -1112,14 +1147,14 @@
       y: rows.map((x) => shortName(x.r.country)),
       x: rows.map((x) => x.rate),
       marker: { color: "#4a6fa5" },
-      text: rows.map((x) => L(`${x.rate.toFixed(0)} per 10,000 (${fmtFull(x.q.mental_health_beneficiaries)} people, ${x.q.quarter_label})`, `${x.rate.toFixed(0)} pour 10${NBSP}000 (${fmtFull(x.q.mental_health_beneficiaries)} personnes, ${qLab(x.q.quarter_label)})`)),
+      text: rows.map((x) => L(`${x.rate.toFixed(0)} per 10 000 (${fmtFull(x.q.mental_health_beneficiaries)} people, ${x.q.quarter_label})`, `${x.rate.toFixed(0)} pour 10${NBSP}000 (${fmtFull(x.q.mental_health_beneficiaries)} personnes, ${qLab(x.q.quarter_label)})`)),
       textposition: "outside",
       cliponaxis: false,
-      hovertemplate: L("%{y}: %{x:.1f} per 10,000 in need<extra></extra>", "%{y} : %{x:.1f} pour 10 000 personnes dans le besoin<extra></extra>")
+      hovertemplate: L("%{y}: %{x:.1f} per 10 000 in need<extra></extra>", "%{y} : %{x:.1f} pour 10 000 personnes dans le besoin<extra></extra>")
     }], {
       margin: { l: 110, r: 230, t: 10, b: 40 },
       height: Math.max(280, 32 * rows.length + 70),
-      xaxis: { gridcolor: "#e6edf5", title: { text: L("People reached with MHPSS per 10,000 in need of health assistance", "Personnes ayant bénéficié de services de SMSPS pour 10 000 personnes ayant besoin d'une assistance sanitaire") } },
+      xaxis: { gridcolor: "#e6edf5", title: { text: L("People reached with MHPSS per 10 000 in need of health assistance", "Personnes ayant bénéficié de services de SMSPS pour 10 000 personnes ayant besoin d'une assistance sanitaire") } },
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "rgba(0,0,0,0)",
       font: FONT,
@@ -1294,7 +1329,7 @@
     const iso3 = select ? select.value : null;
     const r = (state.payload?.countries || []).find((c) => c.iso3 === iso3);
     if (!r) {
-      node.innerHTML = L(`<div class="panel-header"><h2>Strategic Country Card</h2><p>The selected country is outside the FCV reference list. Strategic indicators are compiled for the 13 FCV countries, other FCV-classified countries, Sudan and Somalia.</p></div>`,
+      node.innerHTML = L(`<div class="panel-header"><h2>Strategic country card</h2><p>The selected country is outside the FCV reference list. Strategic indicators are compiled for the 13 FCV countries, other FCV-classified countries, Sudan and Somalia.</p></div>`,
         `<div class="panel-header"><h2>Fiche pays stratégique</h2><p>Le pays sélectionné ne figure pas dans la liste de référence FCV. Les indicateurs stratégiques sont compilés pour les 13 pays FCV, les autres pays classés FCV, le Soudan et la Somalie.</p></div>`);
       return;
     }
@@ -1338,7 +1373,7 @@
       ["INFORM Risk (0 to 10)", r.inform_risk ? `${esc(r.inform_risk.overall)} (global rank ${esc(r.inform_risk.global_rank)})` : "n/a", r.inform_risk ? `EC JRC, ${esc(r.inform_risk.year)}` : ""]
     ];
     node.innerHTML = `
-      ${L(`<div class="panel-header"><h2>Strategic Country Card: ${esc(r.country)}</h2><p>${esc(GROUP_LABEL[r.group] || "")} country. Verified sources only; each line shows its source and date.</p></div>`,
+      ${L(`<div class="panel-header"><h2>Strategic country card: ${esc(cname(r.country))}</h2><p>${esc(GROUP_LABEL[r.group] || "")} country. Verified sources only; each line shows its source and date.</p></div>`,
         `<div class="panel-header"><h2>Fiche pays stratégique : ${esc(cname(r.country))}</h2><p>Pays du groupe ${esc(GROUP_FR[r.group] || "")}. Sources vérifiées uniquement ; chaque ligne indique sa source et sa date.</p></div>`)}
       <div class="strat-card-grid">${items.map(([k, v, s]) => `<div class="strat-card-item"><span class="strat-card-label">${k}</span><span class="strat-card-value">${v}</span>${s ? `<span class="strat-source">${s}</span>` : ""}</div>`).join("")}</div>
       ${countryTrendTable(r)}
@@ -1378,7 +1413,7 @@
     const idpTotal = fmtCompact(sum(fcv, (r) => (r.idps && !r.idps.stale ? r.idps.value : null)));
     const refTotal = fmtCompact(sum(fcv, (r) => r.refugees?.value));
     node.innerHTML = `
-      ${L(`<div class="panel-header"><h2>Verified Displacement Figures</h2>
+      ${L(`<div class="panel-header"><h2>Verified displacement figures</h2>
       <p>IOM DTM internal displacement and UNHCR refugee figures through OCHA HDX HAPI. 13 FCV countries: <strong>${idpTotal}</strong> IDPs and <strong>${refTotal}</strong> refugees and asylum seekers hosted. DTM figures older than 24 months are replaced by the 2026 plan figure where one exists.</p></div>`,
         `<div class="panel-header"><h2>Chiffres de déplacement vérifiés</h2>
       <p>Chiffres des déplacements internes (DTM de l'OIM) et des réfugiés (HCR) via HDX HAPI d'OCHA. 13 pays FCV : <strong>${idpTotal}</strong> déplacés internes et <strong>${refTotal}</strong> réfugiés et demandeurs d'asile accueillis. Les chiffres DTM de plus de 24 mois sont remplacés par le chiffre du plan 2026 lorsqu'il existe.</p></div>`)}
@@ -1410,7 +1445,7 @@
     const notMonitored = rowsInScope("fcv13").filter((r) => !r.attacks).map((r) => shortName(r.country));
     const ssaDate = fmtDate(state.payload.sources.ssa.fetched_at);
     node.innerHTML = `
-      ${L(`<div class="panel-header"><h2>Verified Attacks on Health Care (WHO SSA)</h2>
+      ${L(`<div class="panel-header"><h2>Verified attacks on health care (WHO SSA)</h2>
       <p>Confirmed and probable attacks recorded in the WHO Surveillance System for Attacks on Health Care, ${year} to date. Updated ${ssaDate}.</p></div>`,
         `<div class="panel-header"><h2>Attaques vérifiées contre les soins de santé (SSA de l'OMS)</h2>
       <p>Attaques confirmées et probables enregistrées dans le Système de surveillance des attaques contre les soins de santé de l'OMS, de janvier ${year} à ce jour. Mis à jour le ${ssaDate}.</p></div>`)}
@@ -1501,7 +1536,7 @@
           const status = rf.running
             ? L(`Refresh running (step: ${esc(rf.step || "starting")}, started ${fmtDate(rf.started_at)})`, `Actualisation en cours (étape : ${esc(rf.step || "démarrage")}, commencée le ${fmtDate(rf.started_at)})`)
             : rf.finished_at
-              ? L(`Last refresh attempt finished ${new Date(rf.finished_at).toLocaleString("en-GB")}`, `Dernière tentative d'actualisation terminée le ${new Date(rf.finished_at).toLocaleString("fr-FR")}`)
+              ? L(`Last refresh attempt finished ${fmtDate(rf.finished_at)}, ${new Date(rf.finished_at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`, `Dernière tentative d'actualisation terminée le ${fmtDate(rf.finished_at)} à ${new Date(rf.finished_at).getHours()}${NBSP}h${NBSP}${String(new Date(rf.finished_at).getMinutes()).padStart(2, "0")}`)
               : L("No refresh attempted since the server started", "Aucune actualisation tentée depuis le démarrage du serveur");
           const errs = (rf.errors || []).map((e) => `<li><strong>${esc(e.source)}</strong>: ${esc(e.message)}</li>`).join("");
           return L(`<p><strong>Automatic refresh:</strong> ${status}.</p>${errs ? `<p>Problems in the last attempt (the last good values are kept):</p><ul class="bulletin-list">${errs}</ul>` : ""}`,
@@ -1643,7 +1678,7 @@
     const over1m = disp.filter((x) => x.v >= 1e6).sort((a, b) => b.v - a.v);
     const top = rows.filter((r) => r.refugees).sort((a, b) => b.refugees.value - a.refugees.value)[0];
     const acled = (state.dash?.countries || []).filter((c) => (c.fcv_track || "").startsWith("FCV") && /extreme|high/i.test(c.acled_index?.index_level || ""));
-    renderStrip("conflictsDisplacementPage", L("Conflict and Displacement: Key Figures", "Conflits et déplacements : chiffres clés"), L("13 FCV countries. Click a card to go to the detail.", "13 pays FCV. Cliquer sur une carte pour accéder au détail."), [
+    renderStrip("conflictsDisplacementPage", L("Conflict and displacement: key figures", "Conflits et déplacements : chiffres clés"), L("13 FCV countries. Click a card to go to the detail.", "13 pays FCV. Cliquer sur une carte pour accéder au détail."), [
       { id: "cdIdps", title: L("Internally displaced people", "Personnes déplacées internes"), value: fmtCompact(sum(rows, (r) => (r.idps && !r.idps.stale ? r.idps.value : null))), sub: L("Current IOM DTM figures, or the 2026 plan figure where DTM is outdated or covers only part of the country. Outdated figures are left out.", "Chiffres à jour de la DTM de l'OIM, ou chiffre du plan 2026 lorsque la DTM est obsolète ou ne couvre qu'une partie du pays. Les chiffres obsolètes sont exclus."), source: L("IOM DTM via HDX HAPI", "DTM de l'OIM via HDX HAPI"), target: "conflictsDisplacementPage#stratDisplacementPanel" },
       { id: "cdRef", title: L("Refugees and asylum seekers hosted", "Réfugiés et demandeurs d'asile accueillis"), value: fmtCompact(sum(rows, (r) => r.refugees?.value)), sub: L(`Largest host: ${top ? esc(shortName(top.country)) : "n/a"}.`, `Principal pays d'accueil : ${top ? esc(shortName(top.country)) : na()}.`), source: L("UNHCR via HDX HAPI", "HCR via HDX HAPI"), target: "conflictsDisplacementPage#stratDisplacementPanel" },
       { id: "cdOver1m", title: L("Countries with 1 million or more displaced or hosted", "Pays comptant 1 million ou plus de personnes déplacées ou accueillies"), value: String(over1m.length), sub: names(over1m.map((x) => x.r)) || L("None", "Aucun"), source: L("IOM DTM and UNHCR", "DTM de l'OIM et HCR"), target: "conflictsDisplacementPage#stratDisplacementPanel", tone: over1m.length ? "warn" : "" },
@@ -1657,7 +1692,7 @@
     const rising = rows.filter((r) => r.attacks.prev_ytd && r.attacks.ytd && r.attacks.ytd.attacks >= 10 && r.attacks.ytd.attacks > r.attacks.prev_ytd.attacks * 1.25);
     const notCovered = fcvRows().filter((r) => !r.attacks);
     const ssaWho = L("WHO SSA", "SSA de l'OMS");
-    renderStrip("attacksHealthPage", L("Attacks on Health Care: Key Figures", "Attaques contre les soins de santé : chiffres clés"), L(`WHO SSA, 13 FCV countries, ${year} to date. Updated ${fmtDate(state.payload.sources.ssa.fetched_at)}.`, `SSA de l'OMS, 13 pays FCV, de janvier ${year} à ce jour. Mis à jour le ${fmtDate(state.payload.sources.ssa.fetched_at)}.`), [
+    renderStrip("attacksHealthPage", L("Attacks on health care: key figures", "Attaques contre les soins de santé : chiffres clés"), L(`WHO SSA, 13 FCV countries, ${year} to date. Updated ${fmtDate(state.payload.sources.ssa.fetched_at)}.`, `SSA de l'OMS, 13 pays FCV, de janvier ${year} à ce jour. Mis à jour le ${fmtDate(state.payload.sources.ssa.fetched_at)}.`), [
       { id: "ahAttacks", title: L("Attacks this year", "Attaques cette année"), value: fmtFull(sum(rows, (r) => r.attacks.ytd?.attacks)), sub: L(`Same period ${year - 1}: ${fmtFull(sum(rows, (r) => r.attacks.prev_ytd?.attacks))}.`, `Même période ${year - 1} : ${fmtFull(sum(rows, (r) => r.attacks.prev_ytd?.attacks))}.`), source: ssaWho, target: "attacksHealthPage#stratSsaPanel" },
       { id: "ahKilled", title: L("People killed", "Personnes tuées"), value: fmtFull(sum(rows, (r) => r.attacks.ytd?.deaths)), sub: L(`${fmtFull(sum(rows, (r) => r.attacks.ytd?.injuries))} injured.`, `${cap(injuredFr(sum(rows, (r) => r.attacks.ytd?.injuries)))}.`), source: ssaWho, target: "attacksHealthPage#stratSsaPanel", tone: "bad" },
       { id: "ahRising", title: L("Countries with a clear rise in attacks", "Pays avec une hausse nette des attaques"), value: String(rising.length), sub: rising.length ? names(rising) : L("None", "Aucun"), source: L("WHO SSA: 10 or more and 25% above the same period last year", "SSA de l'OMS : 10 ou plus et 25 % au-dessus de la même période l'an dernier"), target: "attacksHealthPage#stratSsaPanel", tone: rising.length ? "warn" : "" },
@@ -1671,7 +1706,7 @@
     const over20 = cur.filter((r) => r.ipc.fraction >= 0.2).sort((a, b) => b.ipc.fraction - a.ipc.fraction);
     const top = cur.slice().sort((a, b) => b.ipc.fraction - a.ipc.fraction)[0];
     const none = rows.filter((r) => !r.ipc || r.ipc.stale);
-    renderStrip("foodSecurityPage", L("Food Security: Key Figures", "Sécurité alimentaire : chiffres clés"), L("IPC and Cadre Harmonisé analyses less than 18 months old, 13 FCV countries. Shares refer to the population analysed.", "Analyses IPC et Cadre Harmonisé de moins de 18 mois, 13 pays FCV. Les parts se rapportent à la population analysée."), [
+    renderStrip("foodSecurityPage", L("Food security: key figures", "Sécurité alimentaire : chiffres clés"), L("IPC and Cadre Harmonisé analyses less than 18 months old, 13 FCV countries. Shares refer to the population analysed.", "Analyses IPC et Cadre Harmonisé de moins de 18 mois, 13 pays FCV. Les parts se rapportent à la population analysée."), [
       { id: "fsPeople", title: L("People in IPC/CH Phase 3 or above", "Personnes en phase 3 ou plus de l'IPC/CH"), value: fmtCompact(sum(cur, (r) => r.ipc.population)), sub: L(`${cur.length} countries with a current analysis or projection.`, `${cur.length} pays disposant d'une analyse ou d'une projection à jour.`), source: "IPC via HDX HAPI", target: "foodSecurityPage#foodSecurityTable" },
       { id: "fsOver20", title: L("Countries with 20% or more in Phase 3+", "Pays avec 20 % ou plus en phase 3+"), value: String(over20.length), sub: names(over20) || L("None", "Aucun"), source: "IPC via HDX HAPI", target: "foodSecurityPage#foodSecurityTable", tone: over20.length ? "bad" : "" },
       { id: "fsTop", title: L("Highest share in Phase 3+", "Part la plus élevée en phase 3+"), value: top ? fmtPct(top.ipc.fraction) : na(), sub: top ? L(`${esc(shortName(top.country))}, ${top.ipc.kind === "current" ? "current" : "projection"} ${fmtMonth(top.ipc.period_start)} to ${fmtMonth(top.ipc.period_end)}.`, `${esc(shortName(top.country))}, ${top.ipc.kind === "current" ? "situation actuelle" : "projection"} ${periodFr(top.ipc.period_start, top.ipc.period_end)}.`) : "", source: "IPC via HDX HAPI", target: "foodSecurityPage#foodSecurityTable" },
@@ -1688,7 +1723,7 @@
     const quarters = [...new Set(rows.map((x) => x.quarter_label).filter(Boolean))].sort();
     const qLabel = quarters.length > 1 ? L(`${quarters[0]} to ${quarters[quarters.length - 1]}`, `du ${qLab(quarters[0])} au ${qLab(quarters[quarters.length - 1])}`) : qLab(quarters[0]) || L("latest quarter", "dernier trimestre");
     const fcvDb = L("FCV service database", "Base de données des services FCV");
-    renderStrip("nutritionPage", L("Nutrition: Key Figures", "Nutrition : chiffres clés"), L("Latest reported quarter per country from the FCV service database. Survey-based acute malnutrition (GAM, SAM) should come from SMART surveys or IPC Acute Malnutrition analyses.", "Dernier trimestre déclaré par pays dans la base de données des services FCV. La malnutrition aiguë mesurée par enquête (MAG, MAS) doit provenir des enquêtes SMART ou des analyses IPC de la malnutrition aiguë."), [
+    renderStrip("nutritionPage", L("Nutrition: key figures", "Nutrition : chiffres clés"), L("Latest reported quarter per country from the FCV service database. Survey-based acute malnutrition (GAM, SAM) should come from SMART surveys or IPC Acute Malnutrition analyses.", "Dernier trimestre déclaré par pays dans la base de données des services FCV. La malnutrition aiguë mesurée par enquête (MAG, MAS) doit provenir des enquêtes SMART ou des analyses IPC de la malnutrition aiguë."), [
       { id: "nuScreened", title: L("Children screened for malnutrition (latest quarter)", "Enfants dépistés pour la malnutrition (dernier trimestre)"), value: fmtCompact(sum(screened, (x) => x.children_screened_malnutrition)), sub: L(`${screened.length} countries, each country's latest reported quarter (${esc(qLabel)}). The FCV Response page also shows the total across all quarters.`, `${screened.length} pays, dernier trimestre déclaré par chaque pays (${esc(qLabel)}). La page Réponse FCV présente aussi le total sur l'ensemble des trimestres.`), source: fcvDb, target: "fcvDataPage" },
       { id: "nuSam", title: L("Complicated SAM cases managed: lowest country", "Cas de MAS compliquée pris en charge : pays le plus bas"), value: samRows.length ? fmtPct(samRows[0].q.sam_complications_managed_pct / 100) : na(), sub: samRows.length ? L(`${esc(shortName(samRows[0].r.country))} (${esc(samRows[0].q.quarter_label || "")}). Range across ${samRows.length} countries: ${fmtPct(samRows[0].q.sam_complications_managed_pct / 100)} to ${fmtPct(samRows[samRows.length - 1].q.sam_complications_managed_pct / 100)}.`, `${esc(shortName(samRows[0].r.country))} (${esc(qLab(samRows[0].q.quarter_label || ""))}). Fourchette sur ${samRows.length} pays : de ${fmtPct(samRows[0].q.sam_complications_managed_pct / 100)} à ${fmtPct(samRows[samRows.length - 1].q.sam_complications_managed_pct / 100)}.`) : L("No country reported this indicator.", "Aucun pays n'a déclaré cet indicateur."), source: fcvDb, target: "fcvDataPage" },
       { id: "nuAmn", title: L("Acute malnutrition analyses", "Analyses de la malnutrition aiguë"), value: L("Open maps", "Ouvrir les cartes"), sub: L("Open the IPC Acute Malnutrition maps for the latest survey-based figures by country.", "Ouvrir les cartes IPC de la malnutrition aiguë pour les derniers chiffres d'enquête par pays."), source: "IPC", target: "https://www.ipcinfo.org/ipc-country-analysis/en/" }
@@ -1707,7 +1742,7 @@
     const floods = state.dash?.regional_flood_signals || [];
     const enso = state.dash?.enso_advisory;
     const countryNames = countries.slice(0, 6).map((iso) => esc(shortName((state.dash?.countries || []).find((c) => c.iso3 === iso)?.country || iso))).join(", ");
-    renderStrip("hazardPage", L("Hazards and Floods: Key Figures", "Aléas et inondations : chiffres clés"), L("Natural hazard alerts linked to African countries in the current refresh.", "Alertes aux aléas naturels liées aux pays africains dans l'actualisation en cours."), [
+    renderStrip("hazardPage", L("Hazards and floods: key figures", "Aléas et inondations : chiffres clés"), L("Natural hazard alerts linked to African countries in the current refresh.", "Alertes aux aléas naturels liées aux pays africains dans l'actualisation en cours."), [
       { id: "hzAlerts", title: L("GDACS alerts (all levels)", "Alertes GDACS (tous niveaux)"), value: hazardFeedEmpty ? L("No data", "Pas de données") : String(hz.length), sub: L(`${redOrange.length} orange or red; the rest are green (low expected impact).`, `${redOrange.length} orange ou rouge ; les autres sont vertes (faible impact attendu).`), source: "GDACS", target: "hazardPage#gdacsSummary", tone: redOrange.length ? "warn" : "" },
       { id: "hzCountries", title: L("Countries with an active alert", "Pays avec une alerte active"), value: String(countries.length), sub: L(countryNames + (countries.length > 6 ? ` and ${countries.length - 6} more` : "") || "None", countryNames + (countries.length > 6 ? ` et ${countries.length - 6} autre${countries.length - 6 > 1 ? "s" : ""}` : "") || "Aucun"), source: "GDACS", target: "hazardPage#hazardFeed" },
       { id: "hzFloods", title: L("Flood updates", "Informations sur les inondations"), value: floods.length ? String(floods.length) : L("None in feed", "Aucune dans le flux"), sub: L("Flood advisories and situation reports in the current window.", "Avis d'inondation et rapports de situation de la période en cours."), source: "ReliefWeb, GloFAS", target: "hazardPage#floodWatchSummary" },
@@ -1717,7 +1752,7 @@
 
   function renderCycloneStrip() {
     const c = state.dash?.cyclone_intelligence || {};
-    renderStrip("cyclonePage", L("Cyclone Watch: Key Figures", "Vigie cyclonique : chiffres clés"), L("The South-West Indian Ocean cyclone season runs from November to April.", "La saison cyclonique du sud-ouest de l'océan Indien s'étend de novembre à avril."), [
+    renderStrip("cyclonePage", L("Cyclone watch: key figures", "Vigie cyclonique : chiffres clés"), L("The South-West Indian Ocean cyclone season runs from November to April.", "La saison cyclonique du sud-ouest de l'océan Indien s'étend de novembre à avril."), [
       { id: "cyActive", title: L("Named cyclones, last 21 days", "Cyclones nommés, 21 derniers jours"), value: fmtFull(c.active_cyclone_count || 0), sub: L(`Last ${c.active_window_days || 21} days.`, `${c.active_window_days || 21} derniers jours.`), source: L("Météo-France La Réunion, WMO", "Météo-France La Réunion, OMM"), target: "cyclonePage#activeCyclonesList", tone: c.active_cyclone_count ? "bad" : "" },
       { id: "cyProj", title: L("Forecast tracks and advisories", "Trajectoires prévues et avis"), value: fmtFull(c.projection_signal_count || 0), sub: L("Forecast tracks and advisories in the current refresh.", "Trajectoires prévues et avis dans l'actualisation en cours."), source: L("Météo-France, WMO", "Météo-France, OMM"), target: "cyclonePage#cycloneProjectionFeed" },
       { id: "cyCountries", title: L("Countries with a cyclone signal", "Pays avec un signal cyclonique"), value: fmtFull(c.countries_with_cyclone_signal || 0), sub: L("Mapped from advisories to country names.", "Établi à partir des avis, par nom de pays."), source: "Météo-France, GDACS", target: "cyclonePage#cycloneCountryTable" }
@@ -1764,7 +1799,7 @@
     const from = live.map((x) => x.valid_from).filter(Boolean).sort()[0];
     const to = live.map((x) => x.valid_to).filter(Boolean).sort().pop();
     if (!from || !to) return "";
-    const short = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale(), { day: "numeric", month: isFr() ? "long" : "short", timeZone: "UTC" });
+    const short = (iso) => new Date(`${iso}T00:00:00Z`).toLocaleDateString(locale(), { day: "numeric", month: "long", timeZone: "UTC" });
     return L(`${short(from)} to ${short(to)}`, `du ${short(from)} au ${short(to)}`);
   }
   // What a manager should check, per hazard, for the FCV countries flagged.
@@ -1788,14 +1823,14 @@
     if (!node) return;
     const a = state.payload?.acmad;
     if (!a || !(a.sections || []).length) {
-      node.innerHTML = `<div class="panel-header"><h2>${L("ACMAD 5-Day Hazard Outlook", "Perspectives des aléas à 5 jours (ACMAD)")}</h2><p>${L("The latest ACMAD bulletin has not been loaded yet.", "Le dernier bulletin de l'ACMAD n'a pas encore été chargé.")}</p></div>`;
+      node.innerHTML = `<div class="panel-header"><h2>${L("ACMAD 5-day hazard outlook", "Perspectives des aléas à 5 jours (ACMAD)")}</h2><p>${L("The latest ACMAD bulletin has not been loaded yet.", "Le dernier bulletin de l'ACMAD n'a pas encore été chargé.")}</p></div>`;
       return;
     }
     const fcv = acmadFcvSet();
     const names = (list) => list.map((iso) => (fcv.has(iso) ? `<strong>${esc(isoName(iso))}</strong>` : esc(isoName(iso)))).join(", ");
     node.innerHTML = `
       <div class="panel-header">
-        <h2>${L("ACMAD 5-Day Hazard Outlook", "Perspectives des aléas à 5 jours (ACMAD)")}</h2>
+        <h2>${L("ACMAD 5-day hazard outlook", "Perspectives des aléas à 5 jours (ACMAD)")}</h2>
         <p>${L(`Continental Multi-Hazard & Advisory Bulletin issued on ${esc(fmtDate(a.issued_on))} by ACMAD, the WMO Regional Climate Centre for Africa. FCV countries are in bold.`, `Bulletin continental multi-aléas publié le ${esc(fmtDate(a.issued_on))} par l'ACMAD, Centre climatique régional de l'OMM pour l'Afrique. Les pays FCV sont en gras.`)}</p>
       </div>
       ${a.expired ? `<p class="strat-note-warn">${L("This bulletin's validity period has ended. ACMAD usually issues the next one within three or four days; it will appear here automatically.", "La période de validité de ce bulletin est terminée. L'ACMAD publie généralement le suivant sous trois ou quatre jours ; il s'affichera ici automatiquement.")}</p>` : ""}
@@ -1828,7 +1863,7 @@
     const enso = state.dash?.enso_advisory;
     const fc = state.dash?.forecasts || [];
     const elevated = fc.filter((f) => f.risk_level && !/watch|low|normal/i.test(f.risk_level));
-    renderStrip("forecastPage", L("Climate Forecasts: Key Figures", "Prévisions climatiques : chiffres clés"), L("Seasonal climate outlooks that can change health risk (floods, drought, disease).", "Perspectives climatiques saisonnières susceptibles de modifier le risque sanitaire (inondations, sécheresse, maladies)."), [
+    renderStrip("forecastPage", L("Climate forecasts: key figures", "Prévisions climatiques : chiffres clés"), L("Seasonal climate outlooks that can change health risk (floods, drought, disease).", "Perspectives climatiques saisonnières susceptibles de modifier le risque sanitaire (inondations, sécheresse, maladies)."), [
       (() => {
         const a = state.payload?.acmad;
         const summary = acmadFcvSummary(a);
@@ -1858,7 +1893,7 @@
     const excluded = Object.values(v).reduce((s2, x) => s2 + (x.excluded_rows || 0), 0);
     const fcvDb = L("FCV service database", "Base de données des services FCV");
     const qName = esc(qLab(q?.label) || L("latest quarter", "dernier trimestre"));
-    renderStrip("fcvDataPage", L("FCV Response: Key Figures", "Réponse FCV : chiffres clés"), L(`Most recent quarter in the FCV service database: ${esc(q?.label || "n/a")}.`, `Trimestre le plus récent dans la base de données des services FCV : ${esc(qLab(q?.label) || na())}.`), [
+    renderStrip("fcvDataPage", L("FCV response: key figures", "Réponse FCV : chiffres clés"), L(`Most recent quarter in the FCV service database: ${esc(q?.label || "n/a")}.`, `Trimestre le plus récent dans la base de données des services FCV : ${esc(qLab(q?.label) || na())}.`), [
       { id: "fvReporting", title: L("Countries reporting", "Pays ayant fait rapport"), value: L(`${rows.length}<small> of 13</small>`, `${rows.length}<small> sur 13</small>`), sub: L(`In ${esc(q?.label || "the latest quarter")}. Reports for the most recent quarter may still be arriving.`, `Pour ${esc(qLab(q?.label) || "le dernier trimestre")}. Les rapports du trimestre le plus récent peuvent encore arriver.`), source: fcvDb, target: "fcvDataPage#fcvRegReportingHeatmap", tone: rows.length < 9 ? "warn" : "" },
       { id: "fvReached", title: L(`Service contacts reported (${qName})`, `Contacts de service déclarés (${qName})`), value: fmtCompact(sum(rows, (r) => r.people_reached)), sub: L("Sum of monthly \"people reached\" reports in the quarter; the same person may be counted more than once.", "Somme des déclarations mensuelles de « personnes atteintes » sur le trimestre ; une même personne peut être comptée plusieurs fois."), source: fcvDb, target: "fcvDataPage#fcvRegVolumeKpiGrid" },
       { id: "fvMhpss", title: L(`People reached with MHPSS (${qName})`, `Personnes ayant bénéficié de services de SMSPS (${qName})`), value: fmtFull(sum(rows, (r) => r.mental_health_beneficiaries)), sub: L(`Covers only countries that reported in this quarter. GBV cases managed: ${fmtFull(sum(rows, (r) => r.gbv_cases_managed))}. Totals across all quarters are under Regional Service Volumes.`, `Ne couvre que les pays ayant fait rapport ce trimestre. Cas de VBG pris en charge : ${fmtFull(sum(rows, (r) => r.gbv_cases_managed))}. Les totaux sur l'ensemble des trimestres figurent sous Volumes de services régionaux.`), source: fcvDb, target: "fcvDataPage#fcvRegVolumeKpiGrid" },
@@ -1891,7 +1926,7 @@
     const v = state.dash?.service_delivery_status?.validation?.fields || {};
     const excluded = Object.values(v).reduce((s2, x) => s2 + (x.excluded_rows || 0), 0);
     const oldest = fmtDate([s.hapi.fetched_at, s.fts.fetched_at, s.ssa.fetched_at].filter(Boolean).sort()[0]);
-    renderStrip("dataHealthPage", L("Data Health: Key Figures", "Qualité des données : chiffres clés"), "", [
+    renderStrip("dataHealthPage", L("Data health: key figures", "Qualité des données : chiffres clés"), "", [
       { id: "dhSources", title: L("Core online sources loaded", "Sources en ligne principales chargées"), value: L(`${okSources}<small> of 3</small>`, `${okSources}<small> sur 3</small>`), sub: L(`Oldest refresh ${oldest}.`, `Actualisation la plus ancienne : ${oldest}.`), source: L("HDX HAPI, OCHA FTS, WHO SSA", "HDX HAPI, FTS d'OCHA, SSA de l'OMS"), target: "dataHealthPage#dataHealthSources", tone: okSources < 3 ? "bad" : "" },
       { id: "dhExcluded", title: L("Service values held back", "Valeurs de services exclues"), value: fmtFull(excluded), sub: L("Listed by indicator and country below.", "Détail par indicateur et par pays ci-dessous."), source: L("FCV service database", "Base de données des services FCV"), target: "dataHealthPage#dataHealthValidation", tone: excluded ? "warn" : "" },
       { id: "dhStale", title: L("Outdated country figures", "Chiffres pays obsolètes"), value: String(rows.filter((r) => (r.idps && r.idps.stale) || (r.ipc && r.ipc.stale) || r.health_outdated).length), sub: L("Countries with displacement, IPC or plan figures older than their update deadline.", "Pays dont les chiffres de déplacement, d'IPC ou de plan dépassent leur délai de mise à jour."), source: L("Freshness rules", "Règles de fraîcheur"), target: "overviewPage#stratTable" }
@@ -2081,7 +2116,7 @@
 
     node.innerHTML = isFr() ? `
       <div class="panel-header">
-        <h2>Partie A : Point stratégique et opérationnel, semaine ${esc(week.slice(-2))} de ${esc(week.slice(0, 4))}</h2>
+        <h2>Partie A : point stratégique et opérationnel, semaine ${esc(week.slice(-2))} de ${esc(week.slice(0, 4))}</h2>
         <p>Informations destinées à la direction et aux opérations sur les 13 pays FCV : la situation stratégique, la situation opérationnelle, la réponse et les lacunes. Les chiffres proviennent des sources indiquées, chacune avec sa date, et s'actualisent automatiquement ; le niveau de crise est le triage propre à la DHM, fondé sur des règles. Les encadrés de note facultatifs permettent à l'agent de permanence d'ajouter du contexte avant l'impression ou l'export ; les encadrés vides sont omis. Les notes ne sont enregistrées que dans ce navigateur.</p>
       </div>
 
@@ -2132,7 +2167,7 @@
       ${noteBox("gaps", "Note facultative : décisions attendues de la direction", "Lacunes nécessitant une décision : financement, personnel, fournitures, accès.")}
       ${sourcesBar(["hpc", "hapi", "fts", "dtm", "unhcr", "ipc", "ssa", "fcvdb"])}` : `
       <div class="panel-header">
-        <h2>Part A: Strategic and Operational Update, week ${esc(week.slice(-2))} of ${esc(week.slice(0, 4))}</h2>
+        <h2>Part A: strategic and operational update, week ${esc(week.slice(-2))} of ${esc(week.slice(0, 4))}</h2>
         <p>Information for management and operations on the 13 FCV countries: the strategic picture, the operational situation, the response and the gaps. Figures come from the sources listed, each with its date, and refresh automatically; the crisis tier is DHM's own rule-based triage. The optional note boxes let the duty officer add context before printing or exporting; empty boxes are left out. Notes are saved only in this browser.</p>
       </div>
 
@@ -2177,7 +2212,7 @@
           : k.reachLatest.year
             ? `OCHA has not yet published ${new Date().getFullYear()} figures; the latest full-year result (${esc(k.reachLatest.year)}) is ${fmtCompact(k.reachLatest.reached)} reached of ${fmtCompact(k.reachLatest.targeted)} targeted (${fmtPct(k.reachLatest.reached / Math.max(1, k.reachLatest.targeted))}) in ${k.reachLatest.rows.length} countries`
             : "not yet published by OCHA"}. Plans target ${fmtCompact(k.healthTargeted)} of ${fmtCompact(k.healthPin)} people in need (${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))}).</li>
-        <li>MHPSS: median ${k.mhpssMedian != null ? k.mhpssMedian.toFixed(0) : "n/a"} people reached per 10,000 in need; no regional MHPSS target is published.</li>
+        <li>MHPSS: median ${k.mhpssMedian != null ? k.mhpssMedian.toFixed(0) : "n/a"} people reached per 10 000 in need; no regional MHPSS target is published.</li>
         <li>Surveillance and data gaps: WHO attack surveillance does not cover ${names(k.notInSsa, 6) || "none"}; no current humanitarian plan for ${names(k.noHealthPlan, 6) || "none"}.</li>
       </ul>
       ${noteBox("gaps", "Optional note: decisions needed from management", "Gaps that need a decision: funding, staff, supplies, access.")}
@@ -2192,10 +2227,10 @@
 
   // ---------- Destination labels for clickable cards ----------
   const PAGE_LABEL = {
-    overviewPage: "Overview", gradingPage: "Crisis Classification", fcvDataPage: "FCV Response", whoResponsePage: "WHO Humanitarian Response", countryPage: "Country Profiles",
-    conflictsDisplacementPage: "Conflict & Displacement", attacksHealthPage: "Attacks on Health Care", foodSecurityPage: "Food Security",
-    nutritionPage: "Nutrition", hazardPage: "Hazards & Floods", cyclonePage: "Cyclone Watch", forecastPage: "Climate Forecasts",
-    operationalReportPage: "Operational Bulletin", signalsPage: "Event Signals", dataHealthPage: "Data Health"
+    overviewPage: "Overview", gradingPage: "Crisis classification", fcvDataPage: "FCV response", whoResponsePage: "WHO humanitarian response", countryPage: "Country profiles",
+    conflictsDisplacementPage: "Conflict and displacement", attacksHealthPage: "Attacks on health care", foodSecurityPage: "Food security",
+    nutritionPage: "Nutrition", hazardPage: "Hazards and floods", cyclonePage: "Cyclone watch", forecastPage: "Climate forecasts",
+    operationalReportPage: "Operational bulletin", signalsPage: "Event signals", dataHealthPage: "Data health"
   };
   // French page names, the same as the French navigation menu (PHRASE_FR in app.js).
   const PAGE_LABEL_FR = {
@@ -2289,12 +2324,12 @@
     const outdated = rows.filter((r) => (r.idps && r.idps.stale) || (r.ipc && r.ipc.stale) || r.health_outdated || !r.health_in_need);
 
     const items = [
-      { q: "Where is the health burden concentrated?", kpi: `${k.major.length} countries in the major tier; ${fmtCompact(k.healthPin)} people in need of health assistance`, trigger: "Country in the major tier of the DHM triage", flagged: k.major, status: k.major.length ? "Act now" : "On track", decision: "Prioritise staff surge and regional support", link: "gradingPage#gradingTable" },
+      { q: "Where is the health burden concentrated?", kpi: `${k.major.length} countries in the major tier; ${fmtCompact(k.healthPin)} people in need of health assistance`, trigger: "Country in the major tier of the DHM triage", flagged: k.major, status: k.major.length ? "Act now" : "On track", decision: "Prioritize staff surge and regional support", link: "gradingPage#gradingTable" },
       { q: "How deep is the food crisis?", kpi: `${ipcHigh.length} countries with 20% or more of the analysed population in IPC/CH Phase 3+`, trigger: "Phase 3+ share of 20% or more (analysis under 18 months old)", flagged: ipcHigh, status: ipcHigh.length ? "Act now" : "On track", decision: "Integrate nutrition and disease surveillance in food-insecure areas", link: "foodSecurityPage#foodSecurityTable" },
       { q: "Is the health response funded?", kpi: `${fmtPct(k.pct)} received across plans; median per country ${fmtPct(k.medianPct)}`, trigger: "Under 20% funded, or under half the FCV average", flagged: lowFunded, status: lowFunded.length ? "Act now" : funded.length ? "On track" : "No data", decision: "Donor briefing; pooled-fund and CERF discussions", link: "overviewPage#stratFundingChart" },
-      { q: "Are plans covering health needs?", kpi: `Plans target ${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} of people in need; ${k.healthReachedCountries ? `${fmtPct(k.healthReached / Math.max(1, k.healthReachTargeted))} of target reached so far` : k.reachLatest.year ? `${new Date().getFullYear()} reach not yet published (${esc(k.reachLatest.year)}: ${fmtPct(k.reachLatest.reached / Math.max(1, k.reachLatest.targeted))} of target reached in the ${k.reachLatest.rows.length} countries with final figures)` : "reach is not yet published"}`, trigger: "Plan targets under 40% of health need. Once reach is reported: under 50% reached by mid-year", flagged: lowCoverage, status: lowCoverage.length ? "Attention" : hasCoverageData ? "On track" : "No data", decision: "Review prioritisation, partners and access", link: "overviewPage#stratCoverageChart" },
+      { q: "Are plans covering health needs?", kpi: `Plans target ${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} of people in need; ${k.healthReachedCountries ? `${fmtPct(k.healthReached / Math.max(1, k.healthReachTargeted))} of target reached so far` : k.reachLatest.year ? `${new Date().getFullYear()} reach not yet published (${esc(k.reachLatest.year)}: ${fmtPct(k.reachLatest.reached / Math.max(1, k.reachLatest.targeted))} of target reached in the ${k.reachLatest.rows.length} countries with final figures)` : "reach is not yet published"}`, trigger: "Plan targets under 40% of health need. Once reach is reported: under 50% reached by mid-year", flagged: lowCoverage, status: lowCoverage.length ? "Attention" : hasCoverageData ? "On track" : "No data", decision: "Review prioritization, partners and access", link: "overviewPage#stratCoverageChart" },
       { q: "Is health care under attack?", kpi: `${fmtFull(k.attacks)} attacks and ${fmtFull(k.deaths)} people killed this year`, trigger: "10 or more attacks and 25% above the same period last year; or any deaths", flagged: [...new Map([...rising, ...deaths].map((r) => [r.iso3, r])).values()], status: rising.length ? "Act now" : deaths.length ? "Attention" : "On track", decision: "Protection advocacy; continuity and security review", link: "attacksHealthPage#stratSsaPanel" },
-      { q: "Are psychosocial needs being met?", kpi: k.mhpssMedian != null ? `Median ${k.mhpssMedian.toFixed(0)} people reached with MHPSS per 10,000 in need` : "No MHPSS data", trigger: "Fewer than 10 per 10,000 in need (provisional until a target is set)", flagged: lowMhpss, status: !k.mhpss.length ? "No data" : lowMhpss.length ? "Attention" : "On track", decision: "Fund MHPSS partners; integrate MHPSS into primary care", link: "overviewPage#stratMhpssChart" },
+      { q: "Are psychosocial needs being met?", kpi: k.mhpssMedian != null ? `Median ${k.mhpssMedian.toFixed(0)} people reached with MHPSS per 10 000 in need` : "No MHPSS data", trigger: "Fewer than 10 per 10 000 in need (provisional until a target is set)", flagged: lowMhpss, status: !k.mhpss.length ? "No data" : lowMhpss.length ? "Attention" : "On track", decision: "Fund MHPSS partners; integrate MHPSS into primary care", link: "overviewPage#stratMhpssChart" },
       { q: "How large is displacement?", kpi: `${fmtCompact(k.idps)} internally displaced; ${fmtCompact(k.refugees)} refugees hosted`, trigger: "1 million or more displaced or hosted", flagged: bigDisp, status: bigDisp.length ? "Attention" : "On track", decision: "Plan services in camps and host areas; review surge", link: "conflictsDisplacementPage#stratDisplacementPanel" },
       { q: "Can we trust the numbers?", kpi: `${notReporting.length} FCV countries not reporting service data in the last two quarters; ${outdated.length} with outdated or missing plan, displacement or IPC figures`, trigger: "No service report for two quarters, or a figure older than its update deadline", flagged: [...new Map([...notReporting, ...outdated].map((r) => [r.iso3, r])).values()], status: maxQ == null && !outdated.length ? "No data" : notReporting.length || outdated.length ? "Attention" : "On track", decision: "Follow up with country offices before the figures are used", link: "dataHealthPage#dataHealthValidation" }
     ];
@@ -2311,7 +2346,7 @@
         ["La réponse sanitaire est-elle financée ?", `${fmtPct(k.pct)} reçus pour l'ensemble des plans ; médiane par pays ${fmtPct(k.medianPct)}`, "Financé à moins de 20 %, ou à moins de la moitié de la moyenne FCV", "Réunion d'information des bailleurs ; discussions sur les fonds communs et le CERF"],
         ["Les plans couvrent-ils les besoins en santé ?", `Les plans ciblent ${fmtPct(k.healthTargeted / Math.max(1, k.healthPin))} des personnes dans le besoin ; ${reachFr}`, "Cibles des plans inférieures à 40 % des besoins en santé. Une fois la couverture déclarée : moins de 50 % atteints à mi-année", "Revoir la priorisation, les partenaires et l'accès"],
         ["Les soins de santé sont-ils attaqués ?", `${fmtFull(k.attacks)} attaques et ${fmtFull(k.deaths)} personnes tuées cette année`, "10 attaques ou plus et 25 % au-dessus de la même période l'an dernier ; ou au moins un décès", "Plaidoyer pour la protection ; examen de la continuité des services et de la sécurité"],
-        ["Les besoins psychosociaux sont-ils couverts ?", k.mhpssMedian != null ? `Médiane de ${k.mhpssMedian.toFixed(0)} personnes ayant bénéficié de services de SMSPS pour 10${NBSP}000 personnes dans le besoin` : "Pas de données de SMSPS", "Moins de 10 pour 10 000 personnes dans le besoin (provisoire, en attendant la fixation d'une cible)", "Financer les partenaires de SMSPS ; intégrer la SMSPS dans les soins de santé primaires"],
+        ["Les besoins psychosociaux sont-ils couverts ?", k.mhpssMedian != null ? `Médiane de ${k.mhpssMedian.toFixed(0)} personnes ayant bénéficié de services de SMSPS pour 10${NBSP}000 personnes dans le besoin` : "Pas de données de SMSPS", "Moins de 10 pour 10 000 personnes dans le besoin (provisoire, en attendant la fixation d'une cible)", "Financer les partenaires de SMSPS ; intégrer la SMSPS dans les soins de santé primaires"],
         ["Quelle est l'ampleur des déplacements ?", `${fmtCompact(k.idps)} déplacés internes ; ${fmtCompact(k.refugees)} réfugiés accueillis`, "1 million ou plus de personnes déplacées ou accueillies", "Planifier les services dans les camps et les zones d'accueil ; revoir le renfort"],
         ["Peut-on se fier aux chiffres ?", `${notReporting.length} pays FCV sans données de services sur les deux derniers trimestres ; ${outdated.length} avec des chiffres de plan, de déplacement ou d'IPC obsolètes ou manquants`, "Aucun rapport de services depuis deux trimestres, ou un chiffre plus ancien que son délai de mise à jour", "Faire le suivi avec les bureaux de pays avant d'utiliser les chiffres"]
       ];
@@ -2361,7 +2396,7 @@
       case "funding_pct":
       case "ipc": return L(`${Math.round(v)}%`, `${Math.round(v)}${NBSP}%`);
       case "attacks": return String(v);
-      default: return fmtCompact(v);
+      default: return fmtShort(v);
     }
   }
   const LAYER_NOTE = {
@@ -2449,7 +2484,7 @@
       <p><strong>Bands:</strong> 1 Low (0 to 20), 2 Guarded (21 to 40), 3 Elevated (41 to 60), 4 High (61 to 80), 5 Critical (81 and above). The "IPC Phase 3+" button switches the map to the IPC/CH Phase 3+ share alone.</p>
       <p><strong>Countries with the strongest signals now:</strong></p>
       <ol class="strat-signal-list">${top.map((c) => `<li><button type="button" class="strat-link" data-strat-country="${esc(c.iso3)}">${esc(c.country)}</button>: score ${esc(c.risk_score)} (${esc(bandForRiskLabel(c.risk_score))}); ${esc(driver(c))}.</li>`).join("")}</ol>
-      <p class="muted">For the strategic ranking of crises, use the <button type="button" class="strat-link" data-strat-target="gradingPage#gradingTable">Crisis Classification</button> page.</p>`;
+      <p class="muted">For the strategic ranking of crises, use the <button type="button" class="strat-link" data-strat-target="gradingPage#gradingTable">Crisis classification</button> page.</p>`;
   }
   function bandForRiskLabel(score) {
     const v = Number(score || 0);
@@ -2512,7 +2547,7 @@
           <p class="muted">Les niveaux découlent du type de produit indiqué dans le titre, pas du contenu de la carte. Élevé signifie qu'une perspective d'aléa figure parmi les perspectives actuelles ; l'ouvrir pour voir les zones concernées. L'ICPAC ne couvre que les pays de l'IGAD ; pour les autres sous-régions, utiliser les services météorologiques nationaux et les liens de l'OMM sur la page Vigie cyclonique.</p>
         </div>
       </div>` : `
-      <div class="panel-header"><h2>Forecast Summary and How to Read It</h2><p>What the current outlooks say, and how the levels on this page are assigned.</p></div>
+      <div class="panel-header"><h2>Forecast summary and how to read it</h2><p>What the current outlooks say, and how the levels on this page are assigned.</p></div>
       <div class="two-col strat-forecast-grid">
         <div>
           <h3 class="bulletin-h3">Summary</h3>
@@ -2629,12 +2664,12 @@
     const who = state.payload?.who_response;
     const year = who?.year || new Date().getFullYear();
     const setText = (id, text) => { const n = el(id); if (n) n.textContent = text; };
-    setText("whoRespTitle", L("WHO Humanitarian Response", "Réponse humanitaire de l'OMS"));
-    setText("whoRespChartTitle", L("Funding Received by WHO, by Country", "Financements reçus par l'OMS, par pays"));
-    setText("whoRespTableTitle", L("WHO Response by Country", "Réponse de l'OMS par pays"));
-    setText("whoRespCerfTitle", L("CERF Allocations to WHO", "Allocations du CERF à l'OMS"));
-    setText("whoRespDonorsTitle", L("Main Donors to WHO", "Principaux donateurs de l'OMS"));
-    setText("whoRespNotesTitle", L("How to Read This Page", "Comment lire cette page"));
+    setText("whoRespTitle", L("WHO humanitarian response", "Réponse humanitaire de l'OMS"));
+    setText("whoRespChartTitle", L("Funding received by WHO, by country", "Financements reçus par l'OMS, par pays"));
+    setText("whoRespTableTitle", L("WHO response by country", "Réponse de l'OMS par pays"));
+    setText("whoRespCerfTitle", L("CERF allocations to WHO", "Allocations du CERF à l'OMS"));
+    setText("whoRespDonorsTitle", L("Main donors to WHO", "Principaux donateurs de l'OMS"));
+    setText("whoRespNotesTitle", L("How to read this page", "Comment lire cette page"));
     const intro = el("whoRespIntro");
     if (intro) {
       intro.textContent = L(
@@ -2728,7 +2763,7 @@
             const step = [1, 2, 2.5, 5, 10].map((m) => m * mag).find((v) => v >= raw) || raw;
             const vals = [];
             for (let v = 0; v <= max + step * 0.01; v += step) vals.push(v);
-            return { tickvals: vals, ticktext: vals.map((v) => (v === 0 ? "0" : isFr() ? `${fmtCompact(v)}${NBSP}$` : `$${fmtCompact(v)}`)), gridcolor: "#e6ebf1", range: [0, vals[vals.length - 1] * 1.02] };
+            return { tickvals: vals, ticktext: vals.map((v) => (v === 0 ? "0" : isFr() ? `${fmtShort(v)}${NBSP}$` : `$${fmtShort(v)}`)), gridcolor: "#e6ebf1", range: [0, vals[vals.length - 1] * 1.02] };
           })(),
           legend: { orientation: "h", y: -0.12 }, paper_bgcolor: "rgba(0,0,0,0)", plot_bgcolor: "rgba(0,0,0,0)", ...plotLang()
         });
@@ -2951,6 +2986,44 @@
     });
   }
 
+  // ---------- Abbreviations (WHO style: each abbreviation is spelled out) ----------
+  const ABBREVIATIONS = [
+    ["ACAPS", "Assessment Capacities Project", "Assessment Capacities Project"],
+    ["ACLED", "Armed Conflict Location and Event Data", "Armed Conflict Location and Event Data"],
+    ["ACMAD", "African Centre of Meteorological Applications for Development", "Centre africain pour les applications de la météorologie au développement"],
+    ["CERF", "Central Emergency Response Fund", "Fonds central d'intervention pour les urgences humanitaires"],
+    ["CFE", "WHO Contingency Fund for Emergencies", "Fonds de réserve de l'OMS pour les situations d'urgence"],
+    ["CH", "Cadre Harmonisé", "Cadre harmonisé"],
+    ["DHM", "Disaster and Humanitarian Management (WHO Regional Office for Africa)", "Gestion des catastrophes et de l'action humanitaire (Bureau régional de l'OMS pour l'Afrique)"],
+    ["DON", "Disease Outbreak News", "Bulletin d'information sur les flambées épidémiques"],
+    ["DRC", "Democratic Republic of the Congo", "République démocratique du Congo"],
+    ["DTM", "Displacement Tracking Matrix (IOM)", "Matrice de suivi des déplacements (OIM)"],
+    ["EM-DAT", "Emergency Events Database", "Base de données sur les situations d'urgence"],
+    ["ENSO", "El Niño–Southern Oscillation", "El Niño-oscillation australe"],
+    ["FCV", "fragile, conflict-affected and vulnerable settings", "contextes fragiles, touchés par des conflits et vulnérables"],
+    ["FEWS NET", "Famine Early Warning Systems Network", "Réseau des systèmes d'alerte précoce contre la famine"],
+    ["FTS", "Financial Tracking Service (OCHA)", "Service de suivi financier (OCHA)"],
+    ["GBV", "gender-based violence", "violence basée sur le genre (VBG)"],
+    ["GDACS", "Global Disaster Alert and Coordination System", "Système mondial d'alerte et de coordination en cas de catastrophe"],
+    ["HDX", "Humanitarian Data Exchange", "Humanitarian Data Exchange"],
+    ["ICPAC", "IGAD Climate Prediction and Applications Centre", "Centre de prévision et d'applications climatiques de l'IGAD"],
+    ["IDP", "internally displaced person", "personne déplacée interne"],
+    ["IOM", "International Organization for Migration", "Organisation internationale pour les migrations (OIM)"],
+    ["IPC", "Integrated Food Security Phase Classification", "Cadre intégré de classification de la sécurité alimentaire"],
+    ["MHPSS", "mental health and psychosocial support", "santé mentale et soutien psychosocial (SMSPS)"],
+    ["OCHA", "United Nations Office for the Coordination of Humanitarian Affairs", "Bureau de la coordination des affaires humanitaires des Nations Unies"],
+    ["SAM", "severe acute malnutrition", "malnutrition aiguë sévère (MAS)"],
+    ["SSA", "Surveillance System for Attacks on Health Care (WHO)", "Système de surveillance des attaques contre les soins de santé (OMS)"],
+    ["UNHCR", "Office of the United Nations High Commissioner for Refugees", "Haut-Commissariat des Nations Unies pour les réfugiés (HCR)"]
+  ];
+  function renderAbbreviations() {
+    const box = el("abbreviationsList");
+    if (!box) return;
+    const h = el("abbreviationsPanel")?.querySelector("h2");
+    if (h) h.textContent = L("Abbreviations", "Sigles et abréviations");
+    box.innerHTML = `<dl class="abbr-list">${ABBREVIATIONS.map(([a, en, fr]) => `<dt>${esc(a)}</dt><dd>${esc(L(en, fr))}</dd>`).join("")}</dl>`;
+  }
+
   function renderAll() {
     if (!state.payload) return;
     renderKpis();
@@ -2974,6 +3047,7 @@
     renderAcmadPanel();
     renderWhoResponsePage();
     renderFilterBars();
+    renderAbbreviations();
     decorateCardDestinations();
   }
 
@@ -3019,25 +3093,25 @@
   // Detail panels start closed so each page leads with its key information.
   // Matched on the English panel title; a click on the title bar opens them.
   const COLLAPSED_PANELS = {
-    overviewPage: ["Sources and Links"],
-    gradingPage: ["Classification Rules"],
-    fcvDataPage: ["Completeness by Indicator", "PENTA − Measles Gap", "Coverage Map", "SAM Case Severity", "Screening Volume vs. Severity", "GBV & MHPSS Cases Managed"],
-    countryPage: ["Country Comparison Table", "FCV Country Profile Data"],
-    conflictsDisplacementPage: ["Conflict and Displacement Pressure", "Conflict and Displacement Prioritization", "Evidence Feed"],
-    attacksHealthPage: ["Public Reporting Signals (context only)", "Country Prioritization", "WHO SSA Source and Evidence Feed"],
-    foodSecurityPage: ["Recent Food Security Reporting"],
-    nutritionPage: ["Recent Nutrition Reporting"],
-    hazardPage: ["Source Intelligence Summary", "GDACS Hazard Events", "ReliefWeb RSS Situation Reports", "WHO Disease Outbreak News (DON)", "Disease Outbreak Evidence Feed", "Historical Disaster Impact (EM-DAT)", "Largest Disasters by People Affected", "Most Affected Countries (EM-DAT)"],
-    cyclonePage: ["Cyclone Source Diagnostics", "Cyclone Projections and Advisories"],
-    forecastPage: ["Forecast Outlook", "Forecast Source Summary", "ICPAC Source Summary"],
-    operationalReportPage: ["Source Intelligence Detail", "Conflict and Displacement Insert", "Priority Country Annexes", "Forecast and Projection Summary", "Conflicts and Displacements Summary"],
-    signalsPage: ["Food Security and Event Pressure Snapshot"],
-    dataHealthPage: ["Data Validation Ledger"]
+    overviewPage: ["Sources and links"],
+    gradingPage: ["Classification rules"],
+    fcvDataPage: ["Completeness by indicator", "Penta minus measles gap", "Coverage map", "SAM case severity", "Screening volume and severity", "GBV and MHPSS cases managed"],
+    countryPage: ["Country comparison table", "FCV country profile data"],
+    conflictsDisplacementPage: ["Conflict and displacement pressure", "Conflict and displacement prioritization", "Evidence feed"],
+    attacksHealthPage: ["Public reporting signals (context only)", "Country prioritization", "WHO SSA source and evidence feed"],
+    foodSecurityPage: ["Recent food security reporting"],
+    nutritionPage: ["Recent nutrition reporting"],
+    hazardPage: ["Source intelligence summary", "GDACS hazard events", "ReliefWeb RSS situation reports", "WHO Disease Outbreak News (DON)", "Disease outbreak evidence feed", "Historical disaster impact (EM-DAT)", "Largest disasters by people affected", "Most affected countries (EM-DAT)"],
+    cyclonePage: ["Cyclone source diagnostics", "Cyclone projections and advisories"],
+    forecastPage: ["Forecast outlook", "Forecast source summary", "ICPAC source summary"],
+    operationalReportPage: ["Source intelligence detail", "Conflict and displacement insert", "Priority country annexes", "Forecast and projection summary", "Conflicts and displacements summary"],
+    signalsPage: ["Food security and event pressure snapshot"],
+    dataHealthPage: ["Data validation ledger"]
   };
   // Panels that repeat older calculations and contradict the verified figures.
   const HIDDEN_PANELS = {
-    countryPage: ["Country Profile Trend", "Country Operational Brief"],
-    conflictsDisplacementPage: ["Population Movement: IDP Estimates (IOM DTM)"]
+    countryPage: ["Country profile trend", "Country operational brief"],
+    conflictsDisplacementPage: ["Population movement: IDP estimates (IOM DTM)"]
   };
 
   function panelTitle(panel) {
@@ -3466,6 +3540,52 @@
       .catch(() => { /* search still works without it */ });
   }
 
+  // ---------- WHO thousands separator, applied to every rendered number ----------
+  // Most figures go through the formatters above. This pass catches counts that
+  // other code writes as raw integers (3204 -> 3 204). It leaves alone years
+  // (1900 to 2100), decimals, codes and identifiers (digits joined to letters,
+  // hyphens, slashes or colons) and link text from external sources.
+  const RAW_INT = /(^|[^\w\-./:#'’ ])(\d{4,})(?![\w\-/:]|[.,]\d)/g;
+  function groupRawNumbers(root) {
+    if (!root) return;
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const p = node.parentElement;
+        if (!p || p.closest("script, style, code, pre, textarea, a, option, svg, [data-raw-number]")) return NodeFilter.FILTER_REJECT;
+        return /\d{4}/.test(node.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+      }
+    });
+    const nodes = [];
+    let t;
+    while ((t = walker.nextNode())) nodes.push(t);
+    nodes.forEach((node) => {
+      const next = node.nodeValue.replace(RAW_INT, (all, pre, num) => {
+        if (num.length === 4 && Number(num) >= 1900 && Number(num) <= 2100) return all;
+        return pre + num.replace(/\B(?=(\d{3})+(?!\d))/g, NBSP);
+      });
+      if (next !== node.nodeValue) node.nodeValue = next;
+    });
+  }
+  function watchRawNumbers() {
+    const main = document.querySelector("main");
+    if (!main || typeof MutationObserver === "undefined") return;
+    let pending = null;
+    const queue = new Set();
+    const flush = () => {
+      pending = null;
+      queue.forEach((n) => { if (document.contains(n)) groupRawNumbers(n); });
+      queue.clear();
+    };
+    new MutationObserver((records) => {
+      records.forEach((r) => {
+        const target = r.type === "characterData" ? r.target.parentElement : r.target;
+        if (target) queue.add(target);
+      });
+      if (!pending) pending = setTimeout(flush, 20);
+    }).observe(main, { childList: true, subtree: true, characterData: true });
+    groupRawNumbers(main);
+  }
+
   window.StrategicDashboard = {
     onDashboardData(dash) {
       state.dash = dash;
@@ -3511,7 +3631,7 @@
     goToPage
   };
 
-  const start = () => { applyPageLayout(); ensureBackToTop(); ensureSearchButtons(); loadUiConfig(); bind(); load(); };
+  const start = () => { applyPageLayout(); ensureBackToTop(); ensureSearchButtons(); loadUiConfig(); bind(); load(); watchRawNumbers(); };
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", start);
   } else {

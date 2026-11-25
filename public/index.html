@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WHO AFRO Humanitarian Dashboard</title>
+    <title>WHO AFRO humanitarian dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Sora:wght@500;700;800&display=swap" rel="stylesheet" />
     <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
-    <link rel="stylesheet" href="/styles.css?v=20261117a" />
+    <link rel="stylesheet" href="/styles.css?v=20261125e" />
   </head>
   <body>
     <div class="who-bg"></div>
@@ -25,36 +25,36 @@
 
         <nav class="side-nav" id="sideNav">
           <div class="nav-group">
-            <p class="nav-group-label">Strategic View</p>
+            <p class="nav-group-label">Strategic view</p>
             <button class="nav-btn active" data-page="overviewPage" type="button">Overview</button>
-            <button class="nav-btn" data-page="gradingPage" type="button">Crisis Classification</button>
-            <button class="nav-btn" data-page="fcvDataPage" type="button">FCV Response</button>
-            <button class="nav-btn" data-page="whoResponsePage" type="button">WHO Humanitarian Response</button>
-            <button class="nav-btn" data-page="countryPage" type="button">Country Profiles</button>
+            <button class="nav-btn" data-page="gradingPage" type="button">Crisis classification</button>
+            <button class="nav-btn" data-page="fcvDataPage" type="button">FCV response</button>
+            <button class="nav-btn" data-page="whoResponsePage" type="button">WHO humanitarian response</button>
+            <button class="nav-btn" data-page="countryPage" type="button">Country profiles</button>
           </div>
           <div class="nav-group">
-            <p class="nav-group-label">Risk Monitoring</p>
-            <button class="nav-btn" data-page="conflictsDisplacementPage" type="button">Conflict &amp; Displacement</button>
-            <button class="nav-btn" data-page="attacksHealthPage" type="button">Attacks on Health Care</button>
-            <button class="nav-btn" data-page="foodSecurityPage" type="button">Food Security</button>
+            <p class="nav-group-label">Risk monitoring</p>
+            <button class="nav-btn" data-page="conflictsDisplacementPage" type="button">Conflict and displacement</button>
+            <button class="nav-btn" data-page="attacksHealthPage" type="button">Attacks on health care</button>
+            <button class="nav-btn" data-page="foodSecurityPage" type="button">Food security</button>
             <button class="nav-btn" data-page="nutritionPage" type="button">Nutrition</button>
-            <button class="nav-btn" data-page="hazardPage" type="button">Hazards &amp; Floods</button>
-            <button class="nav-btn" data-page="cyclonePage" type="button">Cyclone Watch</button>
-            <button class="nav-btn" data-page="forecastPage" type="button">Climate Forecasts</button>
+            <button class="nav-btn" data-page="hazardPage" type="button">Hazards and floods</button>
+            <button class="nav-btn" data-page="cyclonePage" type="button">Cyclone watch</button>
+            <button class="nav-btn" data-page="forecastPage" type="button">Climate forecasts</button>
           </div>
           <div class="nav-group">
-            <p class="nav-group-label">Outputs &amp; Data</p>
-            <button class="nav-btn" data-page="operationalReportPage" type="button">Operational Bulletin</button>
-            <button class="nav-btn" data-page="signalsPage" type="button">Event Signals</button>
-            <button class="nav-btn" data-page="dataHealthPage" type="button">Data Health</button>
+            <p class="nav-group-label">Outputs and data</p>
+            <button class="nav-btn" data-page="operationalReportPage" type="button">Operational bulletin</button>
+            <button class="nav-btn" data-page="signalsPage" type="button">Event signals</button>
+            <button class="nav-btn" data-page="dataHealthPage" type="button">Data health</button>
           </div>
         </nav>
 
         <div class="sidebar-tools">
-          <button id="presentationModeBtn" type="button">Enable Presentation Mode</button>
-          <button id="autoRotateBtn" type="button">Start Auto Display</button>
+          <button id="presentationModeBtn" type="button">Enable presentation mode</button>
+          <button id="autoRotateBtn" type="button">Start auto display</button>
           <label class="rotate-label">
-            <span id="rotateEveryLabel">Rotate Every</span>
+            <span id="rotateEveryLabel">Rotate every</span>
             <select id="rotateIntervalSelect">
               <option value="30000">30 sec</option>
               <option value="60000" selected>1 min</option>
@@ -64,7 +64,7 @@
           </label>
           <p id="autoStatus" class="auto-status">Auto display is off.</p>
           <div class="export-dropdown" id="exportDropdown">
-            <button id="exportDropdownBtn" type="button">Export Bulletin &#9662;</button>
+            <button id="exportDropdownBtn" type="button">Export bulletin &#9662;</button>
             <div class="export-dropdown-menu" id="exportDropdownMenu">
               <button type="button" data-export="print">Print / Save as PDF</button>
               <button type="button" data-export="word">Export to Word</button>
@@ -76,7 +76,7 @@
           </label>
           <p id="confidenceLegend" class="sidebar-note">Confidence legend: High = multiple verified current + projection sources active; Moderate = partial source availability; Low = major source outage or fallback-only evidence.</p>
           <p id="exportStatus" class="export-status" role="status" aria-live="polite"></p>
-          <button id="refreshBtn" type="button">Update Dashboard</button>
+          <button id="refreshBtn" type="button">Update dashboard</button>
           <p id="dataAgeStatus" class="data-age-status" role="status" aria-live="polite">Data age: waiting for first refresh.</p>
         </div>
       </aside>
@@ -84,12 +84,12 @@
       <section class="content">
         <header class="topbar">
           <div>
-            <h1>WHO AFRO Humanitarian Dashboard</h1>
+            <h1>WHO AFRO humanitarian dashboard</h1>
           </div>
           <div class="topbar-controls">
             <div class="date-pill" id="currentDate"></div>
             <label>
-              <span id="countryFocusLabel">Country Focus</span>
+              <span id="countryFocusLabel">Country focus</span>
               <select id="countrySelect"></select>
             </label>
             <label>
@@ -130,7 +130,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Strategic KPI Status</h2>
+                <h2>Strategic KPI status</h2>
                 <p>Each management question, the indicator that answers it, a proposed trigger (to be confirmed by DHM), and the countries that meet it today. Select Detail in any row for the supporting data.</p>
               </div>
               <div class="table-wrap"><table id="stratStatusTable" class="strat-table strat-status-table"></table></div>
@@ -138,7 +138,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Strategic Messages</h2>
+                <h2>Strategic messages</h2>
                 <p>Draft generated from the indicators on this page. The DHM lead reviews and edits it each month before it is used.</p>
               </div>
               <ol id="stratMessages" class="strat-messages"></ol>
@@ -147,7 +147,7 @@
             <section class="panel two-col strat-where">
               <div>
                 <div class="panel-header">
-                  <h2>Where the Burden Sits</h2>
+                  <h2>Where the burden sits</h2>
                   <label class="strat-inline-select">
                     <span>Map layer</span>
                     <select id="stratMapLayer">
@@ -165,7 +165,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Progress Against Plan</h2>
+                  <h2>Progress against plan</h2>
                   <p>Health cluster funding in 2026 humanitarian plans, ranked by unfunded amount.</p>
                 </div>
                 <div id="stratFundingChart" class="chart strat-chart"></div>
@@ -174,7 +174,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>FCV Country Scorecard</h2>
+                <h2>FCV country scorecard</h2>
                 <p>One row per country, sorted by DHM triage tier. Click a country to open its profile; hover a value for its source and date. Grey values are outdated (displacement more than 24 months, IPC/CH more than 18 months) and are excluded from totals.</p>
               </div>
               <div class="table-wrap">
@@ -185,15 +185,15 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Health Needs Covered by the Plan</h2>
+                  <h2>Health needs covered by the plan</h2>
                   <p>People targeted for health assistance as a share of people in need of health assistance, latest plan year. 2026 Health Cluster reach is not yet published by OCHA; the latest full-year reach is on the Health reach card above.</p>
                 </div>
                 <div id="stratCoverageChart" class="chart strat-chart"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Mental Health and Psychosocial Support (MHPSS)</h2>
-                  <p>People reached with mental health and psychosocial support (MHPSS) in the latest reported quarter, per 10,000 people in need of health assistance. Source: FCV service database. No regional MHPSS target is published yet.</p>
+                  <h2>Mental health and psychosocial support (MHPSS)</h2>
+                  <p>People reached with mental health and psychosocial support (MHPSS) in the latest reported quarter, per 10 000 people in need of health assistance. Source: FCV service database. No regional MHPSS target is published yet.</p>
                 </div>
                 <div id="stratMhpssChart" class="chart strat-chart"></div>
               </div>
@@ -201,7 +201,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Sources and Links</h2>
+                <h2>Sources and links</h2>
               </div>
               <div id="stratSources" class="strat-sources"></div>
             </section>
@@ -210,14 +210,14 @@
           <section id="gradingPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>Humanitarian Crisis Classification</h2>
+                <h2>Humanitarian crisis classification</h2>
                 <p>WHO grades come only from the WHO grading process and are entered by DHM in the grading register. The DHM triage tier is a transparent, rule-based aid built from verified indicators. It is not a WHO grade.</p>
               </div>
               <div id="gradingSummary" class="strat-kpi-grid"></div>
             </section>
             <section class="panel">
               <div class="panel-header">
-                <h2>DHM Triage Tier by Country</h2>
+                <h2>DHM triage tier by country</h2>
                 <p>Points per criterion are shown so the result can be checked and challenged.</p>
               </div>
               <div class="table-wrap"><table id="gradingTable" class="strat-table"></table></div>
@@ -225,14 +225,14 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>WHO Grading Register</h2>
+                  <h2>WHO grading register</h2>
                   <p>Confirmed WHO grades, entered by the DHM focal point.</p>
                 </div>
                 <div id="gradingRegister"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Classification Rules</h2>
+                  <h2>Classification rules</h2>
                 </div>
                 <div id="gradingRules" class="summary"></div>
               </div>
@@ -246,10 +246,10 @@
             <section class="panel two-col overview-focus-panel">
               <div>
                 <div class="panel-header">
-                  <h2>Event Signal Map</h2>
+                  <h2>Event signal map</h2>
                   <p>Composite of public event signals (news volume, hazards, IPC). Use for monitoring, not for ranking crises.</p>
                   <div class="map-mode-toggle">
-                    <button id="mapModeRisk" class="map-mode-btn active" type="button">Composite Risk</button>
+                    <button id="mapModeRisk" class="map-mode-btn active" type="button">Composite risk</button>
                     <button id="mapModeIpc" class="map-mode-btn" type="button">IPC Phase 3+</button>
                   </div>
                 </div>
@@ -263,14 +263,14 @@
               <div class="overview-side-stack">
                 <div>
                   <div class="panel-header">
-                    <h2>Food Security and Event Pressure Snapshot</h2>
+                    <h2>Food security and event pressure snapshot</h2>
                     <p>Food insecurity and event pressure.</p>
                   </div>
                   <div id="overviewInsightBox" class="summary"></div>
                 </div>
                 <div>
                   <div class="panel-header">
-                    <h2>Top Alerts</h2>
+                    <h2>Top alerts</h2>
                     <p>Countries with strongest current public-signal pressure.</p>
                   </div>
                   <div id="topAlerts" class="list"></div>
@@ -282,21 +282,21 @@
           <section id="dataHealthPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>Strategic Source Status</h2>
+                <h2>Strategic source status</h2>
                 <p>Verified sources behind the Overview and Crisis Classification pages.</p>
               </div>
               <div id="dataHealthSources" class="summary"></div>
             </section>
             <section class="panel">
               <div class="panel-header">
-                <h2>FCV Service Database: Values Excluded at Ingest</h2>
+                <h2>FCV service database: values excluded at ingest</h2>
                 <p>Rows outside plausible limits are kept out of every average and listed here for correction by country focal points.</p>
               </div>
               <div id="dataHealthValidation"></div>
             </section>
             <section class="panel">
               <div class="panel-header">
-                <h2>Data Validation Ledger</h2>
+                <h2>Data validation ledger</h2>
                 <p>Audit trail for high-priority country metrics in the current refresh.</p>
               </div>
               <div id="dataValidationSummary" class="summary data-validation-summary"></div>
@@ -306,7 +306,7 @@
           <section id="whoResponsePage" class="page">
             <section class="panel" id="whoRespSummaryPanel">
               <div class="panel-header">
-                <h2 id="whoRespTitle">WHO Humanitarian Response</h2>
+                <h2 id="whoRespTitle">WHO humanitarian response</h2>
                 <p id="whoRespIntro"></p>
               </div>
               <div class="who-resp-filters" id="whoRespFilters"></div>
@@ -314,21 +314,21 @@
             </section>
             <section class="panel" id="whoRespChartPanel">
               <div class="panel-header">
-                <h2 id="whoRespChartTitle">Funding Received by WHO, by Country</h2>
+                <h2 id="whoRespChartTitle">Funding received by WHO, by country</h2>
                 <p id="whoRespChartNote"></p>
               </div>
               <div id="whoRespChart" class="chart"></div>
             </section>
             <section class="panel" id="whoRespTablePanel">
               <div class="panel-header">
-                <h2 id="whoRespTableTitle">WHO Response by Country</h2>
+                <h2 id="whoRespTableTitle">WHO response by country</h2>
                 <p id="whoRespTableNote"></p>
               </div>
               <div class="table-wrap"><table id="whoRespTable" class="strat-table"></table></div>
             </section>
             <section class="panel" id="whoRespCerfPanel">
               <div class="panel-header">
-                <h2 id="whoRespCerfTitle">CERF Allocations to WHO</h2>
+                <h2 id="whoRespCerfTitle">CERF allocations to WHO</h2>
                 <p id="whoRespCerfNote"></p>
               </div>
               <div class="table-wrap"><table id="whoRespCerfTable" class="strat-table"></table></div>
@@ -336,16 +336,22 @@
             <section class="panel two-col" id="whoRespBottomPanel">
               <div>
                 <div class="panel-header">
-                  <h2 id="whoRespDonorsTitle">Main Donors to WHO</h2>
+                  <h2 id="whoRespDonorsTitle">Main donors to WHO</h2>
                 </div>
                 <div id="whoRespDonors"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2 id="whoRespNotesTitle">How to Read This Page</h2>
+                  <h2 id="whoRespNotesTitle">How to read this page</h2>
                 </div>
                 <div id="whoRespNotes" class="summary"></div>
               </div>
+            </section>
+            <section class="panel" id="abbreviationsPanel">
+              <div class="panel-header">
+                <h2>Abbreviations</h2>
+              </div>
+              <div id="abbreviationsList" class="summary"></div>
             </section>
           </section>
 
@@ -354,7 +360,7 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Country Profile Trend</h2>
+                  <h2>Country profile trend</h2>
                   <p>Country indicators and trend.</p>
                 </div>
                 <div id="trendChart" class="chart" aria-describedby="trendChartAxisCaption"></div>
@@ -362,7 +368,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Country Operational Brief</h2>
+                  <h2>Country operational brief</h2>
                   <p>Current loaded values.</p>
                 </div>
                 <div id="summaryBox" class="summary"></div>
@@ -371,7 +377,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Country Comparison Table</h2>
+                <h2>Country comparison table</h2>
                 <p>Country comparison.</p>
               </div>
               <div class="table-wrap">
@@ -383,7 +389,7 @@
                       <th data-sort-key="risk_score" title="Sort by risk score">Risk</th>
                       <th data-sort-key="ipc_phase3_pct" title="Sort by IPC Phase 3+ percentage">IPC3+ %</th>
                       <th data-sort-key="ipc_phase45_number" title="Sort by IPC Phase 4/5 population">IPC4/5 #</th>
-                      <th data-sort-key="ipc_date" title="Sort by IPC analysis date">IPC Date</th>
+                      <th data-sort-key="ipc_date" title="Sort by IPC analysis date">IPC date</th>
                       <th data-sort-key="wasting" title="Sort by wasting percentage">Wasting %</th>
                       <th data-sort-key="stunting" title="Sort by stunting percentage">Stunting %</th>
                       <th data-sort-key="hazards" title="Sort by hazard count">Hazards</th>
@@ -398,7 +404,7 @@
 
             <section class="panel" id="fcvCountryProfilePanel">
               <div class="panel-header">
-                <h2>FCV Country Profile Data</h2>
+                <h2>FCV country profile data</h2>
                 <p>HRP planning figures, displacement, and funding from the FCV Country Profile Data file.</p>
               </div>
               <div id="fcvCountryProfileSummary" class="summary"></div>
@@ -407,19 +413,19 @@
                   <thead>
                     <tr>
                       <th>Country</th>
-                      <th>Plan Type</th>
+                      <th>Plan type</th>
                       <th>FCV</th>
                       <th>HCC</th>
-                      <th>People in Need</th>
-                      <th>People Targeted</th>
-                      <th>People Prioritized</th>
+                      <th>People in need</th>
+                      <th>People targeted</th>
+                      <th>People prioritized</th>
                       <th>People Reached (HRP)</th>
                       <th>Health PIN</th>
-                      <th>Health Targeted</th>
+                      <th>Health targeted</th>
                       <th>Refugees &amp; Asylum</th>
                       <th>IDPs</th>
-                      <th>Requirements (USD)</th>
-                      <th>Funding (USD)</th>
+                      <th>Requirements (US$)</th>
+                      <th>Funding (US$)</th>
                       <th>% Funded</th>
                     </tr>
                   </thead>
@@ -432,12 +438,12 @@
           <section id="fcvDataPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>FCV Response: Service Delivery</h2>
+                <h2>FCV response: service delivery</h2>
                 <p>District-reported service delivery from the FCV service database (maintained in GitHub by the FCV data focal point). Rates and percentages outside plausible limits, such as coverage above 100% or counts entered as rates, are excluded from all averages; see Data Health for the list to correct.</p>
               </div>
               <div class="map-mode-toggle" id="fcvViewToggle">
                 <button class="map-mode-btn active" data-fcv-view="regional" type="button">Regional</button>
-                <button class="map-mode-btn" data-fcv-view="deepdive" type="button">Country Deep-Dive</button>
+                <button class="map-mode-btn" data-fcv-view="deepdive" type="button">Country deep dive</button>
               </div>
               <div class="fcv-filter-bar" id="fcvFilterBar">
                 <div class="fcv-dropdown" data-fcv-dropdown="countries">
@@ -454,7 +460,7 @@
                 </div>
                 <button id="fcvFilterResetBtn" type="button">Reset filters</button>
               </div>
-              <p class="panel-header-note">Admin1 filtering only affects Country Deep-Dive charts, Regional charts compare whole countries, so a region filter doesn't apply to them.</p>
+              <p class="panel-header-note">Admin1 filtering only affects the country deep-dive charts. Regional charts compare whole countries, so a region filter does not apply to them.</p>
               <div class="band-legend fcv-threshold-legend" id="fcvThresholdLegend"></div>
             </section>
 
@@ -462,14 +468,14 @@
               <section class="panel two-col">
                 <div>
                   <div class="panel-header">
-                    <h2>Completeness by Country</h2>
+                    <h2>Completeness by country</h2>
                     <p>Share of tracked indicator fields reported, by country.</p>
                   </div>
                   <div id="fcvRegCompletenessByCountryChart" class="chart"></div>
                 </div>
                 <div>
                   <div class="panel-header">
-                    <h2>Completeness by Indicator</h2>
+                    <h2>Completeness by indicator</h2>
                     <p>Share of country-quarters where each indicator was reported.</p>
                   </div>
                   <div id="fcvRegCompletenessByIndicatorChart" class="chart"></div>
@@ -478,7 +484,7 @@
 
               <section class="panel">
                 <div class="panel-header">
-                  <h2>Reporting Status by Quarter</h2>
+                  <h2>Reporting status by quarter</h2>
                   <p>Up to date / unusable / never submitted, per country per quarter.</p>
                 </div>
                 <div id="fcvRegReportingHeatmap" class="chart"></div>
@@ -486,18 +492,18 @@
 
               <section class="panel">
                 <div class="panel-header">
-                  <h2>Regional Service Volumes</h2>
+                  <h2>Regional service volumes</h2>
                   <p>Cumulative totals across countries and quarters in the current filter selection.</p>
                 </div>
                 <div id="fcvRegVolumeKpiGrid" class="metric-grid"></div>
                 <label class="fcv-inline-select">Indicator<select id="fcvVolumeIndicatorSelect"></select></label>
                 <div class="two-col">
                   <div>
-                    <div class="panel-header"><h2>Quarterly Trend</h2></div>
+                    <div class="panel-header"><h2>Quarterly trend</h2></div>
                     <div id="fcvRegVolumeTrendChart" class="chart"></div>
                   </div>
                   <div>
-                    <div class="panel-header"><h2>Country Contribution to Total</h2></div>
+                    <div class="panel-header"><h2>Country contribution to total</h2></div>
                     <div id="fcvRegVolumeContributionChart" class="chart"></div>
                   </div>
                 </div>
@@ -505,7 +511,7 @@
 
               <section class="panel">
                 <div class="panel-header">
-                  <h2>Coverage Scorecard</h2>
+                  <h2>Coverage scorecard</h2>
                   <p>Institutional delivery, measles, and PENTA coverage by country.</p>
                 </div>
                 <div id="fcvRegCoverageScorecardChart" class="chart"></div>
@@ -516,9 +522,9 @@
                       <thead>
                         <tr>
                           <th>Country</th>
-                          <th>Deliveries in Health Institution %</th>
-                          <th>Measles Coverage %</th>
-                          <th>PENTA Coverage %</th>
+                          <th>Deliveries in health institutions (%)</th>
+                          <th>Measles coverage %</th>
+                          <th>Penta coverage %</th>
                         </tr>
                       </thead>
                       <tbody></tbody>
@@ -530,14 +536,14 @@
               <section class="panel two-col">
                 <div>
                   <div class="panel-header">
-                    <h2>PENTA &minus; Measles Gap</h2>
+                    <h2>Penta minus measles gap</h2>
                     <p>Positive means PENTA coverage runs ahead of measles coverage.</p>
                   </div>
                   <div id="fcvRegPentaMeaslesGapChart" class="chart"></div>
                 </div>
                 <div>
                   <div class="panel-header">
-                    <h2>Coverage Map</h2>
+                    <h2>Coverage map</h2>
                   </div>
                   <label class="fcv-inline-select">Indicator<select id="fcvCoverageMapIndicatorSelect"></select></label>
                   <div id="fcvRegCoverageMapChart" class="chart"></div>
@@ -547,14 +553,14 @@
               <section class="panel two-col">
                 <div>
                   <div class="panel-header">
-                    <h2>SAM Case Severity</h2>
+                    <h2>SAM case severity</h2>
                     <p>% of SAM cases with complications, by country.</p>
                   </div>
                   <div id="fcvRegSamSeverityChart" class="chart"></div>
                 </div>
                 <div>
                   <div class="panel-header">
-                    <h2>Screening Volume vs. Severity</h2>
+                    <h2>Screening volume and severity</h2>
                     <p>Bubble size = children screened for malnutrition.</p>
                   </div>
                   <div id="fcvRegSamScatterChart" class="chart"></div>
@@ -563,7 +569,7 @@
 
               <section class="panel">
                 <div class="panel-header">
-                  <h2>GBV &amp; MHPSS Cases Managed</h2>
+                  <h2>GBV and MHPSS cases managed</h2>
                   <p>Abnormally low values are flagged directly on the chart, likely under-reporting, not absence of need.</p>
                 </div>
                 <div id="fcvRegProtectionBarChart" class="chart"></div>
@@ -572,14 +578,14 @@
               <section class="panel two-col">
                 <div>
                   <div class="panel-header">
-                    <h2>H3 Package Implementation</h2>
+                    <h2>H3 package implementation</h2>
                     <p>Good: 80% or more. Warning: 50 to 79%. Critical: under 50%.</p>
                   </div>
                   <div id="fcvRegH3Chart" class="chart"></div>
                 </div>
                 <div>
                   <div class="panel-header">
-                    <h2>Health Facilities</h2>
+                    <h2>Health facilities</h2>
                     <p>Flags a country when the latest count looks like a multi-month sum rather than the real network size.</p>
                   </div>
                   <div id="fcvRegFacilitiesKpiGrid" class="metric-grid"></div>
@@ -596,72 +602,72 @@
 
               <section class="panel two-col">
                 <div>
-                  <div class="panel-header"><h2>Reporting Status</h2></div>
+                  <div class="panel-header"><h2>Reporting status</h2></div>
                   <div id="fcvDdReportingStrip" class="chart"></div>
                 </div>
                 <div>
-                  <div class="panel-header"><h2>Completeness by Indicator</h2></div>
+                  <div class="panel-header"><h2>Completeness by indicator</h2></div>
                   <div id="fcvDdCompletenessByIndicatorChart" class="chart"></div>
                 </div>
               </section>
 
               <section class="panel">
-                <div class="panel-header"><h2>Service Volumes Over Time</h2></div>
+                <div class="panel-header"><h2>Service volumes over time</h2></div>
                 <div id="fcvDdVolumeTrendChart" class="chart" style="min-height:640px"></div>
               </section>
 
               <section class="panel">
-                <div class="panel-header"><h2>Service Volumes by Admin1 (Latest Quarter)</h2></div>
+                <div class="panel-header"><h2>Service volumes by Admin1 (latest quarter)</h2></div>
                 <label class="fcv-inline-select">Indicator<select id="fcvDdAdmin1VolumeIndicatorSelect"></select></label>
                 <div id="fcvDdAdmin1VolumeChart" class="chart"></div>
               </section>
 
               <section class="panel two-col">
                 <div>
-                  <div class="panel-header"><h2>Coverage Over Time</h2></div>
+                  <div class="panel-header"><h2>Coverage over time</h2></div>
                   <div id="fcvDdCoverageTrendChart" class="chart"></div>
                 </div>
                 <div>
-                  <div class="panel-header"><h2>Coverage by Admin1 (Latest Quarter)</h2></div>
+                  <div class="panel-header"><h2>Coverage by Admin1 (latest quarter)</h2></div>
                   <div id="fcvDdAdmin1CoverageChart" class="chart"></div>
                 </div>
               </section>
 
               <section class="panel two-col">
                 <div>
-                  <div class="panel-header"><h2>SAM Over Time</h2></div>
+                  <div class="panel-header"><h2>SAM over time</h2></div>
                   <div id="fcvDdSamTrendChart" class="chart"></div>
                 </div>
                 <div>
-                  <div class="panel-header"><h2>SAM by Admin1 (Latest Quarter)</h2></div>
+                  <div class="panel-header"><h2>SAM by Admin1 (latest quarter)</h2></div>
                   <div id="fcvDdAdmin1SamChart" class="chart"></div>
                 </div>
               </section>
 
               <section class="panel two-col">
                 <div>
-                  <div class="panel-header"><h2>Protection / MHPSS Over Time</h2></div>
+                  <div class="panel-header"><h2>Protection and MHPSS over time</h2></div>
                   <div id="fcvDdProtectionTrendChart" class="chart"></div>
                 </div>
                 <div>
-                  <div class="panel-header"><h2>Protection / MHPSS by Admin1 (Latest Quarter)</h2></div>
+                  <div class="panel-header"><h2>Protection and MHPSS by Admin1 (latest quarter)</h2></div>
                   <div id="fcvDdAdmin1ProtectionChart" class="chart"></div>
                 </div>
               </section>
 
               <section class="panel two-col">
                 <div>
-                  <div class="panel-header"><h2>Health System Over Time</h2></div>
+                  <div class="panel-header"><h2>Health system over time</h2></div>
                   <div id="fcvDdHealthSystemTrendChart" class="chart"></div>
                 </div>
                 <div>
-                  <div class="panel-header"><h2>Health Facilities Over Time</h2></div>
+                  <div class="panel-header"><h2>Health facilities over time</h2></div>
                   <div id="fcvDdFacilitiesTrendChart" class="chart"></div>
                 </div>
               </section>
 
               <section class="panel">
-                <div class="panel-header"><h2>Quarter-by-Quarter Detail</h2></div>
+                <div class="panel-header"><h2>Quarter-by-quarter detail</h2></div>
                 <div class="table-wrap">
                   <table id="fcvDdQuarterDetailTable">
                     <thead></thead>
@@ -676,7 +682,7 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>IPC Food Security Snapshot</h2>
+                  <h2>IPC food security snapshot</h2>
                   <p>IPC burden and emergency populations.</p>
                   <div id="foodSecurityFewsStamp" class="source-freshness-stamp"></div>
                 </div>
@@ -685,15 +691,15 @@
                     <thead>
                       <tr>
                         <th>Country</th>
-                        <th title="IPC current Phase 3+ percentage">IPC Cur 3+ %</th>
-                        <th title="IPC projected Phase 3+ percentage">IPC Proj 3+ %</th>
+                        <th title="IPC current Phase 3+ percentage">IPC 3+ current (%)</th>
+                        <th title="IPC projected Phase 3+ percentage">IPC 3+ projected (%)</th>
                         <th title="Phase 3+ population">P3+ Pop</th>
                         <th title="Phase 4/5 population">P4/5 Pop</th>
-                        <th>Crisis Level</th>
-                        <th>Analysis Date</th>
-                        <th>Projection Date</th>
+                        <th>Crisis level</th>
+                        <th>Analysis date</th>
+                        <th>Projection date</th>
                         <th title="FEWS NET Current Situation IPC phase from the FEWS Data Warehouse">FEWS Phase (CS)</th>
-                        <th title="FEWS NET Near-Term Outlook phase from the FEWS Data Warehouse">FEWS Near-Term (ML1)</th>
+                        <th title="FEWS NET Near-Term Outlook phase from the FEWS Data Warehouse">FEWS near-term (ML1)</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -702,7 +708,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Recommendations: Food Security</h2>
+                  <h2>Recommendations: food security</h2>
                   <p>Rule-based actions.</p>
                 </div>
                 <div id="foodSecurityRecommendations" class="recommendations"></div>
@@ -711,7 +717,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Recent Food Security Reporting</h2>
+                <h2>Recent food security reporting</h2>
                 <p>Source items (ReliefWeb, FEWS NET) matched to food security keywords, up to 180-day window.</p>
               </div>
               <div id="foodSecurityFeed" class="feed"></div>
@@ -721,7 +727,7 @@
           <section id="nutritionPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>Nutrition Context</h2>
+                <h2>Nutrition context</h2>
                 <p>Supporting context.</p>
               </div>
               <div id="nutritionSummary" class="summary"></div>
@@ -729,7 +735,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Wasting and Stunting by Country (latest survey)</h2>
+                <h2>Wasting and stunting by country (latest survey)</h2>
                 <p id="nutritionCurrentStamp">Current values only. Stale values are excluded.</p>
               </div>
               <div class="table-wrap">
@@ -738,9 +744,9 @@
                     <tr>
                       <th>Country</th>
                       <th>Group</th>
-                      <th>Child Wasting (%)</th>
-                      <th>Child Stunting (%)</th>
-                      <th title="Anemia prevalence (World Bank SH.ANM.PREG.ZS), not an acute malnutrition indicator">Pregnant Women Anemia (%) &#9888;</th>
+                      <th>Child wasting (%)</th>
+                      <th>Child stunting (%)</th>
+                      <th title="Anaemia prevalence (World Bank SH.ANM.PREG.ZS), not an acute malnutrition indicator">Anaemia in pregnant women (%) &#9888;</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -750,7 +756,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Recent Nutrition Reporting</h2>
+                <h2>Recent nutrition reporting</h2>
                 <p>Source items (ReliefWeb) matched to acute malnutrition and nutrition response keywords, up to 180-day window.</p>
               </div>
               <div id="nutritionFeed" class="feed"></div>
@@ -758,7 +764,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Recommendations: Nutrition</h2>
+                <h2>Recommendations: nutrition</h2>
                 <p>Rule-based actions.</p>
               </div>
               <div id="nutritionRecommendations" class="recommendations"></div>
@@ -770,15 +776,15 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Forecast Outlook</h2>
+                  <h2>Forecast outlook</h2>
                   <p>Forecast signals from connected sources.</p>
                 </div>
                 <div id="forecastChart" class="chart" aria-describedby="forecastChartAxisCaption"></div>
-                <p id="forecastChartAxisCaption" class="chart-axis-caption">Source Forecast Metric</p>
+                <p id="forecastChartAxisCaption" class="chart-axis-caption">Source forecast metric</p>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Forecast Insights</h2>
+                  <h2>Forecast insights</h2>
                   <p>Forecast interpretation.</p>
                 </div>
                 <div id="forecastInsights" class="summary"></div>
@@ -787,7 +793,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Forecast Source Summary</h2>
+                <h2>Forecast source summary</h2>
                 <p>Forecast values and signals.</p>
                 <div id="forecastFewsStamp" class="source-freshness-stamp"></div>
               </div>
@@ -796,9 +802,9 @@
                   <thead>
                     <tr>
                       <th>Source</th>
-                      <th>Current Value / Signal</th>
-                      <th>Forecast / Projection Signal</th>
-                      <th>Date / Horizon</th>
+                      <th>Current value or signal</th>
+                      <th>Forecast or projection signal</th>
+                      <th>Date or horizon</th>
                       <th>Method</th>
                     </tr>
                   </thead>
@@ -810,14 +816,14 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>ICPAC Forecast Bulletins</h2>
+                  <h2>ICPAC forecast bulletins</h2>
                   <p>Weekly, monthly, and seasonal products.</p>
                 </div>
                 <div id="icpacFeed" class="feed"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>ICPAC Source Summary</h2>
+                  <h2>ICPAC source summary</h2>
                   <p>Current bulletin summary.</p>
                 </div>
                 <div id="icpacSummary" class="summary"></div>
@@ -826,7 +832,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Recommendations: Forecasts</h2>
+                <h2>Recommendations: forecasts</h2>
                 <p>Rule-based actions.</p>
               </div>
               <div id="forecastRecommendations" class="recommendations"></div>
@@ -836,7 +842,7 @@
           <section id="hazardPage" class="page">
             <section class="panel">
               <div class="panel-header">
-                <h2>Source Intelligence Summary</h2>
+                <h2>Source intelligence summary</h2>
                 <p>Current source summary.</p>
               </div>
               <div class="source-summary-grid">
@@ -849,14 +855,14 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Flood Watch</h2>
+                  <h2>Flood watch</h2>
                   <p>Flood pressure.</p>
                 </div>
                 <div id="floodWatchSummary" class="summary"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Recent Flood Events</h2>
+                  <h2>Recent flood events</h2>
                   <p>Recent flood items.</p>
                 </div>
                 <div id="floodFeed" class="feed"></div>
@@ -866,14 +872,14 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>GDACS Hazard Events</h2>
+                  <h2>GDACS hazard events</h2>
                   <p>Recent GDACS hazards.</p>
                 </div>
                 <div id="hazardFeed" class="feed"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>ReliefWeb RSS Situation Reports</h2>
+                  <h2>ReliefWeb RSS situation reports</h2>
                   <p>Recent ReliefWeb RSS reports.</p>
                 </div>
                 <div id="reportFeed" class="feed"></div>
@@ -890,7 +896,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Disease Outbreak Evidence Feed</h2>
+                  <h2>Disease outbreak evidence feed</h2>
                   <p>Source items (ReliefWeb, WHO DON) matched to outbreak keywords, 30-day window.</p>
                 </div>
                 <div id="diseaseOutbreakFeed" class="feed"></div>
@@ -899,7 +905,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Historical Disaster Impact (EM-DAT)</h2>
+                <h2>Historical disaster impact (EM-DAT)</h2>
                 <p>Natural disasters in Africa since 2000, EM-DAT public database, CRED/UCLouvain. Updated manually a few times per year.</p>
               </div>
               <div id="emdatSummary" class="summary"><p class="loading-note">Loading EM-DAT historical data, the first load after the server has been idle can take a minute or two.</p></div>
@@ -910,20 +916,20 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Largest Disasters by People Affected</h2>
+                  <h2>Largest disasters by people affected</h2>
                   <p>Top EM-DAT events since 2000.</p>
                 </div>
                 <div id="emdatTopEvents" class="feed"><p class="loading-note">Loading…</p></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Most Affected Countries (EM-DAT)</h2>
+                  <h2>Most affected countries (EM-DAT)</h2>
                   <p>Cumulative impact since 2000.</p>
                 </div>
                 <div class="table-wrap">
                   <table>
                     <thead>
-                      <tr><th>Country</th><th>Events</th><th>Deaths</th><th>Affected</th><th>Main Type</th></tr>
+                      <tr><th>Country</th><th>Events</th><th>Deaths</th><th>Affected</th><th>Main type</th></tr>
                     </thead>
                     <tbody id="emdatCountryTable"><tr><td colspan="5" class="loading-note">Loading…</td></tr></tbody>
                   </table>
@@ -933,7 +939,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Recommendations: Hazards</h2>
+                <h2>Recommendations: hazards</h2>
                 <p>Rule-based actions.</p>
               </div>
               <div id="hazardRecommendations" class="recommendations"></div>
@@ -944,7 +950,7 @@
             <section class="panel" id="stratDisplacementPanel"></section>
             <section class="panel">
               <div class="panel-header">
-                <h2>Conflict and Displacement Pressure</h2>
+                <h2>Conflict and displacement pressure</h2>
                 <p>Conflict and displacement signals.</p>
               </div>
               <div id="conflictsDisplacementSummary" class="summary"></div>
@@ -954,7 +960,7 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Conflict and Displacement Prioritization</h2>
+                  <h2>Conflict and displacement prioritization</h2>
                   <p>Countries with strongest overlap.</p>
                 </div>
                 <div class="table-wrap">
@@ -966,8 +972,8 @@
                         <th title="News reports mentioning conflict">Conflict reports</th>
                         <th title="News reports mentioning displacement">Displacement reports</th>
                         <th title="Reports in the last 30 days">Reports (30 days)</th>
-                        <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
-                        <th>Signal Level</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC 3+ current</th>
+                        <th>Signal level</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -976,7 +982,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Recommendations: Conflicts &amp; Displacements</h2>
+                  <h2>Recommendations: conflicts and displacements</h2>
                   <p>Rule-based actions.</p>
                 </div>
                 <div id="conflictsDisplacementRecommendations" class="recommendations"></div>
@@ -985,7 +991,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Population Movement: IDP Estimates (IOM DTM)</h2>
+                <h2>Population movement: IDP estimates (IOM DTM)</h2>
                 <p>Internally displaced persons by country. Source: IOM Displacement Tracking Matrix via HDX. Refreshed every 24 hours.</p>
               </div>
               <div id="dtmDisplacementSummary" class="summary"></div>
@@ -995,8 +1001,8 @@
                     <tr>
                       <th>Country</th>
                       <th title="Estimated number of internally displaced persons">IDPs</th>
-                      <th title="Primary driver of displacement">Displacement Driver</th>
-                      <th title="Date of DTM assessment">Reporting Date</th>
+                      <th title="Primary driver of displacement">Displacement driver</th>
+                      <th title="Date of DTM assessment">Reporting date</th>
                     </tr>
                   </thead>
                   <tbody></tbody>
@@ -1006,7 +1012,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Evidence Feed</h2>
+                <h2>Evidence feed</h2>
                 <p>Recent source items.</p>
               </div>
               <div id="conflictsDisplacementFeed" class="feed"></div>
@@ -1017,7 +1023,7 @@
             <section class="panel" id="stratSsaPanel"></section>
             <section class="panel">
               <div class="panel-header">
-                <h2>Public Reporting Signals (context only)</h2>
+                <h2>Public reporting signals (context only)</h2>
                 <p>Signals on violence affecting health workers and facilities.</p>
               </div>
               <div id="attacksHealthSummary" class="summary"></div>
@@ -1026,19 +1032,19 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Country Prioritization</h2>
-                  <p>Countries with highest recent attack-on-healthcare reporting pressure.</p>
+                  <h2>Country prioritization</h2>
+                  <p>Countries with highest recent reporting pressure on attacks on health care.</p>
                 </div>
                 <div class="table-wrap">
                   <table id="attacksHealthTable">
                     <thead>
                       <tr>
                         <th>Country</th>
-                        <th title="Attack-on-healthcare signal count">Signals</th>
+                        <th title="Count of signals of attacks on health care">Signals</th>
                         <th title="Reports in the last 30 days">Reports (30 days)</th>
-                        <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC 3+ current</th>
                         <th title="Composite news-signal score, 0 to 100 (relative, not a verified measure)">Signal score</th>
-                        <th>Signal Level</th>
+                        <th>Signal level</th>
                       </tr>
                     </thead>
                     <tbody></tbody>
@@ -1047,7 +1053,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Recommendations: Attacks on Healthcare</h2>
+                  <h2>Recommendations: attacks on health care</h2>
                   <p>Rule-based actions.</p>
                 </div>
                 <div id="attacksHealthRecommendations" class="recommendations"></div>
@@ -1056,7 +1062,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>WHO SSA Source and Evidence Feed</h2>
+                <h2>WHO SSA source and evidence feed</h2>
                 <p>Primary source: WHO Surveillance System for Attacks on Health Care (SSA), plus linked verified reporting.</p>
               </div>
               <div id="attacksHealthSourceStatus" class="summary"></div>
@@ -1069,7 +1075,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Cyclone Leadership Snapshot</h2>
+                <h2>Cyclone leadership snapshot</h2>
                 <p>Cyclone-linked pressure by country.</p>
               </div>
               <div id="cycloneSummary" class="summary"></div>
@@ -1078,7 +1084,7 @@
             <section class="panel two-col">
               <div>
                 <div class="panel-header">
-                  <h2>Cyclone-Affected Country Prioritization</h2>
+                  <h2>Cyclone-affected country prioritization</h2>
                   <p>Country ranking.</p>
                 </div>
                 <div class="table-wrap">
@@ -1086,7 +1092,7 @@
                     <thead>
                       <tr>
                         <th>Country</th>
-                        <th title="Cyclone signal count">Cyclone Sig</th>
+                        <th title="Cyclone signal count">Cyclone signal</th>
                         <th title="Hazard event count">Hazards</th>
                         <th title="Composite news-signal score, 0 to 100 (relative, not a verified measure)">Signal score</th>
                         <th title="Current IPC Phase 3+ percentage">IPC3+ %</th>
@@ -1098,7 +1104,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Recommendations: Cyclone</h2>
+                  <h2>Recommendations: cyclones</h2>
                   <p>Rule-based actions.</p>
                 </div>
                 <div id="cycloneRecommendations" class="recommendations"></div>
@@ -1107,7 +1113,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Cyclone Projections and Advisories</h2>
+                <h2>Cyclone projections and advisories</h2>
                 <p>Cyclone projections and advisories.</p>
               </div>
               <div id="cycloneProjectionFeed" class="feed"></div>
@@ -1115,7 +1121,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Cyclone Source Diagnostics</h2>
+                <h2>Cyclone source diagnostics</h2>
                 <p>Source status.</p>
               </div>
               <div class="table-wrap">
@@ -1136,7 +1142,7 @@
 
             <section class="panel">
               <div class="panel-header">
-                <h2>Documented Active Cyclones</h2>
+                <h2>Documented active cyclones</h2>
                 <p>Active systems.</p>
               </div>
               <div id="activeCyclonesList" class="list"></div>
@@ -1152,7 +1158,7 @@
 
             <section class="panel bulletin-hero-panel">
               <div class="panel-header">
-                <h2>Part B: Event and Source Detail</h2>
+                <h2>Part B: event and source detail</h2>
                 <p>Hazard, forecast and source detail behind the update above. Detail sections open with "Show detail".</p>
               </div>
               <div id="operationalReportHeader" class="summary"></div>
@@ -1161,14 +1167,14 @@
             <section class="panel two-col bulletin-summary-panel">
               <div>
                 <div class="panel-header">
-                  <h2>All-Events Summary</h2>
+                  <h2>All-events summary</h2>
                   <p>Current events and source counts.</p>
                 </div>
                 <div id="operationalEventSummary" class="summary"></div>
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Forecast and Projection Summary</h2>
+                  <h2>Forecast and projection summary</h2>
                   <p>IPC and forecast outlook.</p>
                 </div>
                 <div id="operationalForecastSummary" class="summary"></div>
@@ -1177,7 +1183,7 @@
 
             <section class="panel bulletin-source-panel">
               <div class="panel-header">
-                <h2>Conflicts and Displacements Summary</h2>
+                <h2>Conflicts and displacements summary</h2>
                 <p>Conflict and displacement pressure.</p>
               </div>
               <div id="operationalConflictDisplacementSummary" class="summary"></div>
@@ -1186,7 +1192,7 @@
             <section class="panel two-col bulletin-priority-panel">
               <div>
                 <div class="panel-header">
-                  <h2>Countries with Most Event Signals</h2>
+                  <h2>Countries with most event signals</h2>
                   <p>Ranked by the news and hazard signal score. For the crisis ranking, see the priority countries in Part A.</p>
                 </div>
                 <div class="table-wrap">
@@ -1195,8 +1201,8 @@
                       <tr>
                         <th>Country</th>
                         <th>Risk</th>
-                        <th title="Current IPC Phase 3+ percentage">IPC3+ Cur</th>
-                        <th title="Projected IPC Phase 3+ percentage">IPC3+ Proj</th>
+                        <th title="Current IPC Phase 3+ percentage">IPC 3+ current</th>
+                        <th title="Projected IPC Phase 3+ percentage">IPC 3+ projected</th>
                         <th>Hazards</th>
                         <th>Floods</th>
                         <th>Conflict</th>
@@ -1211,7 +1217,7 @@
               </div>
               <div>
                 <div class="panel-header">
-                  <h2>Recommendations (All Issues)</h2>
+                  <h2>Recommendations (all issues)</h2>
                   <p>Rule outputs.</p>
                 </div>
                 <div id="operationalRecommendations" class="recommendations"></div>
@@ -1220,7 +1226,7 @@
 
             <section class="panel bulletin-source-panel">
               <div class="panel-header">
-                <h2>Source Intelligence Detail</h2>
+                <h2>Source intelligence detail</h2>
                 <p>Source items in this cycle.</p>
               </div>
               <div id="operationalSourceDetail" class="summary"></div>
@@ -1236,7 +1242,7 @@
 
             <section class="panel bulletin-governance-panel">
               <div class="panel-header">
-                <h2>Decision Protocol</h2>
+                <h2>Decision protocol</h2>
                 <p>Trigger thresholds and actions.</p>
               </div>
               <div id="operationalDecisionProtocol" class="summary"></div>
@@ -1248,7 +1254,7 @@
 
             <section class="panel bulletin-conflict-insert-panel">
               <div class="panel-header">
-                <h2>Conflict and Displacement Insert</h2>
+                <h2>Conflict and displacement insert</h2>
                 <p>Country watchlist and evidence.</p>
               </div>
               <div id="operationalConflictDisplacementInsert" class="summary"></div>
@@ -1256,7 +1262,7 @@
 
             <section class="panel bulletin-annexes-panel">
               <div class="panel-header">
-                <h2>Priority Country Annexes</h2>
+                <h2>Priority country annexes</h2>
                 <p>Country annex pages.</p>
               </div>
               <div id="operationalCountryAnnexes" class="summary"></div>
@@ -1271,8 +1277,8 @@
         </footer>
       </section>
     </div>
-    <script src="/chart-reset.js?v=20261117a"></script>
-    <script src="/app.js?v=20261117a"></script>
-    <script src="/strategic.js?v=20261117a"></script>
+    <script src="/chart-reset.js?v=20261125e"></script>
+    <script src="/app.js?v=20261125e"></script>
+    <script src="/strategic.js?v=20261125e"></script>
   </body>
 </html>

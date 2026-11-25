@@ -46,7 +46,7 @@ const PAGE_CAVEATS = {
     foodSecurityPage: "Food security caveat: this is the primary decision lens. IPC and FEWS values are source snapshots and require date-validity checks.",
     nutritionPage: "Nutrition context caveat: this page is a supporting layer and should not override food security or event-driven triggers.",
     forecastPage: "Forecast caveat: this page is source-only (IPC, ICPAC, and source-derived drought/cyclone signals). No internally generated trend projections are displayed.",
-    attacksHealthPage: "Attacks on healthcare caveat: this page reflects source-reported signals and SSA references. Confirm incident details through country verification and protection partners.",
+    attacksHealthPage: "Attacks on health care caveat: this page reflects source-reported signals and SSA references. Confirm incident details through country verification and protection partners.",
     cyclonePage: "Cyclone caveat: event signals indicate pressure and readiness needs, but operational actions require country-level validation.",
     hazardPage: "Hazard caveat: GDACS and linked sources provide event context; critical decisions require triangulation with validated country and partner updates.",
     conflictsDisplacementPage: "Conflicts and displacements caveat: this page reflects source-reported conflict and displacement signals from online reporting, not verified event totals or population counts.",
@@ -105,23 +105,23 @@ const UI_COPY = {
   en: {
     datePrefix: "Date",
     languageLabel: "Language",
-    countryFocusLabel: "Country Focus",
-    rotateEvery: "Rotate Every",
-    startAutoDisplay: "Start Auto Display",
-    stopAutoDisplay: "Stop Auto Display",
-    enablePresentationMode: "Enable Presentation Mode",
-    disablePresentationMode: "Disable Presentation Mode",
+    countryFocusLabel: "Country focus",
+    rotateEvery: "Rotate every",
+    startAutoDisplay: "Start auto display",
+    stopAutoDisplay: "Stop auto display",
+    enablePresentationMode: "Enable presentation mode",
+    disablePresentationMode: "Disable presentation mode",
     autoDisplayOff: "Auto display is off.",
     autoDisplayPaused: "Auto display paused: {reason}",
     autoDisplayOn: "Auto display is on: each page shows for {seconds}.",
-    updateDashboard: "Update Dashboard",
+    updateDashboard: "Update dashboard",
     updating: "Updating...",
     preparingExport: "Preparing export...",
     exportingWord: "Exporting Word...",
     exporting: "Exporting...",
-    loadError: "Load Error",
-    staleBanner: "Lenient mode active: Nutrition values older than {years} years are shown with a Stale label. Use for context only, not operational planning.",
-    staleDataAgeBanner: "Data age warning: Last successful refresh is {minutes} minutes old. Click Update Dashboard if this persists.",
+    loadError: "Load error",
+    staleBanner: "Lenient mode active: nutrition values older than {years} years are shown with a Stale label. Use for context only, not operational planning.",
+    staleDataAgeBanner: "Data age warning: Last successful refresh is {minutes} minutes old. Click Update dashboard if this persists.",
     dataAgeUnknown: "Data age: waiting for first refresh.",
     dataAgeFresh: "Data age: {age} since last refresh.",
     dataAgeAging: "Data age: {age} since last refresh.",
@@ -179,112 +179,239 @@ const UI_COPY = {
 };
 
 const PHRASE_FR = {
+  // Sentence-case headings (WHO style) without an earlier translation.
+  "Population movement: IDP estimates (IOM DTM)": "Mouvements de population : estimations des personnes déplacées internes (DTM de l'OIM)",
+  "Cyclone-active countries": "Pays touchés par un cyclone actif",
+  "Completeness by country": "Complétude par pays",
+  "Completeness by indicator": "Complétude par indicateur",
+  "GBV cases managed": "Cas de VBG pris en charge",
+  "Quarterly trend": "Tendance trimestrielle",
+  "Country contribution to total": "Contribution des pays au total",
+  "Coverage scorecard": "Tableau de bord de la couverture",
+  "Measles coverage %": "Couverture rougeole (%)",
+  "Penta coverage %": "Couverture Penta (%)",
+  "Coverage map": "Carte de la couverture",
+  "SAM case severity": "Gravité des cas de MAS",
+  "Screening volume and severity": "Volume de dépistage et gravité",
+  "GBV and MHPSS cases managed": "Cas de VBG et de SMSPS pris en charge",
+  "Reporting status": "État des rapports",
+  "Service volumes over time": "Volumes de services dans le temps",
+  "Service volumes by Admin1 (latest quarter)": "Volumes de services par Admin1 (dernier trimestre)",
+  "Coverage over time": "Couverture dans le temps",
+  "Coverage by Admin1 (latest quarter)": "Couverture par Admin1 (dernier trimestre)",
+  "SAM over time": "MAS dans le temps",
+  "SAM by Admin1 (latest quarter)": "MAS par Admin1 (dernier trimestre)",
+  "Protection and MHPSS over time": "Protection et SMSPS dans le temps",
+  "Protection and MHPSS by Admin1 (latest quarter)": "Protection et SMSPS par Admin1 (dernier trimestre)",
+  "Health system over time": "Système de santé dans le temps",
+  "Health facilities over time": "Établissements de santé dans le temps",
+  "Quarter-by-quarter detail": "Détail par trimestre",
+  "FCV country profile data": "Données des profils pays FCV",
+  "Public reporting signals (context only)": "Signaux des rapports publics (contexte uniquement)",
+  "Country prioritization": "Priorisation des pays",
+  "Recent food security reporting": "Rapports récents sur la sécurité alimentaire",
+  "Recent nutrition reporting": "Rapports récents sur la nutrition",
+  "FCV response: service delivery": "Réponse FCV : prestation de services",
   "Current Highest Risk": "Risque actuel le plus élevé",
+  "Current highest risk": "Risque actuel le plus élevé",
   "IPC Crisis Countries": "Pays en crise IPC",
+  "IPC crisis countries": "Pays en crise IPC",
   "Top Alerts Active": "Principales alertes actives",
+  "Top alerts active": "Principales alertes actives",
   "Data Quality": "Qualité des données",
+  "Data quality": "Qualité des données",
   "Last Refresh": "Dernière actualisation",
+  "Last refresh": "Dernière actualisation",
   "ACAPS Crawl Mode": "Mode de collecte ACAPS",
+  "ACAPS crawl mode": "Mode de collecte ACAPS",
   "ACAPS Crawl Status": "État de la collecte ACAPS",
+  "ACAPS crawl status": "État de la collecte ACAPS",
   "⛶ Expand": "⛶ Agrandir",
   "Expand map to full screen": "Agrandir la carte en plein écran",
   "Primary Priorities": "Priorités principales",
+  "Primary priorities": "Priorités principales",
   "Overview": "Vue d'ensemble",
   "Food Security Priority": "Priorité sécurité alimentaire",
+  "Food security priority": "Priorité sécurité alimentaire",
   "Nutrition Context": "Contexte nutritionnel",
+  "Nutrition context": "Contexte nutritionnel",
   "Event Monitoring": "Suivi des événements",
+  "Event monitoring": "Suivi des événements",
   "Conflicts & Displacements": "Conflits et déplacements",
+  "Conflicts and displacements": "Conflits et déplacements",
   "Attacks on Healthcare": "Attaques contre les soins de santé",
+  "Attacks on health care": "Attaques contre les soins de santé",
   "Hazard & Flood Monitor": "Suivi des aléas et des inondations",
+  "Hazard and flood monitor": "Suivi des aléas et des inondations",
   "Cyclone Watch": "Vigie cyclonique",
+  "Cyclone watch": "Vigie cyclonique",
   "Decision Support": "Appui à la décision",
+  "Decision support": "Appui à la décision",
   "Forecast Studio": "Atelier de prévisions",
+  "Forecast studio": "Atelier de prévisions",
   "Country Profiles": "Profils pays",
+  "Country profiles": "Profils pays",
   "Operational Report": "Rapport opérationnel",
+  "Operational report": "Rapport opérationnel",
   "Export Bulletin (Print)": "Exporter le bulletin (impression)",
   "Export Bulletin (Word)": "Exporter le bulletin (Word)",
   "Export Bulletin": "Exporter le bulletin",
+  "Export bulletin": "Exporter le bulletin",
   "Print / Save as PDF": "Imprimer / Enregistrer en PDF",
   "Export to Word": "Exporter en Word",
   "Export Validation Snapshot": "Exporter l'instantané de validation",
+  "Export validation snapshot": "Exporter l'instantané de validation",
   "Validation snapshot downloads to the default browser downloads folder.": "L'instantané de validation est téléchargé dans le dossier de téléchargements du navigateur.",
   "Humanitarian Events Decision Dashboard": "Tableau de décision des événements humanitaires",
+  "Humanitarian events decision dashboard": "Tableau de décision des événements humanitaires",
   "Data Validation Ledger": "Registre de validation des données",
+  "Data validation ledger": "Registre de validation des données",
   "Audit trail for high-priority country metrics in the current refresh.": "Piste d'audit des indicateurs des pays prioritaires pour l'actualisation en cours.",
   "FCV Risk Map": "Carte des risques FCV",
+  "FCV risk map": "Carte des risques FCV",
   "Composite Risk": "Risque composite",
+  "Composite risk": "Risque composite",
   "Food Security And Event Pressure Snapshot": "Synthèse sécurité alimentaire et pression événementielle",
+  "Food security and event pressure snapshot": "Synthèse sécurité alimentaire et pression événementielle",
   "Top Alerts": "Alertes prioritaires",
+  "Top alerts": "Alertes prioritaires",
   "Country Profile Trend": "Tendance du profil pays",
+  "Country profile trend": "Tendance du profil pays",
   "Country Operational Brief": "Note opérationnelle pays",
+  "Country operational brief": "Note opérationnelle pays",
   "Country Comparison Table": "Tableau comparatif des pays",
+  "Country comparison table": "Tableau comparatif des pays",
   "IPC Food Security Snapshot": "Synthèse IPC de la sécurité alimentaire",
+  "IPC food security snapshot": "Synthèse IPC de la sécurité alimentaire",
   "Recommendations: Food Security": "Recommandations : sécurité alimentaire",
+  "Recommendations: food security": "Recommandations : sécurité alimentaire",
   "Nutrition Context": "Contexte nutritionnel",
+  "Nutrition context": "Contexte nutritionnel",
   "Wasting and Stunting by Country (latest survey)": "Émaciation et retard de croissance par pays (dernière enquête)",
+  "Wasting and stunting by country (latest survey)": "Émaciation et retard de croissance par pays (dernière enquête)",
   "Recommendations: Nutrition": "Recommandations : nutrition",
+  "Recommendations: nutrition": "Recommandations : nutrition",
   "Forecast Outlook": "Perspectives des prévisions",
+  "Forecast outlook": "Perspectives des prévisions",
   "Forecast Insights": "Points saillants des prévisions",
+  "Forecast insights": "Points saillants des prévisions",
   "Forecast Source Summary": "Synthèse des sources de prévision",
+  "Forecast source summary": "Synthèse des sources de prévision",
   "ICPAC Forecast Bulletins": "Bulletins de prévision de l'ICPAC",
+  "ICPAC forecast bulletins": "Bulletins de prévision de l'ICPAC",
   "ICPAC Source Summary": "Synthèse de la source ICPAC",
+  "ICPAC source summary": "Synthèse de la source ICPAC",
   "Recommendations: Forecasts": "Recommandations : prévisions",
+  "Recommendations: forecasts": "Recommandations : prévisions",
   "Source Intelligence Summary": "Synthèse du renseignement des sources",
+  "Source intelligence summary": "Synthèse du renseignement des sources",
   "Flood Watch": "Vigie inondations",
+  "Flood watch": "Vigie inondations",
   "Recent Flood Events": "Inondations récentes",
+  "Recent flood events": "Inondations récentes",
   "GDACS Hazard Events": "Événements d'aléas GDACS",
+  "GDACS hazard events": "Événements d'aléas GDACS",
   "ReliefWeb RSS Situation Reports": "Rapports de situation RSS ReliefWeb",
+  "ReliefWeb RSS situation reports": "Rapports de situation RSS ReliefWeb",
   "WHO Disease Outbreak News (DON)": "Bulletins d'information sur les flambées épidémiques de l'OMS (DON)",
   "Recommendations: Hazards": "Recommandations : aléas",
+  "Recommendations: hazards": "Recommandations : aléas",
   "Historical Disaster Impact (EM-DAT)": "Impact historique des catastrophes (EM-DAT)",
+  "Historical disaster impact (EM-DAT)": "Impact historique des catastrophes (EM-DAT)",
   "Largest Disasters by People Affected": "Plus grandes catastrophes selon le nombre de personnes touchées",
+  "Largest disasters by people affected": "Plus grandes catastrophes selon le nombre de personnes touchées",
   "Most Affected Countries (EM-DAT)": "Pays les plus touchés (EM-DAT)",
+  "Most affected countries (EM-DAT)": "Pays les plus touchés (EM-DAT)",
   "Conflict And Displacement Pressure": "Pression des conflits et des déplacements",
+  "Conflict and displacement pressure": "Pression des conflits et des déplacements",
   "Conflict And Displacement Prioritization": "Priorisation des conflits et des déplacements",
+  "Conflict and displacement prioritization": "Priorisation des conflits et des déplacements",
   "Recommendations: Conflicts & Displacements": "Recommandations : conflits et déplacements",
+  "Recommendations: conflicts and displacements": "Recommandations : conflits et déplacements",
   "Attacks on Healthcare Snapshot": "Synthèse des attaques contre les soins de santé",
+  "Attacks on health care snapshot": "Synthèse des attaques contre les soins de santé",
   "Recommendations: Attacks on Healthcare": "Recommandations : attaques contre les soins de santé",
+  "Recommendations: attacks on health care": "Recommandations : attaques contre les soins de santé",
   "WHO SSA Source And Evidence Feed": "Source SSA de l'OMS et flux de données probantes",
+  "WHO SSA source and evidence feed": "Source SSA de l'OMS et flux de données probantes",
   "Evidence Feed": "Flux de données probantes",
+  "Evidence feed": "Flux de données probantes",
   "Cyclone Leadership Snapshot": "Synthèse cyclonique",
+  "Cyclone leadership snapshot": "Synthèse cyclonique",
   "Cyclone-Affected Country Prioritization": "Priorisation des pays touchés par un cyclone",
+  "Cyclone-affected country prioritization": "Priorisation des pays touchés par un cyclone",
   "Recommendations: Cyclone": "Recommandations : cyclone",
+  "Recommendations: cyclones": "Recommandations : cyclone",
   "Cyclone Projections And Advisories": "Projections et avis cycloniques",
+  "Cyclone projections and advisories": "Projections et avis cycloniques",
   "Cyclone Source Diagnostics": "Diagnostic des sources cycloniques",
+  "Cyclone source diagnostics": "Diagnostic des sources cycloniques",
   "Documented Active Cyclones": "Cyclones actifs documentés",
+  "Documented active cyclones": "Cyclones actifs documentés",
   "Operational Situation Bulletin": "Bulletin de situation opérationnelle",
+  "Operational situation bulletin": "Bulletin de situation opérationnelle",
   "All-Events Summary": "Synthèse de tous les événements",
+  "All-events summary": "Synthèse de tous les événements",
   "Forecast and Projection Summary": "Synthèse des prévisions et projections",
+  "Forecast and projection summary": "Synthèse des prévisions et projections",
   "Conflicts and Displacements Summary": "Synthèse des conflits et déplacements",
+  "Conflicts and displacements summary": "Synthèse des conflits et déplacements",
   "Countries with Most Event Signals": "Pays présentant le plus de signaux d'événements",
+  "Countries with most event signals": "Pays présentant le plus de signaux d'événements",
   "Recommendations (All Issues)": "Recommandations (toutes thématiques)",
+  "Recommendations (all issues)": "Recommandations (toutes thématiques)",
   "Source Intelligence Detail": "Détail du renseignement des sources",
+  "Source intelligence detail": "Détail du renseignement des sources",
   "Decision Protocol": "Protocole décisionnel",
+  "Decision protocol": "Protocole décisionnel",
   "Conflict and Displacement Insert": "Encart conflits et déplacements",
+  "Conflict and displacement insert": "Encart conflits et déplacements",
   "Priority Country Annexes": "Annexes pays prioritaires",
+  "Priority country annexes": "Annexes pays prioritaires",
   // Navigation (page names also used by strategic.js PAGE_LABEL_FR).
   "Strategic View": "Vue stratégique",
+  "Strategic view": "Vue stratégique",
   "Crisis Classification": "Classification des crises",
+  "Crisis classification": "Classification des crises",
   "FCV Response": "Réponse FCV",
+  "FCV response": "Réponse FCV",
   "WHO Humanitarian Response": "Réponse humanitaire de l'OMS",
+  "WHO humanitarian response": "Réponse humanitaire de l'OMS",
   "Risk Monitoring": "Suivi des risques",
+  "Risk monitoring": "Suivi des risques",
   "Conflict & Displacement": "Conflits et déplacements",
+  "Conflict and displacement": "Conflits et déplacements",
   "Attacks on Health Care": "Attaques contre les soins de santé",
+  "Attacks on health care": "Attaques contre les soins de santé",
   "Food Security": "Sécurité alimentaire",
+  "Food security": "Sécurité alimentaire",
   "Hazards & Floods": "Aléas et inondations",
+  "Hazards and floods": "Aléas et inondations",
   "Climate Forecasts": "Prévisions climatiques",
+  "Climate forecasts": "Prévisions climatiques",
   "Outputs & Data": "Produits et données",
+  "Outputs and data": "Produits et données",
   "Operational Bulletin": "Bulletin opérationnel",
+  "Operational bulletin": "Bulletin opérationnel",
   "Event Signals": "Signaux d'événements",
+  "Event signals": "Signaux d'événements",
   "Data Health": "Qualité des données",
+  "Data health": "Qualité des données",
   // Panels that the strategic key-figure cards link to ("More detail").
   "Reporting Status by Quarter": "État des rapports par trimestre",
+  "Reporting status by quarter": "État des rapports par trimestre",
   "Regional Service Volumes": "Volumes de services régionaux",
+  "Regional service volumes": "Volumes de services régionaux",
   "Conflict and Displacement Pressure": "Pression des conflits et des déplacements",
+  "Conflict and displacement pressure": "Pression des conflits et des déplacements",
   "Conflict and Displacement Prioritization": "Priorisation des conflits et des déplacements",
+  "Conflict and displacement prioritization": "Priorisation des conflits et des déplacements",
   "Cyclone Projections and Advisories": "Projections et avis cycloniques",
+  "Cyclone projections and advisories": "Projections et avis cycloniques",
   "WHO SSA Source and Evidence Feed": "Source SSA de l'OMS et flux de données probantes",
+  "WHO SSA source and evidence feed": "Source SSA de l'OMS et flux de données probantes",
   "Food Security and Event Pressure Snapshot": "Synthèse sécurité alimentaire et pression événementielle",
+  "Food security and event pressure snapshot": "Synthèse sécurité alimentaire et pression événementielle",
   // Strategic Overview.
   "Humanitarian health situation in FCV countries": "Situation sanitaire humanitaire dans les pays FCV",
   "Strategic indicators from verified sources. Each figure shows its source and reference date.": "Indicateurs stratégiques issus de sources vérifiées. Chaque chiffre indique sa source et sa date de référence.",
@@ -293,10 +420,13 @@ const PHRASE_FR = {
   "All FCV-classified countries (18)": "Tous les pays classés FCV (18)",
   "FCV + cross-border context (Sudan, Somalia)": "FCV + contexte transfrontalier (Soudan, Somalie)",
   "Strategic KPI Status": "État des indicateurs clés stratégiques",
+  "Strategic KPI status": "État des indicateurs clés stratégiques",
   "Each management question, the indicator that answers it, a proposed trigger (to be confirmed by DHM), and the countries that meet it today. Select Detail in any row for the supporting data.": "Chaque question de gestion, l'indicateur qui y répond, un seuil de déclenchement proposé (à confirmer par la DHM) et les pays qui l'atteignent aujourd'hui. Sélectionner Détail sur une ligne pour voir les données correspondantes.",
   "Strategic Messages": "Messages stratégiques",
+  "Strategic messages": "Messages stratégiques",
   "Draft generated from the indicators on this page. The DHM lead reviews and edits it each month before it is used.": "Projet généré à partir des indicateurs de cette page. Le responsable DHM le relit et le modifie chaque mois avant son utilisation.",
   "Where the Burden Sits": "Où se concentre la charge",
+  "Where the burden sits": "Où se concentre la charge",
   "Map layer": "Couche de la carte",
   "DHM triage tier": "Niveau de triage DHM",
   "People in need of health assistance": "Personnes ayant besoin d'une assistance sanitaire",
@@ -305,32 +435,45 @@ const PHRASE_FR = {
   "IPC/CH Phase 3+ (share analysed)": "Phase 3+ IPC/CH (part analysée)",
   "Attacks on health care this year": "Attaques contre les soins de santé cette année",
   "Progress Against Plan": "Avancement par rapport au plan",
+  "Progress against plan": "Avancement par rapport au plan",
   "Health cluster funding in 2026 humanitarian plans, ranked by unfunded amount.": "Financement du Cluster Santé dans les plans de réponse humanitaire 2026, classé selon le montant non financé.",
   "FCV Country Scorecard": "Tableau synthétique des pays FCV",
+  "FCV country scorecard": "Tableau synthétique des pays FCV",
   "One row per country, sorted by DHM triage tier. Click a country to open its profile; hover a value for its source and date. Grey values are outdated (displacement more than 24 months, IPC/CH more than 18 months) and are excluded from totals.": "Une ligne par pays, triée par niveau de triage DHM. Cliquer sur un pays pour ouvrir son profil ; survoler une valeur pour voir sa source et sa date. Les valeurs en gris sont obsolètes (déplacements de plus de 24 mois, IPC/CH de plus de 18 mois) et sont exclues des totaux.",
   "Health Needs Covered by the Plan": "Besoins en santé couverts par le plan",
+  "Health needs covered by the plan": "Besoins en santé couverts par le plan",
   "People targeted for health assistance as a share of people in need of health assistance, latest plan year. 2026 Health Cluster reach is not yet published by OCHA; the latest full-year reach is on the Health reach card above.": "Personnes ciblées par l'assistance sanitaire en part des personnes ayant besoin d'une assistance sanitaire, dernière année de plan. La couverture 2026 du Cluster Santé n'est pas encore publiée par OCHA ; la dernière couverture annuelle complète figure sur la carte Couverture sanitaire ci-dessus.",
   "Mental Health and Psychosocial Support (MHPSS)": "Santé mentale et soutien psychosocial (SMSPS)",
-  "People reached with mental health and psychosocial support (MHPSS) in the latest reported quarter, per 10,000 people in need of health assistance. Source: FCV service database. No regional MHPSS target is published yet.": "Personnes ayant bénéficié de services de santé mentale et de soutien psychosocial (SMSPS) au dernier trimestre déclaré, pour 10 000 personnes ayant besoin d'une assistance sanitaire. Source : base de données des services FCV. Aucune cible régionale de SMSPS n'est encore publiée.",
+  "Mental health and psychosocial support (MHPSS)": "Santé mentale et soutien psychosocial (SMSPS)",
+  "People reached with mental health and psychosocial support (MHPSS) in the latest reported quarter, per 10 000 people in need of health assistance. Source: FCV service database. No regional MHPSS target is published yet.": "Personnes ayant bénéficié de services de santé mentale et de soutien psychosocial (SMSPS) au dernier trimestre déclaré, pour 10 000 personnes ayant besoin d'une assistance sanitaire. Source : base de données des services FCV. Aucune cible régionale de SMSPS n'est encore publiée.",
   "Sources and Links": "Sources et liens",
+  "Sources and links": "Sources et liens",
   // Crisis Classification.
   "Humanitarian Crisis Classification": "Classification des crises humanitaires",
+  "Humanitarian crisis classification": "Classification des crises humanitaires",
   "WHO grades come only from the WHO grading process and are entered by DHM in the grading register. The DHM triage tier is a transparent, rule-based aid built from verified indicators. It is not a WHO grade.": "Les grades OMS proviennent uniquement du processus de classement par grade de l'OMS et sont saisis par la DHM dans le registre des grades. Le niveau de triage DHM est un outil d'aide transparent, fondé sur des règles et construit à partir d'indicateurs vérifiés. Ce n'est pas un grade OMS.",
   "DHM Triage Tier by Country": "Niveau de triage DHM par pays",
+  "DHM triage tier by country": "Niveau de triage DHM par pays",
   "Points per criterion are shown so the result can be checked and challenged.": "Les points par critère sont affichés afin que le résultat puisse être vérifié et contesté.",
   "WHO Grading Register": "Registre des grades de l'OMS",
+  "WHO grading register": "Registre des grades de l'OMS",
   "Confirmed WHO grades, entered by the DHM focal point.": "Grades OMS confirmés, saisis par le point focal de la DHM.",
   "Classification Rules": "Règles de classification",
+  "Classification rules": "Règles de classification",
   // Event Signals.
   "Event Signal Map": "Carte des signaux d'événements",
+  "Event signal map": "Carte des signaux d'événements",
   "Composite of public event signals (news volume, hazards, IPC). Use for monitoring, not for ranking crises.": "Composite de signaux publics d'événements (volume d'actualités, aléas, IPC). À utiliser pour le suivi, pas pour classer les crises.",
   // Data Health.
   "Strategic Source Status": "État des sources stratégiques",
+  "Strategic source status": "État des sources stratégiques",
   "Verified sources behind the Overview and Crisis Classification pages.": "Sources vérifiées utilisées par les pages Vue d'ensemble et Classification des crises.",
   "FCV Service Database: Values Excluded at Ingest": "Base de données des services FCV : valeurs exclues au chargement",
+  "FCV service database: values excluded at ingest": "Base de données des services FCV : valeurs exclues au chargement",
   "Rows outside plausible limits are kept out of every average and listed here for correction by country focal points.": "Les lignes hors des limites plausibles sont exclues de toutes les moyennes et listées ici pour correction par les points focaux pays.",
   // Operational Bulletin.
   "Part B: Event and Source Detail": "Partie B : détail des événements et des sources",
+  "Part B: event and source detail": "Partie B : détail des événements et des sources",
   "Hazard, forecast and source detail behind the update above. Detail sections open with \"Show detail\".": "Détail des aléas, des prévisions et des sources à l'appui du point ci-dessus. Les sections de détail s'ouvrent avec « Afficher le détail ».",
   "Ranked by the news and hazard signal score. For the crisis ranking, see the priority countries in Part A.": "Classement selon le score de signal des actualités et des aléas. Pour le classement des crises, voir les pays prioritaires de la Partie A."
 };
@@ -352,6 +495,7 @@ const DYNAMIC_PHRASE_FR = {
   "Country annex pages.": "Pages annexes pays.",
   "Cross-issue report.": "Rapport transversal.",
   "Date / Horizon": "Date / Horizon",
+  "Date or horizon": "Date or horizon",
   "Method": "Méthode",
   "Source": "Source",
   "Country": "Pays",
@@ -360,25 +504,40 @@ const DYNAMIC_PHRASE_FR = {
   "Hazards": "Aléas",
   "Cyclones": "Cyclones",
   "Analysis Date": "Date d'analyse",
+  "Analysis date": "Date d'analyse",
   "Projection Date": "Date de projection",
+  "Projection date": "Date de projection",
   "Crisis Level": "Niveau de crise",
+  "Crisis level": "Niveau de crise",
   "Current Value / Signal": "Valeur / signal actuel",
+  "Current value or signal": "Valeur / signal actuel",
   "Forecast / Projection Signal": "Signal de prévision / projection",
+  "Forecast or projection signal": "Signal de prévision / projection",
   "Year": "Année",
   "Issue Number": "Numéro d'édition",
+  "Issue number": "Numéro d'édition",
   "Issue Date": "Date de parution",
+  "Issue date": "Date de parution",
   "Coverage": "Couverture",
   "Data Quality Status": "Statut de la qualité des données",
+  "Data quality status": "Statut de la qualité des données",
   "Filter Integrity": "Intégrité des filtres",
+  "Filter integrity": "Intégrité des filtres",
   "Key Messages": "Messages clés",
+  "Key messages": "Messages clés",
   "Priority watchlist": "Liste de priorités",
   "Top alerts by composite risk": "Principales alertes par risque composite",
   "Purpose": "Objet",
   "Operational Focus": "Priorité opérationnelle",
+  "Operational focus": "Priorité opérationnelle",
   "Forecast Outlook": "Perspectives prévisionnelles",
+  "Forecast outlook": "Perspectives prévisionnelles",
   "Source Signal Status": "Statut des signaux des sources",
+  "Source signal status": "Statut des signaux des sources",
   "Conflict And Displacement": "Conflits et déplacements",
+  "Conflict and displacement": "Conflits et déplacements",
   "Flood Exposure": "Exposition aux inondations",
+  "Flood exposure": "Exposition aux inondations",
   "Current vs projection lens": "Lecture : situation actuelle et projection",
   "Current event situation": "Situation événementielle actuelle",
   "Projection outlook": "Perspective de projection",
@@ -388,7 +547,9 @@ const DYNAMIC_PHRASE_FR = {
   "Recent flood events": "Inondations récentes",
   "Protocol note": "Note de protocole",
   "Recommended Action": "Action recommandée",
+  "Recommended action": "Action recommandée",
   "Current Status": "Statut actuel",
+  "Current status": "Statut actuel",
   "Threshold": "Seuil",
   "Trigger": "Seuil de déclenchement",
   "State": "État",
@@ -396,20 +557,32 @@ const DYNAMIC_PHRASE_FR = {
   "Prepared from public sources": "Préparé à partir de sources publiques",
   "No linked conflict or displacement source item is visible in the current refresh.": "Aucun élément de source lié aux conflits ou aux déplacements n'est visible dans cette actualisation.",
   "Operational Reading": "Lecture opérationnelle",
+  "Operational reading": "Lecture opérationnelle",
   "Linked Source Evidence": "Éléments de source liés",
+  "Linked source evidence": "Éléments de source liés",
   "Operational Considerations": "Considérations opérationnelles",
+  "Operational considerations": "Considérations opérationnelles",
   "Profile Snapshot": "Instantané du profil",
+  "Profile snapshot": "Instantané du profil",
   "Forecast References": "Références prévisionnelles",
+  "Forecast references": "Références prévisionnelles",
   "Country-Linked Hazard Items": "Éléments d'aléas liés au pays",
+  "Country-linked hazard items": "Éléments d'aléas liés au pays",
   "Country-Linked Reports": "Rapports liés au pays",
+  "Country-linked reports": "Rapports liés au pays",
   "Immediate Decision Focus": "Priorité décisionnelle immédiate",
+  "Immediate decision focus": "Priorité décisionnelle immédiate",
   "Composite Risk": "Risque composite",
+  "Composite risk": "Risque composite",
   "Drought Signals": "Signaux de sécheresse",
+  "Drought signals": "Signaux de sécheresse",
   "Reports 30d": "Rapports 30j",
   "Conflict": "Conflit",
   "Displacement": "Déplacement",
   "Signal Level": "Niveau de signal",
-  "Conflict And Displacement Watch": "Vigie conflits et déplacements"
+  "Signal level": "Niveau de signal",
+  "Conflict And Displacement Watch": "Vigie conflits et déplacements",
+  "Conflict and displacement watch": "Vigie conflits et déplacements"
 };
 
 const textNodeOriginalValues = new WeakMap();
@@ -419,9 +592,9 @@ let localizationObserver = null;
 let localizationObserverTimer = null;
 
 const INDICATOR_META = {
-  wasting_u5_pct: { label: "Child Wasting (%)", color: "#d1562f" },
-  stunting_u5_pct: { label: "Child Stunting (%)", color: "#0f79c8" },
-  pregnant_anemia_pct: { label: "Pregnant Women Anemia (%)", color: "#3f8a4f" }
+  wasting_u5_pct: { label: "Child wasting (%)", color: "#d1562f" },
+  stunting_u5_pct: { label: "Child stunting (%)", color: "#0f79c8" },
+  pregnant_anemia_pct: { label: "Anaemia in pregnant women (%)", color: "#3f8a4f" }
 };
 
 const NUTRITION_OPERATIONAL_MAX_AGE_YEARS = 1;
@@ -996,7 +1169,8 @@ function formatNum(value, digits = 1) {
   if (value == null || Number.isNaN(value)) {
     return "n/a";
   }
-  return Number(value).toFixed(digits);
+  // WHO style: space as thousands separator (3 204), decimal comma in French.
+  return whoNum(value, digits);
 }
 
 function formatDate(value) {
@@ -1007,7 +1181,8 @@ function formatDate(value) {
   if (Number.isNaN(d.getTime())) {
     return value;
   }
-  return d.toISOString().slice(0, 10);
+  // WHO style: 25 November 2026.
+  return d.toLocaleDateString(currentLanguage === "fr" ? "fr-FR" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" });
 }
 
 function formatMonthYear(value) {
@@ -1018,7 +1193,7 @@ function formatMonthYear(value) {
   if (Number.isNaN(d.getTime())) {
     return value;
   }
-  return d.toLocaleDateString("en-GB", { month: "short", year: "numeric", timeZone: "UTC" });
+  return d.toLocaleDateString(currentLanguage === "fr" ? "fr-FR" : "en-GB", { month: "long", year: "numeric", timeZone: "UTC" });
 }
 
 function formatDateTime(value) {
@@ -1029,7 +1204,29 @@ function formatDateTime(value) {
   if (Number.isNaN(d.getTime())) {
     return value;
   }
-  return d.toLocaleString(currentLanguage === "fr" ? "fr-FR" : "en-GB");
+  // WHO style: 25 November 2026, 10:30 (no seconds, month in full).
+  const locale = currentLanguage === "fr" ? "fr-FR" : "en-GB";
+  const day = d.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+  if (currentLanguage === "fr") {
+    // French style: 25 novembre 2026 à 10 h 30.
+    return `${day} à ${d.getHours()}\u00a0h\u00a0${String(d.getMinutes()).padStart(2, "0")}`;
+  }
+  const time = d.toLocaleTimeString(locale, { hour: "2-digit", minute: "2-digit" });
+  return `${day}, ${time}`;
+}
+
+// WHO style for numbers: a space (not a comma) separates thousands in numbers of
+// four or more digits (3 204, 10 000, 2 450 000), never a comma.
+function whoNum(value, decimals = 0) {
+  if (value == null) return "n/a";
+  const n = Number(value);
+  if (!Number.isFinite(n)) return "n/a";
+  const fixed = Math.abs(n).toFixed(decimals);
+  const negative = n < 0 && Number(fixed) !== 0;
+  const [intPart, decPart] = fixed.split(".");
+  const grouped = intPart.length >= 4 ? intPart.replace(/\B(?=(\d{3})+(?!\d))/g, "\u00a0") : intPart;
+  const sep = typeof currentLanguage !== "undefined" && currentLanguage === "fr" ? "," : ".";
+  return `${negative ? "-" : ""}${grouped}${decPart ? sep + decPart : ""}`;
 }
 
 function formatCount(value) {
@@ -1037,7 +1234,7 @@ function formatCount(value) {
   if (!Number.isFinite(numeric)) {
     return "n/a";
   }
-  return Math.round(numeric).toLocaleString(currentLanguage === "fr" ? "fr-FR" : "en-GB");
+  return whoNum(Math.round(numeric));
 }
 
 function formatSignedDelta(value) {
@@ -1073,11 +1270,11 @@ function scopeCoverageLabel() {
   if (afroAll && otherCount) {
     return fr
       ? `13 pays FCV pour les chiffres stratégiques\u202f; le suivi des événements couvre ${afroAll} pays de la Région africaine de l'OMS ainsi que ${otherCount === 2 ? "le Soudan et la Somalie (Région de la Méditerranée orientale de l'OMS)" : `${otherCount} autres pays`}`
-      : `13 FCV countries for the strategic figures; event monitoring covers ${afroAll} WHO AFRO countries plus ${otherCount === 2 ? "Sudan and Somalia (WHO Eastern Mediterranean Region)" : `${otherCount} other countries`}`;
+      : `13 FCV countries for the strategic figures; event monitoring covers ${afroAll} countries of the WHO African Region plus ${otherCount === 2 ? "Sudan and Somalia (WHO Eastern Mediterranean Region)" : `${otherCount} other countries`}`;
   }
   const afroCount = scope.afro_country_count || 0;
   if (afroCount) {
-    return fr ? `${afroCount} pays de la Région africaine de l'OMS` : `${afroCount} WHO AFRO countries`;
+    return fr ? `${afroCount} pays de la Région africaine de l'OMS` : `${afroCount} countries of the WHO African Region`;
   }
   return fr ? `${scope.country_count || (dashboardState?.countries || []).length} pays suivis` : `${scope.country_count || (dashboardState?.countries || []).length} monitored countries`;
 }
@@ -1103,14 +1300,14 @@ function getSourceTrustMeta(source) {
   }
   if (/gdacs|reliefweb|ocha|idmc|unhcr|iom|dtm/i.test(normalized)) {
     return {
-      label: "Recognised outlet",
+      label: "Recognized outlet",
       className: "verified",
-      description: "Published by a recognised humanitarian outlet and matched by keywords. The item itself is not a verified incident or figure."
+      description: "Published by a recognized humanitarian outlet and matched by keywords. The item itself is not a verified incident or figure."
     };
   }
   if (/fews\s*net/i.test(normalized)) {
     return {
-      label: "Recognised outlet",
+      label: "Recognized outlet",
       className: "verified",
       description: "FEWS NET famine early warning system; narrative item matched by keywords."
     };
@@ -1353,7 +1550,7 @@ async function exportOperationalBulletinWord() {
 
 <div style="text-align:center;margin-bottom:20pt;">
   <h1 style="border-bottom:none;text-align:center;">WHO AFRO</h1>
-  <h1 style="border-bottom:2px solid #004990;text-align:center;font-size:22pt;">Humanitarian Operational Situation Bulletin</h1>
+  <h1 style="border-bottom:2px solid #004990;text-align:center;font-size:22pt;">Humanitarian operational situation bulletin</h1>
   <p style="font-size:10pt;color:#555;">Weekly operational update for the FCV countries (Part A) with event and source detail (Part B)</p>
   <p style="font-size:10pt;"><strong>Issue:</strong> ${issueCode} | <strong>Date:</strong> ${formatDateTime(dashboardState.generated_at)} | <strong>Coverage:</strong> ${scopeCoverageLabel()}</p>
   <p style="font-size:10pt;"><strong>Source basis:</strong> GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${reliefwebApiStatus.error ? "unavailable" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports`}, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone sources checked, Copernicus flood forecasts ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable" : (cemsFloodStatus.overall || "status unknown")}</p>
@@ -1361,36 +1558,36 @@ async function exportOperationalBulletinWord() {
 
 ${sectionHtml("bulletinWeekly")}
 
-<h1>Part B: Event and Source Detail</h1>
+<h1>Part B: event and source detail</h1>
 <h2>1. About Part B</h2>
 <p>Part B lists hazard, forecast and news signals behind the update. Its country ranking uses news and hazard signals; the crisis ranking is the DHM triage tier in Part A.</p>
 
-<h2>2. Operational Situation Summary</h2>
-<h3>2.1 All-Events Summary</h3>
+<h2>2. Operational situation summary</h2>
+<h3>2.1 All-events summary</h3>
 ${sectionHtml("operationalEventSummary")}
 
-<h3>2.2 Forecast and Projection Summary</h3>
+<h3>2.2 Forecast and projection summary</h3>
 ${sectionHtml("operationalForecastSummary")}
 
-<h2>3. Conflicts and Displacements</h2>
+<h2>3. Conflicts and displacements</h2>
 ${sectionHtml("operationalConflictDisplacementSummary")}
 
-<h2>4. Countries with Most Event Signals</h2>
+<h2>4. Countries with most event signals</h2>
 ${priorityTableHtml}
 
 <h2>5. Recommendations</h2>
 ${recsHtml}
 
-<h2>6. Source Intelligence Detail</h2>
+<h2>6. Source intelligence detail</h2>
 ${sectionHtml("operationalSourceDetail")}
 
-<h2>7. Decision Protocol</h2>
+<h2>7. Decision protocol</h2>
 ${decisionTableHtml || sectionHtml("operationalDecisionProtocol")}
 
-<h2>8. Conflict and Displacement Country Watch</h2>
+<h2>8. Conflict and displacement country watch</h2>
 ${sectionHtml("operationalConflictDisplacementInsert")}
 
-<h2>9. Priority Country Annexes</h2>
+<h2>9. Priority country annexes</h2>
 ${sectionHtml("operationalCountryAnnexes")}
 
 
@@ -1841,7 +2038,7 @@ function renderConflictsDisplacementPage() {
       structuralCandidate: 0,
       matched: matchedBySource["iom dtm event tracking"] || 0,
       tooltip: `IOM DTM event-tracking source. C=${candidate.iom_dtm || 0}, M=${matchedBySource["iom dtm event tracking"] || 0}`,
-      detail: "Event Tracking reports"
+      detail: "Event tracking reports"
     },
     {
       label: "UNHCR",
@@ -2093,11 +2290,11 @@ function renderAttacksHealthSourceStatus(apiPayload, fallbackSourceStatus = {}) 
   const whoDonStatus = apiPayload?.who_don_source_status || fallbackSourceStatus || {};
 
   els.attacksHealthSourceStatus.innerHTML = `
-    <p><strong>Primary reference source:</strong> <a href="${sourceUrl}" target="_blank" rel="noreferrer">WHO SSA Portal</a>.</p>
-    <p><strong>Live attacks-healthcare API status:</strong> ${apiPayload ? "available" : "fallback"}${generatedAt ? ` (updated ${formatDateTime(generatedAt)})` : ""}.</p>
+    <p><strong>Primary reference source:</strong> <a href="${sourceUrl}" target="_blank" rel="noreferrer">WHO SSA portal</a>.</p>
+    <p><strong>Live attacks on health care API status:</strong> ${apiPayload ? "available" : "fallback"}${generatedAt ? ` (updated ${formatDateTime(generatedAt)})` : ""}.</p>
     <p><strong>Coverage from dedicated endpoint:</strong> ${ssaSignals} signal items across ${ssaCountries} countries${apiPayload?.freshness_mode ? ` (mode: ${apiPayload.freshness_mode})` : ""}.</p>
     <p><strong>Current WHO DON linkage:</strong> ${whoDonStatus.overall || "unknown"} (${whoDonStatus.fcv_items_30d ?? 0} mapped items in 30-day window).</p>
-    <p><strong>Method:</strong> dashboard feed includes WHO SSA reference plus verified source items (ReliefWeb, OCHA, WHO DON, IOM DTM, FEWS where relevant) that match explicit attacks-on-healthcare language.</p>
+    <p><strong>Method:</strong> dashboard feed includes WHO SSA reference plus verified source items (ReliefWeb, OCHA, WHO DON, IOM DTM, FEWS where relevant) that match explicit attacks on health care language.</p>
   `;
 }
 
@@ -2119,7 +2316,7 @@ function renderHealthAttacksPage() {
   const sourceStatus = dashboardState.who_don_source_status || {};
 
   els.attacksHealthSummary.innerHTML = `
-    <p><strong>Current signals:</strong> ${signals.length} attack-on-healthcare related source items matched this refresh across ${countries.length} countries.</p>
+    <p><strong>Current signals:</strong> ${signals.length} source items related to attacks on health care matched this refresh across ${countries.length} countries.</p>
     <p><strong>Top affected profiles:</strong> ${topCountryLabel}.</p>
     <p><strong>Decision note:</strong> this panel is designed for triage. Confirm incidents through country offices, protection clusters, and verified field channels before operational escalation.</p>
   `;
@@ -2146,14 +2343,14 @@ function renderHealthAttacksPage() {
           </tr>
         `;
       }).join("")
-    : '<tr><td colspan="6">No attacks-on-healthcare signals matched verified source criteria in the current refresh.</td></tr>';
+    : '<tr><td colspan="6">No signals of attacks on health care matched verified source criteria in the current refresh.</td></tr>';
 
   const generatedRecs = [];
   if (topCountries.some((country) => (country.health_attack_signal_count || 0) >= 3)) {
     generatedRecs.push({
       priority: "critical",
       title: "Activate protection and continuity review",
-      body: "Trigger country-level review of health service continuity plans in countries with repeated attack-on-healthcare signals this cycle."
+      body: "Trigger country-level review of health service continuity plans in countries with repeated signals of attacks on health care this cycle."
     });
   }
   if (signals.length > 0) {
@@ -2167,10 +2364,10 @@ function renderHealthAttacksPage() {
     generatedRecs.push({
       priority: "watch",
       title: "Maintain weekly surveillance",
-      body: "No acute attack-on-healthcare pressure was detected in this cycle; continue weekly source surveillance and rapid verification readiness."
+      body: "No acute pressure from attacks on health care was detected in this cycle; continue weekly source surveillance and rapid verification readiness."
     });
   }
-  renderRecommendationList(els.attacksHealthRecommendations, generatedRecs, "No attacks-on-healthcare recommendations were generated.");
+  renderRecommendationList(els.attacksHealthRecommendations, generatedRecs, "No recommendations on attacks on health care were generated.");
 
   const evidenceCountries = topCountries.slice(0, 5);
   els.attacksHealthFeed.innerHTML = evidenceCountries.length
@@ -2191,7 +2388,7 @@ function renderHealthAttacksPage() {
                 <div class="signal-summary">${summarizeSourceExcerpt(item.summary || item.content || "", SOURCE_EXCERPT_MAX_CHARS)}</div>
               </div>
             `).join("")
-          : '<div class="feed-item conflict-feed-item"><div>No linked attack-on-healthcare source item was detected for this country in the current refresh.</div></div>';
+          : '<div class="feed-item conflict-feed-item"><div>No linked source item on attacks on health care was detected for this country in the current refresh.</div></div>';
         return `
           <div class="conflict-country-block">
             <div class="conflict-country-header">
@@ -2202,7 +2399,7 @@ function renderHealthAttacksPage() {
           </div>
         `;
       }).join("")
-    : "No attacks-on-healthcare evidence items are available in this refresh.";
+    : "No evidence items on attacks on health care are available in this refresh.";
 }
 
 function clearPrintRestoreTimer() {
@@ -2372,7 +2569,7 @@ function nutritionCell(latest, referenceYear, isAnemia = false) {
   const sourceHint = sourceIsHdx
     ? `HDX acute malnutrition proxy${methodHint}`
     : `World Bank indicator${methodHint}`;
-  const anemiaNote = isAnemia ? ' <small title="Anemia prevalence (SH.ANM.PREG.ZS), not an acute malnutrition indicator" style="color:#888;white-space:nowrap">&#9888; anemia only</small>' : "";
+  const anemiaNote = isAnemia ? ' <small title="Anaemia prevalence (SH.ANM.PREG.ZS), not an acute malnutrition indicator" style="color:#888;white-space:nowrap">&#9888; anaemia only</small>' : "";
   return `<strong>${formatNum(latest.value)}</strong> <span class="nutrition-year">(${latest.year})</span> <span title="${sourceHint}">${sourceTag}</span> ${currentTag}${anemiaNote}`;
 }
 
@@ -2478,11 +2675,11 @@ function renderNutritionPage() {
   }
 
   els.nutritionSummary.innerHTML = `
-    <p><strong>Coverage (latest available):</strong> Child Wasting ${counts.wasting}/${rows.length}, Child Stunting ${counts.stunting}/${rows.length}, Pregnant Women Anemia ${counts.anemia}/${rows.length}.</p>
+    <p><strong>Coverage (latest available):</strong> Child wasting ${counts.wasting}/${rows.length}, child stunting ${counts.stunting}/${rows.length}, Anaemia in pregnant women ${counts.anemia}/${rows.length}.</p>
     <p><strong>Source status:</strong> World Bank feed ${wbStatus} and checked ${wbFreshness} (<span title="${wbFetchedAt || "n/a"}">${formatDateTime(wbFetchedAt)}</span>).</p>
     <p><strong>HDX fallback status:</strong> ${hdxNutritionStatus.overall || "unknown"}; applied in ${hdxNutritionStatus.applied_country_count ?? 0} pilot country profiles when World Bank values were stale or missing.</p>
     <p><strong>Fallback countries this refresh:</strong> ${hdxAppliedCountries.length ? hdxAppliedCountries.join(", ") : "none"}.</p>
-    <p><strong>Indicator definition note:</strong> Pregnant women values represent anemia prevalence (World Bank SH.ANM.PREG.ZS), not acute malnutrition. HDX fallback currently applies only to under-5 acute malnutrition proxy values (wasting context).</p>
+    <p><strong>Indicator definition note:</strong> Pregnant women values represent anaemia prevalence (World Bank SH.ANM.PREG.ZS), not acute malnutrition. HDX fallback currently applies only to under-5 acute malnutrition proxy values (wasting context).</p>
     <p><strong>Latest available years in source:</strong> ${minYear && maxYear ? `${minYear} to ${maxYear}` : "n/a"}.</p>
     <p><strong>Data gap note:</strong> Eritrea (ERI) has no IPC or HDX acute malnutrition source configured; it is absent from this table. This is a known data access constraint.</p>
     <p><strong>Expected update cadence:</strong> World Bank nutrition indicators are generally annual. Dashboard checks run each refresh, but values update only when a new year is published upstream.</p>
@@ -2779,8 +2976,8 @@ function renderFoodSecurityPage() {
           <td><strong>${c.country}</strong></td>
           <td>${ipcDisplay(ipc).html}</td>
           <td>${ipc ? projectedTag : "n/a"}</td>
-          <td>${ipc ? (ipc.phase3plus_number || 0).toLocaleString() : "n/a"}</td>
-          <td>${ipc ? ((ipc.phase4_number || 0) + (ipc.phase5_number || 0)).toLocaleString() : "n/a"}</td>
+          <td>${ipc ? whoNum(ipc.phase3plus_number || 0) : "n/a"}</td>
+          <td>${ipc ? whoNum((ipc.phase4_number || 0) + (ipc.phase5_number || 0)) : "n/a"}</td>
           <td>${ipc ? `<span class="tag ${levelClass}">${(ipc.ipc_crisis_level || "n/a").toUpperCase()}</span>` : "n/a"}</td>
           <td>${analysisDateCell}</td>
           <td>${projectionDateCell}</td>
@@ -2949,9 +3146,11 @@ function startAutoRotate() {
 
 function setCurrentDate() {
   const now = new Date();
-  const opts = { weekday: "short", year: "numeric", month: "short", day: "numeric" };
   const locale = currentLanguage === "fr" ? "fr-FR" : "en-GB";
-  els.currentDate.textContent = `${t("datePrefix")}: ${now.toLocaleDateString(locale, opts)}`;
+  // WHO style: "Wednesday 25 November 2026", with no comma.
+  const weekday = now.toLocaleDateString(locale, { weekday: "long" });
+  const date = now.toLocaleDateString(locale, { day: "numeric", month: "long", year: "numeric" });
+  els.currentDate.textContent = `${t("datePrefix")}${currentLanguage === "fr" ? "\u00a0:" : ":"} ${weekday} ${date}`;
 }
 
 function buildBandLegend() {
@@ -3395,7 +3594,7 @@ function renderFcvRegCompletenessByCountryChart() {
       marker: { color: data.map((d) => thresholdColor(d.pct, FCV_THRESHOLDS.default)) },
       text: data.map((d) => `${d.pct.toFixed(0)}%`),
       textposition: "outside",
-      hovertemplate: "%{y}: %{x:.0f}%% complete<extra></extra>"
+      hovertemplate: "%{y}: %{x:.0f}% complete<extra></extra>"
     }],
     fcvBaseLayout({ margin: { l: 220, r: 40, t: 10, b: 30 }, xaxis: { title: "% of tracked fields reported", range: [0, 100] }, height: Math.max(280, data.length * 28) }),
     FCV_PLOT_CONFIG,
@@ -3422,7 +3621,7 @@ function renderFcvRegCompletenessByIndicatorChart() {
       marker: { color: data.map((d) => thresholdColor(d.pct, FCV_THRESHOLDS.default)) },
       text: data.map((d) => `${d.pct.toFixed(0)}%`),
       textposition: "outside",
-      hovertemplate: "%{y}: %{x:.0f}%% of country-quarters reported<extra></extra>"
+      hovertemplate: "%{y}: %{x:.0f}% of country-quarters reported<extra></extra>"
     }],
     fcvBaseLayout({ margin: { l: 220, r: 40, t: 10, b: 30 }, xaxis: { title: "% of country-quarters reported", range: [0, 100] }, height: Math.max(320, data.length * 26) }),
     FCV_PLOT_CONFIG,
@@ -3616,7 +3815,7 @@ function renderFcvRegPentaMeaslesGapChart() {
       marker: { color: data.map((d) => (d.gap >= 0 ? "#2a78d6" : "#e34948")) },
       hovertemplate: "%{y}: %{x:.1f} pts<extra></extra>"
     }],
-    fcvBaseLayout({ margin: { l: 220, r: 30, t: 10, b: 30 }, xaxis: { title: "PENTA % minus Measles % (points)", zeroline: true }, height: Math.max(280, data.length * 26) }),
+    fcvBaseLayout({ margin: { l: 220, r: 30, t: 10, b: 30 }, xaxis: { title: "Penta % minus measles % (points)", zeroline: true }, height: Math.max(280, data.length * 26) }),
     FCV_PLOT_CONFIG,
     { pageId: "fcvDataPage", group: "coverage" }
   );
@@ -3664,7 +3863,7 @@ function renderFcvRegSamSeverityChart() {
     x: data.map((d) => d.country),
     y: data.map((d) => d.sam_complications_pct),
     marker: { color: data.map((d) => thresholdColor(d.sam_complications_pct, FCV_THRESHOLDS.sam)) },
-    hovertemplate: "%{x}: %{y:.1f}%% complications<extra></extra>"
+    hovertemplate: "%{x}: %{y:.1f}% complications<extra></extra>"
   };
   const flagTrace = buildFlagOverlayTrace(data.map((d) => d.country), data.map((d) => d.sam_complications_pct));
 
@@ -4218,32 +4417,32 @@ function buildMetrics() {
   // Each card opens the page or panel where the detail sits.
   const cards = [
     {
-      title: tx("IPC Crisis Countries", "Pays en crise selon l'IPC"),
+      title: tx("IPC crisis countries", "Pays en crise selon l'IPC"),
       value: ipcLoaded ? ipcCrisis : tx("n/a", "n.d."),
       note: ipcLoaded ? tx("IPC/CH Phase 3+ at 30% or more of the population analysed", "Phase 3+ IPC/CH pour 30\u00a0% ou plus de la population analysée") : tx("IPC feed not available in this refresh; see Food Security for the verified figures", "Flux IPC non disponible lors de cette actualisation\u202f; voir Sécurité alimentaire pour les chiffres vérifiés"),
       target: "foodSecurityPage#foodSecurityTable"
     },
-    { title: tx("Conflict/Displacement Active", "Pays signalés en conflit ou déplacement"), value: conflictDisplacementCountries, note: tx("Countries named in conflict or displacement reports (news signals, not verified figures)", "Pays cités dans des rapports sur les conflits ou les déplacements (signaux d'actualité, pas des chiffres vérifiés)"), target: "conflictsDisplacementPage#conflictsDisplacementTable" },
-    { title: tx("Countries With Active Hazards", "Pays avec une alerte d'aléa active"), value: hazardCountries, note: tx("Countries with a current GDACS hazard alert", "Pays faisant l'objet d'une alerte GDACS en cours"), target: "hazardPage#hazardFeed" },
-    { title: tx("Cyclone-Active Countries", "Pays avec un signal cyclonique"), value: cycloneActiveCountries, note: tx("Countries with a mapped cyclone event or advisory", "Pays associés à un cyclone ou à un avis cyclonique cartographié"), target: "cyclonePage" },
+    { title: tx("Conflict or displacement active", "Pays signalés en conflit ou déplacement"), value: conflictDisplacementCountries, note: tx("Countries named in conflict or displacement reports (news signals, not verified figures)", "Pays cités dans des rapports sur les conflits ou les déplacements (signaux d'actualité, pas des chiffres vérifiés)"), target: "conflictsDisplacementPage#conflictsDisplacementTable" },
+    { title: tx("Countries with active hazards", "Pays avec une alerte d'aléa active"), value: hazardCountries, note: tx("Countries with a current GDACS hazard alert", "Pays faisant l'objet d'une alerte GDACS en cours"), target: "hazardPage#hazardFeed" },
+    { title: tx("Cyclone-active countries", "Pays avec un signal cyclonique"), value: cycloneActiveCountries, note: tx("Countries with a mapped cyclone event or advisory", "Pays associés à un cyclone ou à un avis cyclonique cartographié"), target: "cyclonePage" },
     {
-      title: tx("ENSO Climate Watch", "Veille climatique ENSO"),
+      title: tx("ENSO climate watch", "Veille climatique ENSO"),
       value: ensoAdvisory ? ensoStatusShort : tx("n/a", "n.d."),
       note: ensoNote,
       target: "forecastPage"
     },
-    { title: tx("Drought-Active Countries", "Pays touchés par la sécheresse"), value: droughtActiveCountries, note: tx("Countries with a mapped drought report", "Pays faisant l'objet d'un rapport de sécheresse cartographié"), target: "hazardPage" },
-    { title: tx("Regional Flood Updates", "Informations régionales sur les inondations"), value: floodCtx.afroFloodEvents.length, note: tx(`Flood reports in the region; ${floodCtx.topFloodCountries.length} countries mapped`, `Rapports d'inondation dans la région\u202f; ${floodCtx.topFloodCountries.length} pays cartographiés`), target: "hazardPage#floodWatchSummary" },
+    { title: tx("Drought-active countries", "Pays touchés par la sécheresse"), value: droughtActiveCountries, note: tx("Countries with a mapped drought report", "Pays faisant l'objet d'un rapport de sécheresse cartographié"), target: "hazardPage" },
+    { title: tx("Regional flood updates", "Informations régionales sur les inondations"), value: floodCtx.afroFloodEvents.length, note: tx(`Flood reports in the region; ${floodCtx.topFloodCountries.length} ${floodCtx.topFloodCountries.length === 1 ? "country" : "countries"} mapped`, `Rapports d'inondation dans la région\u202f; ${floodCtx.topFloodCountries.length} pays cartographiés`), target: "hazardPage#floodWatchSummary" },
     {
-      title: tx("FCV Service Delivery Feed", "Flux de prestation de services FCV"),
+      title: tx("FCV service delivery feed", "Flux de prestation de services FCV"),
       value: serviceDeliveryStatus ? `${serviceDeliveryStatus.country_count}/${countries.length}` : "0",
       note: serviceDeliveryStatus
-        ? tx(`${serviceDeliverySummary.cardNote}. Latest feed month: ${serviceDeliveryStatus.latest_month || "n/a"}`, `${serviceDeliverySummary.cardNoteFr || serviceDeliverySummary.cardNote}. Dernier mois du flux\u00a0: ${serviceDeliveryStatus.latest_month || "n.d."}`)
+        ? tx(`${serviceDeliverySummary.cardNote}. Latest feed month: ${serviceDeliveryStatus.latest_month ? formatMonthYear(`${serviceDeliveryStatus.latest_month}-01T00:00:00Z`) : "n/a"}`, `${serviceDeliverySummary.cardNoteFr || serviceDeliverySummary.cardNote}. Dernier mois du flux\u00a0: ${serviceDeliveryStatus.latest_month ? formatMonthYear(`${serviceDeliveryStatus.latest_month}-01T00:00:00Z`) : "n.d."}`)
         : tx("No FCV service-delivery feed loaded", "Aucun flux de prestation de services FCV chargé"),
       target: "fcvDataPage"
     },
     {
-      title: tx("ICPAC Forecast Bulletins", "Bulletins de prévision de l'ICPAC"),
+      title: tx("ICPAC forecast bulletins", "Bulletins de prévision de l'ICPAC"),
       value: (dashboardState.forecasts || []).length,
       note: tx("Weekly, monthly and seasonal products for the IGAD region", "Produits hebdomadaires, mensuels et saisonniers pour la région de l'IGAD"),
       target: "forecastPage#icpacFeed"
@@ -4290,17 +4489,17 @@ function renderDataValidationPanel() {
   els.dataValidationSummary.innerHTML = `
     <div class="data-validation-grid">
       <article class="data-validation-card">
-        <h3>Priority Escalation</h3>
+        <h3>Priority escalation</h3>
         <p class="data-validation-count">${Number(priority.count || 0)}</p>
         <p class="data-validation-note">Rule: risk score >= 65.</p>
       </article>
       <article class="data-validation-card">
-        <h3>Cyclone-Active Countries</h3>
+        <h3>Cyclone-active countries</h3>
         <p class="data-validation-count">${Number(cyclone.count || 0)}</p>
         <p class="data-validation-note">Rule: mapped cyclone events or mapped cyclone advisories.</p>
       </article>
       <article class="data-validation-card">
-        <h3>Drought-Active Countries</h3>
+        <h3>Drought-active countries</h3>
         <p class="data-validation-count">${Number(drought.count || 0)}</p>
         <p class="data-validation-note">Rule: mapped drought country counters or mapped drought source signals.</p>
       </article>
@@ -4383,7 +4582,7 @@ function renderBriefingStrip() {
   const acapsMode = String(acapsStatus.crawl_mode || "deep").toLowerCase();
   const acapsModeLabel = acapsMode === "fast" ? "FAST" : "DEEP";
   const acapsCardClass = acapsWarning ? "strip-card strip-card-warn" : "strip-card strip-card-ok";
-  const acapsCardTitle = acapsWarning ? "ACAPS Crawl Warning" : "ACAPS Crawl Status";
+  const acapsCardTitle = acapsWarning ? "ACAPS crawl warning" : "ACAPS crawl status";
   const acapsCardValue = acapsWarning ? "Warning" : acapsPagesLabel;
   const acapsModeTooltip = "FAST prioritizes briefing speed with reduced crawl depth; DEEP prioritizes source coverage with deeper crawl depth.";
   const acapsCapStreak = acapsStatus.pagination_cap_reached_streak != null ? Number(acapsStatus.pagination_cap_reached_streak) : null;
@@ -4449,70 +4648,70 @@ function renderBriefingStrip() {
 
   const pageCards = {
     signalsPage: `
-      <article class="strip-card"><h3>Current Highest Risk</h3><p>${top ? `${top.country} (${top.risk_score})` : "n/a"}</p></article>
-      <article class="strip-card"><h3>IPC Crisis Countries</h3><p>${crisisCountries}</p></article>
-      <article class="strip-card"><h3>Top Alerts Active</h3><p>${alertCount}</p></article>
-      <article class="${qualityCardClass}"><h3>Data Quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div>${qualityLegendMarkup}</article>
+      <article class="strip-card"><h3>Current highest risk</h3><p>${top ? `${top.country} (${top.risk_score})` : "n/a"}</p></article>
+      <article class="strip-card"><h3>IPC crisis countries</h3><p>${crisisCountries}</p></article>
+      <article class="strip-card"><h3>Top alerts active</h3><p>${alertCount}</p></article>
+      <article class="${qualityCardClass}"><h3>Data quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div>${qualityLegendMarkup}</article>
     `,
     foodSecurityPage: `
-      <article class="strip-card"><h3>Food Security Focus</h3><p>${top ? top.country : "n/a"}</p><div class="strip-note">Highest overall risk profile</div></article>
-      <article class="strip-card"><h3>IPC Coverage</h3><p>${ipcLoaded} / ${dashboardState.scope.country_count}</p></article>
-      <article class="strip-card"><h3>FEWS Country Mapping</h3><p>${dashboardState.fews_country_page_status?.mapped_countries ?? "n/a"}</p></article>
-      <article class="strip-card"><h3>IPC Crisis Countries</h3><p>${crisisCountries}</p></article>
+      <article class="strip-card"><h3>Food security focus</h3><p>${top ? top.country : "n/a"}</p><div class="strip-note">Highest overall risk profile</div></article>
+      <article class="strip-card"><h3>IPC coverage</h3><p>${ipcLoaded} / ${dashboardState.scope.country_count}</p></article>
+      <article class="strip-card"><h3>FEWS country mapping</h3><p>${dashboardState.fews_country_page_status?.mapped_countries ?? "n/a"}</p></article>
+      <article class="strip-card"><h3>IPC crisis countries</h3><p>${crisisCountries}</p></article>
     `,
     nutritionPage: `
-      <article class="strip-card"><h3>Nutrition Signal Countries</h3><p>${nutritionSignals}</p></article>
-      <article class="strip-card"><h3>World Bank Source</h3><p>${dashboardState.nutrition_source_status?.overall || "unknown"}</p></article>
-      <article class="strip-card"><h3>HDX Fallback Applied</h3><p>${dashboardState.nutrition_hdx_status?.applied_country_count ?? 0}</p></article>
-      <article class="${qualityCardClass}"><h3>Nutrition Data Quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div></article>
+      <article class="strip-card"><h3>Nutrition signal countries</h3><p>${nutritionSignals}</p></article>
+      <article class="strip-card"><h3>World Bank source</h3><p>${dashboardState.nutrition_source_status?.overall || "unknown"}</p></article>
+      <article class="strip-card"><h3>HDX fallback applied</h3><p>${dashboardState.nutrition_hdx_status?.applied_country_count ?? 0}</p></article>
+      <article class="${qualityCardClass}"><h3>Nutrition data quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div></article>
     `,
     conflictsDisplacementPage: `
-      <article class="strip-card"><h3>Active Countries</h3><p>${conflictSignals}</p></article>
-      <article class="strip-card"><h3>Matched Evidence Items</h3><p>${Object.values(conflictStatus.matched_signal_items || {}).reduce((a, b) => a + Number(b || 0), 0)}</p></article>
-      <article class="strip-card"><h3>UNHCR Candidates</h3><p>${Number(conflictStatus.candidate_items_current?.unhcr || 0)}</p></article>
-      <article class="strip-card"><h3>Displacement Watch</h3><p>${countries.filter((c) => (c.displacement_signal_count || 0) > 0).length}</p></article>
+      <article class="strip-card"><h3>Active countries</h3><p>${conflictSignals}</p></article>
+      <article class="strip-card"><h3>Matched evidence items</h3><p>${Object.values(conflictStatus.matched_signal_items || {}).reduce((a, b) => a + Number(b || 0), 0)}</p></article>
+      <article class="strip-card"><h3>UNHCR candidates</h3><p>${Number(conflictStatus.candidate_items_current?.unhcr || 0)}</p></article>
+      <article class="strip-card"><h3>Displacement watch</h3><p>${countries.filter((c) => (c.displacement_signal_count || 0) > 0).length}</p></article>
     `,
     attacksHealthPage: `
-      <article class="strip-card"><h3>Healthcare Attack Countries</h3><p>${attacksHealthSignals}</p></article>
-      <article class="strip-card"><h3>Healthcare Attack Signals</h3><p>${attacksSignalsTotal}</p></article>
+      <article class="strip-card"><h3>Health care attack countries</h3><p>${attacksHealthSignals}</p></article>
+      <article class="strip-card"><h3>Health care attack signals</h3><p>${attacksSignalsTotal}</p></article>
       <article class="strip-card"><h3>WHO DON 30d</h3><p>${whoDon30d}</p></article>
-      <article class="strip-card"><h3>Top Risk Country</h3><p>${top ? top.country : "n/a"}</p></article>
+      <article class="strip-card"><h3>Top risk country</h3><p>${top ? top.country : "n/a"}</p></article>
     `,
     hazardPage: `
-      <article class="strip-card"><h3>Hazard Events</h3><p>${hazardsCount}</p></article>
-      <article class="strip-card"><h3>Regional Flood Signals</h3><p>${(dashboardState.regional_flood_signals || []).length}</p></article>
-      <article class="strip-card"><h3>WHO DON Linked Items</h3><p>${whoDon30d}</p></article>
-      <article class="${ensoCardClass}"><h3>ENSO Watch</h3><p title="${ensoStatusLabel}">${ensoStatusLabel}</p><div class="strip-note">${ensoStatusNote}</div></article>
+      <article class="strip-card"><h3>Hazard events</h3><p>${hazardsCount}</p></article>
+      <article class="strip-card"><h3>Regional flood signals</h3><p>${(dashboardState.regional_flood_signals || []).length}</p></article>
+      <article class="strip-card"><h3>WHO DON linked items</h3><p>${whoDon30d}</p></article>
+      <article class="${ensoCardClass}"><h3>ENSO watch</h3><p title="${ensoStatusLabel}">${ensoStatusLabel}</p><div class="strip-note">${ensoStatusNote}</div></article>
     `,
     cyclonePage: `
-      <article class="strip-card"><h3>Cyclone Signal Countries</h3><p>${cycloneSignals}</p></article>
-      <article class="strip-card"><h3>Projection-Mapped Countries</h3><p>${dashboardState.cyclone_intelligence?.countries_with_projection_signal ?? 0}</p></article>
-      <article class="strip-card"><h3>Dedicated Cyclone Sources</h3><p>${dashboardState.cyclone_source_status?.available_count ?? 0}/${dashboardState.cyclone_source_status?.checked_count ?? 0}</p></article>
-      <article class="strip-card"><h3>Cyclone Advisories</h3><p>${(dashboardState.cyclone_intelligence?.projection_signals || []).length}</p></article>
+      <article class="strip-card"><h3>Cyclone signal countries</h3><p>${cycloneSignals}</p></article>
+      <article class="strip-card"><h3>Projection-mapped countries</h3><p>${dashboardState.cyclone_intelligence?.countries_with_projection_signal ?? 0}</p></article>
+      <article class="strip-card"><h3>Dedicated cyclone sources</h3><p>${dashboardState.cyclone_source_status?.available_count ?? 0}/${dashboardState.cyclone_source_status?.checked_count ?? 0}</p></article>
+      <article class="strip-card"><h3>Cyclone advisories</h3><p>${(dashboardState.cyclone_intelligence?.projection_signals || []).length}</p></article>
     `,
     forecastPage: `
-      <article class="strip-card"><h3>Forecast Bulletins</h3><p>${forecastCount}</p></article>
-      <article class="strip-card"><h3>Drought Signals</h3><p>${droughtCount}</p></article>
-      <article class="${ensoCardClass}"><h3>ENSO Watch</h3><p title="${ensoStatusLabel}">${ensoStatusLabel}</p><div class="strip-note">${ensoStatusNote}</div></article>
-      <article class="strip-card"><h3>Forecast Source Status</h3><p>${dashboardState.enso_source_status?.overall || "unknown"}</p></article>
+      <article class="strip-card"><h3>Forecast bulletins</h3><p>${forecastCount}</p></article>
+      <article class="strip-card"><h3>Drought signals</h3><p>${droughtCount}</p></article>
+      <article class="${ensoCardClass}"><h3>ENSO watch</h3><p title="${ensoStatusLabel}">${ensoStatusLabel}</p><div class="strip-note">${ensoStatusNote}</div></article>
+      <article class="strip-card"><h3>Forecast source status</h3><p>${dashboardState.enso_source_status?.overall || "unknown"}</p></article>
     `,
     countryPage: `
-      <article class="strip-card"><h3>Monitored Countries</h3><p>${dashboardState.scope.country_count}</p></article>
-      <article class="strip-card"><h3>Highest Risk Country</h3><p>${top ? top.country : "n/a"}</p></article>
-      <article class="strip-card"><h3>Service Delivery Coverage</h3><p>${serviceCoverage}</p></article>
-      <article class="strip-card"><h3>Top Alerts Active</h3><p>${alertCount}</p></article>
+      <article class="strip-card"><h3>Monitored countries</h3><p>${dashboardState.scope.country_count}</p></article>
+      <article class="strip-card"><h3>Highest risk country</h3><p>${top ? top.country : "n/a"}</p></article>
+      <article class="strip-card"><h3>Service delivery coverage</h3><p>${serviceCoverage}</p></article>
+      <article class="strip-card"><h3>Top alerts active</h3><p>${alertCount}</p></article>
     `,
     operationalReportPage: `
       <article class="strip-card"><h3>Priority Countries (Risk >= 65)</h3><p>${priorityCountries}</p></article>
-      <article class="strip-card"><h3>Combined Recommendations</h3><p>${(aiRecommendations?.combined || []).length}</p></article>
-      <article class="strip-card"><h3>Scope Coverage</h3><p>${dashboardState.scope.country_count}</p><div class="strip-note">FCV + AFRO monitored countries</div></article>
-      <article class="${qualityCardClass}"><h3>Report Data Quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div></article>
+      <article class="strip-card"><h3>Combined recommendations</h3><p>${(aiRecommendations?.combined || []).length}</p></article>
+      <article class="strip-card"><h3>Scope coverage</h3><p>${dashboardState.scope.country_count}</p><div class="strip-note">FCV + AFRO monitored countries</div></article>
+      <article class="${qualityCardClass}"><h3>Report data quality</h3><p title="${qualityNoteFull}">${qualityLabel}</p><div class="strip-note">${qualityNote}</div></article>
     `
   };
 
   const commonTail = `
     <article class="strip-card">
-      <h3>Last Refresh</h3>
+      <h3>Last refresh</h3>
       <p title="${dashboardState.generated_at || "n/a"}">${refreshLabel}</p>
     </article>
     <article class="strip-card">
@@ -4597,17 +4796,17 @@ function renderOverviewInsights() {
         <div><span class="tag ${highestIpc?.ipc?.ipc_crisis_level === "crisis" ? "bad" : highestIpc?.ipc?.ipc_crisis_level === "stress" ? "warn" : "good"}">${highestIpc ? highestIpc.ipc.ipc_crisis_level.toUpperCase() : "No IPC"}</span></div>
       </div>
       <div class="overview-snapshot-item">
-        <div class="overview-snapshot-label">Top Conflict/Displacement Pressure</div>
+        <div class="overview-snapshot-label">Top conflict or displacement pressure</div>
         <div class="overview-snapshot-value">${highestConflictDisplacement ? `${highestConflictDisplacement.country} ${((highestConflictDisplacement.conflict_signal_count || 0) + (highestConflictDisplacement.displacement_signal_count || 0))}` : "n/a"}</div>
         <div><span class="tag ${(highestConflictDisplacement && ((highestConflictDisplacement.conflict_signal_count || 0) + (highestConflictDisplacement.displacement_signal_count || 0)) >= 3) ? "bad" : "warn"}">Signals</span></div>
       </div>
       <div class="overview-snapshot-item">
-        <div class="overview-snapshot-label">Top Multi-Hazard Country</div>
+        <div class="overview-snapshot-label">Top multi-hazard country</div>
         <div class="overview-snapshot-value">${highestHazard ? `${highestHazard.country} ${highestHazard.hazard_count || 0}` : "n/a"}</div>
         <div><span class="tag ${(highestHazard?.hazard_count || 0) >= 2 ? "bad" : (highestHazard?.hazard_count || 0) >= 1 ? "warn" : "good"}">Hazards</span></div>
       </div>
       <div class="overview-snapshot-item">
-        <div class="overview-snapshot-label">Top Flood Exposure</div>
+        <div class="overview-snapshot-label">Top flood exposure</div>
         <div class="overview-snapshot-value">${highestFlood ? `${highestFlood.country} ${highestFlood.flood_count || 0}` : "n/a"}</div>
         <div><span class="tag ${(highestFlood?.flood_count || 0) >= 1 ? "warn" : "good"}">Flood</span></div>
       </div>
@@ -4616,7 +4815,7 @@ function renderOverviewInsights() {
       ${hazardWatch.map((item) => `<div class="hazard-watch-pill ${item.className}"><span>${item.label}:</span><strong> ${item.value}</strong></div>`).join("")}
     </div>
     <div class="overview-forecast-box">
-      <div class="overview-snapshot-label">Forecast Watch</div>
+      <div class="overview-snapshot-label">Forecast watch</div>
       ${latestForecasts.length
         ? latestForecasts.map((item) => `<p><strong>${item.horizon}:</strong> ${item.title}</p>`).join("")
         : "<p>No ICPAC forecast products are currently available.</p>"}
@@ -4772,7 +4971,7 @@ function renderMap() {
     const vals = countries.map((c) => (c.ipc && c.ipc.phase3plus_pct != null ? c.ipc.phase3plus_pct * 100 : null));
     const hoverText = countries.map((c) =>
       c.ipc && c.ipc.phase3plus_pct != null
-        ? `${c.country}<br>IPC Phase 3+: ${(c.ipc.phase3plus_pct * 100).toFixed(1)}%<br>Phase 4/5: ${((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0)).toLocaleString()}<br>${c.ipc.ipc_crisis_level.toUpperCase()}<br>Analysis: ${c.ipc.analysis_date}`
+        ? `${c.country}<br>IPC Phase 3+: ${(c.ipc.phase3plus_pct * 100).toFixed(1)}%<br>Phase 4/5: ${whoNum((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0))}<br>${c.ipc.ipc_crisis_level.toUpperCase()}<br>Analysis: ${c.ipc.analysis_date}`
         : `${c.country}<br>IPC data not available`
     );
     // Countries without IPC data get a grey fill via a separate trace
@@ -5006,7 +5205,7 @@ function deriveEnsoOutlookSummary(advisory) {
 
   const favoredMatch = synopsis.match(/(ENSO-neutral|El Niño|La Niña)\s+favored\s+through\s+([A-Za-z]+-[A-Za-z]+\s+\d{4})\s*\((\d{1,3})%\s*chance\)/i);
   if (favoredMatch) {
-    return `${favoredMatch[1]} favored through ${favoredMatch[2]} (${favoredMatch[3]}% chance).`;
+    return `${favoredMatch[1]} favoured through ${favoredMatch[2]} (${favoredMatch[3]}% chance).`;
   }
 
   const firstSentence = synopsis.split(/(?<=[.!?])\s+/)[0]?.trim();
@@ -5016,7 +5215,7 @@ function deriveEnsoOutlookSummary(advisory) {
 function serviceDeliverySummaryParts(rows = [], status = null) {
   const coverageCount = rows.length;
   const monthCount = Number(status?.month_count || 0);
-  const latestMonthLabel = status?.latest_month || "n/a";
+  const latestMonthLabel = status?.latest_month ? formatMonthYear(`${status.latest_month}-01T00:00:00Z`) : "n/a";
   const topPeopleReached = serviceDeliveryLeader(rows, "people_reached");
   const topChildrenScreened = serviceDeliveryLeader(rows, "children_screened_malnutrition");
   const topMentalHealth = serviceDeliveryLeader(rows, "mental_health_beneficiaries");
@@ -5044,14 +5243,14 @@ function renderFcvCountryProfile() {
 
   const fmt = (val, decimals = 0) => {
     if (val == null) return "n/a";
-    if (decimals === 0) return Number(val).toLocaleString();
+    if (decimals === 0) return whoNum(val);
     return (Number(val) * 100).toFixed(1) + "%";
   };
 
   const fmtUSD = (val) => {
     if (val == null) return "n/a";
     const m = val / 1e6;
-    return "$" + m.toFixed(1) + "M";
+    return `US$\u00a0${whoNum(m, 1)} million`;
   };
 
   const withPlan = rows.filter((r) => r.plan_type && r.plan_type.toUpperCase() !== "NON PLAN");
@@ -5103,21 +5302,21 @@ function renderTrend(countryIso3) {
       {
         x: wastingSeries.map((d) => d.year),
         y: wastingSeries.map((d) => d.value),
-        name: "Observed Wasting %",
+        name: "Observed wasting %",
         mode: "lines+markers",
         line: { color: INDICATOR_META.wasting_u5_pct.color, width: 3 }
       },
       {
         x: stuntingSeries.map((d) => d.year),
         y: stuntingSeries.map((d) => d.value),
-        name: "Observed Stunting %",
+        name: "Observed stunting %",
         mode: "lines+markers",
         line: { color: INDICATOR_META.stunting_u5_pct.color, width: 3 }
       },
       {
         x: wastingProj.map((d) => d.year),
         y: wastingProj.map((d) => d.value),
-        name: "Projected Wasting %",
+        name: "Projected wasting %",
         mode: "lines+markers",
         line: { color: "#7a2d2d", width: 2, dash: "dash" }
       }
@@ -5165,22 +5364,22 @@ function renderSummary(countryIso3) {
   const ipcBlock = c.ipc && c.ipc.phase3plus_pct == null && c.ipc.projection_phase3plus_pct == null
     ? staleIpcNote || `<p><span class="tag">No current IPC analysis</span></p>`
     : c.ipc && c.ipc.phase3plus_pct == null && c.ipc.projection_phase3plus_pct != null
-    ? `<p><strong>IPC projection (${c.ipc.projection_date || "n/a"}):</strong> Phase 3+ population ${ipcView.html} (${(c.ipc.projection_phase3plus_number || 0).toLocaleString()} people). No current-period figure in the latest analysis. Source: IPC via HDX open data.</p>`
+    ? `<p><strong>IPC projection (${c.ipc.projection_date || "n/a"}):</strong> Phase 3+ population ${ipcView.html} (${whoNum(c.ipc.projection_phase3plus_number || 0)} people). No current-period figure in the latest analysis. Source: IPC via HDX open data.</p>`
     : c.ipc
-    ? `<p><strong>IPC Phase Classification (${c.ipc.analysis_date}):</strong>${ipcView.stale ? ' <span class="tag warn">older than 18 months, not used for prioritisation</span>' : ""} Phase 3+ population <strong>${formatNum(c.ipc.phase3plus_pct * 100, 1)}%</strong> (${(c.ipc.phase3plus_number || 0).toLocaleString()} people): <span class="tag ${c.ipc.ipc_crisis_level === 'crisis' ? 'bad' : c.ipc.ipc_crisis_level === 'stress' ? 'warn' : 'good'}">${c.ipc.ipc_crisis_level.toUpperCase()}</span>. Phase 4/5 emergency: <strong>${((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0)).toLocaleString()}</strong> people. Source: IPC via HDX open data.</p>`
+    ? `<p><strong>IPC Phase Classification (${c.ipc.analysis_date}):</strong>${ipcView.stale ? ' <span class="tag warn">older than 18 months, not used for prioritisation</span>' : ""} Phase 3+ population <strong>${formatNum(c.ipc.phase3plus_pct * 100, 1)}%</strong> (${whoNum(c.ipc.phase3plus_number || 0)} people): <span class="tag ${c.ipc.ipc_crisis_level === 'crisis' ? 'bad' : c.ipc.ipc_crisis_level === 'stress' ? 'warn' : 'good'}">${c.ipc.ipc_crisis_level.toUpperCase()}</span>. Phase 4/5 emergency: <strong>${whoNum((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0))}</strong> people. Source: IPC via HDX open data.</p>`
     : `<p><span class="tag bad">IPC data not available</span> No IPC phase classification found for this country in HDX open datasets.${c.iso3 === "ERI" ? " <strong>Eritrea data gap:</strong> No IPC or HDX acute malnutrition source is currently configured for Eritrea. This is a known data access constraint." : ""}</p>`;
 
   els.summaryBox.innerHTML = `
     <p><strong>${c.country}</strong> has a current composite risk score of <strong>${c.risk_score}</strong> in <strong>${b.label}</strong>.</p>
     ${ipcBlock}
-    <p>Supplementary nutrition: Wasting <strong>${formatNum(wasting?.value)}</strong> (${wasting?.year || "n/a"})${wastingStale ? " " + staleTag : ""}, Stunting <strong>${formatNum(stunting?.value)}</strong> (${stunting?.year || "n/a"})${stuntingStale ? " " + staleTag : ""}, Pregnant Anemia <strong>${formatNum(pregnant?.value)}</strong> (${pregnant?.year || "n/a"})${pregnantStale ? " " + staleTag : ""}.</p>
-      <p><small><em>Pregnant Anemia is anemia prevalence (SH.ANM.PREG.ZS), not an acute malnutrition indicator.</em></small></p>
+    <p>Supplementary nutrition: Wasting <strong>${formatNum(wasting?.value)}</strong> (${wasting?.year || "n/a"})${wastingStale ? " " + staleTag : ""}, Stunting <strong>${formatNum(stunting?.value)}</strong> (${stunting?.year || "n/a"})${stuntingStale ? " " + staleTag : ""}, anaemia in pregnant women <strong>${formatNum(pregnant?.value)}</strong> (${pregnant?.year || "n/a"})${pregnantStale ? " " + staleTag : ""}.</p>
+      <p><small><em>Anaemia in pregnant women is anaemia prevalence (SH.ANM.PREG.ZS), not an acute malnutrition indicator.</em></small></p>
     <p>Signal pressure: <strong>${c.hazard_count}</strong> hazard events, <strong>${c.flood_count || 0}</strong> flood signals, <strong>${c.cyclone_count}</strong> cyclone signals, and <strong>${c.report_count_30d}</strong> related reports in the latest 30-day window.</p>
     ${serviceDelivery ? `<p>FCV service delivery (${serviceDelivery.month_label || serviceDelivery.iso_month}): Mental health <strong>${serviceValue(serviceDelivery.mental_health_beneficiaries, 0)}</strong>, GBV managed <strong>${serviceValue(serviceDelivery.gbv_cases_managed, 0)}</strong>, People reached <strong>${serviceValue(serviceDelivery.people_reached, 0)}</strong>, Children screened <strong>${serviceValue(serviceDelivery.children_screened_malnutrition, 0)}</strong>.</p>` : ""}
     ${serviceDelivery ? `<p>Service delivery footprint: ${serviceDeliveryMeta}</p>` : ""}
     ${serviceDelivery ? `<p>Service delivery operations: ${serviceDeliveryCoverage}</p>` : ""}
     <p>Forecast horizon (wasting): ${proj.length ? proj.map((p) => `${p.year}: ${formatNum(p.value)}`).join(" | ") : "insufficient data for transparent trend projection"}.</p>
-    <p><span class="tag warn">Method Note</span> IPC phase values are the primary food security signal. Wasting trend is supplementary context.</p>
+    <p><span class="tag warn">Method note</span> IPC phase values are the primary food security signal. Wasting trend is supplementary context.</p>
   `;
 }
 
@@ -5188,17 +5387,17 @@ function forecastRows(country) {
   return [
     {
       key: "wasting_u5_pct",
-      name: "Child Wasting (%)",
+      name: "Child wasting (%)",
       values: country.projections?.wasting_u5_pct || []
     },
     {
       key: "stunting_u5_pct",
-      name: "Child Stunting (%)",
+      name: "Child stunting (%)",
       values: country.projections?.stunting_u5_pct || []
     },
     {
       key: "pregnant_anemia_pct",
-      name: "Pregnant Women Anemia (%)",
+      name: "Anaemia in pregnant women (%)",
       values: country.projections?.pregnant_anemia_pct || []
     }
   ];
@@ -5217,11 +5416,11 @@ function renderDtmDisplacementTable() {
 
   const totalIdps = rows.reduce((s, r) => s + (r.idp_count || 0), 0);
   const topCountry = rows[0];
-  const savedAt = status.saved_at ? new Date(status.saved_at).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "unknown";
+  const savedAt = status.saved_at ? new Date(status.saved_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "unknown";
 
   els.dtmDisplacementSummary.innerHTML = `
-    <p><strong>Total IDPs tracked:</strong> ${totalIdps.toLocaleString()} across ${rows.length} countries (IOM DTM, as of ${savedAt}).</p>
-    <p><strong>Highest displacement:</strong> ${topCountry.country} with ${(topCountry.idp_count || 0).toLocaleString()} IDPs (${topCountry.displacement_reason || "unspecified"}, reported ${topCountry.reporting_date || "unknown"}).</p>
+    <p><strong>Total IDPs tracked:</strong> ${whoNum(totalIdps)} across ${rows.length} countries (IOM DTM, as of ${savedAt}).</p>
+    <p><strong>Highest displacement:</strong> ${topCountry.country} with ${whoNum(topCountry.idp_count || 0)} IDPs (${topCountry.displacement_reason || "unspecified"}, reported ${topCountry.reporting_date || "unknown"}).</p>
     <p><span class="tag warn">Note</span> IDP figures reflect DTM assessments at available reporting dates; recency varies by country. Some figures may predate the current humanitarian situation.</p>
   `;
 
@@ -5244,7 +5443,7 @@ function renderDtmDisplacementTable() {
       <td><strong>${r.country}</strong></td>
       <td style="white-space:nowrap;">
         ${scaleBar(r.idp_count || 0, maxIdp)}
-        ${(r.idp_count || 0).toLocaleString()}
+        ${whoNum(r.idp_count || 0)}
       </td>
       <td><span style="color:${reasonColor(r.displacement_reason)};font-weight:600;">${r.displacement_reason || "Not specified"}</span></td>
       <td style="color:#506579;">${r.reporting_date || "n/a"}</td>
@@ -5328,9 +5527,9 @@ function renderForecast(countryIso3) {
   const chartBars = [
     { label: "IPC Current Phase 3+ (%)", value: ipcCurrentPct == null ? 0 : Number((ipcCurrentPct * 100).toFixed(1)) },
     { label: "IPC Projected Phase 3+ (%)", value: ipcProjectedPct == null ? 0 : Number((ipcProjectedPct * 100).toFixed(1)) },
-    { label: "Flood Signals", value: c.flood_count || 0 },
-    { label: "Drought Signals", value: countryDroughtCount },
-    { label: "Cyclone Signals", value: c.cyclone_count || 0 }
+    { label: "Flood signals", value: c.flood_count || 0 },
+    { label: "Drought signals", value: countryDroughtCount },
+    { label: "Cyclone signals", value: c.cyclone_count || 0 }
   ];
   renderPlotWithSentinel(
     "forecastChart",
@@ -5347,7 +5546,7 @@ function renderForecast(countryIso3) {
       paper_bgcolor: "rgba(0,0,0,0)",
       plot_bgcolor: "rgba(0,0,0,0)",
       xaxis: { title: "", automargin: true, tickangle: -25 },
-      yaxis: { title: "Value / Count" },
+      yaxis: { title: "Value or count" },
       showlegend: false
     },
     { displayModeBar: false, responsive: true },
@@ -5370,11 +5569,11 @@ function renderForecast(countryIso3) {
       <td>${sourceMetaLabel(stuntingLatest)}</td>
     </tr>
     <tr>
-      <td>Pregnant Women Anemia (%)</td>
+      <td>Anaemia in pregnant women (%)</td>
       <td>${sourceValueLabel(anemiaLatest)}</td>
       <td>No validated country-level forward forecast in connected sources</td>
       <td>${anemiaLatest?.year || "n/a"}</td>
-      <td>${sourceMetaLabel(anemiaLatest)} | SH.ANM.PREG.ZS (anemia prevalence)</td>
+      <td>${sourceMetaLabel(anemiaLatest)} | SH.ANM.PREG.ZS (anaemia prevalence)</td>
     </tr>
     <tr>
       <td>IPC (HDX)</td>
@@ -5384,14 +5583,14 @@ function renderForecast(countryIso3) {
       <td>Official IPC snapshot and validity projection rows from HDX</td>
     </tr>
     <tr>
-      <td>ICPAC Bulletins</td>
+      <td>ICPAC bulletins</td>
       <td>${forecasts.length} bulletins loaded (${countryIcpacCount} tagged to ${c.country} focus logic)</td>
       <td>High ${icpacByLevel.high}, Watch ${icpacByLevel.watch}, Info ${icpacByLevel.info}</td>
       <td>${forecasts[0]?.date_label || "n/a"}</td>
       <td>Public ICPAC weekly, monthly, seasonal products (title/date/risk parsing)</td>
     </tr>
     <tr>
-      <td>ENSO Watch / Advisory</td>
+      <td>ENSO watch and advisory</td>
       <td>${ensoAdvisory?.alert_status || "n/a"}</td>
       <td>${ensoOutlook}</td>
       <td>${ensoAdvisory?.issued_on || "n/a"}${ensoAdvisory?.next_update ? ` | Next: ${ensoAdvisory.next_update}` : ""}</td>
@@ -5405,7 +5604,7 @@ function renderForecast(countryIso3) {
       <td>Derived from source report titles (ICPAC and ReliefWeb), country-linked via explicit mentions</td>
     </tr>
     <tr>
-      <td>Cyclone Projection Signals</td>
+      <td>Cyclone projection signals</td>
       <td>${c.cyclone_count || 0} country-linked cyclone event signals</td>
       <td>${cycloneSignals.length} regional cyclone projection/advisory signals</td>
       <td>${cycloneSignals[0]?.date_label || "n/a"}</td>
@@ -5415,14 +5614,14 @@ function renderForecast(countryIso3) {
 
   els.forecastInsights.innerHTML = `
     <p><strong>Source-only forecast mode:</strong> This page shows only source-extracted values and forecast signals (IPC, ICPAC, and source-derived drought/cyclone intelligence).</p>
-    <p><strong>Country nutrition baseline (${c.country}):</strong> Under-5 wasting ${sourceValueLabel(wastingLatest)}, under-5 stunting ${sourceValueLabel(stuntingLatest)}, pregnant women anemia ${sourceValueLabel(anemiaLatest)}.</p>
+    <p><strong>Country nutrition baseline (${c.country}):</strong> Under-5 wasting ${sourceValueLabel(wastingLatest)}, under-5 stunting ${sourceValueLabel(stuntingLatest)}, anaemia in pregnant women ${sourceValueLabel(anemiaLatest)}.</p>
     <p><strong>Forecast availability note:</strong> Connected sources currently provide country-level forward forecast values for IPC food security burden, but not for under-5 wasting/stunting or pregnant anemia.</p>
     <p><strong>Country source forecast view (${c.country}):</strong> IPC projected Phase 3+ ${ipcProjectedPct == null ? "not available" : `${formatNum(ipcProjectedPct * 100, 1)}%`} | Drought signals ${countryDroughtCount} | ICPAC focus-linked bulletins ${countryIcpacCount}.</p>
     <p><strong>ENSO regional climate watch:</strong> ${ensoAdvisory?.alert_status || "n/a"}${ensoAdvisory?.issued_on ? ` | Issued ${ensoAdvisory.issued_on}` : ""}${ensoAdvisory?.next_update ? ` | Next ${ensoAdvisory.next_update}` : ""}.</p>
     <p><strong>ENSO outlook:</strong> ${ensoOutlook}</p>
     <p><strong>ENSO synopsis:</strong> ${ensoAdvisory?.synopsis || "No CPC ENSO synopsis was available in this refresh."}</p>
     <p><strong>Regional source load:</strong> ICPAC bulletins ${forecasts.length}, drought signals ${droughtSignals.length}, cyclone projection signals ${cycloneSignals.length}, ENSO status ${ensoAdvisory?.alert_status ? "loaded" : "not loaded"}.</p>
-    <p><span class="tag good">Method Note</span> No internally generated numeric trend forecast is shown on this page.</p>
+    <p><span class="tag good">Method note</span> No internally generated numeric trend forecast is shown on this page.</p>
   `;
 }
 
@@ -5621,7 +5820,7 @@ function renderEmdatSection() {
     return;
   }
 
-  const fmtCount = (n) => (n == null ? "n/a" : Number(n).toLocaleString());
+  const fmtCount = (n) => (n == null ? "n/a" : whoNum(n));
   const yearly = emdat.yearly || [];
   const totals = yearly.reduce((acc, y) => {
     acc.events += y.events || 0;
@@ -6062,35 +6261,35 @@ function renderOperationalReportPage() {
       : tr("Low source coverage in this cycle; defer high-stakes interpretation until next refresh.", "Couverture des sources faible lors de cette actualisation\u202f; reporter les interprétations à fort enjeu à la prochaine actualisation.");
   const bulletinHighlights = [
     {
-      title: tr("Operational Focus", "Priorité opérationnelle"),
+      title: tr("Operational focus", "Priorité opérationnelle"),
       body: tr(
         `Highest immediate composite pressure is concentrated in ${highestRiskCountry}, with the current priority watchlist covering ${priorityWatchlist}.`,
         `La pression composite immédiate la plus élevée est concentrée sur ${highestRiskCountry}, avec une liste de priorités couvrant ${priorityWatchlist}.`
       )
     },
     {
-      title: tr("Forecast Outlook", "Perspectives prévisionnelles"),
+      title: tr("Forecast outlook", "Perspectives prévisionnelles"),
       body: tr(
         `${forecasts.length} ICPAC bulletins are loaded; IPC projected Phase 3+ is >=30% in ${projectedHigh} countries, and FEWS near-term phase 3+ appears in ${fewsMl1High} countries.`,
         `${forecasts.length} bulletins de l'ICPAC sont chargés\u202f; la part projetée en phase 3+ IPC atteint au moins 30\u00a0% dans ${projectedHigh} pays, et la phase 3+ FEWS à court terme apparaît dans ${fewsMl1High} pays.`
       )
     },
     {
-      title: tr("Source Signal Status", "Statut des signaux des sources"),
+      title: tr("Source signal status", "Statut des signaux des sources"),
       body: tr(
         `This bulletin draws on GDACS, ReliefWeb, IPC, ICPAC, FEWS Data Warehouse, ${cycloneSourceStatus.checked_count ?? 0} dedicated cyclone-source checks, and Copernicus flood-source posture checks in the current refresh cycle.`,
         `Ce bulletin s'appuie sur GDACS, ReliefWeb, IPC, ICPAC, FEWS Data Warehouse, ${cycloneSourceStatus.checked_count ?? 0} vérifications de sources cycloniques dédiées et les vérifications de l'état des sources d'inondation Copernicus lors de cette actualisation.`
       )
     },
     {
-      title: tr("Conflict And Displacement", "Conflits et déplacements"),
+      title: tr("Conflict and displacement", "Conflits et déplacements"),
       body: tr(
         `${conflictCountries.length} countries show conflict-related reporting signals and ${displacementCountries.length} show displacement-related reporting signals in the current source window.`,
         `${conflictCountries.length} pays présentent des signaux de rapports liés aux conflits et ${displacementCountries.length} des signaux liés aux déplacements dans la fenêtre actuelle des sources.`
       )
     },
     {
-      title: tr("Flood Exposure", "Exposition aux inondations"),
+      title: tr("Flood exposure", "Exposition aux inondations"),
       body: tr(
         `${floodCountries.length} countries show mapped flood signals from current GDACS and ReliefWeb evidence, led by ${floodTopCountries}. Copernicus flood forecasts: ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable in this update" : (cemsFloodStatus.overall || "status unknown")}.`,
         `${floodCountries.length} pays présentent des signaux d'inondation cartographiés à partir des données GDACS et ReliefWeb actuelles, principalement ${floodTopCountries}. Prévisions d'inondations Copernicus\u00a0: ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "indisponibles lors de cette actualisation" : (cemsFloodStatus.overall || "état inconnu")}.`
@@ -6108,19 +6307,19 @@ function renderOperationalReportPage() {
         />
         <div>
           <p class="bulletin-cover-kicker">${tr("World Health Organization Regional Office for Africa", "Organisation mondiale de la Santé, Bureau régional de l'Afrique")}</p>
-          <h2 class="bulletin-cover-title">${tr("Humanitarian Operational Situation Bulletin", "Bulletin de situation opérationnelle humanitaire")}</h2>
+          <h2 class="bulletin-cover-title">${tr("Humanitarian operational situation bulletin", "Bulletin de situation opérationnelle humanitaire")}</h2>
           <p class="bulletin-cover-subtitle">${tr("Weekly regional brief on humanitarian health needs, hazards, food security and conflict, compiled from verified and public sources.", "Note régionale hebdomadaire sur les besoins sanitaires humanitaires, les aléas, la sécurité alimentaire et les conflits, établie à partir de sources vérifiées et publiques.")}</p>
         </div>
       </div>
       <div class="bulletin-cover-grid">
         <div class="bulletin-cover-card bulletin-cover-card-primary">
-          <span class="bulletin-meta-label">${tr("Issue Number", "Numéro d'édition")}</span>
+          <span class="bulletin-meta-label">${tr("Issue number", "Numéro d'édition")}</span>
           <strong>${issueCode}</strong>
           <p><strong>${tr("Issue date:", `Date de parution\u00a0:`)}</strong> <span title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</span></p>
           <p><strong>${tr("Coverage:", `Couverture\u00a0:`)}</strong> ${scopeCoverageLabel()}.</p>
         </div>
         <div class="bulletin-cover-card">
-          <span class="bulletin-meta-label">${tr("Reporting Basis", "Base du rapport")}</span>
+          <span class="bulletin-meta-label">${tr("Reporting basis", "Base du rapport")}</span>
           <strong>${tr("Compiled from public sources at each update", "Établi à partir de sources publiques à chaque mise à jour")}</strong>
           <p>${tr(
             `GDACS ${sourceSummaries.gdacs?.total_events ?? 0} events, ReliefWeb ${reliefwebApiStatus.error ? "unavailable" : `${sourceSummaries.reliefweb?.total_reports_30d ?? 0} reports`}, ICPAC ${forecasts.length} bulletins, ${cycloneSourceStatus.checked_count ?? 0} cyclone sources checked, Copernicus flood forecasts ${String(cemsFloodStatus.overall || "").toLowerCase() === "error" ? "unavailable" : (cemsFloodStatus.overall || "status unknown")}.`,
@@ -6128,7 +6327,7 @@ function renderOperationalReportPage() {
           )}</p>
         </div>
         <div class="bulletin-cover-card bulletin-cover-quality-card bulletin-cover-quality-${coverQualitySeverity}" aria-describedby="bulletinCoverQualityNote bulletinCoverQualityInterpretation${ipcVeryStaleCountries.length ? ' bulletinCoverQualityLegend' : ''}">
-          <span class="bulletin-meta-label">${tr("Data Quality Status", "Statut de la qualité des données")}</span>
+          <span class="bulletin-meta-label">${tr("Data quality status", "Statut de la qualité des données")}</span>
           <strong>${coverQualityLabel}</strong>
           <p id="bulletinCoverQualityNote">${coverQualityNote}</p>
           <p id="bulletinCoverQualityInterpretation" class="bulletin-cover-quality-interpretation">${coverQualityInterpretation}</p>
@@ -6136,7 +6335,7 @@ function renderOperationalReportPage() {
         </div>
       </div>
       <div class="bulletin-cover-message-box">
-        <h3>${tr("Key Messages", "Messages clés")}</h3>
+        <h3>${tr("Key messages", "Messages clés")}</h3>
         <ol class="bulletin-cover-messages">
           ${coverMessages.map((item) => `<li>${item}</li>`).join("")}
         </ol>
@@ -6148,11 +6347,11 @@ function renderOperationalReportPage() {
     <div class="bulletin-masthead">
       <div>
         <p class="bulletin-kicker">World Health Organization Regional Office for Africa</p>
-        <h3 class="bulletin-title">Humanitarian Operational Situation Bulletin</h3>
+        <h3 class="bulletin-title">Humanitarian operational situation bulletin</h3>
         <p class="bulletin-subtitle">Multi-hazard, nutrition, and forecast intelligence brief for AFRO regional leadership review.</p>
       </div>
       <div class="bulletin-stamp">
-        <span class="bulletin-stamp-label">Issue Date</span>
+        <span class="bulletin-stamp-label">Issue date</span>
         <strong title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</strong>
         <span>Public-source daily issue</span>
       </div>
@@ -6164,12 +6363,12 @@ function renderOperationalReportPage() {
         <span>${freshnessMode === "strict" ? "Strict current data" : "Lenient nutrition view enabled"}</span>
       </div>
       <div class="bulletin-meta-card">
-        <span class="bulletin-meta-label">Recommendation Load</span>
+        <span class="bulletin-meta-label">Recommendation load</span>
         <strong>${combinedRecommendations.length}</strong>
         <span>${criticalRecommendationCount} critical, ${highRecommendationCount} high</span>
       </div>
       <div class="bulletin-meta-card">
-        <span class="bulletin-meta-label">Source Basis</span>
+        <span class="bulletin-meta-label">Source basis</span>
         <strong>${sourceSummaries.gdacs?.total_events ?? 0} GDACS | ${sourceSummaries.reliefweb?.total_reports_30d ?? 0} RW</strong>
         <span>${forecasts.length} ICPAC bulletins, FEWS IPC phases, ${cycloneSourceStatus.checked_count ?? 0} cyclone checks, Copernicus flood ${cemsFloodStatus.overall || "unknown"}</span>
       </div>
@@ -6312,13 +6511,13 @@ function renderOperationalReportPage() {
   els.operationalBulletinGovernance.innerHTML = `
     <div class="bulletin-governance-grid">
       <div class="bulletin-governance-card">
-        <span class="bulletin-meta-label">Issue Number</span>
+        <span class="bulletin-meta-label">Issue number</span>
         <strong>${issueCode}</strong>
         <p>Prepared from the current public-source dashboard refresh dated <span title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</span>.</p>
       </div>
       <div class="bulletin-governance-card">
         <span class="bulletin-meta-label">Prepared By</span>
-        <strong>WHO AFRO FCV Public-Source Monitoring</strong>
+        <strong>WHO AFRO FCV public-source monitoring</strong>
         <p>Automated synthesis of public online humanitarian, forecast, and hazard sources for leadership briefing.</p>
       </div>
       <div class="bulletin-governance-card">
@@ -6333,16 +6532,16 @@ function renderOperationalReportPage() {
     <div class="bulletin-approval-grid">
       <div class="bulletin-approval-card">
         <span class="bulletin-meta-label">Prepared By</span>
-        <strong>WHO AFRO FCV Public-Source Monitoring Cell</strong>
+        <strong>WHO AFRO FCV public-source monitoring cell</strong>
         <p>Analytical synthesis for daily leadership orientation.</p>
       </div>
       <div class="bulletin-approval-card">
-        <span class="bulletin-meta-label">Cleared For Circulation</span>
+        <span class="bulletin-meta-label">Cleared for circulation</span>
         <strong>Regional FCV coordination review</strong>
         <p>Placeholder for internal review or delegated clearance workflow.</p>
       </div>
       <div class="bulletin-approval-card">
-        <span class="bulletin-meta-label">Contact Line</span>
+        <span class="bulletin-meta-label">Contact line</span>
         <strong>WHO AFRO FCV humanitarian monitoring desk</strong>
         <p>Use the linked source detail and country validation channels for follow-up action.</p>
       </div>
@@ -6351,39 +6550,39 @@ function renderOperationalReportPage() {
 
   const triggerRows = [
     {
-      trigger: tr("Food Security Deterioration", "Deterioration securite alimentaire"),
-      threshold: tr("IPC projected Phase 3+ >= 30% in >= 3 countries OR FEWS ML1 phase >= 3 in >= 4 countries", "IPC phase 3+ projetee >= 30% dans >= 3 pays OU FEWS ML1 phase >= 3 dans >= 4 pays"),
+      trigger: tr("Food security deterioration", "Détérioration de la sécurité alimentaire"),
+      threshold: tr("IPC projected Phase 3+ >= 30% in >= 3 countries OR FEWS ML1 phase >= 3 in >= 4 countries", "IPC phase 3+ projetée ≥ 30 % dans ≥ 3 pays OU FEWS ML1 phase ≥ 3 dans ≥ 4 pays"),
       current: `IPC ${projectedHigh} countries (${formatNum(projectedShare * 100, 1)}%); FEWS ML1 ${fewsMl1High} countries`,
       status: projectedHigh >= 3 || fewsMl1High >= 4 ? "active" : "watch",
-      action: tr("Convene food-security technical review within 24h; validate with country office and cluster leads.", "Convoquer une revue technique securite alimentaire sous 24h; valider avec les bureaux pays et les clusters.")
+      action: tr("Convene food-security technical review within 24h; validate with country office and cluster leads.", "Convoquer une revue technique de la sécurité alimentaire sous 24 h ; valider avec les bureaux pays et les clusters.")
     },
     {
-      trigger: tr("Conflict/Displacement Escalation", "Escalade conflit/deplacement"),
-      threshold: tr("UNHCR matched displacement signals >= 5 in current refresh", "Signaux de deplacement UNHCR identifies >= 5 dans ce cycle"),
+      trigger: tr("Conflict or displacement escalation", "Escalade conflit/déplacement"),
+      threshold: tr("UNHCR matched displacement signals >= 5 in current refresh", "Signaux de déplacement UNHCR identifiés ≥ 5 dans ce cycle"),
       current: tr(`${unhcrMatchedTotal} matched`, `${unhcrMatchedTotal} identifies`),
       status: unhcrMatchedTotal >= 5 ? "active" : "watch",
-      action: tr("Initiate displacement access and service continuity check for top affected countries.", "Initier une verification de l'acces deplacement et de la continuite des services pour les principaux pays affectes.")
+      action: tr("Initiate displacement access and service continuity check for top affected countries.", "Engager une vérification de l'accès déplacement et de la continuité des services pour les principaux pays touchés.")
     },
     {
-      trigger: tr("Source Coverage Pressure", "Pression couverture source"),
-      threshold: tr("ACAPS crawl cap warning streak >= 3", "Serie d'alerte cap ACAPS >= 3"),
+      trigger: tr("Source coverage pressure", "Pression couverture source"),
+      threshold: tr("ACAPS crawl cap warning streak >= 3", "Série d'alerte cap ACAPS ≥ 3"),
       current: acapsWarning || tr("none", "aucun"),
       status: acapsWarning ? "active" : "watch",
-      action: tr("Review crawl depth configuration and source retrieval strategy before next leadership briefing.", "Revoir la configuration de profondeur de crawl et la strategie de recuperation source avant le prochain briefing de direction.")
+      action: tr("Review crawl depth configuration and source retrieval strategy before next leadership briefing.", "Revoir la configuration de profondeur d'exploration et la stratégie de récupération source avant le prochain briefing de direction.")
     },
     {
-      trigger: tr("Multi-signal Country Priority", "Priorite pays multi-signaux"),
-      threshold: tr("Risk >= 70 with both conflict and displacement signals", "Risque >= 70 avec signaux conflit et deplacement"),
+      trigger: tr("Multi-signal country priority", "Priorité pays multi-signaux"),
+      threshold: tr("Risk >= 70 with both conflict and displacement signals", "Risque ≥ 70 avec signaux conflit et déplacement"),
       current: `${countries.filter((c) => (c.risk_score || 0) >= 70 && (c.conflict_signal_count || 0) > 0 && (c.displacement_signal_count || 0) > 0).length} countries`,
       status: countries.some((c) => (c.risk_score || 0) >= 70 && (c.conflict_signal_count || 0) > 0 && (c.displacement_signal_count || 0) > 0) ? "active" : "watch",
-      action: tr("Escalate integrated country support review (health, nutrition, and emergency operations).", "Escalader la revue integree d'appui pays (sante, nutrition et operations d'urgence).")
+      action: tr("Escalate integrated country support review (health, nutrition, and emergency operations).", "Escalader la revue intégrée d'appui pays (santé, nutrition et opérations d'urgence).")
     },
     {
-      trigger: tr("Flood-Food Security Overlap", "Chevauchement inondation-securite alimentaire"),
-      threshold: tr("Flood signals > 0 with IPC Phase 3+ >= 20%", "Signaux inondation > 0 avec IPC phase 3+ >= 20%"),
+      trigger: tr("Flood and food security overlap", "Chevauchement inondation-sécurité alimentaire"),
+      threshold: tr("Flood signals > 0 with IPC Phase 3+ >= 20%", "Signaux inondation > 0 avec IPC phase 3+ ≥ 20 %"),
       current: `${countries.filter((c) => (c.flood_count || 0) > 0 && (c.ipc?.phase3plus_pct || 0) >= 0.2).length} countries`,
       status: countries.some((c) => (c.flood_count || 0) > 0 && (c.ipc?.phase3plus_pct || 0) >= 0.2) ? "active" : "watch",
-      action: tr("Validate access disruption, pre-position food and nutrition stocks, and confirm district-level exposure before leadership escalation.", "Valider les ruptures d'acces, prepositionner les stocks alimentaires et nutritionnels, et confirmer l'exposition au niveau district avant escalation a la direction.")
+      action: tr("Validate access disruption, pre-position food and nutrition stocks, and confirm district-level exposure before leadership escalation.", "Valider les ruptures d'acces, prépositionner les stocks alimentaires et nutritionnels, et confirmer l'exposition au niveau district avant escalade à la direction.")
     }
   ];
 
@@ -6398,22 +6597,22 @@ function renderOperationalReportPage() {
   `).join("");
 
   els.operationalDecisionProtocol.innerHTML = `
-    <p><strong>${tr("Use", "Usage")}:</strong> ${tr("This matrix links current signal states to recommended leadership actions. Trigger status is refresh-driven and must be validated with country and partner channels before formal activation.", "Cette matrice relie les etats de signaux actuels aux actions recommandees pour la direction. Le statut des declencheurs depend du cycle de rafraichissement et doit etre valide avec les canaux pays et partenaires avant activation formelle.")}</p>
+    <p><strong>${tr("Use", "Usage")}${currentLanguage === "fr" ? "\u00a0:" : ":"}</strong> ${tr("This matrix links current signal states to recommended leadership actions. Trigger status is refresh-driven and must be validated with country and partner channels before formal activation.", "Cette matrice relie les états de signaux actuels aux actions recommandées pour la direction. Le statut des déclencheurs depend du cycle de rafraîchissement et doit être validé avec les canaux pays et partenaires avant activation formelle.")}</p>
     <div class="table-wrap">
       <table>
         <thead>
           <tr>
-            <th>${tr("Trigger", "Declencheur")}</th>
+            <th>${tr("Trigger", "Déclencheur")}</th>
             <th>${tr("Threshold", "Seuil")}</th>
-            <th>${tr("Current Status", "Statut actuel")}</th>
-            <th>${tr("State", "Etat")}</th>
-            <th>${tr("Recommended Action", "Action recommandee")}</th>
+            <th>${tr("Current status", "Statut actuel")}</th>
+            <th>${tr("State", "État")}</th>
+            <th>${tr("Recommended action", "Action recommandée")}</th>
           </tr>
         </thead>
         <tbody>${triggerRowsMarkup}</tbody>
       </table>
     </div>
-    <p><span class="tag warn">${tr("Protocol note", "Note protocole")}</span> ${tr("If any trigger is Active for two consecutive refresh cycles, escalate to same-day regional leadership review and issue a country validation request.", "Si un declencheur est Actif pendant deux cycles consecutifs, escalader vers une revue regionale le jour meme et emettre une demande de validation pays.")}</p>
+    <p><span class="tag warn">${tr("Protocol note", "Note protocole")}</span> ${tr("If any trigger is Active for two consecutive refresh cycles, escalate to same-day regional leadership review and issue a country validation request.", "Si un déclencheur est Actif pendant deux cycles consécutifs, escalader vers une revue régionale le jour même et émettre une demande de validation pays.")}</p>
   `;
 
   els.operationalBulletinFooter.innerHTML = `
@@ -6444,12 +6643,12 @@ function renderOperationalReportPage() {
       <article class="bulletin-conflict-insert-card">
         <div class="bulletin-conflict-insert-header">
           <div>
-            <p class="bulletin-annex-kicker">Conflict And Displacement Watch</p>
+            <p class="bulletin-annex-kicker">Conflict and displacement watch</p>
             <h3>${country.country}</h3>
             <p>${compactTrackLabel(country.fcv_track)}</p>
           </div>
           <div class="bulletin-annex-scorecard">
-            <span class="bulletin-meta-label">Signal Level</span>
+            <span class="bulletin-meta-label">Signal level</span>
             <strong>${signal.label}</strong>
             <span>Risk ${country.risk_score}</span>
           </div>
@@ -6458,11 +6657,11 @@ function renderOperationalReportPage() {
           <div class="annex-metric-card"><span>Conflict</span><strong>${country.conflict_signal_count || 0}</strong></div>
           <div class="annex-metric-card"><span>Displacement</span><strong>${country.displacement_signal_count || 0}</strong></div>
           <div class="annex-metric-card"><span>Reports 30d</span><strong>${country.report_count_30d || 0}</strong></div>
-          <div class="annex-metric-card"><span>IPC 3+ Current</span><strong>${country.ipc?.phase3plus_pct != null ? `${formatNum(country.ipc.phase3plus_pct * 100, 1)}%` : "n/a"}</strong></div>
+          <div class="annex-metric-card"><span>IPC 3+ current</span><strong>${country.ipc?.phase3plus_pct != null ? `${formatNum(country.ipc.phase3plus_pct * 100, 1)}%` : "n/a"}</strong></div>
         </div>
         <div class="bulletin-annex-grid">
           <div class="bulletin-annex-block">
-            <h4>Operational Reading</h4>
+            <h4>Operational reading</h4>
             <ul class="bulletin-list">
               <li>${country.conflict_signal_count || 0} conflict-related reporting signal(s) were matched in the current source window.</li>
               <li>${country.displacement_signal_count || 0} displacement-related reporting signal(s) were matched in the current source window.</li>
@@ -6470,7 +6669,7 @@ function renderOperationalReportPage() {
             </ul>
           </div>
           <div class="bulletin-annex-block">
-            <h4>Linked Source Evidence</h4>
+            <h4>Linked source evidence</h4>
             <ul class="bulletin-list">${sourceItems}</ul>
           </div>
         </div>
@@ -6530,7 +6729,7 @@ function renderOperationalReportPage() {
       `Conflict signals: ${country.conflict_signal_count || 0}; displacement signals: ${country.displacement_signal_count || 0}.`,
       `Under-5 wasting: ${wasting?.value != null ? `${formatNum(wasting.value)}% (${wasting.year || "n/a"})` : "n/a"}.`,
       `Under-5 stunting: ${stunting?.value != null ? `${formatNum(stunting.value)}% (${stunting.year || "n/a"})` : "n/a"}.`,
-      `Pregnant women anemia: ${anemia?.value != null ? `${formatNum(anemia.value)}% (${anemia.year || "n/a"})` : "n/a"}.`
+      `Anaemia in pregnant women: ${anemia?.value != null ? `${formatNum(anemia.value)}% (${anemia.year || "n/a"})` : "n/a"}.`
     ];
 
     const hazardItems = countryHazards.length
@@ -6552,32 +6751,32 @@ function renderOperationalReportPage() {
             <p>${qualityTag(country)} <span class="annex-track-tag">${compactTrackLabel(country.fcv_track)}</span></p>
           </div>
           <div class="bulletin-annex-scorecard">
-            <span class="bulletin-meta-label">Composite Risk</span>
+            <span class="bulletin-meta-label">Composite risk</span>
             <strong>${country.risk_score}</strong>
             <span>Issue ${issueCode}</span>
           </div>
         </div>
         <div class="bulletin-annex-decision-box">
-          <span class="bulletin-meta-label">Immediate Decision Focus</span>
+          <span class="bulletin-meta-label">Immediate decision focus</span>
           <p>${decisionText}</p>
         </div>
         <div class="bulletin-annex-metrics">
-          <div class="annex-metric-card"><span>IPC 3+ Current</span><strong>${country.ipc?.phase3plus_pct != null ? `${formatNum(country.ipc.phase3plus_pct * 100, 1)}%` : "n/a"}</strong></div>
-          <div class="annex-metric-card"><span>IPC 3+ Projected</span><strong>${country.ipc?.projection_phase3plus_pct != null ? `${formatNum(country.ipc.projection_phase3plus_pct * 100, 1)}%` : "n/a"}</strong></div>
+          <div class="annex-metric-card"><span>IPC 3+ current</span><strong>${country.ipc?.phase3plus_pct != null ? `${formatNum(country.ipc.phase3plus_pct * 100, 1)}%` : "n/a"}</strong></div>
+          <div class="annex-metric-card"><span>IPC 3+ projected</span><strong>${country.ipc?.projection_phase3plus_pct != null ? `${formatNum(country.ipc.projection_phase3plus_pct * 100, 1)}%` : "n/a"}</strong></div>
           <div class="annex-metric-card"><span>Hazards</span><strong>${country.hazard_count || 0}</strong></div>
           <div class="annex-metric-card"><span>Cyclones</span><strong>${country.cyclone_count || 0}</strong></div>
           <div class="annex-metric-card"><span>Reports 30d</span><strong>${country.report_count_30d || 0}</strong></div>
-          <div class="annex-metric-card"><span>Drought Signals</span><strong>${country.drought_signal_count || 0}</strong></div>
+          <div class="annex-metric-card"><span>Drought signals</span><strong>${country.drought_signal_count || 0}</strong></div>
         </div>
         <div class="bulletin-annex-grid">
           <div class="bulletin-annex-block">
-            <h4>Operational Considerations</h4>
+            <h4>Operational considerations</h4>
             <ul class="bulletin-list">
               ${annexActions.map((item) => `<li>${item}</li>`).join("")}
             </ul>
           </div>
           <div class="bulletin-annex-block">
-            <h4>Profile Snapshot</h4>
+            <h4>Profile snapshot</h4>
             <ul class="bulletin-list">
               ${dataNotes.map((item) => `<li>${item}</li>`).join("")}
             </ul>
@@ -6585,16 +6784,16 @@ function renderOperationalReportPage() {
         </div>
         <div class="bulletin-annex-grid bulletin-annex-grid-sources">
           <div class="bulletin-annex-block">
-            <h4>Country-Linked Hazard Items</h4>
+            <h4>Country-linked hazard items</h4>
             <ul class="bulletin-list">${hazardItems}</ul>
           </div>
           <div class="bulletin-annex-block">
-            <h4>Country-Linked Reports</h4>
+            <h4>Country-linked reports</h4>
             <ul class="bulletin-list">${reportItems}</ul>
           </div>
         </div>
         <div class="bulletin-annex-block bulletin-annex-forecast-block">
-          <h4>Forecast References</h4>
+          <h4>Forecast references</h4>
           <ul class="bulletin-list">${forecastItems}</ul>
         </div>
       </article>
@@ -6641,7 +6840,7 @@ function renderCyclonePage() {
 
   els.cycloneSourceAlert.style.display = allDedicatedFailed ? "block" : "none";
   if (allDedicatedFailed) {
-    els.cycloneSourceAlert.innerHTML = `<strong>Cyclone Source Alert:</strong> All dedicated cyclone websites failed in this refresh cycle (${sourceChecked} checked, 0 available). Treat zero-signal outputs as connectivity-constrained until sources recover.`;
+    els.cycloneSourceAlert.innerHTML = `<strong>Cyclone source alert:</strong> All dedicated cyclone websites failed in this refresh cycle (${sourceChecked} checked, 0 available). Treat zero-signal outputs as connectivity-constrained until sources recover.`;
   } else {
     els.cycloneSourceAlert.innerHTML = "";
   }
@@ -6741,7 +6940,7 @@ function buildAiRecommendations() {
   if (conflictHotspots.length) {
     byIssue.conflictsDisplacement.push({
       priority: "high",
-      title: "Escalate Countries With Repeated Conflict Reporting",
+      title: "Escalate countries with repeated conflict reporting",
       body: `${conflictHotspots.map((c) => `${c.country} (${c.conflict_signal_count})`).join(", ")} show repeated conflict-related reporting signals in the current 30-day source window. Validate protection, access, health-service continuity, and security constraints with country operations.`
     });
   }
@@ -6750,7 +6949,7 @@ function buildAiRecommendations() {
   if (displacementHotspots.length) {
     byIssue.conflictsDisplacement.push({
       priority: "high",
-      title: "Prepare For Population Movement Pressure",
+      title: "Prepare for population movement pressure",
       body: `${displacementHotspots.map((c) => `${c.country} (displacement ${c.displacement_signal_count}, reports ${c.report_count_30d})`).join("; ")} show displacement-linked reporting pressure. Review service continuity, mobile response capacity, and partner access assumptions in likely receiving areas.`
     });
   }
@@ -6759,7 +6958,7 @@ function buildAiRecommendations() {
   if (conflictFoodSecurityOverlap.length) {
     byIssue.conflictsDisplacement.push({
       priority: "critical",
-      title: "Treat Conflict And Food-Security Overlap As Leadership Priority",
+      title: "Treat conflict and food security overlap as a leadership priority",
       body: `${conflictFoodSecurityOverlap.map((c) => `${c.country} (IPC current ${c.ipc?.phase3plus_pct != null ? `${formatNum((c.ipc.phase3plus_pct || 0) * 100, 1)}%` : "n/a"})`).join(", ")} combine conflict-related reporting with current or projected IPC burden. Use this overlap to prioritize inter-cluster decision review and operational access validation.`
     });
   }
@@ -6767,7 +6966,7 @@ function buildAiRecommendations() {
   if (crisisCountries.length) {
     byIssue.foodSecurity.push({
       priority: "critical",
-      title: "Escalate Phase 3+ Countries To Immediate Response",
+      title: "Escalate Phase 3+ countries to immediate response",
       body: `${crisisCountries.map((c) => c.country).join(", ")} exceed the IPC Phase 3+ threshold of 30%. Prioritize emergency food access, therapeutic nutrition surge planning, and district-level referral pathways within the next operational cycle.`
     });
   }
@@ -6776,8 +6975,8 @@ function buildAiRecommendations() {
   if (phase45High.length) {
     byIssue.foodSecurity.push({
       priority: "high",
-      title: "Protect Populations In IPC Phase 4/5",
-      body: `${phase45High.map((c) => `${c.country} (${((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0)).toLocaleString()})`).join("; ")} have very high emergency or catastrophe caseloads. Reinforce last-mile delivery capacity and triage partners to Phase 4/5 hotspots.`
+      title: "Protect populations in IPC Phase 4 or 5",
+      body: `${phase45High.map((c) => `${c.country} (${whoNum((c.ipc.phase4_number || 0) + (c.ipc.phase5_number || 0))})`).join("; ")} have very high emergency or catastrophe caseloads. Reinforce last-mile delivery capacity and triage partners to Phase 4/5 hotspots.`
     });
   }
 
@@ -6785,7 +6984,7 @@ function buildAiRecommendations() {
   if (noIpcWithRisk.length) {
     byIssue.foodSecurity.push({
       priority: "medium",
-      title: "Close IPC Coverage Gaps In High-Risk Countries",
+      title: "Close IPC coverage gaps in high-risk countries",
       body: `${noIpcWithRisk.map((c) => c.country).join(", ")} show elevated composite risk without IPC coverage. Commission rapid assessments and preserve explicit uncertainty labels until food security classifications are updated.`
     });
   }
@@ -6794,7 +6993,7 @@ function buildAiRecommendations() {
   if (projectedIpcHigh.length) {
     byIssue.foodSecurity.push({
       priority: "high",
-      title: "Use IPC Projected Burden For Early Surge Planning",
+      title: "Use IPC projected burden for early surge planning",
       body: `${projectedIpcHigh.map((c) => `${c.country} (${formatNum((c.ipc.projection_phase3plus_pct || 0) * 100, 1)}%)`).join(", ")} show projected IPC Phase 3+ burden at or above 30%. Pre-position food-security and nutrition surge support before the projected window.`
     });
   }
@@ -6805,7 +7004,7 @@ function buildAiRecommendations() {
   if (highWasting.length) {
     byIssue.nutrition.push({
       priority: "high",
-      title: "Prioritize Under-5 Wasting Hotspots",
+      title: "Prioritize under-5 wasting hotspots",
       body: `${highWasting.slice(0, 5).map((c) => `${c.country} (${formatNum(c.indicators.wasting_u5_pct.latest.value)}%)`).join(", ")} exceed high burden thresholds. Intensify screening throughput, OTP readiness, and continuity of treatment in these countries.`
     });
   }
@@ -6816,8 +7015,8 @@ function buildAiRecommendations() {
   if (highAnemia.length) {
     byIssue.nutrition.push({
       priority: "medium",
-      title: "Strengthen Maternal Nutrition And Iron-Folate Coverage",
-      body: `${highAnemia.slice(0, 5).map((c) => `${c.country} (${formatNum(c.indicators.pregnant_anemia_pct.latest.value)}%)`).join(", ")} indicate high maternal anemia burden. Emphasize ANC-linked supplementation and targeted follow-up in underserved districts.`
+      title: "Strengthen maternal nutrition and iron-folate coverage",
+      body: `${highAnemia.slice(0, 5).map((c) => `${c.country} (${formatNum(c.indicators.pregnant_anemia_pct.latest.value)}%)`).join(", ")} indicate high maternal anaemia burden. Emphasize ANC-linked supplementation and targeted follow-up in underserved districts.`
     });
   }
 
@@ -6828,7 +7027,7 @@ function buildAiRecommendations() {
   if (staleNutrition.length >= 5) {
     byIssue.nutrition.push({
       priority: "medium",
-      title: "Mitigate Nutrition Recency Risk",
+      title: "Mitigate nutrition recency risk",
       body: `${staleNutrition.length} countries rely on older nutrition snapshots. Prioritize data refresh pipelines and field verification to avoid mis-targeting based on lagging annual indicators.`
     });
   }
@@ -6837,7 +7036,7 @@ function buildAiRecommendations() {
   if (seasonalItems.length) {
     byIssue.forecast.push({
       priority: "high",
-      title: "Use Seasonal Outlooks For Pre-Positioning",
+      title: "Use seasonal outlooks for prepositioning",
       body: `${seasonalItems.length} seasonal ICPAC products are loaded. Link pre-positioning decisions to forecast windows and monitor districts where hazard exposure overlaps with IPC crisis burden.`
     });
   }
@@ -6846,7 +7045,7 @@ function buildAiRecommendations() {
   if (lowHistory.length >= 4) {
     byIssue.forecast.push({
       priority: "medium",
-      title: "Treat Numeric Projections As Low Confidence In Data-Sparse Countries",
+      title: "Treat numeric projections as low confidence in data-sparse countries",
       body: `${lowHistory.length} countries have short historical series for trend fallback. Keep these projections advisory only and elevate source bulletins over model outputs in operational briefings.`
     });
   }
@@ -6855,7 +7054,7 @@ function buildAiRecommendations() {
   if (droughtSignalCountries.length) {
     byIssue.forecast.push({
       priority: "high",
-      title: "Prioritize Countries With Source-Based Drought Signals",
+      title: "Prioritize countries with source-based drought signals",
       body: `${droughtSignalCountries.map((c) => `${c.country} (${c.drought_signal_count})`).join(", ")} have active drought-oriented forecast signals from ICPAC sources. Link water, food, and health contingency triggers to these forecasted stress windows.`
     });
   }
@@ -6864,7 +7063,7 @@ function buildAiRecommendations() {
   if (cycloneExposed.length) {
     byIssue.cyclone.push({
       priority: "high",
-      title: "Activate Cyclone Contingency Logistics",
+      title: "Activate cyclone contingency logistics",
       body: `${cycloneExposed.map((c) => `${c.country} (${c.cyclone_count})`).join(", ")} show repeated cyclone-linked signals. Confirm route redundancy, stock mobility, and rapid damage reporting lines before access constraints escalate.`
     });
   }
@@ -6873,7 +7072,7 @@ function buildAiRecommendations() {
   if (cycloneWithIpc.length) {
     byIssue.cyclone.push({
       priority: "medium",
-      title: "Protect Food-Insecure Areas During Cyclone Exposure",
+      title: "Protect food-insecure areas during cyclone exposure",
       body: `${cycloneWithIpc.map((c) => c.country).join(", ")} show cyclone signals with IPC stress or crisis burden. Prioritize continuity plans for nutrition supplies, access routes, and referral services in exposed districts.`
     });
   }
@@ -6889,7 +7088,7 @@ function buildAiRecommendations() {
 
     byIssue.cyclone.push({
       priority: "high",
-      title: "Pre-Activation Based On Cyclone Projections",
+      title: "Pre-activation based on cyclone projections",
       body: `${cycloneProjectionSignals} cyclone projection/advisory signals are active across monitored sources. Current signal locations: ${signalWhere}. Prepare standby logistics and pre-alert country offices in these geographies where access constraints are likely.`
     });
   }
@@ -6898,7 +7097,7 @@ function buildAiRecommendations() {
   if (highHazard.length) {
     byIssue.hazard.push({
       priority: "medium",
-      title: "Focus Multi-Hazard Monitoring On Persistent Hotspots",
+      title: "Focus multi-hazard monitoring on persistent hotspots",
       body: `${highHazard.map((c) => `${c.country} (${c.hazard_count})`).join(", ")} have sustained hazard pressure. Increase event verification cadence and align inter-cluster triggers to hazard recurrence patterns.`
     });
   }
@@ -6907,7 +7106,7 @@ function buildAiRecommendations() {
   if (highFlood.length) {
     byIssue.hazard.push({
       priority: "high",
-      title: "Escalate Flood-Exposed Food Security Corridors",
+      title: "Escalate flood-exposed food security corridors",
       body: `${highFlood.map((c) => `${c.country} (${c.flood_count || 0})`).join(", ")} show repeated flood signals. Validate access constraints, pre-position supplies, and prioritize IPC hotspot districts where flood exposure and food insecurity overlap.`
     });
   }
@@ -6916,7 +7115,7 @@ function buildAiRecommendations() {
   if (noIssueRecs) {
     byIssue.hazard.push({
       priority: "medium",
-      title: "Maintain Baseline Readiness",
+      title: "Maintain baseline readiness",
       body: "No high-priority thresholds were triggered in the current refresh. Keep surveillance active and reassess recommendations on the next data cycle."
     });
   }
@@ -6997,13 +7196,13 @@ function renderBriefingHighlights() {
   const acledStatus = dashboardState.acled_source_status || {};
 
   els.briefingHighlights.innerHTML = `
-    <p><strong>Daily Snapshot</strong>: Generated at <span title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</span> for ${scopeCoverageLabel()}.</p>
+    <p><strong>Daily snapshot</strong>: Generated at <span title="${dashboardState.generated_at || "n/a"}">${formatDateTime(dashboardState.generated_at)}</span> for ${scopeCoverageLabel()}.</p>
     <p><strong>Top risk countries</strong>: ${top.map((c) => `${c.country} (${c.risk_score})`).join(", ")}.</p>
     <p><strong>Highest cyclone signal</strong>: ${highestCyclone ? `${highestCyclone.country} (${highestCyclone.cyclone_count} mentions)` : "n/a"}.</p>
     <p><strong>Highest wasting signal</strong>: ${highestWasting ? `${highestWasting.country} (${formatNum(highestWasting.indicators.wasting_u5_pct.latest.value)}%)` : "n/a"}.</p>
     <p><strong>ACLED context loaded</strong>: ${acledStatus.fcv_rows || 0} AFRO rows this refresh${highestAcled ? `; highest ranked mapped country: ${highestAcled.country} (#${highestAcled.acled_index.rank}, ${highestAcled.acled_index.index_level || "Unknown"})` : ""}.</p>
     <p><strong>ICPAC bulletin stream</strong>: ${(dashboardState.forecasts || []).length} products loaded for forecast context.</p>
-    <p><strong>IPC Phase Classification</strong>: ${(dashboardState.countries || []).filter(c => c.ipc).length} of ${dashboardState.scope.country_count} grouped Africa countries loaded from HDX.</p>
+    <p><strong>IPC phase classification</strong>: ${(dashboardState.countries || []).filter(c => c.ipc).length} of ${dashboardState.scope.country_count} grouped Africa countries loaded from HDX.</p>
     <p>Use the sidebar pages or auto-display mode for guided briefing transitions.</p>
   `;
 }
@@ -7037,7 +7236,7 @@ function renderSourceFreshness() {
     { label: "ACLED", key: "acled" },
     { label: "FEWS NET", key: "fews_net" },
     { label: "ICPAC", key: "icpac" },
-    { label: "Cyclone Sites", key: "cyclone_dedicated" },
+    { label: "Cyclone sites", key: "cyclone_dedicated" },
     { label: "IPC/HDX", key: "ipc_hdx" }
   ];
   const now = Date.now();
@@ -7073,14 +7272,14 @@ function renderSourceFreshness() {
     : "";
   const conflictWidgetMarkup = `
     <span class="freshness-pill"><strong>ReliefWeb API:</strong> <span class="tag ${reliefwebApiClass}" title="ReliefWeb Reports API direct flood enrichment. Appname ${reliefwebApiConfiguredLabel}; ${reliefwebApiStatus.reports_returned || 0} reports returned; ${reliefwebApiStatus.matching_signals || 0} final API-tagged regional flood signals; dropped ${reliefwebApiStatus.dropped_scope_filtered || 0} off-scope + ${reliefwebApiStatus.dropped_unmapped_country || 0} unmapped; deduped ${reliefwebApiStatus.dropped_duplicate || 0}${reliefwebApiError}">${reliefwebApiOverall} ${(reliefwebApiStatus.matching_signals || 0)}/${(reliefwebApiStatus.reports_returned || 0)}</span></span>
-    <span class="freshness-pill"><strong>Conflict Sources:</strong>
+    <span class="freshness-pill"><strong>Conflict sources:</strong>
       <span class="conflict-pill-legend">(C/M = candidate/matched reporting)</span>
       <span class="tag ${sourceHealthClass(unhcrCandidate, unhcrMatched)}" title="UNHCR - C=${unhcrCandidate}, M=${unhcrMatched} (direct=${unhcrDirectMatched}, fallback via ReliefWeb=${unhcrFallbackMatched}, population stats=${unhcrPopulationMatched})">UNHCR ${unhcrCandidate}/${unhcrMatched}</span>
       <span class="tag ${sourceHealthClass(idmcCandidate, idmcMatched)}" title="IDMC RSS - C=${idmcCandidate}, M=${idmcMatched}">IDMC ${idmcCandidate}/${idmcMatched}</span>
       <span class="tag ${sourceHealthClass(ochaCandidate, ochaMatched)}" title="OCHA RSS - C=${ochaCandidate}, M=${ochaMatched}">OCHA ${ochaCandidate}/${ochaMatched}</span>
       <span class="conflict-pill-legend">updated ${age(cs.generated_at)}</span>
     </span>
-    <span class="freshness-pill"><strong>ACLED Context:</strong> <span class="tag ${acledStatus.overall === "available" ? "good" : acledStatus.overall === "partial" ? "warn" : "bad"}" title="ACLED Conflict Index context rows mapped to AFRO countries">${acledStatus.fcv_rows || 0} rows / ${acledStatus.mapped_countries || 0} countries</span></span>
+    <span class="freshness-pill"><strong>ACLED context:</strong> <span class="tag ${acledStatus.overall === "available" ? "good" : acledStatus.overall === "partial" ? "warn" : "bad"}" title="ACLED Conflict Index context rows mapped to AFRO countries">${acledStatus.fcv_rows || 0} rows / ${acledStatus.mapped_countries || 0} countries</span></span>
     ${acapsWarningPill}
   `;
   els.sourceStrip.innerHTML = `${freshnessMarkup}${conflictWidgetMarkup}`;
@@ -7160,6 +7359,16 @@ function updateNavBadges() {
 }
 
 // FCV countries first (Prioritized, then Accelerated), alphabetical within each group.
+// WHO official short names in English (WHO style guide).
+const WHO_COUNTRY_NAMES_EN = {
+  "Republic of the Congo": "Congo",
+  "São Tomé and Príncipe": "Sao Tome and Principe",
+  Tanzania: "United Republic of Tanzania"
+};
+function whoCountryName(name) {
+  return currentLanguage === "fr" ? name : (WHO_COUNTRY_NAMES_EN[name] || name);
+}
+
 function populateCountrySelect() {
   const previous = els.countrySelect.value;
   const rank = (g) => (/prioriti/i.test(g || "") ? 0 : /accelerat/i.test(g || "") ? 1 : /fcv/i.test(g || "") ? 2 : /afro/i.test(g || "") ? 3 : 4);
@@ -7172,7 +7381,7 @@ function populateCountrySelect() {
     groups.get(key).push(c);
   });
   els.countrySelect.innerHTML = Array.from(groups.entries())
-    .map(([key, list]) => `<optgroup label="${label[key]}">${list.map((c) => `<option value="${c.iso3}">${c.country}</option>`).join("")}</optgroup>`)
+    .map(([key, list]) => `<optgroup label="${label[key]}">${list.map((c) => `<option value="${c.iso3}">${whoCountryName(c.country)}</option>`).join("")}</optgroup>`)
     .join("");
   if (previous && sorted.some((c) => c.iso3 === previous)) {
     els.countrySelect.value = previous;

@@ -274,7 +274,7 @@ const FCV_COUNTRIES = [
   { iso3: "SLE", name: "Sierra Leone", aliases: ["Sierra Leone", "Sierra Leonean"], fcv_track: "AFRO" },
   { iso3: "SOM", name: "Somalia", aliases: ["Somalia", "Somali", "Somalian"], fcv_track: "Other Africa" },
   { iso3: "ZAF", name: "South Africa", aliases: ["South Africa", "South African"], fcv_track: "AFRO" },
-  { iso3: "TZA", name: "Tanzania", aliases: ["Tanzania", "United Republic of Tanzania", "Tanzanian"], fcv_track: "AFRO" },
+  { iso3: "TZA", name: "United Republic of Tanzania", aliases: ["Tanzania", "United Republic of Tanzania", "Tanzanian"], fcv_track: "AFRO" },
   { iso3: "TGO", name: "Togo", aliases: ["Togo", "Togolese"], fcv_track: "AFRO" },
   { iso3: "UGA", name: "Uganda", aliases: ["Uganda", "Ugandan"], fcv_track: "AFRO" },
   { iso3: "ZMB", name: "Zambia", aliases: ["Zambia", "Zambian"], fcv_track: "AFRO" },
@@ -493,9 +493,9 @@ function currentAcapsMaxPages() {
 }
 
 const INDICATORS = [
-  { code: "SH.STA.WAST.ZS", key: "wasting_u5_pct", label: "Child Wasting (%)" },
-  { code: "SH.STA.STNT.ZS", key: "stunting_u5_pct", label: "Child Stunting (%)" },
-  { code: "SH.ANM.PREG.ZS", key: "pregnant_anemia_pct", label: "Pregnant Women Anemia (%)" }
+  { code: "SH.STA.WAST.ZS", key: "wasting_u5_pct", label: "Child wasting (%)" },
+  { code: "SH.STA.STNT.ZS", key: "stunting_u5_pct", label: "Child stunting (%)" },
+  { code: "SH.ANM.PREG.ZS", key: "pregnant_anemia_pct", label: "Anaemia in pregnant women (%)" }
 ];
 
 const MAX_NUTRITION_DATA_AGE_YEARS = 3;
@@ -1129,9 +1129,9 @@ async function fetchFewsCountryPageSignals(countryMap) {
             }
           }
           const tags = [];
-          if (foodRegex.test(text)) tags.push("Food Security");
+          if (foodRegex.test(text)) tags.push("Food security");
           if (nutritionRegex.test(text)) tags.push("Nutrition");
-          if (!tags.length) tags.push("Food Security");
+          if (!tags.length) tags.push("Food security");
 
           taggedSignals.push({
             source: "FEWS NET Country Page",
@@ -1174,9 +1174,9 @@ async function fetchFewsCountryPageSignals(countryMap) {
               }
 
               const tags = [];
-              if (foodRegex.test(combined)) tags.push("Food Security");
+              if (foodRegex.test(combined)) tags.push("Food security");
               if (nutritionRegex.test(combined)) tags.push("Nutrition");
-              if (!tags.length) tags.push("Food Security");
+              if (!tags.length) tags.push("Food security");
 
               taggedSignals.push({
                 source: "FEWS NET Country Feed",
@@ -1198,9 +1198,9 @@ async function fetchFewsCountryPageSignals(countryMap) {
         if (!taggedSignals.length) {
           const tags = [];
           const text = `${pageTitle} ${summary}`;
-          if (foodRegex.test(text)) tags.push("Food Security");
+          if (foodRegex.test(text)) tags.push("Food security");
           if (nutritionRegex.test(text)) tags.push("Nutrition");
-          if (!tags.length) tags.push("Food Security");
+          if (!tags.length) tags.push("Food security");
           taggedSignals.push({
             source: "FEWS NET Country Page",
             title: pageTitle,
@@ -3245,7 +3245,7 @@ function deriveFoodSecuritySignals(countryMap, reports, fewsSignals) {
         summary: item.summary || null,
         url: item.url || null,
         date_label: item.created || null,
-        signal_tags: ["Food Security"],
+        signal_tags: ["Food security"],
         countries: mentioned
       });
     });
@@ -3263,7 +3263,7 @@ function deriveFoodSecuritySignals(countryMap, reports, fewsSignals) {
         summary: item.summary || null,
         url: item.url || null,
         date_label: item.date_label || null,
-        signal_tags: ["Food Security", "FEWS NET"],
+        signal_tags: ["Food security", "FEWS NET"],
         countries: mentioned
       });
     });
@@ -3351,7 +3351,7 @@ function deriveHealthCareAttackSignals(countryMap, items) {
         summary: item.summary || null,
         url: item.url || null,
         date_label: item.created || item.date_label || null,
-        signal_tags: ["Attacks on Healthcare"],
+        signal_tags: ["Attacks on health care"],
         countries: mentioned
       });
     });
@@ -3383,7 +3383,7 @@ function deriveDiseaseOutbreakSignals(countryMap, reports, whoDonReports) {
         summary: item.summary || null,
         url: item.url || null,
         date_label: item.created || null,
-        signal_tags: ["Disease Outbreak", diseaseLabel],
+        signal_tags: ["Disease outbreak", diseaseLabel],
         countries: mentioned
       });
     });
@@ -3399,7 +3399,7 @@ function deriveDiseaseOutbreakSignals(countryMap, reports, whoDonReports) {
         summary: item.summary || null,
         url: item.url || null,
         date_label: item.created || null,
-        signal_tags: ["Disease Outbreak", diseaseLabel],
+        signal_tags: ["Disease outbreak", diseaseLabel],
         countries: mentioned
       });
     });
@@ -3729,7 +3729,7 @@ function extractIcpacEntriesFromHtml(html, horizon) {
       continue;
     }
     const dateStr = dateInUrl[1].replace(/\//g, "-");
-    const title = `ICPAC ${horizon} forecast — ${dateStr}`;
+    const title = `ICPAC ${horizon} forecast, ${dateStr}`;
     entries.push({
       source: "ICPAC",
       horizon,
@@ -4381,7 +4381,7 @@ async function fetchHdxAcuteMalnutritionFallback(countryMap, freshnessMode = "st
 
       if (!countryMap[iso3].indicators.wasting_u5_pct) {
         countryMap[iso3].indicators.wasting_u5_pct = {
-          label: "Child Wasting (%)",
+          label: "Child wasting (%)",
           series: [],
           latest: null,
           latest_any: null,
@@ -4439,7 +4439,7 @@ async function fetchHdxAcuteMalnutritionFallback(countryMap, freshnessMode = "st
           if (parsed) {
             if (!countryMap[iso3].indicators.wasting_u5_pct) {
               countryMap[iso3].indicators.wasting_u5_pct = {
-                label: "Child Wasting (%)",
+                label: "Child wasting (%)",
                 series: [],
                 latest: null,
                 latest_any: null,
@@ -6517,7 +6517,7 @@ function attacksHealthResponseFromCache(query = {}) {
       ok: false,
       status: 404,
       body: {
-        error: "Attacks-on-healthcare view is not ready yet",
+        error: "The attacks on health care view is not ready yet",
         details: "Call /api/dashboard-data first to initialize the current refresh payload cache."
       }
     };
@@ -6959,12 +6959,12 @@ app.get("/api/dashboard-data", async (req, res) => {
       },
       data_notes: [
         "Nutrition indicators are currently pulled from World Bank public data as the primary nutrition source.",
-        "The pregnant women metric is anemia prevalence (World Bank indicator SH.ANM.PREG.ZS), not an acute malnutrition prevalence estimate.",
+        "The pregnant women metric is anaemia prevalence (World Bank indicator SH.ANM.PREG.ZS), not an acute malnutrition prevalence estimate.",
         "No validated pregnant-women acute malnutrition source is currently connected in this dashboard.",
         "When World Bank nutrition values are stale or missing, HDX acute malnutrition country files are used as a transparent pilot fallback proxy for wasting burden in selected countries.",
-        "HDX fallback currently applies only to under-5 wasting proxy values and does not replace the pregnant anemia indicator.",
+        "HDX fallback currently applies only to under-5 wasting proxy values and does not replace the indicator of anaemia in pregnant women.",
         "Nutrition values older than 3 years are automatically excluded from display and fallback projections.",
-        "IPC Acute Food Insecurity phase data is pulled automatically from HDX (Humanitarian Data Exchange) open datasets — same IPC data, no access block.",
+        "IPC Acute Food Insecurity phase data is pulled automatically from HDX (Humanitarian Data Exchange) open datasets (the same IPC data, with no access restriction).",
         "IPC projected validity rows are used when available to provide source-based food security projection context by country.",
         "Hazard events are pulled from GDACS public RSS feed, with explicit cyclone and flood classification for country-level event pressure tracking.",
         `Regional flood signals are extracted from ReliefWeb RSS and ReliefWeb Reports API over a ${EVENT_SIGNAL_LOOKBACK_DAYS}-day lookback window using flood and AFRO context matching.`,

@@ -133,6 +133,30 @@
         l = data.layout;
         c = data.config;
       }
+      // WHO style: a space, not a comma, separates thousands in chart labels and hovers.
+      if (l && typeof l === "object" && !l.separators) {
+        l.separators = isFr() ? ", " : ". ";
+      }
+      // Plotly leaves four-digit axis numbers ungrouped (4000) unless asked: 4 000.
+      // Axes that show years (all values whole numbers from 1900 to 2100) stay as 2025.
+      if (l && typeof l === "object" && Array.isArray(d)) {
+        const isYearAxis = (letter, id) => {
+          const vals = d.filter((t) => t && (t[`${letter}axis`] || letter) === id)
+            .flatMap((t) => (Array.isArray(t[letter]) ? t[letter] : []))
+            .filter((v) => typeof v === "number" || (typeof v === "string" && /^\d{4}$/.test(v)));
+          return vals.length > 0 && vals.every((v) => Number.isInteger(Number(v)) && Number(v) >= 1900 && Number(v) <= 2100);
+        };
+        ["xaxis", "yaxis", ...Object.keys(l).filter((k) => /^[xy]axis\d+$/.test(k))].forEach((k) => {
+          const letter = k[0];
+          const id = letter + k.slice(5);
+          if (l[k] && typeof l[k] !== "object") return;
+          const axis = l[k] || {};
+          if (axis.separatethousands === undefined && axis.type !== "date" && axis.type !== "category" && !isYearAxis(letter, id)) {
+            axis.separatethousands = true;
+            l[k] = axis;
+          }
+        });
+      }
       const result = fn.apply(this, arguments);
       // Never let the reset feature break a chart that drew correctly.
       const after = () => {
