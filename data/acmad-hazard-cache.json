@@ -1,18 +1,18 @@
 {
   "source": "ACMAD Continental Multi-Hazard & Advisory Bulletin (WMO Regional Climate Centre for Africa)",
-  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-11-24/",
-  "pdf_url": "https://www.acmad.org/documents/1723/Continental_Hazard_Outlook_20261124.pdf",
-  "issued_on": "2026-11-24",
+  "product_url": "https://www.acmad.org/products/weather-watch-and-prediction-products/continental-multi-hazard-outlook-2026-11-26/",
+  "pdf_url": "https://www.acmad.org/documents/1733/Continental_Hazard_Outlook_20261126.pdf",
+  "issued_on": "2026-11-26",
   "sections": [
     {
       "hazard": "heavy_rain",
       "title": "Heavy rainfall and strong winds",
-      "valid_from": null,
-      "valid_to": null,
-      "highlight": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., Zambia, Zimbabwe, and Mozambique.",
+      "valid_from": "2026-11-27",
+      "valid_to": "2026-12-01",
+      "highlight": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., and Zambia.",
       "sentences": [
         {
-          "text": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., Zambia, Zimbabwe, and Mozambique.",
+          "text": "Heavy rainfall is expected in Equatorial Guinea, Gabon, Congo, Angola, D.R.C., and Zambia.",
           "level": "watch",
           "countries": [
             "GNQ",
@@ -20,9 +20,7 @@
             "COG",
             "AGO",
             "COD",
-            "ZMB",
-            "ZWE",
-            "MOZ"
+            "ZMB"
           ]
         }
       ]
@@ -30,19 +28,18 @@
     {
       "hazard": "heat_wave",
       "title": "Heat wave",
-      "valid_from": null,
-      "valid_to": null,
-      "highlight": "Moderate heat wave is expected in Ghana, Togo, Benin, Nigeria, and Mozambique.",
+      "valid_from": "2026-11-27",
+      "valid_to": "2026-12-01",
+      "highlight": "Moderate heat wave is expected in Ghana, Togo, Benin, and Nigeria.",
       "sentences": [
         {
-          "text": "Moderate heat wave is expected in Ghana, Togo, Benin, Nigeria, and Mozambique.",
+          "text": "Moderate heat wave is expected in Ghana, Togo, Benin, and Nigeria.",
           "level": "watch",
           "countries": [
             "GHA",
             "TGO",
             "BEN",
-            "NGA",
-            "MOZ"
+            "NGA"
           ]
         }
       ]
@@ -50,8 +47,8 @@
     {
       "hazard": "meningitis",
       "title": "Meningitis outbreak",
-      "valid_from": null,
-      "valid_to": null,
+      "valid_from": "2026-11-27",
+      "valid_to": "2026-12-03",
       "highlight": "Emergence of Meningitis cases is very likely and epidemics status possible in Chad Emergence of Meningitis cases is likely in Mauritania, Senegal, Algeria, Mali, Burkina Faso, Ghana, Togo, Benin, Niger, Nigeria, Cameroon, and Sudan.",
       "sentences": [
         {
@@ -76,5 +73,5 @@
       ]
     }
   ],
-  "fetched_at": "2026-11-24T21:13:51.188Z"
+  "fetched_at": "2026-11-26T19:38:23.341Z"
 }
